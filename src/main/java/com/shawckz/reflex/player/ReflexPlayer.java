@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) Jonah Seguin (Shawckz) 2016.  You may not copy, re-sell, distribute, modify, or use any code contained in this document or file, collection of documents or files, or project.
+ * Thank you.
+ */
+
 package com.shawckz.reflex.player;
 
 import com.shawckz.reflex.cache.CachePlayer;
@@ -9,42 +14,40 @@ import com.shawckz.reflex.database.mongo.annotations.MongoColumn;
 import com.shawckz.reflex.database.mongo.serial.MapSerializer;
 import lombok.*;
 import net.md_5.bungee.api.ChatColor;
+import org.bukkit.entity.Player;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
-
-import org.bukkit.entity.Player;
+import java.util.Set;
 
 @RequiredArgsConstructor
 @AllArgsConstructor
 @CollectionName(name = "aresplayers")
 public class ReflexPlayer extends CachePlayer {
 
-    public ReflexPlayer() {//So that AutoMongo can instantiate without throwing an InstantiationException
-    }
-
-    @Getter @Setter private Player bukkitPlayer = null;
-
-    @MongoColumn(name = "username")
-    @NonNull @Getter @Setter private String name;
-
-    @MongoColumn(name = "uuid", identifier = true)
-    @NonNull @Getter @Setter private String uniqueId;
-
     @MongoColumn(name = "vl")
     @DatabaseSerializer(serializer = MapSerializer.class)
-    @Getter private final Map<CheckType, Integer> violations = new HashMap<>();
+    @Getter
+    private final Map<CheckType, Integer> violations = new HashMap<>();
+    @Getter
+    private final Map<String, Violation> vls = new HashMap<>();
+    @Getter
+    private final OldCheckData data = new OldCheckData();
+    private final Map<CheckType, Checker> checkers = new HashMap<>();
+    private final Set<CheckType> training = new HashSet<>();
+    @Getter @Setter private Player bukkitPlayer = null;
+    @MongoColumn(name = "username")
+    @NonNull @Getter @Setter private String name;
+    @MongoColumn(name = "uuid", identifier = true)
+    @NonNull @Getter @Setter private String uniqueId;
     @MongoColumn(name = "totalVL")
     @Getter @Setter private int totalVL = 0;
-
     @Getter @Setter private boolean alertsEnabled = true;
 
-    @Getter private final Map<String, Violation> vls = new HashMap<>();
-
-    @Getter private final OldCheckData data = new OldCheckData();
-
-    private final Map<CheckType, Checker> checkers = new HashMap<>();
+    public ReflexPlayer() {//So that AutoMongo can instantiate without throwing an InstantiationException
+    }
 
     public Violation addVL(CheckType checkType, boolean cancelled){
         Check check = CheckManager.get().getCheck(checkType);
@@ -95,4 +98,15 @@ public class ReflexPlayer extends CachePlayer {
         bukkitPlayer.sendMessage(ChatColor.translateAlternateColorCodes('&', msg));
     }
 
+    public void startTraining(CheckType checkType) {
+        training.add(checkType);
+    }
+
+    public boolean isTraining(CheckType checkType) {
+        return training.contains(checkType);
+    }
+
+    public void stopTraining(CheckType checkType) {
+        training.remove(checkType);
+    }
 }

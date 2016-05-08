@@ -1,5 +1,6 @@
 /*
- * Copyright (c) Jonah Seguin (Shawckz) 2016.  You may not copy, re-sell, distribute, modify, or use any code contained in this document or file, collection of documents or files, or project.  Thank you.
+ * Copyright (c) Jonah Seguin (Shawckz) 2016.  You may not copy, re-sell, distribute, modify, or use any code contained in this document or file, collection of documents or files, or project.
+ * Thank you.
  */
 
 package com.shawckz.reflex;
@@ -31,6 +32,11 @@ public class ReflexTimer implements Runnable {
         this.checks = ImmutableList.copyOf(list);
     }
 
+    /**
+     * Handles Timer Checks
+     * They run once every second, this runnable is started in the main Reflex.java class
+     * .runTaskTimer - non async
+     */
     public void run(){
         for (TimerCheck timerCheck : checks) {
             if(!timerCheck.isEnabled()) continue;

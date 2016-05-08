@@ -1,5 +1,6 @@
 /*
- * Copyright (c) Jonah Seguin (Shawckz) 2016.  You may not copy, re-sell, distribute, modify, or use any code contained in this document or file, collection of documents or files, or project.  Thank you.
+ * Copyright (c) Jonah Seguin (Shawckz) 2016.  You may not copy, re-sell, distribute, modify, or use any code contained in this document or file, collection of documents or files, or project.
+ * Thank you.
  */
 
 package com.shawckz.reflex;
@@ -14,7 +15,6 @@ import com.shawckz.reflex.database.DBManager;
 import com.shawckz.reflex.player.ReflexCache;
 import com.shawckz.reflex.util.Lag;
 import lombok.Getter;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -22,6 +22,14 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Reflex extends JavaPlugin {
+
+    /**
+     * IDEA
+     * <p>
+     * Have base tester checks; when plugin suspects player might be a hacker:
+     * send to be tested for a period of time and log results,
+     * keep doing this until the plugin is certain and makes a decision or asks for staff help
+     */
 
     @Getter private static Plugin plugin;
     @Getter private static ReflexConfig reflexConfig;
@@ -67,7 +75,6 @@ public class Reflex extends JavaPlugin {
         Bukkit.getScheduler().runTaskTimer(this, new ReflexTimer(),20L,20L);
 
         Bukkit.getScheduler().runTaskTimer(this, new Lag(), 1L, 1L);
-
     }
 
     @Override
