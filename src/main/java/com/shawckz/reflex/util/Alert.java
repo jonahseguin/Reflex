@@ -1,94 +1,99 @@
-package com.shawckz.reflex.util;
-
 /*
- * Copyright (c) 2015 Jonah Seguin (Shawckz).  All rights reserved.  You may not modify, decompile, distribute or use any code/text contained in this document(plugin) without explicit signed permission from Jonah Seguin.
+ * Copyright (c) Jonah Seguin (Shawckz) 2016.  You may not copy, re-sell, distribute, modify, or use any code contained in this document or file, collection of documents or files, or project.
+ * Thank you.
  */
 
-import com.shawckz.reflex.Reflex;
-import com.shawckz.reflex.check.Violation;
-import com.shawckz.reflex.player.ReflexCache;
-import com.shawckz.reflex.player.ReflexPlayer;
-import mkremins.fanciful.FancyMessage;
+package com.shawckz.reflex.util;
 
+import com.shawckz.reflex.bridge.CheckType;
+import com.shawckz.reflex.bridge.RCheckType;
+import com.shawckz.reflex.bridge.RViolation;
+import com.shawckz.reflex.core.configuration.RLang;
+import com.shawckz.reflex.core.configuration.ReflexLang;
+import com.shawckz.reflex.core.configuration.ReflexPerm;
+import com.shawckz.reflex.core.player.ReflexCache;
+import com.shawckz.reflex.core.player.ReflexPlayer;
+import lombok.Getter;
+import lombok.Setter;
+import mkremins.fanciful.FancyMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
+import java.util.UUID;
+
 /**
- * Alert class
- * Used to send alerts and messages to online players(staff..?) with alerts enabled.
+ * Created by Jonah Seguin on 5/9/2016.
+ *
+ * @author Shawckz
+ *         Shawckz.com
  */
+@Getter
 public class Alert {
 
-    /**
-     * Send an alert to online staff with alerts enabled
-     * @param v Violation for alert
-     */
-    public static void send(Violation v){
-        String format = Reflex.getReflexConfig().getAlertFormat();//%player, %totalvl, %check, %vl
-        format = format.replaceAll("%player", v.getPlayer().getBukkitPlayer().getDisplayName());
-        format = format.replaceAll("%totalvl", ""+v.getTotalVL());
-        format = format.replaceAll("%check", v.getCheck().getName());
-        format = format.replaceAll("%vl", "" + v.getVl());
+    private final String id;
+    private final ReflexPlayer violator;
+    private final RViolation violation;
+    private final long time;
+    private final RCheckType rCheckType;
+    private final CheckType checkType;
+    private final double tps;
+    private final int vl;
+   @Setter private String detail = null;
 
-        format = ChatColor.translateAlternateColorCodes('&', format);
-
-        FancyMessage msg = new FancyMessage("");
-        msg.then(format)
-                .tooltip(ChatColor.YELLOW+"Click to inspect violation "+ChatColor.GREEN+v.getId()+
-                        ChatColor.YELLOW+" on "+ChatColor.AQUA+v.getPlayer().getBukkitPlayer().getDisplayName())
-                .command("/ares violation "+v.getPlayer().getName()+" "+v.getId());
-        staffMsg(msg);
+    public Alert(ReflexPlayer violator, RCheckType rCheckType, CheckType checkType, RViolation violation, int vl) {
+        this.violator = violator;
+        this.rCheckType = rCheckType;
+        this.checkType = checkType;
+        this.violation = violation;
+        this.id = UUID.randomUUID().toString();
+        this.time = System.currentTimeMillis();
+        this.tps = Lag.getTPS();
+        this.vl = vl;
     }
 
-    /**
-     * Send an alert to online staff with alerts enabled (with extra detail)
-     * @param v Violation for alert
-     * @param detail Detail for alert
-     */
-    public static void send(Violation v, String detail){
-        String format = Reflex.getReflexConfig().getAlertFormatDetail();//%player, %totalvl, %check, %vl, %detail
-        format = format.replaceAll("%player", v.getPlayer().getBukkitPlayer().getDisplayName());
-        format = format.replaceAll("%totalvl", ""+v.getTotalVL());
-        format = format.replaceAll("%check", v.getCheck().getName());
-        format = format.replaceAll("%vl", ""+v.getVl());
-        format = format.replaceAll("%detail", detail);
+    public void sendAlert() {
+        FancyMessage message = new FancyMessage("");
 
-        format = ChatColor.translateAlternateColorCodes('&', format);
+        if(rCheckType == RCheckType.INSPECT) {
+            //TODO
+        }
+        else if (rCheckType == RCheckType.CHECK) {
+            String format;
+            if(detail != null) {
+                format = RLang.format(ReflexLang.ALERT_PREVENT_DETAIL, violator.getName(), checkType.getName(), detail, vl+"");
+            }
+            else{
+                format = RLang.format(ReflexLang.ALERT_PREVENT, violator.getName(), checkType.getName(), vl+"");
+            }
+            message.then(format).tooltip(ChatColor.YELLOW + "Click for more information").command("/reflex checkvl " + violation.getId());
+        }
+        else if (rCheckType == RCheckType.TRIGGER) {
+            //TODO
+        }
+        else{
+            throw new ReflexException("Could not send alert: Unknown RCheckType");
+        }
 
-        FancyMessage msg = new FancyMessage("");
-        msg.then(format)
-                .tooltip(ChatColor.YELLOW+"Click to inspect violation "+ChatColor.GREEN+v.getId()+
-                        ChatColor.YELLOW+" on "+ChatColor.AQUA+v.getPlayer().getBukkitPlayer().getDisplayName())
-                .command("/ares violation "+v.getPlayer().getName()+" "+v.getId());
-        staffMsg(msg);
+        staffMsg(message);
     }
 
-    /**
-     * Send a message to online staff / players that have alerts enabled
-     * @param msg
-     */
-    public static void staffMsg(FancyMessage msg){
-        for(Player pl : Bukkit.getOnlinePlayers()){
-            ReflexPlayer p = ReflexCache.get().getAresPlayer(pl);
-            if(p.isAlertsEnabled()){
+    public static void staffMsg(String msg) {
+        for(Player pl : Bukkit.getOnlinePlayers()) {
+            ReflexPlayer p = ReflexCache.get().getReflexPlayer(pl);
+            if(p.isAlertsEnabled() && ReflexPerm.ALERTS.hasPerm(pl)) {
+                p.msg(msg);
+            }
+        }
+    }
+
+    public static void staffMsg(FancyMessage msg) {
+        for(Player pl : Bukkit.getOnlinePlayers()) {
+            ReflexPlayer p = ReflexCache.get().getReflexPlayer(pl);
+            if(p.isAlertsEnabled() && ReflexPerm.ALERTS.hasPerm(pl)) {
                 msg.send(pl);
             }
         }
     }
-
-    /**
-     * Send a message to online staff / players that have alerts enabled
-     * @param msg
-     */
-    public static void staffMsg(String msg){
-        for(Player pl : Bukkit.getOnlinePlayers()){
-            ReflexPlayer p = ReflexCache.get().getAresPlayer(pl);
-            if(p.isAlertsEnabled()){
-                pl.sendMessage(msg);
-            }
-        }
-    }
-
 
 }

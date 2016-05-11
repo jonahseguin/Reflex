@@ -7,18 +7,19 @@ package com.shawckz.reflex;
 
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
-import com.shawckz.reflex.cache.CachePlayer;
-import com.shawckz.reflex.check.CheckManager;
-import com.shawckz.reflex.cmd.CommandHandler;
-import com.shawckz.reflex.configuration.ReflexConfig;
-import com.shawckz.reflex.database.DBManager;
-import com.shawckz.reflex.player.ReflexCache;
+import com.shawckz.reflex.core.cache.CachePlayer;
+import com.shawckz.reflex.core.cmd.CommandHandler;
+import com.shawckz.reflex.core.configuration.LanguageConfig;
+import com.shawckz.reflex.core.configuration.ReflexConfig;
+import com.shawckz.reflex.core.database.DBManager;
+import com.shawckz.reflex.core.player.ReflexCache;
+import com.shawckz.reflex.prevent.check.CheckManager;
 import com.shawckz.reflex.util.Lag;
+import com.shawckz.reflex.util.ReflexTimer;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Reflex extends JavaPlugin {
@@ -26,20 +27,19 @@ public class Reflex extends JavaPlugin {
     /**
      * IDEA
      * <p>
-     * Have base tester checks; when plugin suspects player might be a hacker:
+     * Have base tester checks; when instance suspects player might be a hacker:
      * send to be tested for a period of time and log results,
-     * keep doing this until the plugin is certain and makes a decision or asks for staff help
+     * keep doing this until the instance is certain and makes a decision or asks for staff help
      */
 
-    @Getter private static Plugin plugin;
-    @Getter private static ReflexConfig reflexConfig;
-
-    @Getter private static ProtocolManager protocolManager;
-
-    @Getter private static CommandHandler commandHandler;
+    @Getter private static Reflex instance;
+    @Getter private ReflexConfig reflexConfig;
+    @Getter private ProtocolManager protocolManager;
+    @Getter private CommandHandler commandHandler;
+    @Getter private LanguageConfig lang;
 
     public static String getPrefix(){
-        return ChatColor.translateAlternateColorCodes('&', getReflexConfig().getPrefix());
+        return ChatColor.translateAlternateColorCodes('&', instance.getReflexConfig().getPrefix());
     }
 
     @Override
@@ -49,9 +49,11 @@ public class Reflex extends JavaPlugin {
 
     @Override
     public void onEnable(){
-        plugin = this;
+        instance = this;
 
         reflexConfig = new ReflexConfig(this);
+
+        lang = new LanguageConfig(this);
 
         new DBManager(this);
 
@@ -87,7 +89,7 @@ public class Reflex extends JavaPlugin {
 
         reflexConfig.save();
         reflexConfig = null;
-        plugin = null;
+        instance = null;
     }
 
 }
