@@ -2,16 +2,16 @@ package com.shawckz.reflex.core.cmd;
 
 import com.shawckz.reflex.core.cmd.commands.CommandAlerts;
 import com.shawckz.reflex.core.cmd.commands.CommandHelp;
-import com.shawckz.reflex.testing.neural.autoclick.CommandTrain;
 import lombok.Getter;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by 360 on 5/30/2015.
@@ -37,8 +37,6 @@ public class CommandHandler implements CommandExecutor {
         registerCommand(new CommandAlerts(), true);
 
 
-        //
-        registerCommand(new CommandTrain(), false);
     }
 
     private void registerCommand(ReflexCommand cmd, boolean single){

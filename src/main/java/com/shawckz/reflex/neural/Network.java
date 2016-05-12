@@ -18,6 +18,41 @@ public class Network {
 
     private List<Layer> layers = new ArrayList<>();
 
+    private void testLayers() {
+        Layer input = new Layer(Layer.Type.INPUT);
 
+        Layer hidden = new Layer(Layer.Type.HIDDEN);
+
+        Layer output = new Layer(Layer.Type.OUTPUT);
+
+
+
+    }
+
+    void test() {
+        testLayers();
+
+
+        FiringPath firingPath = new FiringPath();
+
+        for(Layer layer : layers) {
+            if(layer.getType() == Layer.Type.INPUT) {
+                //Fire inputs
+                for(Neuron neuron : layer.getNeurons()) {
+                    neuron.fire(firingPath);
+                }
+            }
+        }
+
+        for(Layer layer : layers) {
+            if(layer.getType() == Layer.Type.OUTPUT) {
+                //Outputs
+                for(Neuron neuron : layer.getNeurons()) {
+
+                }
+            }
+        }
+
+    }
 
 }

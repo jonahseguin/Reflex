@@ -5,7 +5,6 @@
 
 package com.shawckz.reflex.inspect;
 
-import com.shawckz.reflex.prevent.check.RPlayerData;
 
 /**
  * Created by Jonah Seguin on 5/8/2016.

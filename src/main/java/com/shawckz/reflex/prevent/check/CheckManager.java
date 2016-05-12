@@ -2,7 +2,6 @@ package com.shawckz.reflex.prevent.check;
 
 import com.shawckz.reflex.Reflex;
 import com.shawckz.reflex.bridge.CheckType;
-import com.shawckz.reflex.checks.*;
 import com.shawckz.reflex.prevent.checks.*;
 import lombok.Getter;
 

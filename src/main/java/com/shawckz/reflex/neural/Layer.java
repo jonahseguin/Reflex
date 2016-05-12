@@ -16,8 +16,28 @@ import java.util.List;
  */
 public class Layer {
 
+    enum Type {
+        INPUT,
+        HIDDEN,
+        OUTPUT
+    }
+
     private List<Neuron> neurons = new ArrayList<>();
+    private Type type;
 
+    public Layer(Type type) {
+        this.type = type;
+    }
 
+    public void addNeuron(Neuron neuron) {
+        neurons.add(neuron);
+    }
 
+    public List<Neuron> getNeurons() {
+        return neurons;
+    }
+
+    public Type getType() {
+        return type;
+    }
 }

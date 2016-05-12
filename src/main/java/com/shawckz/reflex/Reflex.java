@@ -24,13 +24,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class Reflex extends JavaPlugin {
 
-    /**
-     * IDEA
-     * <p>
-     * Have base tester checks; when instance suspects player might be a hacker:
-     * send to be tested for a period of time and log results,
-     * keep doing this until the instance is certain and makes a decision or asks for staff help
-     */
 
     @Getter private static Reflex instance;
     @Getter private ReflexConfig reflexConfig;
