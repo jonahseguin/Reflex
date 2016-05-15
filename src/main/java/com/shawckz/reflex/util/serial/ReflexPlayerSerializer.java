@@ -1,9 +1,9 @@
 package com.shawckz.reflex.util.serial;
 
-import com.shawckz.reflex.core.configuration.AbstractSerializer;
-import com.shawckz.reflex.core.player.ReflexCache;
-import com.shawckz.reflex.core.player.ReflexPlayer;
-import com.shawckz.reflex.util.ReflexException;
+import com.shawckz.reflex.Reflex;
+import com.shawckz.reflex.backend.configuration.AbstractSerializer;
+import com.shawckz.reflex.player.reflex.ReflexPlayer;
+import com.shawckz.reflex.util.utility.ReflexException;
 
 public class ReflexPlayerSerializer extends AbstractSerializer<ReflexPlayer> {
 
@@ -14,9 +14,9 @@ public class ReflexPlayerSerializer extends AbstractSerializer<ReflexPlayer> {
 
     @Override
     public ReflexPlayer fromString(Object data) {
-        if(data instanceof String) {
+        if (data instanceof String) {
             String s = (String) data;
-            return ReflexCache.get().getReflexPlayerByUUID(s);
+            return Reflex.getInstance().getCache().getReflexPlayerByUUID(s);
         }
         throw new ReflexException("Could not deserialize ReflexPlayer (data is not String)");
     }

@@ -1,0 +1,150 @@
+/*
+ * Copyright (c) Jonah Seguin (Shawckz) 2016.  You may not copy, re-sell, distribute, modify, or use any code contained in this document or file, collection of documents or files, or project.  Thank you.
+ */
+
+package com.shawckz.reflex.autoban;
+
+import com.shawckz.reflex.Reflex;
+import com.shawckz.reflex.backend.configuration.RLang;
+import com.shawckz.reflex.backend.configuration.ReflexLang;
+import com.shawckz.reflex.check.base.CheckType;
+import com.shawckz.reflex.check.base.RViolation;
+import com.shawckz.reflex.player.reflex.ReflexPlayer;
+import com.shawckz.reflex.util.obj.Alert;
+import com.shawckz.reflex.util.obj.AutobanMethod;
+import com.shawckz.reflex.util.obj.Freeze;
+import com.shawckz.reflex.util.utility.ReflexException;
+import lombok.Getter;
+import lombok.Setter;
+import mkremins.fanciful.FancyMessage;
+
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
+
+@Getter
+@Setter
+public class Autoban {
+
+    private ReflexPlayer player;
+    private int cd;
+    private boolean cancelled;
+    private CheckType check;
+    private RViolation violation;
+
+    public Autoban(ReflexPlayer player, int cd, CheckType check, RViolation violation) {
+        this.player = player;
+        this.cd = cd;
+        this.check = check;
+        this.cancelled = false;
+        this.violation = violation;
+    }
+
+    public void run() {
+
+        if (player.getBukkitPlayer() == null) return;
+
+        if (player.getBukkitPlayer() != null) {
+            if (Reflex.getInstance().getTriggerManager().getTrigger(check).isAutobanFreeze()) {
+                Freeze freeze = new Freeze(player.getBukkitPlayer());
+                freeze.run();
+                player.msg("&4&l╔==============================");
+                player.msg("&4&l║ &7[&cReflex&7]");
+                player.msg("&4&l║ &4Hey there, Mr. Cheater!");
+                player.msg("&4&l║");
+                player.msg("&4&l║ &eI see you are using [" + check.getName() + "]");
+                player.msg("&4&l║ &cYou will be automatically banned shortly. :)");
+                player.msg("&4&l╚==============================");
+            }
+        }
+
+        FancyMessage fm = new FancyMessage(RLang.format(ReflexLang.ALERT_PREFIX));
+        fm.then(RLang.format(ReflexLang.AUTOBAN, player.getName(), check.getName(), cd + ""))
+                .tooltip(ChatColor.YELLOW + "Click here to cancel autoban on " + player.getName())
+                .command("/reflex cancel " + player.getName());
+        Alert.staffMsg(fm);
+
+
+        new BukkitRunnable() {
+
+            @Override
+            public void run() {
+
+                if (cancelled) {
+                    cancel();
+                    return;
+                }
+
+                if (cd > 0) {
+                    cd--;
+                    if (cd % Reflex.getInstance().getReflexConfig().getAutobanRemindInterval() == 0 && cd != 0) {
+                        FancyMessage fm = new FancyMessage(RLang.format(ReflexLang.ALERT_PREFIX));
+                        fm.then(RLang.format(ReflexLang.AUTOBAN, player.getName(), check.getName(), cd + ""))
+                                .tooltip(ChatColor.YELLOW + "Click here to cancel autoban on " + player.getName())
+                                .command("/reflex cancel " + player.getName());
+                        Alert.staffMsg(fm);
+                    }
+                }
+                else {
+                    ban();
+                    cancel();
+                }
+            }
+
+
+        }.runTaskTimer(Reflex.getInstance(), 20L, 20L);
+    }
+
+    public void ban() {
+        if (player.getBukkitPlayer() != null && player.getBukkitPlayer().isOnline()) {
+            Freeze.removeFreeze(player.getBukkitPlayer());
+        }
+        Reflex.getInstance().getAutobanManager().removeAutoban(player.getName());
+        player.getVl().put(check.getName(), 0);//Reset VL
+
+        if (Reflex.getInstance().getReflexConfig().getAutobanMethod() == AutobanMethod.CONSOLE) {
+            //Dispatch console command
+            String format = Reflex.getInstance().getReflexConfig().getAutobanConsoleCommand();
+            format = format.replace("{0}", player.getName());
+            format = format.replace("{1}", check.getName());
+
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), format);
+        }
+        else if (Reflex.getInstance().getReflexConfig().getAutobanMethod() == AutobanMethod.REFLEX) {
+            //Reflex ban internally
+            //TODO
+            Bukkit.getLogger().info("//TODO: Reflex ban internally (autoban method = reflex)");
+        }
+        else {
+            throw new ReflexException("Unsupported autoban method " + Reflex.getInstance().getReflexConfig().getAutobanMethod().toString());
+        }
+
+        FancyMessage fm = new FancyMessage(RLang.format(ReflexLang.ALERT_PREFIX));
+        fm.then(RLang.format(ReflexLang.AUTOBAN_BANNED, player.getName(), check.getName()))
+                .tooltip(ChatColor.YELLOW + "Click here to unban " + player.getName())
+                .command("/reflex unban " + player.getName());
+        Alert.staffMsg(fm);
+    }
+
+    public void setCancelled(boolean cancelled) {
+        this.cancelled = cancelled;
+        if (cancelled) {
+            Reflex.getInstance().getAutobanManager().removeAutoban(player.getName());
+            player.getVl().put(check.getName(), 0);//Reset VL
+            if (player.getBukkitPlayer() != null && player.getBukkitPlayer().isOnline()) {
+                if (Reflex.getInstance().getTriggerManager().getTrigger(check).isAutobanFreeze()) {
+                    Player p = player.getBukkitPlayer();
+                    Freeze.removeFreeze(p);
+                    p.setAllowFlight(false);
+                    player.msg("&2&l╔==============================");
+                    player.msg("&2&l║&7 You are no longer being automatically banned for hacking.");
+                    player.msg("&2&l║&a Sorry for the inconvenience.");
+                    player.msg("&2&l╚==============================");
+                }
+            }
+        }
+    }
+
+
+}

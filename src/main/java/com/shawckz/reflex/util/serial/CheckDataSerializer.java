@@ -6,10 +6,11 @@
 package com.shawckz.reflex.util.serial;
 
 import com.mongodb.BasicDBObject;
-import com.shawckz.reflex.core.configuration.AbstractSerializer;
-import com.shawckz.reflex.core.database.mongo.AutoMongo;
-import com.shawckz.reflex.prevent.check.CheckData;
-import com.shawckz.reflex.util.ReflexException;
+import com.shawckz.reflex.backend.configuration.AbstractSerializer;
+import com.shawckz.reflex.backend.database.mongo.AutoMongo;
+import com.shawckz.reflex.check.data.CheckData;
+import com.shawckz.reflex.check.data.PlayerData;
+import com.shawckz.reflex.util.utility.ReflexException;
 
 import java.util.List;
 
@@ -23,21 +24,24 @@ public class CheckDataSerializer extends AbstractSerializer<CheckData> {
 
     @Override
     public String toString(CheckData data) {
-        return data.getId();
+        if (data != null) {
+            return data.getId();
+        }
+        return null;
     }
 
     @Override
     public CheckData fromString(Object data) {
-        if(data instanceof String) {
+        if (data instanceof String) {
             String s = (String) data;
-            List<AutoMongo> mongos = CheckData.select(new BasicDBObject("_id", s), CheckData.class);
-            for(AutoMongo mongo : mongos) {
-                if(mongo instanceof CheckData) {
+            List<AutoMongo> mongos = PlayerData.select(new BasicDBObject("_id", s), CheckData.class);
+            for (AutoMongo mongo : mongos) {
+                if (mongo instanceof CheckData) {
                     return (CheckData) mongo;
                 }
             }
 
         }
-        throw new ReflexException("Cannot serialize - data is not string");
+        throw new ReflexException("Cannot deserialize - data is not string");
     }
 }
