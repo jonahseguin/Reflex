@@ -78,6 +78,15 @@ public enum CheckType {
         return data;
     }
 
+    public static CheckType fromString(String s) {
+        for(CheckType checkType : values()) {
+            if(checkType.getName().equalsIgnoreCase(s) || checkType.toString().equalsIgnoreCase(s)) {
+                return checkType;
+            }
+        }
+        return null;
+    }
+
     @SuppressWarnings("all")
     @Override
     public String toString() {

@@ -19,8 +19,6 @@ import com.shawckz.reflex.util.obj.Alert;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-import org.bukkit.Bukkit;
-
 public class InspectManager {
 
     private ConcurrentMap<CheckType, RInspect> inspectors = new ConcurrentHashMap<>();
@@ -51,7 +49,6 @@ public class InspectManager {
         final RInspect inspector = getInspector(checkType);
         RInspectResultType resultType = inspector.inspect(player, data, dataPeriod);
         RViolation violation = null;
-        Bukkit.getLogger().info("Inspect result: " +resultType.toString());
         if (resultType == RInspectResultType.FAILED && !Reflex.getInstance().getAutobanManager().hasAutoban(player.getName())) {
             //Only make a violation if they FAIL the inspection - also alert
             violation = new RViolation(player.getUniqueId(), data, checkType, RCheckType.INSPECT);
@@ -67,6 +64,10 @@ public class InspectManager {
                 Alert alert = new Alert(player, checkType, Alert.Type.FAIL, violation, player.getVL(inspector.getCheckType()));
                 alert.sendAlert();
             }
+        }
+        else if(resultType == RInspectResultType.PASSED) {
+            Alert alert = new Alert(player, checkType, resultType.translateToAlertType(), violation, player.getVL(inspector.getCheckType()));
+            alert.sendAlert();
         }
         return new RInspectResult(resultType, violation);
     }

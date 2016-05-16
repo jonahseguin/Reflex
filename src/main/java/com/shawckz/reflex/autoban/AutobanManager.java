@@ -21,6 +21,9 @@ public class AutobanManager {
 
     public void removeAutoban(String name) {
         if(autobans.containsKey(name.toLowerCase())) {
+            if(!autobans.get(name.toLowerCase()).isCancelled()){
+                autobans.get(name.toLowerCase()).setCancelled(true);
+            }
             autobans.remove(name.toLowerCase());
         }
     }

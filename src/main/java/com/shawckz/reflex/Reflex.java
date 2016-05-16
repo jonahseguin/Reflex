@@ -18,6 +18,7 @@ import com.shawckz.reflex.check.data.DataCaptureManager;
 import com.shawckz.reflex.check.inspect.InspectManager;
 import com.shawckz.reflex.check.trigger.TriggerManager;
 import com.shawckz.reflex.commands.CmdCancel;
+import com.shawckz.reflex.commands.CmdInspect;
 import com.shawckz.reflex.commands.CmdReflex;
 import com.shawckz.reflex.player.cache.CachePlayer;
 import com.shawckz.reflex.player.reflex.ReflexCache;
@@ -105,6 +106,7 @@ public class Reflex extends JavaPlugin {
         RCommandHandler commandHandler = new RCommandHandler(this);
         commandHandler.registerCommands(new CmdReflex());
         commandHandler.registerCommands(new CmdCancel());
+        commandHandler.registerCommands(new CmdInspect());
 
         Bukkit.getScheduler().runTaskTimer(this, new Lag(), 1L, 1L);
 

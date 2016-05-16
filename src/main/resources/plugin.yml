@@ -2,15 +2,5 @@ name: Reflex
 main: com.shawckz.reflex.Reflex
 version: ${project.version}
 authors: [Shawckz]
-website: http://reflex.shawckz.com
+website: http://shawckz.com/project/reflex
 depend: [ProtocolLib]
-
-commands:
-  reflex:
-    usage: /<command> [arguments]
-    description: Main Reflex command
-    aliases: ['!', 'refl', 'flex']
-  alerts:
-    usage: /alerts [player]
-    description: Toggle yours or another players alerts
-    aliases: [alertson, alertsoff, togglealerts, al]

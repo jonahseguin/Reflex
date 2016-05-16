@@ -22,17 +22,23 @@ public class CmdReflex implements RCommand {
         CommandSender sender = args.getSender().getCommandSender();
         sendHeader(sender);
         if (ReflexPerm.USE.hasPerm(sender)) {
-            msg(sender, " ");
-            msg(sender, "&7- /reflex &9status");
-            msg(sender, "&7- /reflex &9inspect &7<player> <check> <seconds>");
-            msg(sender, "&7- /reflex &9cancel &7<player>");
-            msg(sender, "&7- /reflex &9lookup &eplayer &7<player>");
-            msg(sender, "&7- /reflex &9lookup &einspection &7<id>");
-            msg(sender, "&7- /reflex &9lookup &eviolation&7 <id>");
-            msg(sender, "&7- /reflex &9unban &7<player>");
-            msg(sender, "&7- /reflex &9settings &e<toggle|on|off> &7<enabled|cancel|freeze|autoban> <check>");
-            msg(sender, "&7- /reflex &9config &eload");
-            msg(sender, "&7- /reflex &9config set &7<key> <value>");
+            if(args.getArgs().length > 0) {
+                msg(sender, " ");
+                msg(sender, "&cWhoops, looks like the sub-command you tried doesn't exist.  Type /reflex for commands.");
+            }
+            else {
+                msg(sender, " ");
+                msg(sender, "&7- /reflex &9status");
+                msg(sender, "&7- /reflex &9inspect &7<player> <check> <seconds>");
+                msg(sender, "&7- /reflex &9cancel &7<player>");
+                msg(sender, "&7- /reflex &9lookup &eplayer &7<player>");
+                msg(sender, "&7- /reflex &9lookup &einspection &7<id>");
+                msg(sender, "&7- /reflex &9lookup &eviolation&7 <id>");
+                msg(sender, "&7- /reflex &9unban &7<player>");
+                msg(sender, "&7- /reflex &9settings &e<toggle|on|off> &7<enabled|cancel|freeze|autoban> <check>");
+                msg(sender, "&7- /reflex &9config &eload");
+                msg(sender, "&7- /reflex &9config set &7<key> <value>");
+            }
         }
     }
 

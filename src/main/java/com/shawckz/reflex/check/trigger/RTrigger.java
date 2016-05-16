@@ -82,7 +82,7 @@ public abstract class RTrigger extends Check {
 
         if(capture) {
             //Was probably sure about the result, ---> autoban
-            if(autoban) {
+            if(autoban && inspectResult.getResult() == RInspectResultType.FAILED) {
                 if (!Reflex.getInstance().getAutobanManager().hasAutoban(player.getName())) {
                     Autoban autoban = new Autoban(player, Reflex.getInstance().getReflexConfig().getAutobanTime(), getCheckType(), inspectResult.getViolation());
                     Reflex.getInstance().getAutobanManager().putAutoban(autoban);
