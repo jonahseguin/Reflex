@@ -5,7 +5,7 @@
 package com.shawckz.reflex.commands;
 
 import com.shawckz.reflex.Reflex;
-import com.shawckz.reflex.autoban.AutobanManager;
+import com.shawckz.reflex.ban.AutobanManager;
 import com.shawckz.reflex.backend.command.RCmd;
 import com.shawckz.reflex.backend.command.RCmdArgs;
 import com.shawckz.reflex.backend.command.RCommand;
@@ -35,7 +35,7 @@ public class CmdCancel implements RCommand {
 
         if(autobanManager.hasAutoban(target)) {
             autobanManager.removeAutoban(target);
-            Alert.staffMsg(RLang.format(ReflexLang.CANCEL, target));
+            Alert.staffMsg(RLang.format(ReflexLang.ALERT_PREFIX) + RLang.format(ReflexLang.CANCEL, target));
         }
         else{
             RLang.send(sender, ReflexLang.CANCEL_NOT_BEING_BANNED);

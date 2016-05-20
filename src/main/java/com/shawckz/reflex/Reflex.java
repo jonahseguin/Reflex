@@ -7,18 +7,20 @@ package com.shawckz.reflex;
 
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
-import com.shawckz.reflex.autoban.AutobanManager;
 import com.shawckz.reflex.backend.command.RCommandHandler;
 import com.shawckz.reflex.backend.configuration.LanguageConfig;
 import com.shawckz.reflex.backend.configuration.ReflexConfig;
 import com.shawckz.reflex.backend.database.DBManager;
+import com.shawckz.reflex.ban.AutobanManager;
+import com.shawckz.reflex.ban.ReflexBanManager;
 import com.shawckz.reflex.check.base.ReflexTimer;
-import com.shawckz.reflex.check.base.ViolationCache;
+import com.shawckz.reflex.check.base.RDataCache;
 import com.shawckz.reflex.check.data.DataCaptureManager;
 import com.shawckz.reflex.check.inspect.InspectManager;
 import com.shawckz.reflex.check.trigger.TriggerManager;
 import com.shawckz.reflex.commands.CmdCancel;
 import com.shawckz.reflex.commands.CmdInspect;
+import com.shawckz.reflex.commands.CmdLookup;
 import com.shawckz.reflex.commands.CmdReflex;
 import com.shawckz.reflex.player.cache.CachePlayer;
 import com.shawckz.reflex.player.reflex.ReflexCache;
@@ -52,9 +54,10 @@ public class Reflex extends JavaPlugin {
 
     private ReflexCache cache;
     private ReflexTimer reflexTimer;
-    private ViolationCache violationCache;
+    private RDataCache violationCache;
 
     private AutobanManager autobanManager;
+    private ReflexBanManager banManager;
 
     public static String getPrefix() {
         return ChatColor.translateAlternateColorCodes('&', instance.getReflexConfig().getPrefix());
@@ -89,7 +92,7 @@ public class Reflex extends JavaPlugin {
             }
         }
 
-        violationCache = new ViolationCache();
+        violationCache = new RDataCache();
 
         autobanManager = new AutobanManager();
 
@@ -103,10 +106,14 @@ public class Reflex extends JavaPlugin {
         inspectManager = new InspectManager(this);
         inspectManager.setup();
 
+        banManager = new ReflexBanManager();
+
+        //Commands
         RCommandHandler commandHandler = new RCommandHandler(this);
         commandHandler.registerCommands(new CmdReflex());
         commandHandler.registerCommands(new CmdCancel());
         commandHandler.registerCommands(new CmdInspect());
+        commandHandler.registerCommands(new CmdLookup());
 
         Bukkit.getScheduler().runTaskTimer(this, new Lag(), 1L, 1L);
 
@@ -134,6 +141,10 @@ public class Reflex extends JavaPlugin {
 
     public static Reflex getInstance() {
         return instance;
+    }
+
+    public ReflexBanManager getBanManager() {
+        return banManager;
     }
 
     public ReflexConfig getReflexConfig() {
@@ -168,7 +179,7 @@ public class Reflex extends JavaPlugin {
         return inspectManager;
     }
 
-    public ViolationCache getViolationCache() {
+    public RDataCache getViolationCache() {
         return violationCache;
     }
 

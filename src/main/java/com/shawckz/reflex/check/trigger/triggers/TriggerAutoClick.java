@@ -32,6 +32,9 @@ public class TriggerAutoClick extends RTrigger implements RTimer {
     @ConfigData(value = "cps-threshold")
     private int threshold = 24;
 
+    @ConfigData("capture-time")
+    private int captureTime = 15;
+
     public TriggerAutoClick() {
         super(CheckType.AUTO_CLICK, RCheckType.TRIGGER);
     }
@@ -86,4 +89,7 @@ public class TriggerAutoClick extends RTrigger implements RTimer {
             player.getData().setClicksPerSecond(cps);
         }
     }
+
+
+
 }

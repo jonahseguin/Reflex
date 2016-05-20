@@ -24,7 +24,7 @@ public abstract class RInspect extends Check {
         super(checkType, rCheckType);
     }
 
-    public abstract RInspectResultType inspect(ReflexPlayer player, CheckData checkData, int dataPeriod);
+    public abstract RInspectResultData inspect(ReflexPlayer player, CheckData checkData, int dataPeriod);
 
     public abstract int getAutobanVL();
 

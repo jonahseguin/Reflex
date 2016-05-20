@@ -7,21 +7,17 @@ package com.shawckz.reflex.check.data.capturers;
 import com.shawckz.reflex.Reflex;
 import com.shawckz.reflex.check.base.CheckType;
 import com.shawckz.reflex.check.base.RCheckType;
-import com.shawckz.reflex.check.base.RTimer;
 import com.shawckz.reflex.check.data.RDataCapture;
 import com.shawckz.reflex.check.data.checkdata.DataVClip;
 import com.shawckz.reflex.player.reflex.ReflexPlayer;
 import com.shawckz.reflex.util.obj.Distance;
-import com.shawckz.reflex.util.obj.Lag;
 import lombok.Getter;
 import lombok.Setter;
 
-import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.craftbukkit.v1_7_R4.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -29,7 +25,7 @@ import org.bukkit.event.player.PlayerMoveEvent;
 
 @Getter
 @Setter
-public class CaptureVClip extends RDataCapture implements RTimer {
+public class CaptureVClip extends RDataCapture {
 
 
     public CaptureVClip() {
@@ -102,16 +98,4 @@ public class CaptureVClip extends RDataCapture implements RTimer {
         return (DataVClip) reflexPlayer.getCapturePlayer().getData(getCheckType());
     }
 
-    @Override
-    public void runTimer() {
-        for (Player pl : Bukkit.getOnlinePlayers()) {
-            if (isCapturing(pl)) {
-                ReflexPlayer player = Reflex.getInstance().getCache().getReflexPlayer(pl);
-
-                //Update ping & tps
-                getData(player).setPing(((CraftPlayer) pl).getHandle().ping);
-                getData(player).setTps(Lag.getTPS());
-            }
-        }
-    }
 }

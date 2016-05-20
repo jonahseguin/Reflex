@@ -10,6 +10,7 @@ import com.shawckz.reflex.backend.configuration.ReflexLang;
 import com.shawckz.reflex.backend.configuration.ReflexPerm;
 import com.shawckz.reflex.check.base.CheckType;
 import com.shawckz.reflex.check.base.RViolation;
+import com.shawckz.reflex.check.inspect.RInspectResult;
 import com.shawckz.reflex.player.reflex.ReflexPlayer;
 import com.shawckz.reflex.util.utility.ReflexException;
 import lombok.Getter;
@@ -48,6 +49,8 @@ public class Alert {
     private final int vl;
     @Setter
     private String detail = null;
+    @Setter
+    private RInspectResult inspectResult = null;
 
     public Alert(ReflexPlayer violator, CheckType checkType, Type type, RViolation violation, int vl) {
         this.violator = violator;
@@ -64,6 +67,9 @@ public class Alert {
         FancyMessage message = new FancyMessage(RLang.format(ReflexLang.ALERT_PREFIX));
 
         if (type == Type.INSPECT_FAIL) {
+            if(inspectResult == null) {
+                throw new ReflexException("Cannot send inspect fail alert because inspectResult is null");
+            }
             String format;
             if (detail != null) {
                 format = RLang.format(ReflexLang.ALERT_INSPECT_DETAIL, violator.getName(), checkType.getName(), detail, vl + "");
@@ -72,20 +78,38 @@ public class Alert {
                 format = RLang.format(ReflexLang.ALERT_INSPECT, violator.getName(), checkType.getName(), vl + "");
             }
             message.then(format)
-                    .tooltip(ChatColor.translateAlternateColorCodes('&', "&7[Inspect Fail] &eClick for more information"))
-                    .command("/reflex lookup inspection " + violation.getId());
+                    .tooltip(ChatColor.translateAlternateColorCodes('&', "&7[Inspect &cFail&7] &eClick for more information"))
+                    .command("/reflex lookup inspection " + inspectResult.getId());
         }
         else if (type == Type.INSPECT_PASS) {
-            String format = RLang.format(ReflexLang.ALERT_INSPECT_PASS, violator.getName(), checkType.getName());
-            message.then(format);
+            if(inspectResult == null) {
+                throw new ReflexException("Cannot send inspect pass alert because inspectResult is null");
+            }
+            String format;
+            if(detail != null) {
+                format = RLang.format(ReflexLang.ALERT_INSPECT_PASS_DETAIL, violator.getName(), checkType.getName(), detail);
+            }
+            else{
+                format = RLang.format(ReflexLang.ALERT_INSPECT_PASS, violator.getName(), checkType.getName());
+            }
+            message.then(format)
+                    .tooltip(ChatColor.translateAlternateColorCodes('&', "&7[Inspect &aPass&7] &eClick for more information"))
+                    .command("/reflex lookup inspection " + inspectResult.getId());
         }
         else if (type == Type.TRIGGER) {
             message.then(RLang.format(ReflexLang.ALERT_TRIGGER, violator.getName(), checkType.getName()));
         }
         else if (type == Type.FAIL) {
-            message.then(RLang.format(ReflexLang.ALERT_FAIL, violator.getName(), checkType.getName(), vl + ""))
-                    .tooltip(ChatColor.translateAlternateColorCodes('&', "&7[Fail] &eClick for more information"))
-                    .command("/reflex lookup violation " + violation.getId());
+            if(detail == null) {
+                message.then(RLang.format(ReflexLang.ALERT_FAIL, violator.getName(), checkType.getName(), vl + ""))
+                        .tooltip(ChatColor.translateAlternateColorCodes('&', "&7[Fail] &eClick for more information"))
+                        .command("/reflex lookup violation " + violation.getId());
+            }
+            else{
+                message.then(RLang.format(ReflexLang.ALERT_FAIL_DETAIL, violator.getName(), checkType.getName(), detail, vl + ""))
+                        .tooltip(ChatColor.translateAlternateColorCodes('&', "&7[Fail] &eClick for more information"))
+                        .command("/reflex lookup violation " + violation.getId());
+            }
         }
         else {
             throw new ReflexException("Unknown Alert Type " + type.toString());

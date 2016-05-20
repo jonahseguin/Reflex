@@ -9,11 +9,19 @@ import com.shawckz.reflex.check.data.CheckData;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
 @Getter
 @Setter
 @CollectionName(name = "reflex_checkdata")
-public class DataAutoClick extends CheckData {
+public class DataReach extends CheckData {
 
-    private double clicks = 0;
+    //Distance, ping
+    private Set<Map.Entry<Double, Integer>> entries = new HashSet<>();
+
+    private double peakReach = 0;
+
 
 }

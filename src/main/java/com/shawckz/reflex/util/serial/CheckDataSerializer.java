@@ -6,11 +6,8 @@
 package com.shawckz.reflex.util.serial;
 
 import com.mongodb.BasicDBObject;
-import com.shawckz.reflex.backend.configuration.AbstractSerializer;
 import com.shawckz.reflex.backend.database.mongo.AutoMongo;
 import com.shawckz.reflex.check.data.CheckData;
-import com.shawckz.reflex.check.data.PlayerData;
-import com.shawckz.reflex.util.utility.ReflexException;
 
 import java.util.List;
 
@@ -20,7 +17,7 @@ import java.util.List;
  * @author Shawckz
  *         Shawckz.com
  */
-public class CheckDataSerializer extends AbstractSerializer<CheckData> {
+public class CheckDataSerializer extends ReflexSerializer<CheckData> {
 
     @Override
     public String toString(CheckData data) {
@@ -31,17 +28,14 @@ public class CheckDataSerializer extends AbstractSerializer<CheckData> {
     }
 
     @Override
-    public CheckData fromString(Object data) {
-        if (data instanceof String) {
-            String s = (String) data;
-            List<AutoMongo> mongos = PlayerData.select(new BasicDBObject("_id", s), CheckData.class);
-            for (AutoMongo mongo : mongos) {
-                if (mongo instanceof CheckData) {
-                    return (CheckData) mongo;
-                }
+    public CheckData fromString(Object data, Class<? extends CheckData> type) {
+        String s = (String) data;
+        List<AutoMongo> mongos = AutoMongo.select(new BasicDBObject("_id", s), type);
+        for (AutoMongo mongo : mongos) {
+            if (mongo instanceof CheckData) {
+                return (CheckData) mongo;
             }
-
         }
-        throw new ReflexException("Cannot deserialize - data is not string");
+        return null;
     }
 }

@@ -5,11 +5,14 @@
 package com.shawckz.reflex.check.trigger.triggers;
 
 import com.shawckz.reflex.Reflex;
+import com.shawckz.reflex.backend.configuration.annotations.ConfigData;
 import com.shawckz.reflex.check.base.CheckType;
 import com.shawckz.reflex.check.base.RCheckType;
 import com.shawckz.reflex.check.trigger.RTrigger;
 import com.shawckz.reflex.player.reflex.ReflexPlayer;
 import com.shawckz.reflex.util.obj.Distance;
+import lombok.Getter;
+import lombok.Setter;
 
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -20,11 +23,18 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerMoveEvent;
 
+@Getter
+@Setter
 public class TriggerVClip extends RTrigger {
+
+    @ConfigData("capture-time")
+    private int captureTime = 10;
 
     public TriggerVClip() {
         super(CheckType.VCLIP, RCheckType.TRIGGER);
     }
+
+
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onMove(PlayerMoveEvent e) {

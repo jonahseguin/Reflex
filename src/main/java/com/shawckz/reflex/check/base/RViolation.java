@@ -12,6 +12,7 @@ import com.shawckz.reflex.check.data.CheckData;
 import com.shawckz.reflex.util.serial.CheckDataSerializer;
 import com.shawckz.reflex.util.serial.CheckTypeSerializer;
 import com.shawckz.reflex.util.serial.RCheckTypeSerializer;
+import com.shawckz.reflex.util.serial.RDatabaseSerializer;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -44,7 +45,7 @@ public class RViolation extends AutoMongo {
     private CheckType checkType;
 
     @MongoColumn(name = "checkData")
-    @DatabaseSerializer(serializer = CheckDataSerializer.class)
+    @RDatabaseSerializer(serializer = CheckDataSerializer.class)
     private CheckData data;
 
     @MongoColumn(name = "source")

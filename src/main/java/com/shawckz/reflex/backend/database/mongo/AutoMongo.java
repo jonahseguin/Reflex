@@ -63,6 +63,25 @@ public abstract class AutoMongo {
             }
         }
 
+        //Superclass
+        for (Field field : this.getClass().getSuperclass().getDeclaredFields()) {
+            field.setAccessible(true);
+            MongoColumn column = field.getAnnotation(MongoColumn.class);
+            if (column != null) {
+                Class<?> type = field.getType();
+                if (type.isPrimitive()) {
+                    type = ClassUtils.primitiveToWrapper(type);
+                }
+                if (column.identifier()) {
+                    identifier = column.name();
+                    identifierValue = getValue(field);
+                }
+                else {
+                    values.put(column.name(), getValue(field));
+                }
+            }
+        }
+
         if (identifier == null) {
             Bukkit.getLogger().log(Level.SEVERE, "Identifier Not Found While Using AutoMongo (" + this.getClass().getSimpleName() + ")");
             return;
@@ -106,6 +125,16 @@ public abstract class AutoMongo {
                         }
                     }
                 }
+
+                for (Field field : type.getSuperclass().getDeclaredFields()) {
+                    MongoColumn mongoColumn = field.getAnnotation(MongoColumn.class);
+                    if (mongoColumn != null) {
+                        Object value = doc.get(mongoColumn.name());
+                        if (value != null) {
+                            mongo.setValue(value, field.getType(), field, type);
+                        }
+                    }
+                }
                 vals.add(mongo);
             }
             catch (InstantiationException | IllegalAccessException e) {
@@ -133,6 +162,16 @@ public abstract class AutoMongo {
             try {
                 AutoMongo mongo = type.newInstance();
                 for (Field field : type.getDeclaredFields()) {
+                    MongoColumn mongoColumn = field.getAnnotation(MongoColumn.class);
+                    if (mongoColumn != null) {
+                        Object value = doc.get(mongoColumn.name());
+                        if (value != null) {
+                            mongo.setValue(value, field.getType(), field, type);
+                        }
+                    }
+                }
+
+                for (Field field : type.getSuperclass().getDeclaredFields()) {
                     MongoColumn mongoColumn = field.getAnnotation(MongoColumn.class);
                     if (mongoColumn != null) {
                         Object value = doc.get(mongoColumn.name());

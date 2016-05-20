@@ -5,8 +5,7 @@
 package com.shawckz.reflex.check.base;
 
 import com.shawckz.reflex.check.data.CheckData;
-import com.shawckz.reflex.check.data.checkdata.DataAutoClick;
-import com.shawckz.reflex.check.data.checkdata.DataVClip;
+import com.shawckz.reflex.check.data.checkdata.*;
 import org.apache.commons.lang.StringUtils;
 
 /**
@@ -16,26 +15,34 @@ import org.apache.commons.lang.StringUtils;
  */
 public enum CheckType {
 
-    FLY(null),
-    SPEED(null),
-    VCLIP("VClip", true, DataVClip.class),
+    /* DONE */
+    VCLIP("VCip", true, DataVClip.class),
     AUTO_CLICK("AutoClick", true, DataAutoClick.class),
+    REGEN(true, DataRegen.class),
+    HEAD_ROLL("HeadRoll", null),
+    TAB_COMPLETE("TabComplete", null),
+    FAST_BOW("FastBow", false, null),
+    SPEED(true, DataSpeed.class),
+
+    /* TODO */
+
+    //ones i want to do..
+    XRAY(null),
+    FLY(null),
     TRIGGER_BOT("TriggerBot", null),
     AURA(false, null),
-    ANTI_KNOCKBACK("AntiKnockback", null),
-    FAST_BOW("FastBow", false, null),
-    CRITICALS(null),
-    REGEN(false, null),
-    NO_SLOW_DOWN("NoSlowDown", null),
     AURA_TWITCH("AuraTwitch", false, null),
+    REACH(true, DataReach.class),
+
+    //other ones...
+    ANTI_KNOCKBACK("AntiKnockback", null),
+    CRITICALS(null),
+    NO_SLOW_DOWN("NoSlowDown", null),
     PHASE(null),
     BAD_PACKETS("BadPackets", null),
     BED_FLY("BedFly", null),
     ANGLE(null),
-    REACH(null),
     NO_SWING(null),
-    HEAD_ROLL("HeadRoll", null),
-    TAB_COMPLETE("TabComplete", null),
     HIGH_JUMP("HighJump", null);
 
     private final String name;

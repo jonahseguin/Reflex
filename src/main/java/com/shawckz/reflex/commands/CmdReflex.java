@@ -35,7 +35,8 @@ public class CmdReflex implements RCommand {
                 msg(sender, "&7- /reflex &9lookup &einspection &7<id>");
                 msg(sender, "&7- /reflex &9lookup &eviolation&7 <id>");
                 msg(sender, "&7- /reflex &9unban &7<player>");
-                msg(sender, "&7- /reflex &9settings &e<toggle|on|off> &7<enabled|cancel|freeze|autoban> <check>");
+                msg(sender, "&7- /reflex &9ban confirm &7<player> <true|false>");
+                msg(sender, "&7- /reflex &9settings &e<toggle|on|off> &7<enabled|cancel|freeze|ban> <check>");
                 msg(sender, "&7- /reflex &9config &eload");
                 msg(sender, "&7- /reflex &9config set &7<key> <value>");
             }

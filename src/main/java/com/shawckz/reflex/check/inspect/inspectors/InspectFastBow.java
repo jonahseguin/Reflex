@@ -10,6 +10,7 @@ import com.shawckz.reflex.check.base.RCheckType;
 import com.shawckz.reflex.check.data.CheckData;
 import com.shawckz.reflex.check.data.PlayerData;
 import com.shawckz.reflex.check.inspect.RInspect;
+import com.shawckz.reflex.check.inspect.RInspectResultData;
 import com.shawckz.reflex.check.inspect.RInspectResultType;
 import com.shawckz.reflex.player.reflex.ReflexPlayer;
 import com.shawckz.reflex.util.utility.ReflexException;
@@ -26,7 +27,7 @@ public class InspectFastBow extends RInspect {
     @ConfigData("ping.ignore")
     private int pingIgnore = 130;//Ping >= pingIgnore - ignores the check
 
-    @ConfigData("autoban-vl")
+    @ConfigData("ban-vl")
     private int autobanVL = 3;
 
     @ConfigData("ping.ideal-ping")
@@ -46,7 +47,7 @@ public class InspectFastBow extends RInspect {
     }
 
     @Override
-    public RInspectResultType inspect(ReflexPlayer player, CheckData checkData, int dataPeriod) {
+    public RInspectResultData inspect(ReflexPlayer player, CheckData checkData, int dataPeriod) {
         if (checkData instanceof PlayerData) {
             PlayerData data = (PlayerData) checkData;
 
@@ -56,16 +57,16 @@ public class InspectFastBow extends RInspect {
                         double pingOffset = difference(data.getPing(), idealPing);
                         double tpsOffset = difference(data.getTps(), idealTps);
                         if (pingOffset <= pingThreshold && tpsOffset <= tpsThreshold) {
-                            return RInspectResultType.FAILED;
+                            return new RInspectResultData(RInspectResultType.FAILED);
                         }
                     }
                     else{
                         //They have ideal ping and tps
-                        return RInspectResultType.FAILED;
+                        return new RInspectResultData(RInspectResultType.FAILED);
                     }
                 }
             }
-            return RInspectResultType.PASSED;
+            return new RInspectResultData(RInspectResultType.PASSED);
         }
         else {
             throw new ReflexException("Cannot inspect data (CheckData type != inspect type)");

@@ -12,8 +12,11 @@ import lombok.Setter;
 @Getter
 @Setter
 @CollectionName(name = "reflex_checkdata")
-public class DataAutoClick extends CheckData {
+public class DataRegen extends CheckData {
 
-    private double clicks = 0;
+    private double healthRegenerated = 0;
+
+    private double hps = 0;
+
 
 }

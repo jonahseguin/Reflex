@@ -7,16 +7,12 @@ package com.shawckz.reflex.check.data.capturers;
 import com.shawckz.reflex.Reflex;
 import com.shawckz.reflex.check.base.CheckType;
 import com.shawckz.reflex.check.base.RCheckType;
-import com.shawckz.reflex.check.base.RTimer;
 import com.shawckz.reflex.check.data.RDataCapture;
 import com.shawckz.reflex.check.data.checkdata.DataAutoClick;
 import com.shawckz.reflex.player.reflex.ReflexPlayer;
-import com.shawckz.reflex.util.obj.Lag;
 import lombok.Getter;
 import lombok.Setter;
 
-import org.bukkit.Bukkit;
-import org.bukkit.craftbukkit.v1_7_R4.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -26,7 +22,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 
 @Getter
 @Setter
-public class CaptureAutoClick extends RDataCapture implements RTimer {
+public class CaptureAutoClick extends RDataCapture {
 
 
     public CaptureAutoClick() {
@@ -56,20 +52,6 @@ public class CaptureAutoClick extends RDataCapture implements RTimer {
         DataAutoClick dataAutoClick = getData(p);
         dataAutoClick.setClicks(dataAutoClick.getClicks() + i);
     }
-
-    @Override
-    public void runTimer() {
-        for (Player pl : Bukkit.getOnlinePlayers()) {
-            if (isCapturing(pl)) {
-                ReflexPlayer player = Reflex.getInstance().getCache().getReflexPlayer(pl);
-
-                //Update ping & tps
-                getData(player).setPing(((CraftPlayer) pl).getHandle().ping);
-                getData(player).setTps(Lag.getTPS());
-            }
-        }
-    }
-
     private DataAutoClick getData(ReflexPlayer reflexPlayer) {
         return (DataAutoClick) reflexPlayer.getCapturePlayer().getData(getCheckType());
     }

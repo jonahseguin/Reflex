@@ -33,6 +33,9 @@ public class TriggerFastBow extends RTrigger {
     @ConfigData("pull-shoot-threshold-milliseconds")
     private double maxPull = 200; //Difference between pull and shoot in milliseconds
 
+    @ConfigData("capture-time")
+    private int captureTime = 15;
+
     public TriggerFastBow() {
         super(CheckType.FAST_BOW, RCheckType.TRIGGER);
     }

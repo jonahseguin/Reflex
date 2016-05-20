@@ -62,7 +62,7 @@ public class CmdInspect implements RCommand {
 
                            Reflex.getInstance().getDataCaptureManager().startCaptureTask(reflexPlayer, checkType, seconds, checkData -> {
                                RInspectResult result = Reflex.getInstance().getInspectManager().inspect(reflexPlayer, checkType, checkData, seconds);
-                               RLang.send(sender, ReflexLang.INSPECT_MANUAL_RESULT, reflexPlayer.getName(), result.getResult().toString());
+                               //RLang.send(sender, ReflexLang.INSPECT_MANUAL_RESULT, reflexPlayer.getName(), result.getData().getType().toString());
                            });
 
                        }

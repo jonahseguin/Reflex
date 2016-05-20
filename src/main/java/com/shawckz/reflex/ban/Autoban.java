@@ -2,7 +2,7 @@
  * Copyright (c) Jonah Seguin (Shawckz) 2016.  You may not copy, re-sell, distribute, modify, or use any code contained in this document or file, collection of documents or files, or project.  Thank you.
  */
 
-package com.shawckz.reflex.autoban;
+package com.shawckz.reflex.ban;
 
 import com.shawckz.reflex.Reflex;
 import com.shawckz.reflex.backend.configuration.RLang;
@@ -61,7 +61,7 @@ public class Autoban {
 
         FancyMessage fm = new FancyMessage(RLang.format(ReflexLang.ALERT_PREFIX));
         fm.then(RLang.format(ReflexLang.AUTOBAN, player.getName(), check.getName(), cd + ""))
-                .tooltip(ChatColor.YELLOW + "Click here to cancel autoban on " + player.getName())
+                .tooltip(ChatColor.YELLOW + "Click here to cancel ban on " + player.getName())
                 .command("/reflex cancel " + player.getName());
         Alert.staffMsg(fm);
 
@@ -81,7 +81,7 @@ public class Autoban {
                     if (cd % Reflex.getInstance().getReflexConfig().getAutobanRemindInterval() == 0 && cd != 0) {
                         FancyMessage fm = new FancyMessage(RLang.format(ReflexLang.ALERT_PREFIX));
                         fm.then(RLang.format(ReflexLang.AUTOBAN, player.getName(), check.getName(), cd + ""))
-                                .tooltip(ChatColor.YELLOW + "Click here to cancel autoban on " + player.getName())
+                                .tooltip(ChatColor.YELLOW + "Click here to cancel ban on " + player.getName())
                                 .command("/reflex cancel " + player.getName());
                         Alert.staffMsg(fm);
                     }
@@ -114,10 +114,10 @@ public class Autoban {
         else if (Reflex.getInstance().getReflexConfig().getAutobanMethod() == AutobanMethod.REFLEX) {
             //Reflex ban internally
             //TODO
-            Bukkit.getLogger().info("//TODO: Reflex ban internally (autoban method = reflex)");
+            Bukkit.getLogger().info("//TODO: Reflex ban internally (ban method = reflex)");
         }
         else {
-            throw new ReflexException("Unsupported autoban method " + Reflex.getInstance().getReflexConfig().getAutobanMethod().toString());
+            throw new ReflexException("Unsupported ban method " + Reflex.getInstance().getReflexConfig().getAutobanMethod().toString());
         }
 
         FancyMessage fm = new FancyMessage(RLang.format(ReflexLang.ALERT_PREFIX));

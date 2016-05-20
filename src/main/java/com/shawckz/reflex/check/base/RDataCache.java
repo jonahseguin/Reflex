@@ -11,7 +11,7 @@ import java.util.Map;
 
 import org.bukkit.scheduler.BukkitRunnable;
 
-public class ViolationCache {
+public class RDataCache {
 
     private final Map<String, RViolation> violations = new HashMap<>();
 
@@ -19,9 +19,6 @@ public class ViolationCache {
         return violations.get(id.toLowerCase());
     }
 
-    /**
-     * Async
-     */
     public void saveViolation(final RViolation violation) {
         cacheViolation(violation);
         new BukkitRunnable() {
@@ -35,5 +32,6 @@ public class ViolationCache {
     public void cacheViolation(RViolation violation) {
         violations.put(violation.getId(), violation);
     }
+
 
 }

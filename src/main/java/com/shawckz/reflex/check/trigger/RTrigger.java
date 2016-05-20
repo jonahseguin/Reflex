@@ -5,11 +5,12 @@
 package com.shawckz.reflex.check.trigger;
 
 import com.shawckz.reflex.Reflex;
-import com.shawckz.reflex.autoban.Autoban;
+import com.shawckz.reflex.ban.Autoban;
 import com.shawckz.reflex.backend.configuration.annotations.ConfigData;
 import com.shawckz.reflex.check.base.Check;
 import com.shawckz.reflex.check.base.CheckType;
 import com.shawckz.reflex.check.base.RCheckType;
+import com.shawckz.reflex.check.base.RViolation;
 import com.shawckz.reflex.check.inspect.RInspectResult;
 import com.shawckz.reflex.check.inspect.RInspectResultType;
 import com.shawckz.reflex.player.reflex.ReflexPlayer;
@@ -26,10 +27,7 @@ public abstract class RTrigger extends Check {
     @ConfigData("cancel")
     private boolean cancel = true;
 
-    @ConfigData("capture-time")
-    private int captureTime = 15;
-
-    @ConfigData("autoban-freeze")
+    @ConfigData("ban-freeze")
     private boolean autobanFreeze = true;
 
     @ConfigData("autoban")
@@ -51,10 +49,10 @@ public abstract class RTrigger extends Check {
                     Alert alert = new Alert(player, getCheckType(), Alert.Type.TRIGGER, null, -1);
                     alert.sendAlert();
 
-                    Reflex.getInstance().getDataCaptureManager().startCaptureTask(player, getCheckType(), captureTime, checkData -> {
-                        RInspectResult inspectResult = Reflex.getInstance().getInspectManager().inspect(player, getCheckType(), checkData, captureTime);
+                    Reflex.getInstance().getDataCaptureManager().startCaptureTask(player, getCheckType(), getCaptureTime(), checkData -> {
+                        RInspectResult inspectResult = Reflex.getInstance().getInspectManager().inspect(player, getCheckType(), checkData, getCaptureTime());
                         handleInspect(player, inspectResult, true);
-                        result.call(new RTriggerResult(this.cancel && inspectResult.getResult() == RInspectResultType.FAILED, this.cancel));
+                        result.call(new RTriggerResult(this.cancel && inspectResult.getData().getType() == RInspectResultType.FAILED, this.cancel));
                     });
                 }
             }
@@ -69,7 +67,7 @@ public abstract class RTrigger extends Check {
         if (!getCheckType().isCapture()) {
             RInspectResult inspectResult = Reflex.getInstance().getInspectManager().inspect(player, getCheckType(), player.getData().copy(), 1);
             handleInspect(player, inspectResult, false);
-            return new RTriggerResult(this.cancel && inspectResult.getResult() == RInspectResultType.FAILED, this.cancel);
+            return new RTriggerResult(this.cancel && inspectResult.getData().getType() == RInspectResultType.FAILED, this.cancel);
         }
         else {
             throw new ReflexException("This trigger must call triggerLater instead of trigger ("+getCheckType().getName()+")");
@@ -81,8 +79,8 @@ public abstract class RTrigger extends Check {
         //Here, we will handle the autobanning (if necessary...)
 
         if(capture) {
-            //Was probably sure about the result, ---> autoban
-            if(autoban && inspectResult.getResult() == RInspectResultType.FAILED) {
+            //Was probably sure about the result, ---> ban
+            if(autoban && inspectResult.getData().getType() == RInspectResultType.FAILED) {
                 if (!Reflex.getInstance().getAutobanManager().hasAutoban(player.getName())) {
                     Autoban autoban = new Autoban(player, Reflex.getInstance().getReflexConfig().getAutobanTime(), getCheckType(), inspectResult.getViolation());
                     Reflex.getInstance().getAutobanManager().putAutoban(autoban);
@@ -109,5 +107,33 @@ public abstract class RTrigger extends Check {
             }
         }
     }
+
+    public SimpleCheckResult fail(ReflexPlayer player, String... detail) {
+        if(player.getCapturePlayer().isCapturing(getCheckType()) || Reflex.getInstance().getAutobanManager().hasAutoban(player.getName())) {
+            //No failures (for this check) if capturing data (for this check)..
+            return new SimpleCheckResult(false, null);
+        }
+
+
+        String d = null;
+        if(detail != null && detail.length > 0) {
+            d = detail[0];
+        }
+
+        RViolation violation = new RViolation(player.getUniqueId(), player.getData().copy(), getCheckType(), RCheckType.TRIGGER);
+        Reflex.getInstance().getViolationCache().saveViolation(violation);
+
+        player.addVL(getCheckType());
+
+        Alert alert = new Alert(player, getCheckType(), Alert.Type.FAIL, violation, player.getVL(getCheckType()));
+        if(d != null) {
+            alert.setDetail(d);
+        }
+        alert.sendAlert();
+
+        return new SimpleCheckResult(cancel, violation);
+    }
+
+    public abstract int getCaptureTime();
 
 }

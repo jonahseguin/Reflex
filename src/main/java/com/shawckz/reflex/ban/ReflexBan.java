@@ -2,46 +2,39 @@
  * Copyright (c) Jonah Seguin (Shawckz) 2016.  You may not copy, re-sell, distribute, modify, or use any code contained in this document or file, collection of documents or files, or project.  Thank you.
  */
 
-package com.shawckz.reflex.check.inspect;
+package com.shawckz.reflex.ban;
 
 import com.shawckz.reflex.backend.database.mongo.AutoMongo;
 import com.shawckz.reflex.backend.database.mongo.annotations.CollectionName;
 import com.shawckz.reflex.backend.database.mongo.annotations.DatabaseSerializer;
 import com.shawckz.reflex.backend.database.mongo.annotations.MongoColumn;
 import com.shawckz.reflex.check.base.RViolation;
-import com.shawckz.reflex.util.serial.RInspectResultDataSerializer;
 import com.shawckz.reflex.util.serial.RViolationSerializer;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 
-import java.util.UUID;
-
+@CollectionName(name = "reflex_bans")
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@CollectionName(name = "reflex_inspections")
-public class RInspectResult extends AutoMongo {
+public class ReflexBan extends AutoMongo {
 
     @MongoColumn(name = "_id", identifier = true)
     private String id;
 
-    @MongoColumn(name = "data")
-    @DatabaseSerializer(serializer = RInspectResultDataSerializer.class)
-    private RInspectResultData data;
+    @MongoColumn(name = "uniqueId")
+    private String uniqueId;
 
     @MongoColumn(name = "violation")
     @DatabaseSerializer(serializer = RViolationSerializer.class)
     private RViolation violation;
 
-    @MongoColumn(name = "period")
-    private int inspectionPeriod;
+    @MongoColumn(name = "time")
+    private long time;
 
-    public RInspectResult(RInspectResultData data, RViolation violation, int inspectionPeriod) {
-        this.id = UUID.randomUUID().toString();
-        this.data = data;
-        this.violation = violation;
-        this.inspectionPeriod = inspectionPeriod;
-    }
+    @MongoColumn(name = "confirmed")
+    private boolean confirmed = false;
 
+    @MongoColumn(name = "bannecCorrectly")
+    private boolean bannedCorrectly = true;
 
 }

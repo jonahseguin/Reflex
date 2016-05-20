@@ -7,9 +7,9 @@ package com.shawckz.reflex.check.trigger;
 import com.shawckz.reflex.Reflex;
 import com.shawckz.reflex.check.base.CheckType;
 import com.shawckz.reflex.check.base.RTimer;
-import com.shawckz.reflex.check.trigger.triggers.TriggerAutoClick;
-import com.shawckz.reflex.check.trigger.triggers.TriggerFastBow;
-import com.shawckz.reflex.check.trigger.triggers.TriggerVClip;
+import com.shawckz.reflex.check.trigger.simple.CheckHeadRoll;
+import com.shawckz.reflex.check.trigger.simple.CheckTabComplete;
+import com.shawckz.reflex.check.trigger.triggers.*;
 import com.shawckz.reflex.util.utility.ReflexException;
 
 import java.util.concurrent.ConcurrentHashMap;
@@ -24,10 +24,17 @@ public class TriggerManager {
     }
 
     public void setup() {
+        //Triggers
         register(new TriggerAutoClick());
         register(new TriggerFastBow());
         register(new TriggerVClip());
+        register(new TriggerRegen());
+        register(new TriggerReach());
+        register(new TriggerSpeed());
 
+        //Simple checks
+        register(new CheckHeadRoll());
+        register(new CheckTabComplete());
 
         triggers.values().stream().forEach(RTrigger::setupConfig);
     }

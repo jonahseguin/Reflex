@@ -1,4 +1,4 @@
-package com.shawckz.reflex.autoban;
+package com.shawckz.reflex.ban;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;

@@ -30,7 +30,6 @@ public abstract class Check extends CheckConfig implements Listener {
     public final void setEnabled(final boolean enabled) {
         if (!registered || enabled != this.enabled) {
             if (enabled) {
-                Bukkit.getLogger().info("[Reflex] Registering events for " + getName());
                 Bukkit.getServer().getPluginManager().registerEvents(this, Reflex.getInstance());
             }
             else {

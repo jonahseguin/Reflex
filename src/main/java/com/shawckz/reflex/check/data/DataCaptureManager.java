@@ -7,8 +7,7 @@ package com.shawckz.reflex.check.data;
 import com.shawckz.reflex.Reflex;
 import com.shawckz.reflex.check.base.CheckType;
 import com.shawckz.reflex.check.base.RTimer;
-import com.shawckz.reflex.check.data.capturers.CaptureAutoClick;
-import com.shawckz.reflex.check.data.capturers.CaptureVClip;
+import com.shawckz.reflex.check.data.capturers.*;
 import com.shawckz.reflex.player.reflex.ReflexPlayer;
 import com.shawckz.reflex.util.utility.ReflexCaller;
 
@@ -28,8 +27,15 @@ public class DataCaptureManager {
 
         register(new CaptureAutoClick());
         register(new CaptureVClip());
+        register(new CaptureRegen());
+        register(new CaptureReach());
+        register(new CaptureSpeed());
 
         dataCaptures.values().stream().forEach(RDataCapture::setupConfig);
+    }
+
+    public ConcurrentMap<CheckType, RDataCapture> getDataCaptures() {
+        return dataCaptures;
     }
 
     public RDataCapture getDataCapture(CheckType checkType) {

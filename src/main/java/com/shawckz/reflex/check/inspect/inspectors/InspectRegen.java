@@ -8,7 +8,7 @@ import com.shawckz.reflex.backend.configuration.annotations.ConfigData;
 import com.shawckz.reflex.check.base.CheckType;
 import com.shawckz.reflex.check.base.RCheckType;
 import com.shawckz.reflex.check.data.CheckData;
-import com.shawckz.reflex.check.data.checkdata.DataAutoClick;
+import com.shawckz.reflex.check.data.checkdata.DataRegen;
 import com.shawckz.reflex.check.inspect.RInspect;
 import com.shawckz.reflex.check.inspect.RInspectResultData;
 import com.shawckz.reflex.check.inspect.RInspectResultType;
@@ -19,13 +19,13 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class InspectAutoClick extends RInspect {
+public class InspectRegen extends RInspect {
 
-    @ConfigData("max-average-clicks-per-second")
-    private int maxClicksPerSecond = 17;
+    @ConfigData("max-health-per-second")
+    private int maxHps = 2;
 
-    @ConfigData("cps-threshold")
-    private int threshold = 27;
+    @ConfigData("hps-threshold")
+    private int threshold = 8;
 
     @ConfigData("tps.ignore")
     private int tpsIgnore = 12;//TPS <= tpsIgnore - ignore the check
@@ -48,16 +48,16 @@ public class InspectAutoClick extends RInspect {
     @ConfigData("tps.difference-threshold")
     private int tpsThreshold = 2;
 
-    public InspectAutoClick() {
-        super(CheckType.AUTO_CLICK, RCheckType.INSPECT);
+    public InspectRegen() {
+        super(CheckType.REGEN, RCheckType.INSPECT);
     }
 
     @Override
     public RInspectResultData inspect(ReflexPlayer player, CheckData checkData, int dataPeriod) {
-        if (checkData instanceof DataAutoClick) {
-            DataAutoClick data = (DataAutoClick) checkData;
+        if (checkData instanceof DataRegen) {
+            DataRegen data = (DataRegen) checkData;
 
-            double averageCps = (data.getClicks() / dataPeriod);
+            double peakHps = data.getHps();
 
             if (data.getTps() > tpsIgnore) {
                 if (data.getPing() < pingIgnore) {
@@ -65,21 +65,24 @@ public class InspectAutoClick extends RInspect {
                         double pingOffset = difference(data.getPing(), idealPing);
                         double tpsOffset = difference(data.getTps(), idealTps);
                         if (pingOffset <= pingThreshold && tpsOffset <= tpsThreshold) {
-                            if (averageCps >= maxClicksPerSecond) {
-                                return new RInspectResultData(RInspectResultType.FAILED, "average " + averageCps + " cps");
+                            if (peakHps >= maxHps) {
+                                return new RInspectResultData(RInspectResultType.FAILED, "peak " + peakHps + " hps");
                             }
                         }
                     }
                     else {
-                        if (averageCps >= maxClicksPerSecond) {
-                            return new RInspectResultData(RInspectResultType.FAILED, "average " + averageCps + " cps");
+                        if (peakHps >= maxHps) {
+                            return new RInspectResultData(RInspectResultType.FAILED, "peak " + peakHps + " hps");
                         }
                     }
                 }
             }
 
-            return new RInspectResultData(RInspectResultType.PASSED, "average " + averageCps + " cps");
+            if(peakHps >= threshold) {
+                return new RInspectResultData(RInspectResultType.FAILED, "peak " + peakHps + " hps");
+            }
 
+            return new RInspectResultData(RInspectResultType.PASSED, "peak " + peakHps + " hps");
         }
         else {
             throw new ReflexException("Cannot inspect data (CheckData type != inspect type)");

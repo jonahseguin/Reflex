@@ -32,17 +32,17 @@ public class ReflexConfig extends Configuration {
     private String prefix = "&7[&c!&7]";
 
 
-    @ConfigData("autoban.method")
+    @ConfigData("ban.method")
     @ConfigSerializer(serializer = AutobanMethodSerializer.class)
     private AutobanMethod autobanMethod = AutobanMethod.REFLEX;
 
-    @ConfigData("autoban.time")
+    @ConfigData("ban.time")
     private int autobanTime = 60;
 
-    @ConfigData("autoban.remind-interval")
+    @ConfigData("ban.remind-interval")
     private int autobanRemindInterval = 15;
 
-    @ConfigData("autoban.console.command")
+    @ConfigData("ban.console.command")
     private String autobanConsoleCommand = "ban {0} [Reflex] Hacking ({1})";
 
 

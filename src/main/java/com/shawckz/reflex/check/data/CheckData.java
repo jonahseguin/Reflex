@@ -15,7 +15,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @CollectionName(name = "reflex_checkdata")
-public abstract class CheckData extends AutoMongo {
+public class CheckData extends AutoMongo {
 
     @MongoColumn(name = "_id", identifier = true)
     private String id = UUID.randomUUID().toString();

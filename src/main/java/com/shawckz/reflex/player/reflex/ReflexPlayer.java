@@ -64,6 +64,7 @@ public class ReflexPlayer extends CachePlayer {
     public void addVL(CheckType checkType) {
         int vl = getVL(checkType);
         this.vl.put(checkType.getName(), (vl + 1));
+        sessionVL++;
     }
 
     public int getVL(CheckType checkType) {
