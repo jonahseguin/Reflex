@@ -23,6 +23,7 @@ public enum CheckType {
     TAB_COMPLETE("TabComplete", null),
     FAST_BOW("FastBow", false, null),
     SPEED(true, DataSpeed.class),
+    REACH(true, DataReach.class),
 
     /* TODO */
 
@@ -32,7 +33,6 @@ public enum CheckType {
     TRIGGER_BOT("TriggerBot", null),
     AURA(false, null),
     AURA_TWITCH("AuraTwitch", false, null),
-    REACH(true, DataReach.class),
 
     //other ones...
     ANTI_KNOCKBACK("AntiKnockback", null),
