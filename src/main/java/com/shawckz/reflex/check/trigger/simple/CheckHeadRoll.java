@@ -11,7 +11,6 @@ import com.comphenix.protocol.events.PacketEvent;
 import com.shawckz.reflex.Reflex;
 import com.shawckz.reflex.check.base.CheckType;
 import com.shawckz.reflex.check.base.RCheckType;
-
 import com.shawckz.reflex.check.trigger.RTrigger;
 import com.shawckz.reflex.player.reflex.ReflexPlayer;
 
@@ -26,7 +25,7 @@ public class CheckHeadRoll extends RTrigger {
                 PacketType.Play.Client.LOOK) {
             @Override
             public void onPacketReceiving(PacketEvent event) {
-                if(!isEnabled()) return;
+                if (!isEnabled()) return;
                 Player p = event.getPlayer();
                 ReflexPlayer ap = Reflex.getInstance().getCache().getReflexPlayer(p);
                 if (event.getPacketType() == PacketType.Play.Client.LOOK) {

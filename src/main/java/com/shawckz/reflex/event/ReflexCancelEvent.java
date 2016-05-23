@@ -4,6 +4,31 @@
 
 package com.shawckz.reflex.event;
 
-public class ReflexCancelEvent {
+import com.shawckz.reflex.check.base.Check;
+import com.shawckz.reflex.check.base.CheckType;
+import com.shawckz.reflex.check.base.RCheckType;
 
+public class ReflexCancelEvent extends ReflexEvent {
+
+    private final Check check;
+    private final CheckType checkType;
+    private final RCheckType checkSource;
+
+    public ReflexCancelEvent(Check check, CheckType checkType, RCheckType checkSource) {
+        this.check = check;
+        this.checkType = checkType;
+        this.checkSource = checkSource;
+    }
+
+    public Check getCheck() {
+        return check;
+    }
+
+    public CheckType getCheckType() {
+        return checkType;
+    }
+
+    public RCheckType getCheckSource() {
+        return checkSource;
+    }
 }

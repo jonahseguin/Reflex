@@ -58,7 +58,7 @@ public class TriggerRegen extends RTrigger implements RTimer {
         for (Player pl : Bukkit.getOnlinePlayers()) {
             ReflexPlayer player = Reflex.getInstance().getCache().getReflexPlayer(pl);
 
-            if(player.getData().getHealthPerSecond() > maxHps) {
+            if (player.getData().getHealthPerSecond() > maxHps) {
                 triggerLater(player, result -> {
 
                 });

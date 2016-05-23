@@ -33,15 +33,15 @@ public class TriggerReach extends RTrigger {
 
     @EventHandler
     public void onDamage(EntityDamageByEntityEvent e) {
-        if(e.getEntity() instanceof Player && e.getDamager() instanceof Player) {
+        if (e.getEntity() instanceof Player && e.getDamager() instanceof Player) {
             Player p = (Player) e.getEntity();
             Player d = (Player) e.getDamager();
 
-            if(p.getLocation().getBlockY() == d.getLocation().getBlockY()) {
+            if (p.getLocation().getBlockY() == d.getLocation().getBlockY()) {
                 double distance = p.getLocation().distance(d.getLocation());
                 Bukkit.getLogger().info(d.getName() + " hit " + d.getName() + " from " + distance);
 
-                if(distance > maxDistance) {
+                if (distance > maxDistance) {
                     triggerLater(Reflex.getInstance().getCache().getReflexPlayer(d), result -> {
 
                     });

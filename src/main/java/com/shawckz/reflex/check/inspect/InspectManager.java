@@ -67,24 +67,24 @@ public class InspectManager {
 
             if (checkType.isCapture()) {
                 alert = new Alert(player, checkType, resultType.translateToAlertType(), violation, player.getVL(inspector.getCheckType()));
-                if(resultData.getDetail() != null) {
+                if (resultData.getDetail() != null) {
                     alert.setDetail(resultData.getDetail());
                 }
             }
             else {
                 alert = new Alert(player, checkType, Alert.Type.FAIL, violation, player.getVL(inspector.getCheckType()));
-                if(resultData.getDetail() != null) {
+                if (resultData.getDetail() != null) {
                     alert.setDetail(resultData.getDetail());
                 }
             }
         }
-        else if(resultType == RInspectResultType.PASSED) {
+        else if (resultType == RInspectResultType.PASSED) {
             violation = new RViolation(player.getUniqueId(), data, checkType, RCheckType.INSPECT);
             Reflex.getInstance().getViolationCache().cacheViolation(violation);
 
-            if(checkType.isCapture()) {
+            if (checkType.isCapture()) {
                 alert = new Alert(player, checkType, resultType.translateToAlertType(), violation, player.getVL(inspector.getCheckType()));
-                if(resultData.getDetail() != null) {
+                if (resultData.getDetail() != null) {
                     alert.setDetail(resultData.getDetail());
                 }
             }
@@ -92,8 +92,8 @@ public class InspectManager {
 
         final RInspectResult result = new RInspectResult(resultData, violation, dataPeriod);
 
-        if(alert != null) {
-            if(alert.getType() == Alert.Type.INSPECT_FAIL || alert.getType() == Alert.Type.INSPECT_PASS) {
+        if (alert != null) {
+            if (alert.getType() == Alert.Type.INSPECT_FAIL || alert.getType() == Alert.Type.INSPECT_PASS) {
                 alert.setInspectResult(result);
             }
 
@@ -102,11 +102,11 @@ public class InspectManager {
 
         final RViolation finalViolation = violation;
 
-        new BukkitRunnable(){
+        new BukkitRunnable() {
             @Override
             public void run() {
                 data.update();
-                if(finalViolation != null) {
+                if (finalViolation != null) {
                     finalViolation.update();
                 }
                 result.update();

@@ -1,6 +1,5 @@
 /*
- * Copyright (c) Jonah Seguin (Shawckz) 2016.  You may not copy, re-sell, distribute, modify, or use any code contained in this document or file, collection of documents or files, or project.
- * Thank you.
+ * Copyright (c) Jonah Seguin (Shawckz) 2016.  You may not copy, re-sell, distribute, modify, or use any code contained in this document or file, collection of documents or files, or project.  Thank you.
  */
 
 package com.shawckz.reflex.backend.configuration;
@@ -24,17 +23,22 @@ public enum ReflexLang {
     CANCEL_NOT_BEING_BANNED("&cThat player is not being auto-banned."),
     CANCEL("&9{0}&7 is not longer being banned."),
     PLAYER_NOT_FOUND("&cPlayer '{0}' not found."),
+    PLAYER_NOT_FOUND_DATABASE("&cPlayer '{0} not found in database.  &7(case sensitive)"),
     CHECK_NOT_FOUND("&cCheck '{0}' not found."),
-    HEADER_FOOTER("&7&m------------------------");
+    HEADER_FOOTER("&7&m------------------------"),
+    BANNED("&7[Reflex] \n&9You have been banned for &7[&e{0}&7]\n&7Expires &e{1}"),
+    BANNED_CONFIRMED("&7[Reflex] \n&9You have been banned for &7[&e{0}&7]\n&7(Confirmed)"),
+    UNBANNED("&9{0}&7 has been unbanned by &e{1}&7."),
+    CONFIRM_BAN("&7The ban on &9{0}&7 has been confirmed by &e{1}&7 as &a{2}&7."),
+    CONFIG_LOAD("&7The configuration was reloaded by &e{0}&7."),
+    CONFIG_SET("&7Config value '{0}' set to '{1}' by &e{2}&7."),
+    SETTINGS_ALL("&7Setting &e{0}&7 updated to &9{1}&7 for &aall checks &7by &e{2}&7."),
+    SETTINGS("&7Setting &e{0}&7 updated to &9{1}&7 for &a{2}&7 by &e{3}&7.");
 
     private final String defaultValue;
 
     ReflexLang(String defaultValue) {
         this.defaultValue = defaultValue;
-    }
-
-    public String getDefaultValue() {
-        return defaultValue;
     }
 
     public static ReflexLang fromString(String s) {
@@ -44,6 +48,10 @@ public enum ReflexLang {
             }
         }
         return null;
+    }
+
+    public String getDefaultValue() {
+        return defaultValue;
     }
 
 }

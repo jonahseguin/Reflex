@@ -79,12 +79,6 @@ public class PlayerData extends CheckData {
     private Location lastVClipLocation = null;
 
 
-
-
-
-
-
-
     public PlayerData copy() {
         PlayerData playerData = new PlayerData();
         playerData.load(getData());

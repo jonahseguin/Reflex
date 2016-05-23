@@ -5,8 +5,8 @@
 package com.shawckz.reflex.check.trigger;
 
 import com.shawckz.reflex.Reflex;
-import com.shawckz.reflex.ban.Autoban;
 import com.shawckz.reflex.backend.configuration.annotations.ConfigData;
+import com.shawckz.reflex.ban.Autoban;
 import com.shawckz.reflex.check.base.Check;
 import com.shawckz.reflex.check.base.CheckType;
 import com.shawckz.reflex.check.base.RCheckType;
@@ -38,10 +38,10 @@ public abstract class RTrigger extends Check {
     }
 
     public final boolean triggerLater(ReflexPlayer player, ReflexCaller<RTriggerResult> result) {
-      //  if (ReflexPerm.BYPASS.hasPerm(player.getBukkitPlayer())) return false;
+        //  if (ReflexPerm.BYPASS.hasPerm(player.getBukkitPlayer())) return false;
         if (getCheckType().isCapture()) {
             if (!player.getCapturePlayer().isCapturing(getCheckType())) {
-                if(!Reflex.getInstance().getAutobanManager().hasAutoban(player.getName())) {
+                if (!Reflex.getInstance().getAutobanManager().hasAutoban(player.getName())) {
 
                     //Add a violation level (even if they pass - to make that they failed a trigger)
                     player.addVL(getCheckType());
@@ -58,7 +58,7 @@ public abstract class RTrigger extends Check {
             }
         }
         else {
-            throw new ReflexException("This trigger must call trigger instead of triggerLater ("+getCheckType().getName()+")");
+            throw new ReflexException("This trigger must call trigger instead of triggerLater (" + getCheckType().getName() + ")");
         }
         return this.cancel;
     }
@@ -70,7 +70,7 @@ public abstract class RTrigger extends Check {
             return new RTriggerResult(this.cancel && inspectResult.getData().getType() == RInspectResultType.FAILED, this.cancel);
         }
         else {
-            throw new ReflexException("This trigger must call triggerLater instead of trigger ("+getCheckType().getName()+")");
+            throw new ReflexException("This trigger must call triggerLater instead of trigger (" + getCheckType().getName() + ")");
         }
     }
 
@@ -78,9 +78,9 @@ public abstract class RTrigger extends Check {
         //The inspect method handles the adding VL and alert.
         //Here, we will handle the autobanning (if necessary...)
 
-        if(capture) {
+        if (capture) {
             //Was probably sure about the result, ---> ban
-            if(autoban && inspectResult.getData().getType() == RInspectResultType.FAILED) {
+            if (autoban && inspectResult.getData().getType() == RInspectResultType.FAILED) {
                 if (!Reflex.getInstance().getAutobanManager().hasAutoban(player.getName())) {
                     Autoban autoban = new Autoban(player, Reflex.getInstance().getReflexConfig().getAutobanTime(), getCheckType(), inspectResult.getViolation());
                     Reflex.getInstance().getAutobanManager().putAutoban(autoban);
@@ -88,15 +88,15 @@ public abstract class RTrigger extends Check {
                 }
             }
         }
-        else{
+        else {
             int vl = Reflex.getInstance().getInspectManager().getInspector(getCheckType()).getAutobanVL();
 
-            if(player.getVL(getCheckType()) > vl) {
+            if (player.getVL(getCheckType()) > vl) {
                 vl *= 2;
             }
 
             if (player.getVL(getCheckType()) >= vl) {
-                if(autoban) {
+                if (autoban) {
                     if (!Reflex.getInstance().getAutobanManager().hasAutoban(player.getName())) {
                         //Only if they aren't already being autobanned...
                         Autoban autoban = new Autoban(player, Reflex.getInstance().getReflexConfig().getAutobanTime(), getCheckType(), inspectResult.getViolation());
@@ -109,14 +109,14 @@ public abstract class RTrigger extends Check {
     }
 
     public SimpleCheckResult fail(ReflexPlayer player, String... detail) {
-        if(player.getCapturePlayer().isCapturing(getCheckType()) || Reflex.getInstance().getAutobanManager().hasAutoban(player.getName())) {
+        if (player.getCapturePlayer().isCapturing(getCheckType()) || Reflex.getInstance().getAutobanManager().hasAutoban(player.getName())) {
             //No failures (for this check) if capturing data (for this check)..
             return new SimpleCheckResult(false, null);
         }
 
 
         String d = null;
-        if(detail != null && detail.length > 0) {
+        if (detail != null && detail.length > 0) {
             d = detail[0];
         }
 
@@ -126,7 +126,7 @@ public abstract class RTrigger extends Check {
         player.addVL(getCheckType());
 
         Alert alert = new Alert(player, getCheckType(), Alert.Type.FAIL, violation, player.getVL(getCheckType()));
-        if(d != null) {
+        if (d != null) {
             alert.setDetail(d);
         }
         alert.sendAlert();

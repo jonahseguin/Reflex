@@ -35,22 +35,22 @@ public class CaptureReach extends RDataCapture {
 
     @EventHandler
     public void onDamage(EntityDamageByEntityEvent e) {
-        if(e.getEntity() instanceof Player && e.getDamager() instanceof Player) {
+        if (e.getEntity() instanceof Player && e.getDamager() instanceof Player) {
             Player p = (Player) e.getEntity();
             Player d = (Player) e.getDamager();
 
-            if(!isCapturing(d)) return;
+            if (!isCapturing(d)) return;
 
-            if(p.getLocation().getBlockY() == d.getLocation().getBlockY()) {
+            if (p.getLocation().getBlockY() == d.getLocation().getBlockY()) {
                 double distance = p.getLocation().distance(d.getLocation());
-                int ping = ((CraftPlayer)d).getHandle().ping;
+                int ping = ((CraftPlayer) d).getHandle().ping;
                 Bukkit.getLogger().info("(CAPTURE) " + d.getName() + " hit " + d.getName() + " from " + distance);
 
                 ReflexPlayer rd = Reflex.getInstance().getCache().getReflexPlayer(d);
 
                 getData(rd).getEntries().add(new AbstractMap.SimpleEntry<>(distance, ping));
 
-                if(getData(rd).getPeakReach() < distance) {
+                if (getData(rd).getPeakReach() < distance) {
                     getData(rd).setPeakReach(distance);
                 }
             }

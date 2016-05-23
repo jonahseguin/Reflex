@@ -41,7 +41,7 @@ public class TriggerSpeed extends RTrigger implements RTimer {
     public void onMove(PlayerMoveEvent e) {
         if (e.isCancelled()) return;
         Player p = e.getPlayer();
-        if(p.getAllowFlight() == true || p.isFlying() || p.getGameMode() == GameMode.CREATIVE) return;
+        if (p.getAllowFlight() == true || p.isFlying() || p.getGameMode() == GameMode.CREATIVE) return;
         ReflexPlayer ap = Reflex.getInstance().getCache().getReflexPlayer(p);
         final double xDistance = e.getTo().getX() - e.getFrom().getX();
         final double zDistance = e.getTo().getZ() - e.getFrom().getZ();
@@ -61,7 +61,7 @@ public class TriggerSpeed extends RTrigger implements RTimer {
             int amp = potionEffect.getAmplifier();
             distance -= distance * (amp * 0.2);
         }
-        if(distance > 0) {
+        if (distance > 0) {
             ap.getData().setBlocksPerSecond(ap.getData().getBlocksPerSecond() + distance);
         }
     }
@@ -71,7 +71,7 @@ public class TriggerSpeed extends RTrigger implements RTimer {
         for (Player pl : Bukkit.getOnlinePlayers()) {
             ReflexPlayer player = Reflex.getInstance().getCache().getReflexPlayer(pl);
 
-            if(player.getData().getBlocksPerSecond() > maxBlocksPerSecond) {
+            if (player.getData().getBlocksPerSecond() > maxBlocksPerSecond) {
                 triggerLater(player, result -> {
 
                 });

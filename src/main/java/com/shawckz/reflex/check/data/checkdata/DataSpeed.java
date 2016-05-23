@@ -39,7 +39,7 @@ public class DataSpeed extends CheckData {
         private double distance;
 
         public SpeedData(Player p, double distance) {
-            this.ping = ((CraftPlayer)p).getHandle().ping;
+            this.ping = ((CraftPlayer) p).getHandle().ping;
             this.potionEffects.addAll(p.getActivePotionEffects());
             this.distance = distance;
         }

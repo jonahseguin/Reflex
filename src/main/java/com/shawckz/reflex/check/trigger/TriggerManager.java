@@ -44,7 +44,7 @@ public class TriggerManager {
     }
 
     public RTrigger getTrigger(CheckType checkType) {
-        if(triggers.containsKey(checkType)) {
+        if (triggers.containsKey(checkType)) {
             return triggers.get(checkType);
         }
         throw new ReflexException("No trigger registered for CheckType " + checkType.getName());

@@ -32,6 +32,10 @@ public class ReflexTimer implements Runnable {
         timers.remove(timer);
     }
 
+    public void clear() {
+        timers.clear();
+    }
+
     /**
      * Handles Timer Checks
      * They run once every second, this runnable is started in the main Reflex.java class
@@ -41,17 +45,17 @@ public class ReflexTimer implements Runnable {
         for (RTimer timer : timers) {
             timer.runTimer();
         }
-        for(Player pl : Bukkit.getOnlinePlayers()) {
+        for (Player pl : Bukkit.getOnlinePlayers()) {
             Reflex.getInstance().getCache().getReflexPlayer(pl).getData().setTps(Lag.getTPS());
-            Reflex.getInstance().getCache().getReflexPlayer(pl).getData().setPing(((CraftPlayer)pl).getHandle().ping);
-            for(RDataCapture check : Reflex.getInstance().getDataCaptureManager().getDataCaptures().values()) {
+            Reflex.getInstance().getCache().getReflexPlayer(pl).getData().setPing(((CraftPlayer) pl).getHandle().ping);
+            for (RDataCapture check : Reflex.getInstance().getDataCaptureManager().getDataCaptures().values()) {
                 updatePingAndLag(Reflex.getInstance().getCache().getReflexPlayer(pl), check);
             }
         }
     }
 
     private void updatePingAndLag(ReflexPlayer player, RDataCapture check) {
-        if(check.isCapturing(player.getBukkitPlayer())) {
+        if (check.isCapturing(player.getBukkitPlayer())) {
             player.getCapturePlayer().getData(check.getCheckType()).setPing(((CraftPlayer) player.getBukkitPlayer()).getHandle().ping);
             player.getCapturePlayer().getData(check.getCheckType()).setTps(Lag.getTPS());
         }

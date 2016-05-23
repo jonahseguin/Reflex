@@ -9,6 +9,7 @@ import com.shawckz.reflex.backend.configuration.RLang;
 import com.shawckz.reflex.backend.configuration.ReflexLang;
 import com.shawckz.reflex.check.base.CheckType;
 import com.shawckz.reflex.check.base.RViolation;
+import com.shawckz.reflex.event.ReflexBanEvent;
 import com.shawckz.reflex.player.reflex.ReflexPlayer;
 import com.shawckz.reflex.util.obj.Alert;
 import com.shawckz.reflex.util.obj.AutobanMethod;
@@ -17,6 +18,8 @@ import com.shawckz.reflex.util.utility.ReflexException;
 import lombok.Getter;
 import lombok.Setter;
 import mkremins.fanciful.FancyMessage;
+
+import java.util.Calendar;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -78,7 +81,7 @@ public class Autoban {
 
                 if (cd > 0) {
                     cd--;
-                    if (cd % Reflex.getInstance().getReflexConfig().getAutobanRemindInterval() == 0 && cd != 0) {
+                    if ((cd % Reflex.getInstance().getReflexConfig().getAutobanRemindInterval() == 0 || cd < 5) && cd != 0) {
                         FancyMessage fm = new FancyMessage(RLang.format(ReflexLang.ALERT_PREFIX));
                         fm.then(RLang.format(ReflexLang.AUTOBAN, player.getName(), check.getName(), cd + ""))
                                 .tooltip(ChatColor.YELLOW + "Click here to cancel ban on " + player.getName())
@@ -113,8 +116,40 @@ public class Autoban {
         }
         else if (Reflex.getInstance().getReflexConfig().getAutobanMethod() == AutobanMethod.REFLEX) {
             //Reflex ban internally
-            //TODO
-            Bukkit.getLogger().info("//TODO: Reflex ban internally (ban method = reflex)");
+
+            int seconds = Reflex.getInstance().getReflexConfig().getAutobanTimeMinutes() * 60;
+            long mills = seconds * 1000;
+
+            long expiry = System.currentTimeMillis() + mills;
+
+            ReflexBan reflexBan = new ReflexBan(player.getUniqueId(), violation, expiry);
+
+            ReflexBanEvent event = new ReflexBanEvent(reflexBan);
+            Bukkit.getServer().getPluginManager().callEvent(event);
+
+            if (!event.isCancelled()) {
+                Reflex.getInstance().getBanManager().saveBan(reflexBan);
+
+
+                Calendar cal = Calendar.getInstance();
+                cal.setTimeInMillis(reflexBan.getExpiration());
+
+                int day = cal.get(Calendar.DAY_OF_MONTH);
+                int month = cal.get(Calendar.MONTH);
+                int hour = cal.get(Calendar.HOUR);
+                int minute = cal.get(Calendar.MINUTE);
+                boolean am = cal.get(Calendar.AM_PM) == Calendar.AM;
+
+                String expires = "" + month + "/" + day + " @ " + hour + ":" + minute + " " + (am ? "AM" : "PM") + "&7 (" + cal.getTimeZone().getDisplayName() + ")";
+
+                if (player != null) {
+                    if (player.getBukkitPlayer() != null) {
+                        if (player.getBukkitPlayer().isOnline()) {
+                            player.getBukkitPlayer().kickPlayer(RLang.format(ReflexLang.BANNED, reflexBan.getViolation().getCheckType().getName(), expires));
+                        }
+                    }
+                }
+            }
         }
         else {
             throw new ReflexException("Unsupported ban method " + Reflex.getInstance().getReflexConfig().getAutobanMethod().toString());

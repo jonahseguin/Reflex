@@ -1,6 +1,5 @@
 /*
- * Copyright (c) Jonah Seguin (Shawckz) 2016.  You may not copy, re-sell, distribute, modify, or use any code contained in this document or file, collection of documents or files, or project.
- * Thank you.
+ * Copyright (c) Jonah Seguin (Shawckz) 2016.  You may not copy, re-sell, distribute, modify, or use any code contained in this document or file, collection of documents or files, or project.  Thank you.
  */
 
 package com.shawckz.reflex;
@@ -9,25 +8,24 @@ import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
 import com.shawckz.reflex.backend.command.RCommandHandler;
 import com.shawckz.reflex.backend.configuration.LanguageConfig;
+import com.shawckz.reflex.backend.configuration.RLang;
 import com.shawckz.reflex.backend.configuration.ReflexConfig;
+import com.shawckz.reflex.backend.configuration.ReflexLang;
 import com.shawckz.reflex.backend.database.DBManager;
 import com.shawckz.reflex.ban.AutobanManager;
 import com.shawckz.reflex.ban.ReflexBanManager;
-import com.shawckz.reflex.check.base.ReflexTimer;
 import com.shawckz.reflex.check.base.RDataCache;
+import com.shawckz.reflex.check.base.ReflexTimer;
 import com.shawckz.reflex.check.data.DataCaptureManager;
 import com.shawckz.reflex.check.inspect.InspectManager;
 import com.shawckz.reflex.check.trigger.TriggerManager;
-import com.shawckz.reflex.commands.CmdCancel;
-import com.shawckz.reflex.commands.CmdInspect;
-import com.shawckz.reflex.commands.CmdLookup;
-import com.shawckz.reflex.commands.CmdReflex;
+import com.shawckz.reflex.commands.*;
+import com.shawckz.reflex.listener.BanListener;
 import com.shawckz.reflex.player.cache.CachePlayer;
 import com.shawckz.reflex.player.reflex.ReflexCache;
 import com.shawckz.reflex.util.obj.Lag;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -59,8 +57,14 @@ public class Reflex extends JavaPlugin {
     private AutobanManager autobanManager;
     private ReflexBanManager banManager;
 
+    private RCommandHandler commandHandler;
+
     public static String getPrefix() {
-        return ChatColor.translateAlternateColorCodes('&', instance.getReflexConfig().getPrefix());
+        return RLang.format(ReflexLang.ALERT_PREFIX);
+    }
+
+    public static Reflex getInstance() {
+        return instance;
     }
 
     @Override
@@ -109,11 +113,16 @@ public class Reflex extends JavaPlugin {
         banManager = new ReflexBanManager();
 
         //Commands
-        RCommandHandler commandHandler = new RCommandHandler(this);
+        commandHandler = new RCommandHandler(this);
         commandHandler.registerCommands(new CmdReflex());
         commandHandler.registerCommands(new CmdCancel());
         commandHandler.registerCommands(new CmdInspect());
         commandHandler.registerCommands(new CmdLookup());
+        commandHandler.registerCommands(new CmdBan());
+        commandHandler.registerCommands(new CmdSettings());
+        commandHandler.registerCommands(new CmdConfig());
+
+        getServer().getPluginManager().registerEvents(new BanListener(), this);
 
         Bukkit.getScheduler().runTaskTimer(this, new Lag(), 1L, 1L);
 
@@ -132,15 +141,24 @@ public class Reflex extends JavaPlugin {
         }
         getLogger().info("[Stop] Saved " + saved + " players.");
 
+        reflexTimer.clear();
         reflexConfig.save();
         reflexConfig = null;
+        commandHandler = null;
+        banManager = null;
+        inspectManager = null;
+        dataCaptureManager = null;
+        triggerManager = null;
+        reflexTimer = null;
+        lang = null;
+        cache = null;
         instance = null;
 
         getLogger().info("[Finish] Reflex v" + getDescription().getVersion() + " by Shawckz.");
     }
 
-    public static Reflex getInstance() {
-        return instance;
+    public RCommandHandler getCommandHandler() {
+        return commandHandler;
     }
 
     public ReflexBanManager getBanManager() {

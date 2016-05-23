@@ -19,7 +19,6 @@ import org.bukkit.entity.Player;
 public class CheckTabComplete extends RTrigger {
 
 
-
     public CheckTabComplete() {
         super(CheckType.TAB_COMPLETE, RCheckType.TRIGGER);
 

@@ -8,18 +8,20 @@ import com.mongodb.BasicDBObject;
 import com.shawckz.reflex.Reflex;
 import com.shawckz.reflex.backend.database.mongo.AutoMongo;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class ReflexBanManager {
 
-    private Map<String, ReflexBan> cache = new HashMap<>();
+    private Map<String, BanCache> cache = new HashMap<>();
 
     public boolean hasBan(String uniqueId) {
-        uniqueId = uniqueId.toLowerCase();
-        if(cache.containsKey(uniqueId)) return true;
+        if (cache.containsKey(uniqueId)) {
+            if (cache.get(uniqueId).hasActiveBan()) {
+                return true;
+            }
+        }
 
         ReflexBan ban = getBan(uniqueId);
 
@@ -27,28 +29,76 @@ public class ReflexBanManager {
     }
 
     public ReflexBan getBan(String uniqueId) {
-        uniqueId = uniqueId.toLowerCase();
-        if(cache.containsKey(uniqueId)) {
-            return cache.get(uniqueId);
+        if (cache.containsKey(uniqueId)) {
+            if (cache.get(uniqueId).hasActiveBan()) {
+                return cache.get(uniqueId).getActiveBan();
+            }
         }
-        else{
-            AutoMongo mongo = ReflexBan.selectOne(new BasicDBObject("uniqueId", uniqueId), ReflexBan.class);
-            if(mongo != null && mongo instanceof ReflexBan) {
+        List<AutoMongo> mongos = ReflexBan.select(new BasicDBObject("uniqueId", uniqueId).append("banned", true), ReflexBan.class);
+        for (AutoMongo mongo : mongos) {
+            if (mongo != null && mongo instanceof ReflexBan) {
                 ReflexBan ban = (ReflexBan) mongo;
-                cacheBan(ban);
-                return ban;
+                if (ban.isActive()) {
+                    cacheBan(ban);
+                    return ban;
+                }
             }
         }
         return null;
     }
 
+    public ReflexBan getBanById(String id) {
+        AutoMongo mongo = ReflexBan.selectOne(new BasicDBObject("_id", id), ReflexBan.class);
+        if (mongo != null && mongo instanceof ReflexBan) {
+            ReflexBan ban = (ReflexBan) mongo;
+            return ban;
+        }
+        return null;
+    }
+
+    public Set<ReflexBan> getBans(String uniqueId) {
+        Set<ReflexBan> bans = new HashSet<>();
+        if (cache.containsKey(uniqueId)) {
+            bans.addAll(cache.get(uniqueId).getBans());
+        }
+
+        List<AutoMongo> mongos = ReflexBan.select(new BasicDBObject("uniqueId", uniqueId), ReflexBan.class);
+        for (AutoMongo mongo : mongos) {
+            if (mongo != null && mongo instanceof ReflexBan) {
+                ReflexBan ban = (ReflexBan) mongo;
+                if (!bans.contains(ban)) {
+                    boolean contains = false;
+                    for (ReflexBan b : bans) {
+                        if (b.getId().equalsIgnoreCase(ban.getId())) {
+                            contains = true;
+                        }
+                    }
+                    if (!contains) {
+                        bans.add(ban);
+                    }
+                }
+            }
+        }
+
+        return bans;
+    }
+
     public void cacheBan(ReflexBan ban) {
-        cache.put(ban.getUniqueId().toLowerCase(), ban);
+        if (!cache.containsKey(ban.getUniqueId())) {
+            cache.put(ban.getUniqueId(), new BanCache());
+        }
+        cache.get(ban.getUniqueId()).add(ban);
+    }
+
+    public void uncacheBan(ReflexBan ban) {
+        cache.remove(ban.getUniqueId());
     }
 
     public void saveBan(final ReflexBan ban) {
-        cacheBan(ban);
-        new BukkitRunnable(){
+        if (ban.isBanned()) {
+            cacheBan(ban);
+        }
+        new BukkitRunnable() {
             @Override
             public void run() {
                 ban.update();

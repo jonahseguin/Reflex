@@ -37,7 +37,7 @@ public class CaptureVClip extends RDataCapture {
         if (e.isCancelled()) {
             return;
         }
-        if(!isCapturing(e.getPlayer())) return;
+        if (!isCapturing(e.getPlayer())) return;
         if ((e.getTo().getBlockX() == e.getFrom().getBlockX()) && (e.getTo().getBlockY() == e.getFrom().getBlockY()) && (e.getTo().getBlockZ() == e.getFrom().getBlockZ())) {
             return;
         }
@@ -73,7 +73,7 @@ public class CaptureVClip extends RDataCapture {
         if (e.isCancelled()) {
             return;
         }
-        if(!isCapturing(e.getPlayer())) return;
+        if (!isCapturing(e.getPlayer())) return;
         Player pl = e.getPlayer();
         ReflexPlayer p = Reflex.getInstance().getCache().getReflexPlayer(pl);
         if ((e.getTo().getBlockX() == e.getFrom().getBlockX()) && (e.getTo().getBlockY() == e.getFrom().getBlockY()) && (e.getTo().getBlockZ() == e.getFrom().getBlockZ())) {

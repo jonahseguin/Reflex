@@ -63,14 +63,14 @@ public class InspectVClip extends RInspect {
                         double pingOffset = difference(data.getPing(), idealPing);
                         double tpsOffset = difference(data.getTps(), idealTps);
                         if (pingOffset <= pingThreshold && tpsOffset <= tpsThreshold) {
-                            if(data.getVclipAttempts() >= vclipAttempts || player.getVL(getCheckType()) >= vlThreshold) {
+                            if (data.getVclipAttempts() >= vclipAttempts || player.getVL(getCheckType()) >= vlThreshold) {
                                 return new RInspectResultData(RInspectResultType.FAILED, data.getVclipAttempts() + " attempts");
                             }
                         }
                     }
-                    else{
+                    else {
                         //They have ideal ping and tps
-                        if(data.getVclipAttempts() >= vclipAttempts || player.getVL(getCheckType()) >= vclipAttempts) {
+                        if (data.getVclipAttempts() >= vclipAttempts || player.getVL(getCheckType()) >= vclipAttempts) {
                             return new RInspectResultData(RInspectResultType.FAILED, data.getVclipAttempts() + " attempts");
                         }
                     }

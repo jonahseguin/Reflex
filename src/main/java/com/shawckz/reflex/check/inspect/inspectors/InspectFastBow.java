@@ -60,7 +60,7 @@ public class InspectFastBow extends RInspect {
                             return new RInspectResultData(RInspectResultType.FAILED);
                         }
                     }
-                    else{
+                    else {
                         //They have ideal ping and tps
                         return new RInspectResultData(RInspectResultType.FAILED);
                     }

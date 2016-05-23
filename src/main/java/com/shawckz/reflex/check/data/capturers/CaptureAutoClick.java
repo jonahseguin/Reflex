@@ -31,7 +31,7 @@ public class CaptureAutoClick extends RDataCapture {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onClick(PlayerInteractEvent e) {
-        if(!isCapturing(e.getPlayer())) return;
+        if (!isCapturing(e.getPlayer())) return;
         Player pl = e.getPlayer();
         if (e.getAction() == Action.LEFT_CLICK_AIR || e.getAction() == Action.LEFT_CLICK_BLOCK) {
             ReflexPlayer p = Reflex.getInstance().getCache().getReflexPlayer(pl);
@@ -42,7 +42,7 @@ public class CaptureAutoClick extends RDataCapture {
     @EventHandler(priority = EventPriority.MONITOR)
     public void onBreak(BlockBreakEvent e) {
         if (e.isCancelled()) return;
-        if(!isCapturing(e.getPlayer())) return;
+        if (!isCapturing(e.getPlayer())) return;
         Player pl = e.getPlayer();
         ReflexPlayer p = Reflex.getInstance().getCache().getReflexPlayer(pl);
         updateCps(p, -0.5D);
@@ -52,6 +52,7 @@ public class CaptureAutoClick extends RDataCapture {
         DataAutoClick dataAutoClick = getData(p);
         dataAutoClick.setClicks(dataAutoClick.getClicks() + i);
     }
+
     private DataAutoClick getData(ReflexPlayer reflexPlayer) {
         return (DataAutoClick) reflexPlayer.getCapturePlayer().getData(getCheckType());
     }

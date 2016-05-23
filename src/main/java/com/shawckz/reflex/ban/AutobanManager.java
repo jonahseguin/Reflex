@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Jonah Seguin (Shawckz) 2016.  You may not copy, re-sell, distribute, modify, or use any code contained in this document or file, collection of documents or files, or project.  Thank you.
+ */
+
 package com.shawckz.reflex.ban;
 
 import java.util.concurrent.ConcurrentHashMap;
@@ -20,8 +24,8 @@ public class AutobanManager {
     }
 
     public void removeAutoban(String name) {
-        if(autobans.containsKey(name.toLowerCase())) {
-            if(!autobans.get(name.toLowerCase()).isCancelled()){
+        if (autobans.containsKey(name.toLowerCase())) {
+            if (!autobans.get(name.toLowerCase()).isCancelled()) {
                 autobans.get(name.toLowerCase()).setCancelled(true);
             }
             autobans.remove(name.toLowerCase());

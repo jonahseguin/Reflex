@@ -22,7 +22,7 @@ import org.bukkit.event.entity.EntityRegainHealthEvent;
 
 @Getter
 @Setter
-public class CaptureRegen extends RDataCapture implements RTimer{
+public class CaptureRegen extends RDataCapture implements RTimer {
 
     @ConfigData("cancel-threshold")
     private int cancelThreshold = 2;
@@ -36,10 +36,10 @@ public class CaptureRegen extends RDataCapture implements RTimer{
         if (e.getEntity() instanceof Player) {
             Player pl = (Player) e.getEntity();
             if (e.getRegainReason() == EntityRegainHealthEvent.RegainReason.SATIATED) {
-                if(!isCapturing(pl)) return;
+                if (!isCapturing(pl)) return;
                 ReflexPlayer p = Reflex.getInstance().getCache().getReflexPlayer(pl);
                 getData(p).setHealthRegenerated(getData(p).getHealthRegenerated() + e.getAmount());
-                if(getData(p).getHealthRegenerated() >= cancelThreshold) {
+                if (getData(p).getHealthRegenerated() >= cancelThreshold) {
                     e.setCancelled(true);
                 }
             }
@@ -52,11 +52,11 @@ public class CaptureRegen extends RDataCapture implements RTimer{
 
     @Override
     public void runTimer() {
-        for(Player pl : Bukkit.getOnlinePlayers()) {
+        for (Player pl : Bukkit.getOnlinePlayers()) {
             ReflexPlayer p = Reflex.getInstance().getCache().getReflexPlayer(pl);
-            if(p.getCapturePlayer().isCapturing(getCheckType())) {
+            if (p.getCapturePlayer().isCapturing(getCheckType())) {
                 double health = getData(p).getHealthRegenerated();
-                if(health > getData(p).getHps()) {
+                if (health > getData(p).getHps()) {
                     getData(p).setHps(health);
                 }
                 getData(p).setHealthRegenerated(0);

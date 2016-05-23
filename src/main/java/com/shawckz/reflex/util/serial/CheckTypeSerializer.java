@@ -16,6 +16,6 @@ public class CheckTypeSerializer extends AbstractSerializer<CheckType> {
 
     @Override
     public CheckType fromString(Object data) {
-        return CheckType.valueOf(((String) data).toUpperCase());
+        return CheckType.fromString(((String) data));
     }
 }

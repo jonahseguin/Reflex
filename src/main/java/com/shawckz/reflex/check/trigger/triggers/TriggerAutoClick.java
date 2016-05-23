@@ -91,5 +91,4 @@ public class TriggerAutoClick extends RTrigger implements RTimer {
     }
 
 
-
 }

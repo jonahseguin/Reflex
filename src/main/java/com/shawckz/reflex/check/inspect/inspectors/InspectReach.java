@@ -49,22 +49,22 @@ public class InspectReach extends RInspect {
 
             double peakRange = data.getPeakReach();
 
-            for(Map.Entry<Double, Integer> entry : data.getEntries()) {
+            for (Map.Entry<Double, Integer> entry : data.getEntries()) {
                 double distance = entry.getKey();
                 int ping = entry.getValue();
 
                 double mD = maxDistance;
 
-                if(ping <= maxPingToMultiply) {
+                if (ping <= maxPingToMultiply) {
                     mD *= pingMultiplier;
                 }
 
-                if(distance >= mD) {
+                if (distance >= mD) {
                     return new RInspectResultData(RInspectResultType.FAILED, "peak range " + data.getPeakReach());
                 }
             }
 
-            if(peakRange >= threshold) {
+            if (peakRange >= threshold) {
                 return new RInspectResultData(RInspectResultType.FAILED, "peak range " + data.getPeakReach());
             }
 

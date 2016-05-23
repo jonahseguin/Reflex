@@ -1,8 +1,13 @@
+/*
+ * Copyright (c) Jonah Seguin (Shawckz) 2016.  You may not copy, re-sell, distribute, modify, or use any code contained in this document or file, collection of documents or files, or project.  Thank you.
+ */
+
 package com.shawckz.reflex.backend.configuration;
 
 
 import com.shawckz.reflex.backend.configuration.annotations.ConfigData;
 import com.shawckz.reflex.backend.configuration.annotations.ConfigSerializer;
+import com.shawckz.reflex.util.obj.RReflecUtil;
 import lombok.Getter;
 
 import java.io.File;
@@ -83,6 +88,45 @@ public class Configuration {
         catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public boolean setValue(String key, String value) {
+        Field[] toLoad = this.getClass().getDeclaredFields();
+        for (Field f : toLoad) {
+            if (f.isAnnotationPresent(ConfigData.class)) {
+                ConfigData configData = f.getAnnotation(ConfigData.class);
+                f.setAccessible(true);
+                if (configData.value().equalsIgnoreCase(key)) {
+                    Object val = value;
+                    if (!f.isAnnotationPresent(ConfigSerializer.class)) {
+                        val = RReflecUtil.toObject(f.getType(), value);
+                        try {
+                            f.set(this, val);
+                        }
+                        catch (IllegalAccessException expected) {
+                            return false;
+                        }
+                    }
+                    else {
+                        try {
+                            AbstractSerializer serializer = (AbstractSerializer) f.getAnnotation(ConfigSerializer.class).serializer().newInstance();
+                            f.set(this, serializer.fromString(value));
+                        }
+                        catch (InstantiationException expected) {
+                            return false;
+                        }
+                        catch (IllegalAccessException expected) {
+                            return false;
+                        }
+                        catch (Exception expected) {
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+        save();
+        return true;
     }
 
     public void load() {

@@ -50,16 +50,6 @@ public class DBManager extends Configuration {
         setup();
     }
 
-    private void setup() {
-        if (!useAuth) {
-            mongoClient = new MongoClient(new ServerAddress(host, port));
-        } else {
-            MongoCredential credential = MongoCredential.createCredential(username, authDatabaseName, password.toCharArray());
-            mongoClient = new MongoClient(new ServerAddress(host, port), Arrays.asList(credential));
-        }
-        db = mongoClient.getDatabase(databaseName);
-    }
-
     public static MongoDatabase getDb() {
         return db;
     }
@@ -74,5 +64,16 @@ public class DBManager extends Configuration {
 
     public static void setMongoClient(MongoClient mongoClient) {
         DBManager.mongoClient = mongoClient;
+    }
+
+    private void setup() {
+        if (!useAuth) {
+            mongoClient = new MongoClient(new ServerAddress(host, port));
+        }
+        else {
+            MongoCredential credential = MongoCredential.createCredential(username, authDatabaseName, password.toCharArray());
+            mongoClient = new MongoClient(new ServerAddress(host, port), Arrays.asList(credential));
+        }
+        db = mongoClient.getDatabase(databaseName);
     }
 }

@@ -20,9 +20,9 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 public class CheckConfig {
 
-    private YamlConfiguration config;
     private final File file;
     private final File directory;
+    private YamlConfiguration config;
     private RCheckType rCheckType;
     private CheckType checkType;
     private Check check;
@@ -61,7 +61,7 @@ public class CheckConfig {
         save();
         load();
         saveConfig();
-        if(rCheckType == RCheckType.INSPECT) {
+        if (rCheckType == RCheckType.INSPECT) {
             check = Reflex.getInstance().getInspectManager().getInspector(checkType);
         }
         else if (rCheckType == RCheckType.DATA) {
@@ -72,7 +72,7 @@ public class CheckConfig {
         }
     }
 
-    private void save() {
+    public void save() {
         Class c = this.getClass();
 
         List<Field> fields = new ArrayList<>();
@@ -129,6 +129,7 @@ public class CheckConfig {
                 }
             }
         }
+        saveConfig();
     }
 
     public void saveConfig() {
@@ -140,7 +141,7 @@ public class CheckConfig {
         }
     }
 
-    private void load() {
+    public void load() {
         Class c = this.getClass();
 
         List<Field> fields = new ArrayList<>();

@@ -78,7 +78,7 @@ public class InspectRegen extends RInspect {
                 }
             }
 
-            if(peakHps >= threshold) {
+            if (peakHps >= threshold) {
                 return new RInspectResultData(RInspectResultType.FAILED, "peak " + peakHps + " hps");
             }
 

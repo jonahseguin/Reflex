@@ -73,6 +73,15 @@ public enum CheckType {
         this.data = data;
     }
 
+    public static CheckType fromString(String s) {
+        for (CheckType checkType : values()) {
+            if (checkType.getName().equalsIgnoreCase(s) || checkType.toString().equalsIgnoreCase(s)) {
+                return checkType;
+            }
+        }
+        return null;
+    }
+
     public String getName() {
         return name;
     }
@@ -83,15 +92,6 @@ public enum CheckType {
 
     public Class<? extends CheckData> getData() {
         return data;
-    }
-
-    public static CheckType fromString(String s) {
-        for(CheckType checkType : values()) {
-            if(checkType.getName().equalsIgnoreCase(s) || checkType.toString().equalsIgnoreCase(s)) {
-                return checkType;
-            }
-        }
-        return null;
     }
 
     @SuppressWarnings("all")

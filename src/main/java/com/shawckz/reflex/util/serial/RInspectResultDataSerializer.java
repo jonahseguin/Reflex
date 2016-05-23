@@ -24,12 +24,12 @@ public class RInspectResultDataSerializer extends AbstractSerializer<RInspectRes
 
     @Override
     public RInspectResultData fromString(Object data) {
-        if(data instanceof String) {
+        if (data instanceof String) {
             String s = (String) data;
             Document document = Document.parse(s);
             RInspectResultType type = RInspectResultType.valueOf(document.getString(KEY_TYPE).toUpperCase());
             String detail = document.getString(KEY_DETAIL);
-            if(detail.equals("")) {
+            if (detail.equals("")) {
                 detail = null;
             }
 

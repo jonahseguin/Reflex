@@ -48,16 +48,16 @@ public class InspectSpeed extends RInspect {
 
             double totalDistance = 0;
 
-            for(DataSpeed.SpeedData sd : data.getData()) {
+            for (DataSpeed.SpeedData sd : data.getData()) {
                 PotionEffect effect = null;
-                for(PotionEffect e : sd.getPotionEffects()) {
-                    if(e.getType() == PotionEffectType.SPEED) {
+                for (PotionEffect e : sd.getPotionEffects()) {
+                    if (e.getType() == PotionEffectType.SPEED) {
                         effect = e;
                         break;
                     }
                 }
                 double distance = sd.getDistance();
-                if(effect != null) {
+                if (effect != null) {
                     distance -= (distance) * (effect.getAmplifier() * 0.2);
                 }
                 totalDistance += distance;
@@ -65,11 +65,11 @@ public class InspectSpeed extends RInspect {
 
             double bps = totalDistance / dataPeriod;
 
-            if(totalDistance > maxDistance) {
+            if (totalDistance > maxDistance) {
                 return new RInspectResultData(RInspectResultType.FAILED, Math.round(peakBps) + " peak blocks/s");
             }
 
-            if(peakBps > threshold) {
+            if (peakBps > threshold) {
                 return new RInspectResultData(RInspectResultType.FAILED, Math.round(peakBps) + " peak blocks/s");
             }
 

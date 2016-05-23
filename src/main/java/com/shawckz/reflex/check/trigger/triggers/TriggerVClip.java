@@ -35,7 +35,6 @@ public class TriggerVClip extends RTrigger {
     }
 
 
-
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onMove(PlayerMoveEvent e) {
         if (e.isCancelled()) {
@@ -85,7 +84,8 @@ public class TriggerVClip extends RTrigger {
             if (p.getData().getVclipY() == e.getTo().getBlockY()) {
                 p.getData().setTriedVClip(false);
                 p.getData().setVclipY(-1);
-                if (triggerLater(p, result -> {})) {
+                if (triggerLater(p, result -> {
+                })) {
                     //Can cancel
                     e.setTo(p.getData().getLastVClipLocation());
                 }

@@ -10,12 +10,18 @@ import com.shawckz.reflex.backend.database.mongo.annotations.DatabaseSerializer;
 import com.shawckz.reflex.backend.database.mongo.annotations.MongoColumn;
 import com.shawckz.reflex.check.base.RViolation;
 import com.shawckz.reflex.util.serial.RViolationSerializer;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.UUID;
 
 @CollectionName(name = "reflex_bans")
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class ReflexBan extends AutoMongo {
 
     @MongoColumn(name = "_id", identifier = true)
@@ -28,6 +34,9 @@ public class ReflexBan extends AutoMongo {
     @DatabaseSerializer(serializer = RViolationSerializer.class)
     private RViolation violation;
 
+    @MongoColumn(name = "banned")
+    private boolean banned = true;
+
     @MongoColumn(name = "time")
     private long time;
 
@@ -36,5 +45,20 @@ public class ReflexBan extends AutoMongo {
 
     @MongoColumn(name = "bannecCorrectly")
     private boolean bannedCorrectly = true;
+
+    @MongoColumn(name = "expiration")
+    private long expiration;
+
+    public ReflexBan(String uniqueId, RViolation violation, long expiration) {
+        this.id = UUID.randomUUID().toString();
+        this.uniqueId = uniqueId;
+        this.violation = violation;
+        this.time = System.currentTimeMillis();
+        this.expiration = expiration;
+    }
+
+    public boolean isActive() {
+        return isBanned() && ((isConfirmed() && isBannedCorrectly()) || (getExpiration() > System.currentTimeMillis()));
+    }
 
 }

@@ -48,6 +48,14 @@ public class RCommandHandler {
         }
     }
 
+    public RCmdWrapper getCommand(String key) {
+        return commandMap.get(key.toLowerCase());
+    }
+
+    public boolean hasCommandWrapper(String key) {
+        return commandMap.containsKey(key.toLowerCase());
+    }
+
     public void registerCommands(RCommand command, String... commands) {
         for (Method method : command.getClass().getDeclaredMethods()) {
             if (method.isAnnotationPresent(RCmd.class)) {

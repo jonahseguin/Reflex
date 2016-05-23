@@ -11,7 +11,10 @@ import com.shawckz.reflex.backend.database.mongo.annotations.MongoColumn;
 import com.shawckz.reflex.check.base.RViolation;
 import com.shawckz.reflex.util.serial.RInspectResultDataSerializer;
 import com.shawckz.reflex.util.serial.RViolationSerializer;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.UUID;
 

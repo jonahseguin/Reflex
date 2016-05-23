@@ -9,7 +9,6 @@ import com.shawckz.reflex.check.base.CheckType;
 import com.shawckz.reflex.player.reflex.ReflexPlayer;
 import com.shawckz.reflex.util.utility.ReflexException;
 
-import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public abstract class CaptureTask {
