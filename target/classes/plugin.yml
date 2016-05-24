@@ -1,6 +1,6 @@
 name: Reflex
 main: com.shawckz.reflex.Reflex
-version: ${project.version}
+version: 1.0.0
 authors: [Shawckz]
 website: http://shawckz.com/project/reflex
 depend: [ProtocolLib, ShawXAuth]

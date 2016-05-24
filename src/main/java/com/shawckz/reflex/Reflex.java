@@ -6,6 +6,9 @@ package com.shawckz.reflex;
 
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
+import com.shawckz.auth.ShawXAuth;
+import com.shawckz.auth.auth.AuthCaller;
+import com.shawckz.auth.auth.AuthMe;
 import com.shawckz.reflex.backend.command.RCommandHandler;
 import com.shawckz.reflex.backend.configuration.LanguageConfig;
 import com.shawckz.reflex.backend.configuration.RLang;
@@ -27,7 +30,6 @@ import com.shawckz.reflex.util.obj.Lag;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.java.JavaPlugin;
 
 /**
  *
@@ -38,7 +40,7 @@ import org.bukkit.plugin.java.JavaPlugin;
  * @since 1.0.0
  *
  */
-public class Reflex extends JavaPlugin {
+public class Reflex extends AuthMe {
 
     private static Reflex instance;
 
@@ -72,89 +74,111 @@ public class Reflex extends JavaPlugin {
         protocolManager = ProtocolLibrary.getProtocolManager();
     }
 
+    private boolean requestedAuth = false;
+    private boolean en = false;
+
     @Override
     public void onEnable() {
+
         getLogger().info("[Start] Starting Reflex v" + getDescription().getVersion());
         instance = this;
 
+        getLogger().info("[Auth] Authenticating");
 
-        reflexConfig = new ReflexConfig(this);
-        lang = new LanguageConfig(this);
-        new DBManager(this);
-        cache = new ReflexCache(this);
-
-        //Make reload-friendly, load all online players
-        for (Player pl : Bukkit.getOnlinePlayers()) {
-            CachePlayer cp = cache.loadCachePlayer(pl.getName());
-            if (cp != null) {
-                cache.put(cp);
-            }
-            else {
-                cp = cache.create(pl.getName(), pl.getUniqueId().toString());
-                cache.put(cp);
-                cp.update();
-            }
-        }
-
-        violationCache = new RDataCache();
-
-        autobanManager = new AutobanManager();
-
-        reflexTimer = new ReflexTimer(this);
-
-        //Setup triggers, data captures, inspectors
-        triggerManager = new TriggerManager(this);
-        triggerManager.setup();
-        dataCaptureManager = new DataCaptureManager(this);
-        dataCaptureManager.setup();
-        inspectManager = new InspectManager(this);
-        inspectManager.setup();
-
-        banManager = new ReflexBanManager();
-
-        //Commands
-        commandHandler = new RCommandHandler(this);
-        commandHandler.registerCommands(new CmdReflex());
-        commandHandler.registerCommands(new CmdCancel());
-        commandHandler.registerCommands(new CmdInspect());
-        commandHandler.registerCommands(new CmdLookup());
-        commandHandler.registerCommands(new CmdBan());
-        commandHandler.registerCommands(new CmdSettings());
-        commandHandler.registerCommands(new CmdConfig());
-
-        getServer().getPluginManager().registerEvents(new BanListener(), this);
-
-        Bukkit.getScheduler().runTaskTimer(this, new Lag(), 1L, 1L);
-
-
-        getLogger().info("[Finish] Reflex v" + getDescription().getVersion() + " by Shawckz.");
+        ShawXAuth.auth(this);
     }
+
 
     @Override
     public void onDisable() {
-        getLogger().info("[Stop] Disabling Reflex v" + getDescription().getVersion());
-        //Make reload-friendly, save all online players
-        int saved = 0;
-        for (Player pl : Bukkit.getOnlinePlayers()) {
-            cache.saveSync(pl);
-            saved++;
+        if(en) {
+            getLogger().info("[Stop] Disabling Reflex v" + getDescription().getVersion());
+            //Make reload-friendly, save all online players
+            int saved = 0;
+            for (Player pl : Bukkit.getOnlinePlayers()) {
+                cache.saveSync(pl);
+                saved++;
+            }
+            getLogger().info("[Stop] Saved " + saved + " players.");
+
+            reflexTimer.clear();
+            reflexConfig.save();
+            reflexConfig = null;
+            commandHandler = null;
+            banManager = null;
+            inspectManager = null;
+            dataCaptureManager = null;
+            triggerManager = null;
+            reflexTimer = null;
+            lang = null;
+            cache = null;
+            instance = null;
+
+            getLogger().info("[Finish] Reflex v" + getDescription().getVersion() + " by Shawckz.");
         }
-        getLogger().info("[Stop] Saved " + saved + " players.");
+    }
 
-        reflexTimer.clear();
-        reflexConfig.save();
-        reflexConfig = null;
-        commandHandler = null;
-        banManager = null;
-        inspectManager = null;
-        dataCaptureManager = null;
-        triggerManager = null;
-        reflexTimer = null;
-        lang = null;
-        cache = null;
-        instance = null;
+    @Override
+    public final AuthCaller auth(ShawXAuth autheer) {
+        return new AuthCaller() {
+            @Override
+            public void call() {
+                en = true;
+                reflexConfig = new ReflexConfig(instance);
+                lang = new LanguageConfig(instance);
+                new DBManager(instance);
+                cache = new ReflexCache(instance);
 
-        getLogger().info("[Finish] Reflex v" + getDescription().getVersion() + " by Shawckz.");
+                //Make reload-friendly, load all online players
+                for (Player pl : Bukkit.getOnlinePlayers()) {
+                    CachePlayer cp = cache.loadCachePlayer(pl.getName());
+                    if (cp != null) {
+                        cache.put(cp);
+                    }
+                    else {
+                        cp = cache.create(pl.getName(), pl.getUniqueId().toString());
+                        cache.put(cp);
+                        cp.update();
+                    }
+                }
+
+                violationCache = new RDataCache();
+
+                autobanManager = new AutobanManager();
+
+                reflexTimer = new ReflexTimer(instance);
+
+                //Setup triggers, data captures, inspectors
+                triggerManager = new TriggerManager(instance);
+                triggerManager.setup();
+                dataCaptureManager = new DataCaptureManager(instance);
+                dataCaptureManager.setup();
+                inspectManager = new InspectManager(instance);
+                inspectManager.setup();
+
+                banManager = new ReflexBanManager();
+
+                //Commands
+                commandHandler = new RCommandHandler(instance);
+                commandHandler.registerCommands(new CmdReflex());
+                commandHandler.registerCommands(new CmdCancel());
+                commandHandler.registerCommands(new CmdInspect());
+                commandHandler.registerCommands(new CmdLookup());
+                commandHandler.registerCommands(new CmdBan());
+                commandHandler.registerCommands(new CmdSettings());
+                commandHandler.registerCommands(new CmdConfig());
+
+                getServer().getPluginManager().registerEvents(new BanListener(), instance);
+
+                Bukkit.getScheduler().runTaskTimer(instance, new Lag(), 1L, 1L);
+                getLogger().info("[Finish] Reflex v" + getDescription().getVersion() + " by Shawckz.");
+            }
+        };
+    }
+
+    @Override
+    public final String authName() {
+        return "Reflex";
     }
 
     public RCommandHandler getCommandHandler() {
