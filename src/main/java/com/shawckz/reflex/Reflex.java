@@ -60,6 +60,8 @@ public class Reflex extends AuthMe {
     private ReflexBanManager banManager;
 
     private RCommandHandler commandHandler;
+    private boolean en = false;
+    private boolean authenticated = false;
 
     public static String getPrefix() {
         return RLang.format(ReflexLang.ALERT_PREFIX);
@@ -73,9 +75,6 @@ public class Reflex extends AuthMe {
     public void onLoad() {
         protocolManager = ProtocolLibrary.getProtocolManager();
     }
-
-    private boolean requestedAuth = false;
-    private boolean en = false;
 
     @Override
     public void onEnable() {
@@ -124,6 +123,7 @@ public class Reflex extends AuthMe {
             @Override
             public void call() {
                 en = true;
+                authenticated = true;
                 reflexConfig = new ReflexConfig(instance);
                 lang = new LanguageConfig(instance);
                 new DBManager(instance);
@@ -179,6 +179,10 @@ public class Reflex extends AuthMe {
     @Override
     public final String authName() {
         return "Reflex";
+    }
+
+    public boolean isAuthenticated() {
+        return authenticated;
     }
 
     public RCommandHandler getCommandHandler() {
