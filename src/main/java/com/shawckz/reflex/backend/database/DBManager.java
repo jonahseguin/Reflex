@@ -8,11 +8,13 @@ import com.mongodb.MongoClient;
 import com.mongodb.MongoCredential;
 import com.mongodb.ServerAddress;
 import com.mongodb.client.MongoDatabase;
+import com.shawckz.reflex.Reflex;
 import com.shawckz.reflex.backend.configuration.Configuration;
 import com.shawckz.reflex.backend.configuration.annotations.ConfigData;
 
 import java.util.Arrays;
 
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 
 
@@ -67,6 +69,21 @@ public class DBManager extends Configuration {
     }
 
     private void setup() {
+        if(host.equals("xxx")) {
+            Bukkit.getLogger().info(" ");
+            Bukkit.getLogger().info("-------------------------------------");
+            Bukkit.getLogger().info("Reflex - v" + Reflex.getInstance().getDescription().getVersion() + " by Shawckz");
+            Bukkit.getLogger().info("https://shawckz.com/product/Reflex");
+            Bukkit.getLogger().info(" ");
+            Bukkit.getLogger().info("Reflex was unable to start because your MongoDB database.yml has not been configured.");
+            Bukkit.getLogger().info("Please stop the server, edit the plugins/Reflex/database.yml to match your MongoDB information, and start the server.");
+            Bukkit.getLogger().info("For more help on setting up MongoDB with Reflex, visit https://shawckz.com/help#reflex-mongo");
+            Bukkit.getLogger().info("Reflex will now disable...");
+            Bukkit.getLogger().info("-------------------------------------");
+            Bukkit.getLogger().info(" ");
+            Bukkit.getServer().getPluginManager().disablePlugin(Reflex.getInstance());
+            return;
+        }
         if (!useAuth) {
             mongoClient = new MongoClient(new ServerAddress(host, port));
         }

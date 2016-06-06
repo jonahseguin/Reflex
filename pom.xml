@@ -80,6 +80,11 @@
             <version>3.6.4</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>io.socket</groupId>
+            <artifactId>socket.io-client</artifactId>
+            <version>LATEST</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -126,6 +131,7 @@
                                     <include>org.mongodb:*</include>
                                     <include>net.techcable.npclib:*</include>
                                     <include>mkremins.fanciful:*</include>
+                                    <include>io.socket:socket.io-client</include>
                                 </includes>
                             </artifactSet>
                         </configuration>

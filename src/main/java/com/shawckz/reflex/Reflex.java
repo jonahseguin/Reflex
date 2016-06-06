@@ -6,9 +6,9 @@ package com.shawckz.reflex;
 
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
-import com.shawckz.auth.ShawXAuth;
-import com.shawckz.auth.auth.AuthCaller;
-import com.shawckz.auth.auth.AuthMe;
+import com.shawckz.reflex.auth.AuthCaller;
+import com.shawckz.reflex.auth.AuthMe;
+import com.shawckz.reflex.auth.ShawXAuth;
 import com.shawckz.reflex.backend.command.RCommandHandler;
 import com.shawckz.reflex.backend.configuration.LanguageConfig;
 import com.shawckz.reflex.backend.configuration.RLang;
@@ -34,7 +34,7 @@ import org.bukkit.entity.Player;
 /**
  *
  * Reflex - AntiCheat for Minecraft Servers
- * http://shawckz.com/project/reflex
+ * https://shawckz.com/product/reflex
  * @author Jonah Seguin (Shawckz)
  * @version 1.0.0 (${project.version})
  * @since 1.0.0

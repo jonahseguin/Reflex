@@ -33,10 +33,10 @@ public class InspectReach extends RInspect {
     private int maxPingToMultiply = 60;
 
     @ConfigData("max-distance")
-    private double maxDistance = 4;
+    private double maxDistance = 6;
 
     @ConfigData("distance-threshold")
-    private double threshold = 5.2;
+    private double threshold = 8;
 
     public InspectReach() {
         super(CheckType.REACH, RCheckType.INSPECT);

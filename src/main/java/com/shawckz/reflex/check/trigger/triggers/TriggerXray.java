@@ -5,6 +5,7 @@
 package com.shawckz.reflex.check.trigger.triggers;
 
 import com.shawckz.reflex.check.base.CheckType;
+import com.shawckz.reflex.check.base.RCheckType;
 import com.shawckz.reflex.check.base.RTimer;
 import com.shawckz.reflex.check.trigger.RTrigger;
 import lombok.Getter;
@@ -14,7 +15,19 @@ import lombok.Setter;
 @Setter
 public class TriggerXray extends RTrigger implements RTimer {
 
+    //TODO
+
     public TriggerXray() {
-        super(CheckType.XRAY, rCheckType);
+        super(CheckType.XRAY, RCheckType.TRIGGER);
+    }
+
+    @Override
+    public void runTimer() {
+
+    }
+
+    @Override
+    public int getCaptureTime() {
+        return 0;
     }
 }

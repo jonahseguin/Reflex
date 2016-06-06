@@ -13,6 +13,7 @@ import com.shawckz.reflex.backend.configuration.RLang;
 import com.shawckz.reflex.backend.configuration.ReflexLang;
 import com.shawckz.reflex.backend.database.mongo.AutoMongo;
 import com.shawckz.reflex.ban.ReflexBan;
+import com.shawckz.reflex.check.base.RViolation;
 import com.shawckz.reflex.check.inspect.RInspectResult;
 import com.shawckz.reflex.player.reflex.ReflexPlayer;
 import com.shawckz.reflex.util.obj.TimeUtil;
@@ -204,6 +205,31 @@ public class CmdLookup implements RCommand {
                     msgBanInfo(sender, ban);
 
                     RLang.send(sender, ReflexLang.HEADER_FOOTER);
+                }
+            }
+        }.runTaskAsynchronously(Reflex.getInstance());
+    }
+
+    @RCmd(name = "reflex lookup violation", usage = "/reflex lookup violation <id>", minArgs = 1, permission = "reflex.lookup.violation",
+            aliases = {"! lookup violation", "rx lookup violation", "rflex lookup violation", "reflex lookup vl", "reflex l vl"}, description = "Lookup details on a violation")
+    public void onCmdLookupViolation(RCmdArgs args) {
+        final CommandSender sender = args.getSender().getCommandSender();
+        final String id = args.getArg(0);
+
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                AutoMongo mongo = RViolation.selectOne(new BasicDBObject("_id", id), RViolation.class);
+
+                if(mongo != null) {
+                    RLang.send(sender, ReflexLang.HEADER_FOOTER);
+
+
+
+                    RLang.send(sender, ReflexLang.HEADER_FOOTER);
+                }
+                else{
+                    RLang.send(sender, ReflexLang.VIOLATION_NOT_FOUND, id);
                 }
             }
         }.runTaskAsynchronously(Reflex.getInstance());

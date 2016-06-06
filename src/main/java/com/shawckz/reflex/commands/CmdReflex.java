@@ -25,7 +25,7 @@ public class CmdReflex implements RCommand {
 
     public static void sendHeader(CommandSender sender) {
         msg(sender, "&7*** &cReflex &7v" + Reflex.getInstance().getDescription().getVersion() + " &7***");
-        msg(sender, "&8Developed by Shawckz - http://shawckz.com/project/reflex");
+        msg(sender, "&8Developed by Shawckz - https://shawckz.com/project/reflex");
     }
 
     private static void msg(CommandSender sender, String msg) {
