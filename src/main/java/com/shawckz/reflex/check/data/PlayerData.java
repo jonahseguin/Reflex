@@ -7,16 +7,22 @@ package com.shawckz.reflex.check.data;
 
 import com.shawckz.reflex.backend.database.mongo.annotations.CollectionName;
 import com.shawckz.reflex.backend.database.mongo.annotations.MongoColumn;
+import com.shawckz.reflex.util.obj.TrigUtils;
 import com.shawckz.reflex.util.utility.ReflexException;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
 
 @Getter
 @Setter
@@ -35,6 +41,10 @@ public class PlayerData extends CheckData {
      */
     @MongoColumn(name = "blocksPerSecond")
     private double blocksPerSecond = 0;
+
+    private double hFreedom = 0;
+
+    private int bhopDelay = 0;
 
     /**
      * NoSwing
@@ -78,7 +88,158 @@ public class PlayerData extends CheckData {
     private int vclipY = -1;
     private Location lastVClipLocation = null;
 
+    /**
+     * Xray
+     */
+    private XrayStats xrayStats = new XrayStats();
 
+    /**
+     * Fly
+     */
+    private long lastGroundtime = -1;
+    private boolean hasPositiveVelocity = false;
+    private double fallingVelocity = -1D;
+    private double fallingVelocityY = -1D;
+    private double lastFallingVelocity = -1D;
+    private double lastFallingVelocityY = -1D;
+
+    public void updateFallingVelocity(double x, double y, double z) {
+        this.lastFallingVelocity = this.fallingVelocity;
+        this.lastFallingVelocityY = this.fallingVelocityY;
+
+        this.fallingVelocity = x + z;
+        this.fallingVelocityY = y;
+
+
+        if(this.lastFallingVelocityY == -1D) {
+            this.lastFallingVelocityY = this.fallingVelocityY;
+        }
+        if(this.lastFallingVelocity == -1D) {
+            this.lastFallingVelocity = this.fallingVelocity;
+        }
+    }
+
+    /**
+     * Phase
+     */
+    private boolean triedPhase = false;
+    private int phaseY = -1;
+    private Location lastPhaseLocation = null;
+    private long lastPhaseTime = -1;
+    private int linkedPhaseAttempts = 0;
+
+    /**
+     * Accuracy
+     */
+    private int hits = 0;
+    private int misses = 0;
+    private long lastHitTime = -1;
+    private long lastMissTime = -1;
+    private int consecutiveHits = 0;
+    private int consecutiveMisses = 0;
+    /**
+     * MorePackets
+     */
+    private int packets = 0;
+
+    /**
+     * Aura
+     */
+    private Player target = null;
+    private Player lastTarget = null;
+
+    /**
+     * Aura Twitch
+     */
+    private float lastYaw = -1;
+
+    /**
+     * Criticals
+     */
+    private double consecutiveCriticalHits = 0;
+    private double lastCriticalY = -1;
+    private double totalCriticalY = 0;
+
+    /**
+     * Smooth Aim
+     */
+    private float aimSpeed = 0F;
+    private float lastAimSpeed = 0F;
+
+    /**
+     * Util methods
+     */
+
+    public boolean underBlock(Location location) {
+        for(Location loc : getLocationsAround(location)) {
+           // Material below = loc.clone().add(0, -1.0D, 0).getBlock().getType();
+            Material above = loc.clone().add(0, 2.2D, 0).getBlock().getType();
+            if(above.isSolid()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    public boolean onType(Location location, Material type) {
+        for(Location loc : getLocationsAround(location)) {
+            Material below = loc.clone().add(0, -1.0D, 0).getBlock().getType();
+            // Material above = loc.clone().add(0, 2.2D, 0).getBlock().getType();
+            if(below.equals(type)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean underType(Location location, Material type) {
+        for(Location loc : getLocationsAround(location)) {
+            //Material below = loc.clone().add(0, -1.0D, 0).getBlock().getType();
+            Material above = loc.clone().add(0, 2.2D, 0).getBlock().getType();
+            if(above.equals(type)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public double getHDistance(Location from, Location to) {
+        return TrigUtils.getDistance(to.getX(), to.getZ(), from.getX(), from.getZ());
+    }
+
+    public Block getBlockUnderPlayer(Player player) {
+        return player.getLocation().getBlock().getLocation().clone().subtract(0, 1, 0).getBlock();
+    }
+
+    public boolean isOnGround(Location location) {
+        for(Location loc : getLocationsAround(location)) {
+            Material below = loc.clone().add(0, -1.0D, 0).getBlock().getType();
+            //Material above = loc.clone().add(0, 2.2D, 0).getBlock().getType();
+            if(below.isSolid()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    //Including the location you pass
+    public List<Location> getLocationsAround(Location location) {
+        List<Location> locations = new ArrayList<>();
+        for (double x = -0.3D; x <= 0.3D; x += 0.3D) {
+            for (double z = -0.3D; z <= 0.3D; z += 0.3D) {
+                locations.add(location.clone().add(x, 0, z));
+            }
+        }
+
+        locations.add(location);
+
+        return locations;
+    }
+
+    /**
+     * Clone this object
+     */
     public PlayerData copy() {
         PlayerData playerData = new PlayerData();
         playerData.load(getData());

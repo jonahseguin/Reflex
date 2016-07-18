@@ -30,7 +30,7 @@ public class CheckHeadRoll extends RTrigger {
                 ReflexPlayer ap = Reflex.getInstance().getCache().getReflexPlayer(p);
                 if (event.getPacketType() == PacketType.Play.Client.LOOK) {
                     float pitch = event.getPacket().getFloat().readSafely(1);
-                    if (pitch > 90.1F || pitch < -90.1F) {
+                    if (pitch > 90.1F || pitch < -90.1F) { //.1 because sometimes head can glitch when spinning fast
                         if (fail(ap).isCancelled()) {
                             event.setCancelled(true);
                         }

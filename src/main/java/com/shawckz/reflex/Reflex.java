@@ -24,9 +24,12 @@ import com.shawckz.reflex.check.inspect.InspectManager;
 import com.shawckz.reflex.check.trigger.TriggerManager;
 import com.shawckz.reflex.commands.*;
 import com.shawckz.reflex.listener.BanListener;
+import com.shawckz.reflex.listener.PacketListener;
 import com.shawckz.reflex.player.cache.CachePlayer;
 import com.shawckz.reflex.player.reflex.ReflexCache;
 import com.shawckz.reflex.util.obj.Lag;
+import com.shawckz.reflex.util.utility.ReflexException;
+import ninja.amp.ampmenus.MenuListener;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -41,6 +44,8 @@ import org.bukkit.entity.Player;
  *
  */
 public class Reflex extends AuthMe {
+
+    public static boolean couldStart = true;
 
     private static Reflex instance;
 
@@ -78,7 +83,6 @@ public class Reflex extends AuthMe {
 
     @Override
     public void onEnable() {
-
         getLogger().info("[Start] Starting Reflex v" + getDescription().getVersion());
         instance = this;
 
@@ -119,6 +123,7 @@ public class Reflex extends AuthMe {
 
     @Override
     public final AuthCaller auth(ShawXAuth autheer) {
+        if(autheer == null) throw new ReflexException("Invalid autheer");
         return new AuthCaller() {
             @Override
             public void call() {
@@ -169,6 +174,10 @@ public class Reflex extends AuthMe {
                 commandHandler.registerCommands(new CmdConfig());
 
                 getServer().getPluginManager().registerEvents(new BanListener(), instance);
+
+                MenuListener.getInstance().register(instance);
+
+                new PacketListener(instance);
 
                 Bukkit.getScheduler().runTaskTimer(instance, new Lag(), 1L, 1L);
                 getLogger().info("[Finish] Reflex v" + getDescription().getVersion() + " by Shawckz.");

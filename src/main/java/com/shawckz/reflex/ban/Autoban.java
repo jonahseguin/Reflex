@@ -9,7 +9,7 @@ import com.shawckz.reflex.backend.configuration.RLang;
 import com.shawckz.reflex.backend.configuration.ReflexLang;
 import com.shawckz.reflex.check.base.CheckType;
 import com.shawckz.reflex.check.base.RViolation;
-import com.shawckz.reflex.event.ReflexBanEvent;
+import com.shawckz.reflex.event.api.ReflexBanEvent;
 import com.shawckz.reflex.player.reflex.ReflexPlayer;
 import com.shawckz.reflex.util.obj.Alert;
 import com.shawckz.reflex.util.obj.AutobanMethod;

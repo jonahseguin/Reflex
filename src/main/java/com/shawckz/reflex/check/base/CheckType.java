@@ -16,29 +16,32 @@ import org.apache.commons.lang.StringUtils;
 public enum CheckType {
 
     /* DONE */
-    VCLIP("VCip", true, DataVClip.class),
+    VCLIP("VClip", true, DataVClip.class),
     AUTO_CLICK("AutoClick", true, DataAutoClick.class),
     REGEN(true, DataRegen.class),
     HEAD_ROLL("HeadRoll", null),
     TAB_COMPLETE("TabComplete", null),
     FAST_BOW("FastBow", false, null),
-    SPEED(true, DataSpeed.class),
+    SPEED(false, null),
     REACH(true, DataReach.class),
+    AURA(false, null),
+    XRAY(null),
+    FLY(true, DataFly.class),
+    AURA_TWITCH("AuraTwitch", false, null),
+    ACCURACY(false, null),
+    MORE_PACKETS("MorePackets", false, null),
+    PHASE(null),
+    CRITICALS(null),
+    SMOOTH_AIM("SmoothAim", null),
 
     /* TODO */
 
     //ones i want to do..
-    XRAY(null),
-    FLY(null),
     TRIGGER_BOT("TriggerBot", null),
-    AURA(false, null),
-    AURA_TWITCH("AuraTwitch", false, null),
 
     //other ones...
     ANTI_KNOCKBACK("AntiKnockback", null),
-    CRITICALS(null),
     NO_SLOW_DOWN("NoSlowDown", null),
-    PHASE(null),
     BAD_PACKETS("BadPackets", null),
     BED_FLY("BedFly", null),
     ANGLE(null),

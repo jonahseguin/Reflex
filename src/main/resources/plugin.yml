@@ -1,3 +1,6 @@
+###
+### Copyright (c) Jonah Seguin (Shawckz) 2016.  You may not copy, re-sell, distribute, modify, or use any code contained in this document or file, collection of documents or files, or project.  Thank you.
+###
 name: Reflex
 main: com.shawckz.reflex.Reflex
 version: ${project.version}
@@ -5,3 +8,62 @@ authors: [Shawckz]
 website: https://shawckz.com/product/Reflex
 depend: [ProtocolLib]
 description: Reflex Anti-Cheat by Shawckz | https://shawckz.com
+
+#Commands are defined automatically from within the plugin
+
+permissions:
+  reflex.*:
+    description: All Reflex commands
+    children:
+      reflex.cancel: true
+      reflex.alerts: true
+      reflex.use: true
+      reflex.lookup.player: true
+      reflex.lookup.inspection: true
+      reflex.lookup.violation: true
+      reflex.lookup.ban: true
+      reflex.unban: true
+      reflex.confirmban: true
+      reflex.settings: true
+      reflex.config.load: true
+      reflex.config.set: true
+      reflex.inspect: true
+  reflex.alerts:
+    description: Toggle alerts
+    default: op
+  reflex.use:
+      description: View alerts, use base Reflex commands
+      default: op
+  reflex.lookup.player:
+      description: Lookup a player
+      default: op
+  reflex.lookup.inspection:
+      description: Lookup an inspection
+      default: op
+  reflex.lookup.violation:
+      description: Lookup a violation
+      default: op
+  reflex.lookup.ban:
+      description: Lookup a ban
+      default: op
+  reflex.unban:
+      description: Unban a player banned by Reflex
+      default: op
+  reflex.confirmban:
+      description: Confirm a ban made by Reflex
+      default: op
+  reflex.settings:
+      description: Modify Reflex settings
+      default: op
+  reflex.config.load:
+      description: Re-load the Reflex config
+      default: op
+  reflex.config.set:
+      description: Set a value in the Reflex config
+      default: op
+  reflex.cancel:
+      description: Cancel an autoban
+      default: op
+  reflex.inspect:
+      description: Manually inspect a player for a check
+      default: op

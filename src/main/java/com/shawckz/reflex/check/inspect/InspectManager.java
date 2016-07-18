@@ -13,6 +13,7 @@ import com.shawckz.reflex.check.data.CheckData;
 import com.shawckz.reflex.check.inspect.inspectors.*;
 import com.shawckz.reflex.player.reflex.ReflexPlayer;
 import com.shawckz.reflex.util.obj.Alert;
+import com.shawckz.reflex.util.utility.ReflexException;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -35,7 +36,7 @@ public class InspectManager {
         register(new InspectVClip());
         register(new InspectRegen());
         register(new InspectReach());
-        register(new InspectSpeed());
+        register(new InspectFly());
 
         inspectors.values().stream().forEach(RInspect::setupConfig);
     }
@@ -78,6 +79,9 @@ public class InspectManager {
                 }
             }
         }
+        else if (resultType == RInspectResultType.FAILED && Reflex.getInstance().getAutobanManager().hasAutoban(player.getName())) {
+            throw new ReflexException("Should not fail check while having an autoban");
+        }
         else if (resultType == RInspectResultType.PASSED) {
             violation = new RViolation(player.getUniqueId(), data, checkType, RCheckType.INSPECT);
             Reflex.getInstance().getViolationCache().cacheViolation(violation);
@@ -89,8 +93,13 @@ public class InspectManager {
                 }
             }
         }
+        else{
+            throw new ReflexException("Unknown action (ResultType) for inspectInternal: " + resultType.toString());
+        }
 
-        final RInspectResult result = new RInspectResult(resultData, violation, dataPeriod);
+        final RViolation finalViolation = violation;
+
+        final RInspectResult result = new RInspectResult(resultData, finalViolation, dataPeriod);
 
         if (alert != null) {
             if (alert.getType() == Alert.Type.INSPECT_FAIL || alert.getType() == Alert.Type.INSPECT_PASS) {
@@ -100,16 +109,13 @@ public class InspectManager {
             alert.sendAlert();
         }
 
-        final RViolation finalViolation = violation;
 
         new BukkitRunnable() {
             @Override
             public void run() {
                 data.update();
-                if (finalViolation != null) {
-                    finalViolation.update();
-                }
                 result.update();
+                finalViolation.update();
             }
         }.runTaskAsynchronously(Reflex.getInstance());
         return result;

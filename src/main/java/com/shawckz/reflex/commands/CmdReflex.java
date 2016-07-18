@@ -13,6 +13,7 @@ import com.shawckz.reflex.backend.configuration.RLang;
 import com.shawckz.reflex.backend.configuration.ReflexLang;
 import com.shawckz.reflex.backend.configuration.ReflexPerm;
 import com.shawckz.reflex.check.trigger.RTrigger;
+import com.shawckz.reflex.player.reflex.ReflexPlayer;
 import com.shawckz.reflex.util.obj.Lag;
 import mkremins.fanciful.FancyMessage;
 import net.md_5.bungee.api.ChatColor;
@@ -20,12 +21,13 @@ import net.md_5.bungee.api.ChatColor;
 import java.util.Arrays;
 
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 public class CmdReflex implements RCommand {
 
     public static void sendHeader(CommandSender sender) {
         msg(sender, "&7*** &cReflex &7v" + Reflex.getInstance().getDescription().getVersion() + " &7***");
-        msg(sender, "&8Developed by Shawckz - https://shawckz.com/project/reflex");
+        msg(sender, "&8Developed by Shawckz - https://shawckz.com/product/reflex");
     }
 
     private static void msg(CommandSender sender, String msg) {
@@ -34,6 +36,37 @@ public class CmdReflex implements RCommand {
 
     private static void msg(CommandSender sender, FancyMessage msg) {
         msg.send(sender);
+    }
+
+    @RCmd(name = "alerts", usage = "/alerts [on|off]", description = "Toggle alerts on or off", permission = "reflex.alerts", playerOnly = true)
+    public void onCmdAlerts(RCmdArgs args) {
+        Player p = args.getSender().getPlayer();
+        ReflexPlayer rp = Reflex.getInstance().getCache().getReflexPlayer(p);
+
+        boolean toSet = !rp.isAlertsEnabled();
+
+        if(args.getArgs().length > 0) {
+            String s = args.getArg(0);
+            if(s.equalsIgnoreCase("on")) {
+                toSet = true;
+            }
+            else if (s.equalsIgnoreCase("off")) {
+                toSet = false;
+            }
+            else{
+                p.sendMessage(ChatColor.RED + "Incorrect usage: Argument 1 must be 'on' or 'off'.");
+                return;
+            }
+        }
+
+        rp.setAlertsEnabled(toSet);
+        if(toSet) {
+            RLang.send(p, ReflexLang.ALERTS_ENABLED);
+        }
+        else{
+            RLang.send(p, ReflexLang.ALERTS_DISABLED);
+        }
+
     }
 
     @RCmd(name = "reflex", aliases = {"!", "reflex", "rx", "rflex"}, usage = "/reflex", description = "Reflex commands and info")
@@ -109,8 +142,11 @@ public class CmdReflex implements RCommand {
         msg(sender, " ");
         msg(sender, "&7TPS: &9" + Lag.getTPS() + " &8(" + Math.round(Lag.getLagPerecentage()) + "% lag)");
         sendChecksEnabled(sender);
+        msg(sender, " ");
         sendChecksCancel(sender);
+        msg(sender, " ");
         sendChecksAutoban(sender);
+        msg(sender, " ");
         sendChecksFreeze(sender);
 
         RLang.send(sender, ReflexLang.HEADER_FOOTER);

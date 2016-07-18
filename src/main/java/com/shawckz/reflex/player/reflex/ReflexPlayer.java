@@ -38,6 +38,8 @@ public class ReflexPlayer extends CachePlayer {
     //Non-persistent...
     private Map<String, Integer> vl = new HashMap<>();
 
+    private Map<String, Integer> alertVL = new HashMap<>(); //VL before alert...
+
     private final PlayerData data = new PlayerData();
 
     private final RCapturePlayer capturePlayer = new RCapturePlayer(this);
@@ -72,6 +74,44 @@ public class ReflexPlayer extends CachePlayer {
             vl.put(checkType.getName(), 0);
         }
         return vl.get(checkType.getName());
+    }
+
+    public void modifyVL(CheckType checkType, int change) {
+        int vl = getVL(checkType);
+        vl += change;
+        if(vl < 0) {
+            vl = 0;
+        }
+        this.vl.put(checkType.getName(), vl);
+    }
+
+    public void setVL(CheckType checkType, int val) {
+        this.vl.put(checkType.getName(), val);
+    }
+
+    public void addAlertVL(CheckType checkType) {
+        int vl = getAlertVL(checkType);
+        this.alertVL.put(checkType.getName(), (vl + 1));
+    }
+
+    public void modifyAlertVL(CheckType checkType, int change) {
+        int vl = getAlertVL(checkType);
+        vl += change;
+        if(vl < 0) {
+            vl = 0;
+        }
+        this.alertVL.put(checkType.getName(), vl);
+    }
+
+    public void setAlertVL(CheckType checkType, int val) {
+        this.alertVL.put(checkType.getName(), val);
+    }
+
+    public int getAlertVL(CheckType checkType) {
+        if (!alertVL.containsKey(checkType.getName())) {
+            alertVL.put(checkType.getName(), 0);
+        }
+        return alertVL.get(checkType.getName());
     }
 
 }

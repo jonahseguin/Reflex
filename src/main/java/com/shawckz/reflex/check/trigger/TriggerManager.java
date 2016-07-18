@@ -7,8 +7,7 @@ package com.shawckz.reflex.check.trigger;
 import com.shawckz.reflex.Reflex;
 import com.shawckz.reflex.check.base.CheckType;
 import com.shawckz.reflex.check.base.RTimer;
-import com.shawckz.reflex.check.trigger.simple.CheckHeadRoll;
-import com.shawckz.reflex.check.trigger.simple.CheckTabComplete;
+import com.shawckz.reflex.check.trigger.simple.*;
 import com.shawckz.reflex.check.trigger.triggers.*;
 import com.shawckz.reflex.util.utility.ReflexException;
 
@@ -30,11 +29,19 @@ public class TriggerManager {
         register(new TriggerVClip());
         register(new TriggerRegen());
         register(new TriggerReach());
-        register(new TriggerSpeed());
+        register(new TriggerFly());
+        register(new TriggerPhase());
+    //    register(new TriggerCriticals());
 
         //Simple checks
+        register(new CheckSpeed());
         register(new CheckHeadRoll());
         register(new CheckTabComplete());
+        register(new CheckXray());
+        register(new CheckNoSwing());
+        register(new CheckMorePackets());
+        register(new CheckAuraTwitch());
+        register(new CheckAccuracy());
 
         triggers.values().stream().forEach(RTrigger::setupConfig);
     }

@@ -33,6 +33,9 @@ public abstract class RTrigger extends Check {
     @ConfigData("autoban")
     private boolean autoban = true;
 
+    @ConfigData("simple-check-autoban-vl")
+    private int simpleAutobanVL = 3;
+
     public RTrigger(CheckType checkType, RCheckType rCheckType) {
         super(checkType, rCheckType);
     }
@@ -65,9 +68,14 @@ public abstract class RTrigger extends Check {
 
     public final RTriggerResult trigger(ReflexPlayer player) {
         if (!getCheckType().isCapture()) {
-            RInspectResult inspectResult = Reflex.getInstance().getInspectManager().inspect(player, getCheckType(), player.getData().copy(), 1);
-            handleInspect(player, inspectResult, false);
-            return new RTriggerResult(this.cancel && inspectResult.getData().getType() == RInspectResultType.FAILED, this.cancel);
+            if (!Reflex.getInstance().getAutobanManager().hasAutoban(player.getName())) {
+                RInspectResult inspectResult = Reflex.getInstance().getInspectManager().inspect(player, getCheckType(), player.getData().copy(), 1);
+                handleInspect(player, inspectResult, false);
+                return new RTriggerResult(this.cancel && inspectResult.getData().getType() == RInspectResultType.FAILED, this.cancel);
+            }
+            else{
+                return new RTriggerResult(false, this.cancel);
+            }
         }
         else {
             throw new ReflexException("This trigger must call triggerLater instead of trigger (" + getCheckType().getName() + ")");
@@ -114,7 +122,6 @@ public abstract class RTrigger extends Check {
             return new SimpleCheckResult(false, null);
         }
 
-
         String d = null;
         if (detail != null && detail.length > 0) {
             d = detail[0];
@@ -125,11 +132,20 @@ public abstract class RTrigger extends Check {
 
         player.addVL(getCheckType());
 
-        Alert alert = new Alert(player, getCheckType(), Alert.Type.FAIL, violation, player.getVL(getCheckType()));
-        if (d != null) {
-            alert.setDetail(d);
+        if(!Reflex.getInstance().getAutobanManager().hasAutoban(player.getName())) {
+            Alert alert = new Alert(player, getCheckType(), Alert.Type.FAIL, violation, player.getVL(getCheckType()));
+            if (d != null) {
+                alert.setDetail(d);
+            }
+            alert.sendAlert();
+
+            //Assuming this is a simple check due to the fact that the method called was #fail
+            if(player.getVL(getCheckType()) >= simpleAutobanVL && isAutoban()) {
+                Autoban autoban = new Autoban(player, Reflex.getInstance().getReflexConfig().getAutobanTime(), getCheckType(), violation);
+                Reflex.getInstance().getAutobanManager().putAutoban(autoban);
+                autoban.run();
+            }
         }
-        alert.sendAlert();
 
         return new SimpleCheckResult(cancel, violation);
     }

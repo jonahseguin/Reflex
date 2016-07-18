@@ -41,7 +41,10 @@ public class ReflexCache extends AbstractCache {
 
     //See superclass for documentation
     public ReflexPlayer getReflexPlayer(Player p) {
-        return getReflexPlayer(p.getName());
+        if(p != null) {
+            return getReflexPlayer(p.getName());
+        }
+        return null;
     }
 
     @Override

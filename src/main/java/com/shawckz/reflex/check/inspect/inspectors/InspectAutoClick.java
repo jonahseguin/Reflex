@@ -66,19 +66,19 @@ public class InspectAutoClick extends RInspect {
                         double tpsOffset = difference(data.getTps(), idealTps);
                         if (pingOffset <= pingThreshold && tpsOffset <= tpsThreshold) {
                             if (averageCps >= maxClicksPerSecond) {
-                                return new RInspectResultData(RInspectResultType.FAILED, "average " + averageCps + " cps");
+                                return new RInspectResultData(RInspectResultType.FAILED, "average " + Math.round(averageCps) + " cps");
                             }
                         }
                     }
                     else {
                         if (averageCps >= maxClicksPerSecond) {
-                            return new RInspectResultData(RInspectResultType.FAILED, "average " + averageCps + " cps");
+                            return new RInspectResultData(RInspectResultType.FAILED, "average " + Math.round(averageCps) + " cps");
                         }
                     }
                 }
             }
 
-            return new RInspectResultData(RInspectResultType.PASSED, "average " + averageCps + " cps");
+            return new RInspectResultData(RInspectResultType.PASSED, "average " + Math.round(averageCps) + " cps");
 
         }
         else {

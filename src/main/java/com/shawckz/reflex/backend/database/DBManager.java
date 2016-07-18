@@ -6,6 +6,7 @@ package com.shawckz.reflex.backend.database;
 
 import com.mongodb.MongoClient;
 import com.mongodb.MongoCredential;
+import com.mongodb.MongoException;
 import com.mongodb.ServerAddress;
 import com.mongodb.client.MongoDatabase;
 import com.shawckz.reflex.Reflex;
@@ -82,15 +83,34 @@ public class DBManager extends Configuration {
             Bukkit.getLogger().info("-------------------------------------");
             Bukkit.getLogger().info(" ");
             Bukkit.getServer().getPluginManager().disablePlugin(Reflex.getInstance());
+            Reflex.couldStart = false;
             return;
         }
-        if (!useAuth) {
-            mongoClient = new MongoClient(new ServerAddress(host, port));
+        try {
+            if (!useAuth) {
+                mongoClient = new MongoClient(new ServerAddress(host, port));
+            }
+            else {
+                MongoCredential credential = MongoCredential.createCredential(username, authDatabaseName, password.toCharArray());
+                mongoClient = new MongoClient(new ServerAddress(host, port), Arrays.asList(credential));
+            }
+            db = mongoClient.getDatabase(databaseName);
         }
-        else {
-            MongoCredential credential = MongoCredential.createCredential(username, authDatabaseName, password.toCharArray());
-            mongoClient = new MongoClient(new ServerAddress(host, port), Arrays.asList(credential));
+        catch (MongoException ex) {
+            Bukkit.getLogger().info(" ");
+            Bukkit.getLogger().info("-------------------------------------");
+            Bukkit.getLogger().info("Reflex - v" + Reflex.getInstance().getDescription().getVersion() + " by Shawckz");
+            Bukkit.getLogger().info("https://shawckz.com/product/Reflex");
+            Bukkit.getLogger().info(" ");
+            Bukkit.getLogger().info("Reflex was unable to start because MongoDB was unable to connect.");
+            Bukkit.getLogger().info("Ensure that your MongoDB server is properly configured, and that your database.yml matches those settings.");
+            Bukkit.getLogger().info("For more help on setting up MongoDB with Reflex, visit https://shawckz.com/help#reflex-mongo");
+            Bukkit.getLogger().info("[ERROR]: " + ex.getMessage());
+            Bukkit.getLogger().info("Reflex will now disable...");
+            Bukkit.getLogger().info("-------------------------------------");
+            Bukkit.getLogger().info(" ");
+            Bukkit.getServer().getPluginManager().disablePlugin(Reflex.getInstance());
+            Reflex.couldStart = false;
         }
-        db = mongoClient.getDatabase(databaseName);
     }
 }

@@ -28,6 +28,10 @@ public class ReflexTimer implements Runnable {
         timers.add(timer);
     }
 
+    public boolean hasTimer(RTimer timer) {
+        return timers.contains(timer);
+    }
+
     public void unregisterTimer(RTimer timer) {
         timers.remove(timer);
     }
@@ -43,7 +47,15 @@ public class ReflexTimer implements Runnable {
      */
     public void run() {
         for (RTimer timer : timers) {
-            timer.runTimer();
+            if(timer instanceof Check) {
+                Check check = (Check) timer;
+                if(check.isEnabled()) {
+                    timer.runTimer();
+                }
+            }
+            else{
+                timer.runTimer();
+            }
         }
         for (Player pl : Bukkit.getOnlinePlayers()) {
             Reflex.getInstance().getCache().getReflexPlayer(pl).getData().setTps(Lag.getTPS());
@@ -55,9 +67,11 @@ public class ReflexTimer implements Runnable {
     }
 
     private void updatePingAndLag(ReflexPlayer player, RDataCapture check) {
-        if (check.isCapturing(player.getBukkitPlayer())) {
-            player.getCapturePlayer().getData(check.getCheckType()).setPing(((CraftPlayer) player.getBukkitPlayer()).getHandle().ping);
-            player.getCapturePlayer().getData(check.getCheckType()).setTps(Lag.getTPS());
+        if(player != null && player.getBukkitPlayer() != null) {
+            if (check.isCapturing(player.getBukkitPlayer())) {
+                player.getCapturePlayer().getData(check.getCheckType()).setPing(((CraftPlayer) player.getBukkitPlayer()).getHandle().ping);
+                player.getCapturePlayer().getData(check.getCheckType()).setTps(Lag.getTPS());
+            }
         }
     }
 

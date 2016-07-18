@@ -23,7 +23,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public class CmdInspect implements RCommand {
 
-    @RCmd(name = "reflex inspect", usage = "/reflex inspect <player> <check> <seconds>", minArgs = 3, permission = "reflex.use", aliases = {"! inspect", "reflex inspect", "rx inspect", "rflex inspect"},
+    @RCmd(name = "reflex inspect", usage = "/reflex inspect <player> <check> <seconds>", minArgs = 3, permission = "reflex.inspect", aliases = {"! inspect", "reflex inspect", "rx inspect", "rflex inspect"},
             description = "Start an inspection on a player")
     public void onCmdInspect(RCmdArgs args) {
         final CommandSender sender = args.getSender().getCommandSender();

@@ -7,7 +7,8 @@ package com.shawckz.reflex.auth;
 public enum XAuthEvent {
 
     AUTHORIZE_RESULT("auth:result"),
-    AUTHORIZE_REQUEST("auth:request")
+    AUTHORIZE_REQUEST("auth:request"),
+    CANCEL("product:cancel")
 
     ;
 

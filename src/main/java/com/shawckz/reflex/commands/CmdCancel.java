@@ -19,7 +19,7 @@ import org.bukkit.entity.Player;
 
 public class CmdCancel implements RCommand {
 
-    @RCmd(name = "reflex cancel", usage = "/cancel <player>", minArgs = 1, permission = "reflex.use", aliases = {"! cancel", "reflex cancel", "rx cancel", "rflex cancel", "cancel"}, description = "Cancel an autoban on a player")
+    @RCmd(name = "reflex cancel", usage = "/cancel <player>", minArgs = 1, permission = "reflex.cancel", aliases = {"! cancel", "reflex cancel", "rx cancel", "rflex cancel", "cancel"}, description = "Cancel an autoban on a player")
     public void onCmdCancel(RCmdArgs args) {
         CommandSender sender = args.getSender().getCommandSender();
 

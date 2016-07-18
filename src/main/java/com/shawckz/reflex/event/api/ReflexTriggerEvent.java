@@ -2,13 +2,13 @@
  * Copyright (c) Jonah Seguin (Shawckz) 2016.  You may not copy, re-sell, distribute, modify, or use any code contained in this document or file, collection of documents or files, or project.  Thank you.
  */
 
-package com.shawckz.reflex.event;
+package com.shawckz.reflex.event.api;
 
 import com.shawckz.reflex.check.base.CheckType;
 import com.shawckz.reflex.check.trigger.RTrigger;
 import com.shawckz.reflex.player.reflex.ReflexPlayer;
 
-public class ReflexTriggerEvent extends ReflexEvent {
+public class ReflexTriggerEvent extends ReflexAPIEvent {
 
     private final RTrigger trigger;
     private final ReflexPlayer player;

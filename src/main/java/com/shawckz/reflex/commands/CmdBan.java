@@ -11,8 +11,8 @@ import com.shawckz.reflex.backend.command.RCommand;
 import com.shawckz.reflex.backend.configuration.RLang;
 import com.shawckz.reflex.backend.configuration.ReflexLang;
 import com.shawckz.reflex.ban.ReflexBan;
-import com.shawckz.reflex.event.ReflexConfirmBanEvent;
-import com.shawckz.reflex.event.ReflexUnbanEvent;
+import com.shawckz.reflex.event.api.ReflexConfirmBanEvent;
+import com.shawckz.reflex.event.api.ReflexUnbanEvent;
 import com.shawckz.reflex.player.reflex.ReflexPlayer;
 import com.shawckz.reflex.util.obj.Alert;
 

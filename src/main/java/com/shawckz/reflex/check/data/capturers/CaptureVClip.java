@@ -57,13 +57,28 @@ public class CaptureVClip extends RDataCapture {
         if (Math.round(distance.getYDifference()) < 2) {
             return;
         }
-        for (int i = 0; i < Math.round(distance.getYDifference()) + 1; i++) {
-            Block block = new Location(pl.getWorld(), pl.getLocation().getX(), to + i, pl.getLocation().getZ()).getBlock();
-            if ((block.getType() != Material.AIR) && (block.getType().isSolid())) {
-                getData(p).setTriedVClip(true);
-                getData(p).setVclipY(e.getTo().getBlockY());
-                getData(p).setLastVClipLocation(e.getFrom());
-                break;
+        if(e.getTo().getBlockY() < e.getFrom().getBlockY()) {
+            //VClip down
+            for (int i = 0; i < Math.round(distance.getYDifference()) + 1; i++) {
+                Block block = new Location(pl.getWorld(), pl.getLocation().getX(), to + i, pl.getLocation().getZ()).getBlock();
+                if ((block.getType() != Material.AIR) && (block.getType().isSolid())) {
+                    getData(p).setTriedVClip(true);
+                    getData(p).setVclipY(e.getTo().getBlockY());
+                    getData(p).setLastVClipLocation(e.getFrom());
+                    break;
+                }
+            }
+        }
+        else{
+            //VClip up
+            for (int i = 0; i < Math.round(distance.getYDifference()) + 1; i++) {
+                Block block = new Location(pl.getWorld(), pl.getLocation().getX(), to - i, pl.getLocation().getZ()).getBlock();
+                if ((block.getType() != Material.AIR) && (block.getType().isSolid())) {
+                    getData(p).setTriedVClip(true);
+                    getData(p).setVclipY(e.getTo().getBlockY());
+                    getData(p).setLastVClipLocation(e.getFrom());
+                    break;
+                }
             }
         }
     }

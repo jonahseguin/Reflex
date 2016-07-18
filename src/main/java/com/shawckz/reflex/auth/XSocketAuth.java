@@ -8,6 +8,7 @@ import com.shawckz.reflex.Reflex;
 import com.shawckz.reflex.auth.listen.XListenAuth;
 import io.socket.client.IO;
 import io.socket.client.Socket;
+import io.socket.emitter.Emitter;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -43,9 +44,6 @@ public class XSocketAuth {
         ShawXAuth.log("Attempting to connect to authentication service...");
         try {
             socket = IO.socket(uri).connect();
-            while(!socket.connected()) {}
-            ShawXAuth.log("Connection successful, waiting for response");
-
             new BukkitRunnable(){
                 @Override
                 public void run() {
@@ -54,6 +52,8 @@ public class XSocketAuth {
                     }
                 }
             }.runTaskLater(Reflex.getInstance(), (20 * 30));
+            while(!socket.connected()) {}
+            ShawXAuth.log("Connection successful, waiting for response");
 
         }
         catch (Exception ex){
@@ -93,6 +93,28 @@ public class XSocketAuth {
                     }
                 }
             });*/
+
+            socket.on(XAuthEvent.CANCEL.getName(), new Emitter.Listener() {
+                @Override
+                public void call(Object... objects) {
+                    if (objects != null && objects.length > 0) {
+                        String result = (String) objects[0];
+                        if(result.equalsIgnoreCase(ShawXAuth.getKey())) {
+                            Bukkit.getLogger().info(" ");
+                            Bukkit.getLogger().info("-------------------------------------");
+                            Bukkit.getLogger().info("Reflex - v" + Reflex.getInstance().getDescription().getVersion() + " by Shawckz");
+                            Bukkit.getLogger().info("https://shawckz.com/product/Reflex");
+                            Bukkit.getLogger().info(" ");
+                            Bukkit.getLogger().info("AUTHENTICATION FAILURE - Reflex is not authorized to run on this server!");
+                            Bukkit.getLogger().info(" ");
+                            Bukkit.getLogger().info("The authentication key you have selected to use on this server has been cancelled or suspended.");
+                           Bukkit.getLogger().info("-------------------------------------");
+                            Bukkit.getLogger().info(" ");
+                        }
+                    }
+                }
+            });
+
         }
         catch (JSONException ex) {
             error("x0.1-1 Exception while authenticating");

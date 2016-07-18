@@ -29,7 +29,7 @@ public class DataCaptureManager {
         register(new CaptureVClip());
         register(new CaptureRegen());
         register(new CaptureReach());
-        register(new CaptureSpeed());
+        register(new CaptureFly());
 
         dataCaptures.values().stream().forEach(RDataCapture::setupConfig);
     }

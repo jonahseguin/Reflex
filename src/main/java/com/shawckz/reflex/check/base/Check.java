@@ -18,9 +18,6 @@ public abstract class Check extends CheckConfig implements Listener {
 
     @ConfigData("enabled")
     private boolean enabled = true;
-
-    private boolean registered = false;
-
     public Check(CheckType checkType, RCheckType rCheckType) {
         super(checkType, rCheckType);
         this.checkType = checkType;
@@ -28,14 +25,11 @@ public abstract class Check extends CheckConfig implements Listener {
     }
 
     public final void setEnabled(final boolean enabled) {
-        if (!registered || enabled != this.enabled) {
-            if (enabled) {
-                Bukkit.getServer().getPluginManager().registerEvents(this, Reflex.getInstance());
-            }
-            else {
-                HandlerList.unregisterAll(this);
-            }
-            registered = true;
+        if (enabled) {
+            Bukkit.getServer().getPluginManager().registerEvents(this, Reflex.getInstance());
+        }
+        else {
+            HandlerList.unregisterAll(this);
         }
         this.enabled = enabled;
     }

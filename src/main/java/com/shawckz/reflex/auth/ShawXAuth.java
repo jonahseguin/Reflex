@@ -95,6 +95,7 @@ public class ShawXAuth extends Configuration {
                             @Override
                             public void run() {
                                 Bukkit.getServer().getPluginManager().disablePlugin(me);
+                                Reflex.couldStart = false;
                             }
                         }.runTask(Reflex.getInstance());
                     }
