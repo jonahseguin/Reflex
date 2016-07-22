@@ -3,7 +3,7 @@
 ###
 name: Reflex
 main: com.shawckz.reflex.Reflex
-version: 1.0.0-BETA (MC1.7.10)
+version: ${project.version} (MC1.7.10)
 authors: [Shawckz]
 website: https://shawckz.com/product/Reflex
 depend: [ProtocolLib]

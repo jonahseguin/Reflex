@@ -6,16 +6,16 @@
 
     <groupId>com.shawckz.reflex</groupId>
     <artifactId>Reflex</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1BETA-${maven.build.timestamp}</version>
+
+    <properties>
+        <maven.build.timestamp.format>MM-dd-yyyy</maven.build.timestamp.format>
+    </properties>
 
     <repositories>
         <repository>
             <id>spigot-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
-        </repository>
-        <repository>
-            <id>techcable-repo</id>
-            <url>http://repo.techcable.net/content/groups/public/</url>
         </repository>
         <repository>
             <id>stealthyone-repo</id>
@@ -30,31 +30,20 @@
             <url>http://repo.greatmancode.com/content/groups/public/</url>
         </repository>
     </repositories>
+
     <dependencies>
-        <dependency>
-            <groupId>mkremins</groupId>
-            <artifactId>fanciful</artifactId>
-            <version>0.3.5-SNAPSHOT</version>
-        </dependency>
-        <!--Spigot-API-->
+        <!-- PROVIDED -->
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
             <version>1.8.3-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
-        <!--Bukkit API-->
         <dependency>
             <groupId>org.bukkit</groupId>
             <artifactId>bukkit</artifactId>
             <version>1.8.3-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.mongodb</groupId>
-            <artifactId>mongodb-driver</artifactId>
-            <version>3.0.0</version>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -63,26 +52,46 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>net.techcable</groupId>
-            <artifactId>npclib</artifactId>
-            <version>LATEST</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
             <groupId>com.comphenix.protocol</groupId>
             <artifactId>ProtocolLib</artifactId>
             <version>3.6.4</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>io.socket</groupId>
-            <artifactId>socket.io-client</artifactId>
-            <version>LATEST</version>
+            <groupId>org.spigot</groupId>
+            <artifactId>SpigotServer</artifactId>
+            <version>1.7.10</version>
+            <scope>provided</scope>
         </dependency>
+
+        <!-- COMPILE -->
         <dependency>
             <groupId>ninja.amp</groupId>
             <artifactId>ampmenus</artifactId>
             <version>1.4-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.socket</groupId>
+            <artifactId>socket.io-client</artifactId>
+            <version>LATEST</version>
+            <scope>compile</scope>
+        </dependency>
+      <!--  <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20160212</version>
+            <scope>compile</scope>
+        </dependency> -->
+        <dependency>
+            <groupId>org.mongodb</groupId>
+            <artifactId>mongo-java-driver</artifactId>
+            <version>3.3.0</version>
+        </dependency>
+        <dependency>
+            <groupId>mkremins</groupId>
+            <artifactId>fanciful</artifactId>
+            <version>0.3.5-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
@@ -93,7 +102,7 @@
         <outputDirectory>target/classes</outputDirectory>
         <sourceDirectory>${basedir}/src/main/java</sourceDirectory>
 
-        <finalName>${project.artifactId}</finalName>
+        <finalName>${project.artifactId}-${project.version}</finalName>
 
         <resources>
             <resource>
@@ -110,34 +119,102 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.1</version>
                 <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
+                    <source>1.8</source>
+                    <target>1.8</target>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>templating-maven-plugin</artifactId>
+                <version>1.0-alpha-3</version>
+                <executions>
+                    <execution>
+                        <id>filter-src</id>
+                        <goals>
+                            <goal>filter-sources</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>2.1</version>
+                <version>2.4.3</version>
                 <executions>
                     <execution>
                         <phase>package</phase>
                         <goals>
                             <goal>shade</goal>
                         </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!--<plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>assembly</id>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <phase>package</phase>
                         <configuration>
-                            <artifactSet>
-                                <includes>
-                                    <include>com.google.code.gson:gson</include>
-                                    <include>org.mongodb:*</include>
-                                    <include>net.techcable.npclib:*</include>
-                                    <include>mkremins.fanciful:*</include>
-                                    <include>io.socket:socket.io-client</include>
-                                    <include>ninja.amp:*</include>
-                                </includes>
-                            </artifactSet>
+                            <descriptorRefs>
+                                <descriptorRef>jar-with-dependencies</descriptorRef>
+                            </descriptorRefs>
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>-->
+            <plugin>
+                <groupId>com.github.wvengen</groupId>
+                <artifactId>proguard-maven-plugin</artifactId>
+                <version>2.0.13</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>proguard</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <proguardVersion>5.2</proguardVersion>
+                    <obfuscate>true</obfuscate>
+                    <injar>${project.build.finalName}.jar</injar>
+                    <outjar>${project.build.finalName}-obfuscated.jar</outjar>
+                    <options>
+                        <option>-dontshrink</option>
+                        <option>-dontoptimize</option>
+                        <option>-dontnote</option>
+                        <option>-dontwarn</option>
+                        <option>-keepattributes *Annotation*</option>
+                        <option>-keepattributes Signature</option>
+                        <option>-keepattributes InnerClasses</option>
+                        <option>-keepattributes InnerClasses,EnclosingMethod</option>
+                        <option>-keepattributes EnclosingMethod</option>
+                        <option>-keep class com.shawckz.reflex.Reflex { public void onEnable(); public void onDisable(); public void onLoad(); }</option>
+                        <option>-keepclassmembers class * extends java.lang.Enum { *; }</option>
+                      <!--  <option>-keep class !com.shawckz.reflex.**</option> -->
+                        <option>-keep class com.shawckz.reflex.event.** { *; }</option>
+                        <option>-keep class org.mongodb.** { *; }</option>
+                        <option>-keep class com.mongodb.** { *; }</option>
+                    </options>
+                    <libs>
+                        <lib>${java.home}/lib/rt.jar</lib>
+                        <lib>${java.home}/lib/jce.jar</lib>
+                        <lib>SPIGOT-HACK.jar</lib>
+                        <lib>ProtocolLib-3.4.0.jar</lib>
+                    </libs>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>net.sf.proguard</groupId>
+                        <artifactId>proguard-base</artifactId>
+                        <version>5.2.1</version>
+                        <scope>runtime</scope>
+                    </dependency>
+                </dependencies>
             </plugin>
         </plugins>
     </build>

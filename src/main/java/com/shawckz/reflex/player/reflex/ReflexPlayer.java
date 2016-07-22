@@ -76,6 +76,10 @@ public class ReflexPlayer extends CachePlayer {
         return vl.get(checkType.getName());
     }
 
+    public boolean hasVL(CheckType checkType) {
+        return vl.containsKey(checkType.getName()) && getVL(checkType) > 0;
+    }
+
     public void modifyVL(CheckType checkType, int change) {
         int vl = getVL(checkType);
         vl += change;

@@ -15,6 +15,7 @@ import com.shawckz.reflex.backend.database.mongo.AutoMongo;
 import com.shawckz.reflex.ban.ReflexBan;
 import com.shawckz.reflex.check.base.RViolation;
 import com.shawckz.reflex.check.inspect.RInspectResult;
+import com.shawckz.reflex.menu.LookupPlayerMenu;
 import com.shawckz.reflex.player.reflex.ReflexPlayer;
 import com.shawckz.reflex.util.obj.TimeUtil;
 import mkremins.fanciful.FancyMessage;
@@ -54,23 +55,29 @@ public class CmdLookup implements RCommand {
             public void run() {
                 ReflexPlayer t = Reflex.getInstance().getCache().getReflexPlayer(sTargetFinal);
                 if (t != null) {
-                    RLang.send(sender, ReflexLang.HEADER_FOOTER);
-                    msg(sender, "&7Player Lookup - &a" + t.getName());
-                    msg(sender, "&eSession VL&7: &9" + t.getSessionVL());
-                    msg(sender, "&eBeing auto-banned&7: &9" + Reflex.getInstance().getAutobanManager().hasAutoban(t.getName()));
-
-                    ReflexBan ban = Reflex.getInstance().getBanManager().getBan(t.getUniqueId());
-
-                    msg(sender, "&eBanned by Reflex&7: &9" + (ban != null));
-
-                    if (ban != null) {
-                        msg(sender, "&eBanned for&7: &9" + ban.getViolation().getCheckType().getName());
-                        msg(sender, "&eBan time&7: &e" + DATE_FORMAT.format(new Date(ban.getTime())));
-                        msg(sender, "&eBanned with TPS&7: &9" + ban.getViolation().getData().getTps());
-                        msg(sender, "&eBanned with Ping&7: &9" + ban.getViolation().getData().getPing());
+                    if(sender instanceof Player) {
+                        LookupPlayerMenu lookupPlayerMenu = new LookupPlayerMenu(t);
+                        lookupPlayerMenu.open(((Player)sender));
                     }
+                    else{
+                        RLang.send(sender, ReflexLang.HEADER_FOOTER);
+                        msg(sender, "&7Player Lookup - &a" + t.getName());
+                        msg(sender, "&eSession VL&7: &9" + t.getSessionVL());
+                        msg(sender, "&eBeing auto-banned&7: &9" + Reflex.getInstance().getAutobanManager().hasAutoban(t.getName()));
 
-                    RLang.send(sender, ReflexLang.HEADER_FOOTER);
+                        ReflexBan ban = Reflex.getInstance().getBanManager().getBan(t.getUniqueId());
+
+                        msg(sender, "&eBanned by Reflex&7: &9" + (ban != null));
+
+                        if (ban != null) {
+                            msg(sender, "&eBanned for&7: &9" + ban.getViolation().getCheckType().getName());
+                            msg(sender, "&eBan time&7: &e" + DATE_FORMAT.format(new Date(ban.getTime())));
+                            msg(sender, "&eBanned with TPS&7: &9" + ban.getViolation().getData().getTps());
+                            msg(sender, "&eBanned with Ping&7: &9" + ban.getViolation().getData().getPing());
+                        }
+
+                        RLang.send(sender, ReflexLang.HEADER_FOOTER);
+                    }
                 }
                 else {
                     RLang.send(sender, ReflexLang.PLAYER_NOT_FOUND, sTargetFinal);
