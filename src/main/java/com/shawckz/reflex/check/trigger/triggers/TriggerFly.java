@@ -30,10 +30,6 @@ public class TriggerFly extends RTrigger {
     @ConfigData("threshold-air-time")
     private int thresholdAirTime = 15;
 
-    //FallVelocity
-    @ConfigData("fall-velocity-trigger-air-time")
-    private double fallVelocityAirTime = 3;
-
     public TriggerFly() {
         super(CheckType.FLY, RCheckType.TRIGGER);
     }
@@ -50,6 +46,25 @@ public class TriggerFly extends RTrigger {
         }
         else {
             rp.getData().setHasPositiveVelocity(false);
+        }
+
+        if(rp.getData().isOnGround(e.getTo())) {
+            rp.getData().setLastGroundtime(System.currentTimeMillis());
+        }
+        else{
+            if(rp.getData().getLastGroundtime() != -1) {
+                int airTime = (int) (System.currentTimeMillis() - rp.getData().getLastGroundtime()) / 1000;
+                if(rp.getData().isHasPositiveVelocity()) {
+                    if(airTime >= triggerAirTime) {
+                        triggerLater(rp, result -> {});
+                    }
+                }
+                else{
+                    if(airTime >= thresholdAirTime) {
+                        fail(rp, "> " + thresholdAirTime+"s in air");
+                    }
+                }
+            }
         }
     }
 
