@@ -13,6 +13,7 @@ import com.shawckz.reflex.check.trigger.RTrigger;
 import com.shawckz.reflex.event.internal.ReflexAsyncMoveEvent;
 import com.shawckz.reflex.event.internal.ReflexFlyingEvent;
 import com.shawckz.reflex.player.reflex.ReflexPlayer;
+import com.shawckz.reflex.util.obj.Lag;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -68,7 +69,7 @@ public class CheckMorePackets extends RTrigger implements RTimer {
         for(Player pl : Bukkit.getOnlinePlayers()) {
             ReflexPlayer rp = Reflex.getInstance().getCache().getReflexPlayer(pl);
 
-            if(rp.getData().getPackets() > maxPPS) {
+            if(rp.getData().getPackets() > calcMaxPPS()) {
                 rp.addAlertVL(getCheckType());
                 if(rp.getAlertVL(getCheckType()) >= trigger) {
                     fail(rp, rp.getData().getPackets() + " packets");
@@ -78,6 +79,10 @@ public class CheckMorePackets extends RTrigger implements RTimer {
 
             rp.getData().setPackets(0);
         }
+    }
+
+    private double calcMaxPPS() {
+        return maxPPS * 20 / Lag.getTPS();
     }
 
     @Override
