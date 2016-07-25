@@ -16,9 +16,10 @@ public class DataFly extends CheckData {
 
     private double yps = 0;//y per second
     private double peakYps = 0;
+    private double peakBps = 0;
     private double bps = 0;//blocks per second
     private boolean hasPositiveVelocity = false;//moving upwards
     private long lastGroundTime = -1;//last system#currenttimemillis that they touched the ground
-
+    private int peakAirTime = 0;
 
 }

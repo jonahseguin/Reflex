@@ -80,6 +80,14 @@ public class CaptureFly extends RDataCapture implements RTimer {
                 if(data.getYps() > data.getPeakYps()) {
                     data.setPeakYps(data.getYps());
                 }
+
+                if(data.getLastGroundTime() != -1) {
+                    int airTime = (int) (System.currentTimeMillis() - data.getLastGroundTime()) / 1000;
+                    if(airTime > data.getPeakAirTime()) {
+                        data.setPeakAirTime(airTime);
+                    }
+                }
+
                 data.setBps(0);
                 data.setYps(0);
             }
