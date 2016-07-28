@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+import org.bson.Document;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -95,7 +96,7 @@ public abstract class AbstractCache implements Listener {
             }
         }
 
-        List<AutoMongo> autoMongos = CachePlayer.select(new BasicDBObject(key, name), aClass);
+        List<AutoMongo> autoMongos = CachePlayer.select(new Document(key, name), aClass);
         for (AutoMongo mongo : autoMongos) {
             if (mongo instanceof CachePlayer) {
                 CachePlayer cachePlayer = (CachePlayer) mongo;
@@ -119,7 +120,7 @@ public abstract class AbstractCache implements Listener {
             }
         }
 
-        List<AutoMongo> autoMongos = CachePlayer.select(new BasicDBObject(key, name), aClass);
+        List<AutoMongo> autoMongos = CachePlayer.select(new Document(key, name), aClass);
         for (AutoMongo mongo : autoMongos) {
             if (mongo instanceof CachePlayer) {
                 CachePlayer cachePlayer = (CachePlayer) mongo;

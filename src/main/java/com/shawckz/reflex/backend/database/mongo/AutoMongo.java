@@ -5,7 +5,6 @@
 package com.shawckz.reflex.backend.database.mongo;
 
 import com.google.common.primitives.Primitives;
-import com.mongodb.BasicDBObject;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
@@ -87,7 +86,7 @@ public abstract class AutoMongo {
             return;
         }
         Document doc = new Document(identifier, identifierValue);
-        BasicDBObject searchQuery = new BasicDBObject().append(identifier, identifierValue);
+        Document searchQuery = new Document().append(identifier, identifierValue);
 
         doc.putAll(values);
 
@@ -99,7 +98,7 @@ public abstract class AutoMongo {
         }
     }
 
-    public static List<AutoMongo> select(BasicDBObject search, Class<? extends AutoMongo> type) {
+    public static List<AutoMongo> select(Document search, Class<? extends AutoMongo> type) {
         List<AutoMongo> vals = new ArrayList<>();
         CollectionName collectionName = type.getAnnotation(CollectionName.class);
         if (collectionName == null) {
@@ -145,7 +144,7 @@ public abstract class AutoMongo {
         return vals;
     }
 
-    public static AutoMongo selectOne(BasicDBObject search, Class<? extends AutoMongo> type) {
+    public static AutoMongo selectOne(Document search, Class<? extends AutoMongo> type) {
         CollectionName collectionName = type.getAnnotation(CollectionName.class);
         if (collectionName == null) {
             Bukkit.getLogger().log(Level.SEVERE, "Table Name Class Not Found While Using AutoMongo (" + type.getSimpleName() + ")");
@@ -216,11 +215,11 @@ public abstract class AutoMongo {
                 }
             }
         }
-        BasicDBObject searchQuery = new BasicDBObject().append(identifier, identifierValue);
+        Document searchQuery = new Document().append(identifier, identifierValue);
         col.deleteOne(searchQuery);
     }
 
-    private boolean documentExists(BasicDBObject search, MongoCollection col) {
+    private boolean documentExists(Document search, MongoCollection col) {
         FindIterable<Document> ret = col.find(search).limit(1);
         for (Document found : ret) {
             return true;

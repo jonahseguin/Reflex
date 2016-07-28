@@ -42,6 +42,7 @@ public class TriggerManager {
         register(new CheckMorePackets());
         register(new CheckAuraTwitch());
         register(new CheckAccuracy());
+        register(new CheckPreventHealthTags());
 
         triggers.values().stream().forEach(RTrigger::setupConfig);
     }
