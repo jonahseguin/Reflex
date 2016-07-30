@@ -33,6 +33,7 @@ public enum CheckType {
     PHASE(null),
     CRITICALS(null),
     SMOOTH_AIM("SmoothAim", null),
+    HEALTH_TAGS("HealthTags", null),
 
     /* TODO */
 
