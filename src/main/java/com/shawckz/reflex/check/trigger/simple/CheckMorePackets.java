@@ -20,7 +20,7 @@ import org.bukkit.event.player.PlayerMoveEvent;
 
 public class CheckMorePackets extends RTrigger implements RTimer {
 
-    private final double maxPPS = 30; //Maximum packets per-second per-player (1 packet per tick) + 10 for safety
+    private final double maxPPS = 25; //Maximum packets per-second per-player (1 packet per tick) + 5 (lag safety)
 
     @ConfigData("trigger-threshold")
     private int trigger = 3;
