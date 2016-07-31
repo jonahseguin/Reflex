@@ -11,10 +11,12 @@ import com.shawckz.reflex.check.data.PlayerData;
 import com.shawckz.reflex.check.data.RCapturePlayer;
 import com.shawckz.reflex.player.cache.CachePlayer;
 import lombok.*;
-import net.md_5.bungee.api.ChatColor;
+import org.bukkit.ChatColor;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import com.google.common.collect.Maps;
 
 import org.bukkit.entity.Player;
 
@@ -35,8 +37,8 @@ public class ReflexPlayer extends CachePlayer {
     private String uniqueId;
     private int sessionVL = 0;
     //Non-persistent...
-    private Map<String, Integer> vl = new HashMap<>();
-    private Map<String, Integer> alertVL = new HashMap<>(); //VL before alert...
+    private Map<String, Integer> vl = Maps.newHashMap();
+    private Map<String, Integer> alertVL = Maps.newHashMap(); //VL before alert...
     @Getter
     @Setter
     private Player bukkitPlayer = null;
@@ -46,7 +48,8 @@ public class ReflexPlayer extends CachePlayer {
 
     private boolean online = false;
 
-    public ReflexPlayer() {//So that AutoMongo can instantiate without throwing an InstantiationException
+    public ReflexPlayer() { //So that AutoMongo can instantiate without throwing an InstantiationException
+    
     }
 
 
