@@ -19,7 +19,8 @@ public class PacketListener {
 
     public PacketListener(Reflex instance) {
         //AsyncMoveEvent
-        instance.getProtocolManager().addPacketListener(new PacketAdapter(instance, ListenerPriority.NORMAL, PacketType.Play.Client.POSITION, PacketType.Play.Client.POSITION_LOOK) {
+        
+        instance.getAsynchronousManager().registerAsyncHandler(new PacketAdapter(instance, ListenerPriority.NORMAL, PacketType.Play.Client.POSITION, PacketType.Play.Client.POSITION_LOOK) {
             public void onPacketReceiving(PacketEvent event) {
                 if (event.getPacketType().equals(PacketType.Play.Client.POSITION) || event.getPacketType().equals(PacketType.Play.Client.POSITION_LOOK)) {
                     double x = event.getPacket().getDoubles().getValues().get(0);
@@ -28,16 +29,17 @@ public class PacketListener {
                     boolean ground = event.getPacket().getBooleans().getValues().get(0);
 
                     ReflexAsyncMoveEvent moveEvent = new ReflexAsyncMoveEvent(event.getPlayer(), x, y, z, ground);
-                    Bukkit.getPluginManager().callEvent(moveEvent);
+                    instance.getServer().getPluginManager().callEvent(moveEvent);
                 }
             }
-        });
+        }).start();
+        
         //SwingEvent
         instance.getProtocolManager().addPacketListener(new PacketAdapter(instance, ListenerPriority.NORMAL, PacketType.Play.Client.ARM_ANIMATION) {
             public void onPacketReceiving(PacketEvent event) {
                 if (event.getPacketType().equals(PacketType.Play.Client.ARM_ANIMATION)) {
                     ReflexSwingEvent swingEvent = new ReflexSwingEvent(event.getPlayer());
-                    Bukkit.getPluginManager().callEvent(swingEvent);
+                    instance.getServer().getPluginManager().callEvent(swingEvent);
                 }
             }
         });
@@ -47,7 +49,7 @@ public class PacketListener {
                 if (event.getPacketType().equals(PacketType.Play.Client.USE_ENTITY)) {
                     if (!event.getPlayer().getItemInHand().getType().equals(Material.FISHING_ROD)) {
                         ReflexUseEntityEvent useEntityEvent = new ReflexUseEntityEvent(event.getPlayer(), event.isCancelled());
-                        Bukkit.getPluginManager().callEvent(useEntityEvent);
+                        instance.getServer().getPluginManager().callEvent(useEntityEvent);
                     }
                 }
             }
@@ -58,7 +60,7 @@ public class PacketListener {
                 if (event.getPacketType().equals(PacketType.Play.Client.FLYING)) {
                     boolean ground = event.getPacket().getBooleans().getValues().get(0);
                     ReflexFlyingEvent flyingEvent = new ReflexFlyingEvent(event.getPlayer(), event.isCancelled(), ground);
-                    Bukkit.getPluginManager().callEvent(flyingEvent);
+                    instance.getServer().getPluginManager().callEvent(flyingEvent);
                 }
             }
         });
@@ -87,7 +89,7 @@ public class PacketListener {
                     float z = event.getPacket().getFloat().getValues().get(3);
 
                     ReflexVelocityEvent velocityEvent = new ReflexVelocityEvent(event.getPlayer(), x, y, z);
-                    Bukkit.getPluginManager().callEvent(velocityEvent);
+                    instance.getServer().getPluginManager().callEvent(velocityEvent);
                 }
             }
         });
@@ -102,7 +104,7 @@ public class PacketListener {
                     float pitch = event.getPacket().getFloat().readSafely(1);
 
                     ReflexLookEvent lookEvent = new ReflexLookEvent(p, yaw, pitch);
-                    Bukkit.getPluginManager().callEvent(lookEvent);
+                    instance.getServer().getPluginManager().callEvent(lookEvent);
                 }
             }
         });
