@@ -11,7 +11,6 @@ import com.comphenix.protocol.events.PacketEvent;
 import com.shawckz.reflex.Reflex;
 import com.shawckz.reflex.event.internal.*;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
@@ -19,8 +18,8 @@ public class PacketListener {
 
     public PacketListener(Reflex instance) {
         //AsyncMoveEvent
-        
-        instance.getAsynchronousManager().registerAsyncHandler(new PacketAdapter(instance, ListenerPriority.NORMAL, PacketType.Play.Client.POSITION, PacketType.Play.Client.POSITION_LOOK) {
+
+        instance.getProtocolManager().getAsynchronousManager().registerAsyncHandler(new PacketAdapter(instance, ListenerPriority.NORMAL, PacketType.Play.Client.POSITION, PacketType.Play.Client.POSITION_LOOK) {
             public void onPacketReceiving(PacketEvent event) {
                 if (event.getPacketType().equals(PacketType.Play.Client.POSITION) || event.getPacketType().equals(PacketType.Play.Client.POSITION_LOOK)) {
                     double x = event.getPacket().getDoubles().getValues().get(0);
