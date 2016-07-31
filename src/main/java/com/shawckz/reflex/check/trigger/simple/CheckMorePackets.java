@@ -10,8 +10,6 @@ import com.shawckz.reflex.check.base.CheckType;
 import com.shawckz.reflex.check.base.RCheckType;
 import com.shawckz.reflex.check.base.RTimer;
 import com.shawckz.reflex.check.trigger.RTrigger;
-import com.shawckz.reflex.event.internal.ReflexAsyncMoveEvent;
-import com.shawckz.reflex.event.internal.ReflexFlyingEvent;
 import com.shawckz.reflex.player.reflex.ReflexPlayer;
 import com.shawckz.reflex.util.obj.Lag;
 
@@ -19,7 +17,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.player.PlayerTeleportEvent;
 
 public class CheckMorePackets extends RTrigger implements RTimer {
 
@@ -33,35 +30,12 @@ public class CheckMorePackets extends RTrigger implements RTimer {
     }
 
     @EventHandler
-    public void onAsyncMove(ReflexAsyncMoveEvent e) {
-        Player p = e.getPlayer();
-        ReflexPlayer rp = Reflex.getInstance().getCache().getReflexPlayer(p);
-
-        rp.getData().setPackets(rp.getData().getPackets() + 1);
-    }
-
-    @EventHandler
-    public void onFlying(ReflexFlyingEvent e) {
-        Player p = e.getPlayer();
-        ReflexPlayer rp = Reflex.getInstance().getCache().getReflexPlayer(p);
-
-        rp.getData().setPackets(rp.getData().getPackets() + 1);
-    }
-
-    @EventHandler
     public void onMove(PlayerMoveEvent e) {
         if (e.isCancelled()) {
             Player p = e.getPlayer();
             ReflexPlayer rp = Reflex.getInstance().getCache().getReflexPlayer(p);
-            rp.getData().setPackets(rp.getData().getPackets() - 2);
+            rp.getData().setPackets(rp.getData().getPackets() + 1);
         }
-    }
-
-    @EventHandler
-    public void onTeleport(PlayerTeleportEvent e) {
-        Player p = e.getPlayer();
-        ReflexPlayer rp = Reflex.getInstance().getCache().getReflexPlayer(p);
-        rp.getData().setPackets(rp.getData().getPackets() - 2);
     }
 
     @Override
