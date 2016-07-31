@@ -17,12 +17,9 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public class XSocketAuth {
 
-    private final String uri = "https://shawckz.com";
-
-    private Socket socket;
-
     private static XSocketAuth x = null;
-
+    private final String uri = "https://shawckz.com";
+    private Socket socket;
     private boolean authed = false;
 
     public XSocketAuth(ShawXAuth instance) {
@@ -31,7 +28,7 @@ public class XSocketAuth {
             throw new AuthException("Attempted to instantiate XSocketAuth from unknown class!");
         }
 
-        if(x != null) {
+        if (x != null) {
             error("Attempted to create XSocketAuth externally");
             throw new AuthException("Attempted to create XSocketAuth externally!");
         }
@@ -44,19 +41,20 @@ public class XSocketAuth {
         ShawXAuth.log("Attempting to connect to authentication service...");
         try {
             socket = IO.socket(uri).connect();
-            new BukkitRunnable(){
+            new BukkitRunnable() {
                 @Override
                 public void run() {
-                    if(!authed) {
+                    if (!authed) {
                         error("Authenticating took too long");
                     }
                 }
             }.runTaskLater(Reflex.getInstance(), (20 * 30));
-            while(!socket.connected()) {}
+            while (!socket.connected()) {
+            }
             ShawXAuth.log("Connection successful, waiting for response");
 
         }
-        catch (Exception ex){
+        catch (Exception ex) {
             r.auth(false);
             error("x0.1-2 Unable to connect to authentication service");
         }
@@ -99,7 +97,7 @@ public class XSocketAuth {
                 public void call(Object... objects) {
                     if (objects != null && objects.length > 0) {
                         String result = (String) objects[0];
-                        if(result.equalsIgnoreCase(ShawXAuth.getKey())) {
+                        if (result.equalsIgnoreCase(ShawXAuth.getKey())) {
                             Bukkit.getLogger().info(" ");
                             Bukkit.getLogger().info("-------------------------------------");
                             Bukkit.getLogger().info("Reflex - v" + Reflex.getInstance().getDescription().getVersion() + " by Shawckz");
@@ -108,7 +106,7 @@ public class XSocketAuth {
                             Bukkit.getLogger().info("AUTHENTICATION FAILURE - Reflex is not authorized to run on this server!");
                             Bukkit.getLogger().info(" ");
                             Bukkit.getLogger().info("The authentication key you have selected to use on this server has been cancelled or suspended.");
-                           Bukkit.getLogger().info("-------------------------------------");
+                            Bukkit.getLogger().info("-------------------------------------");
                             Bukkit.getLogger().info(" ");
                         }
                     }

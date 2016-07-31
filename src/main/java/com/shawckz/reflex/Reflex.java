@@ -25,11 +25,13 @@ import com.shawckz.reflex.check.trigger.TriggerManager;
 import com.shawckz.reflex.commands.*;
 import com.shawckz.reflex.listener.BanListener;
 import com.shawckz.reflex.listener.PacketListener;
-import com.shawckz.reflex.player.cache.CachePlayer;
 import com.shawckz.reflex.player.reflex.ReflexCache;
+import com.shawckz.reflex.player.reflex.ReflexPlayer;
 import com.shawckz.reflex.util.obj.Lag;
 import com.shawckz.reflex.util.utility.ReflexException;
 import ninja.amp.ampmenus.MenuListener;
+
+import java.util.Set;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -75,6 +77,10 @@ public class Reflex extends AuthMe {
         return instance;
     }
 
+    public static Set<ReflexPlayer> getOnlinePlayers() {
+        return getInstance().getCache().getOnlinePlayers();
+    }
+
     @Override
     public void onLoad() {
         protocolManager = ProtocolLibrary.getProtocolManager();
@@ -90,7 +96,6 @@ public class Reflex extends AuthMe {
         ShawXAuth.auth(this);
     }
 
-
     @Override
     public void onDisable() {
         if (en) {
@@ -101,6 +106,7 @@ public class Reflex extends AuthMe {
                 cache.saveSync(pl);
                 saved++;
             }
+            cache.clear();
             getLogger().info("[Stop] Saved " + saved + " players.");
 
             reflexTimer.clear();
@@ -133,10 +139,11 @@ public class Reflex extends AuthMe {
 
             //Make reload-friendly, load all online players
             for (Player pl : Bukkit.getOnlinePlayers()) {
-                CachePlayer cp = cache.loadCachePlayer(pl.getName());
+                ReflexPlayer cp = cache.loadReflexPlayer(pl.getName());
                 if (cp != null) {
                     cache.put(cp);
-                } else {
+                }
+                else {
                     cp = cache.create(pl.getName(), pl.getUniqueId().toString());
                     cache.put(cp);
                     cp.update();
@@ -177,7 +184,7 @@ public class Reflex extends AuthMe {
 
             Bukkit.getScheduler().runTaskTimer(instance, new Lag(), 1L, 1L);
             getLogger().info("[Finish] Reflex v" + getDescription().getVersion() + " by Shawckz.");
-        }
+        };
     }
 
     @Override

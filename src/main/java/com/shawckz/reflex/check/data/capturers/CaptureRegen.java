@@ -15,7 +15,6 @@ import com.shawckz.reflex.player.reflex.ReflexPlayer;
 import lombok.Getter;
 import lombok.Setter;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
@@ -52,8 +51,7 @@ public class CaptureRegen extends RDataCapture implements RTimer {
 
     @Override
     public void runTimer() {
-        for (Player pl : Bukkit.getOnlinePlayers()) {
-            ReflexPlayer p = Reflex.getInstance().getCache().getReflexPlayer(pl);
+        Reflex.getOnlinePlayers().forEach(p -> {
             if (p.getCapturePlayer().isCapturing(getCheckType())) {
                 double health = getData(p).getHealthRegenerated();
                 if (health > getData(p).getHps()) {
@@ -61,6 +59,6 @@ public class CaptureRegen extends RDataCapture implements RTimer {
                 }
                 getData(p).setHealthRegenerated(0);
             }
-        }
+        });
     }
 }

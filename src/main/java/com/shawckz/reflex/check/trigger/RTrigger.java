@@ -73,7 +73,7 @@ public abstract class RTrigger extends Check {
                 handleInspect(player, inspectResult, false);
                 return new RTriggerResult(this.cancel && inspectResult.getData().getType() == RInspectResultType.FAILED, this.cancel);
             }
-            else{
+            else {
                 return new RTriggerResult(false, this.cancel);
             }
         }
@@ -132,7 +132,7 @@ public abstract class RTrigger extends Check {
 
         player.addVL(getCheckType());
 
-        if(!Reflex.getInstance().getAutobanManager().hasAutoban(player.getName())) {
+        if (!Reflex.getInstance().getAutobanManager().hasAutoban(player.getName())) {
             Alert alert = new Alert(player, getCheckType(), Alert.Type.FAIL, violation, player.getVL(getCheckType()));
             if (d != null) {
                 alert.setDetail(d);
@@ -140,7 +140,7 @@ public abstract class RTrigger extends Check {
             alert.sendAlert();
 
             //Assuming this is a simple check due to the fact that the method called was #fail
-            if(player.getVL(getCheckType()) >= simpleAutobanVL && isAutoban()) {
+            if (player.getVL(getCheckType()) >= simpleAutobanVL && isAutoban()) {
                 Autoban autoban = new Autoban(player, Reflex.getInstance().getReflexConfig().getAutobanTime(), getCheckType(), violation);
                 Reflex.getInstance().getAutobanManager().putAutoban(autoban);
                 autoban.run();

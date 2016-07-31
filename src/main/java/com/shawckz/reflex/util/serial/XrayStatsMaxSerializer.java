@@ -17,7 +17,7 @@ public class XrayStatsMaxSerializer extends AbstractSerializer<Map<XrayStats.Sta
     public String toString(Map<XrayStats.Stat, Double> data) {
         Map<String, Double> s = new HashMap<>();
 
-        for(XrayStats.Stat stat : data.keySet()) {
+        for (XrayStats.Stat stat : data.keySet()) {
             s.put(stat.toString(), data.get(stat));
         }
 
@@ -30,7 +30,7 @@ public class XrayStatsMaxSerializer extends AbstractSerializer<Map<XrayStats.Sta
 
         Map<XrayStats.Stat, Double> s = new HashMap<>();
 
-        for(String k : map.keySet()) {
+        for (String k : map.keySet()) {
             s.put(XrayStats.Stat.valueOf(k), map.get(k));
         }
 

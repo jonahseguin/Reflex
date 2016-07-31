@@ -30,12 +30,9 @@ import org.bukkit.potion.PotionEffectType;
 public class CheckSpeed extends RTrigger {
 
     private static final DecimalFormat df = new DecimalFormat("0.00");
-
+    private final double[] bhopValues = {0.313D, 0.612D, 0.36D, 0.353D, 0.347D, 0.341D, 0.336D, 0.331D, 0.327D, 0.323D, 0.32D, 0.316D};
     @ConfigData("player-movement-speed")
     private double movementSpeed = 0.287D;
-
-    private final double[] bhopValues = {0.313D, 0.612D, 0.36D, 0.353D, 0.347D, 0.341D, 0.336D, 0.331D, 0.327D, 0.323D, 0.32D, 0.316D};
-
     @ConfigData("default-bunny-hop")
     private double defaultBhop = 0.33D;
 
@@ -96,9 +93,9 @@ public class CheckSpeed extends RTrigger {
     private double recalculateFail(ReflexPlayer rp, double hDistance) {
         double bhop = getBunnyHop(rp);
         hDistance -= bhop;
-        if(hDistance > 0.0D) {
+        if (hDistance > 0.0D) {
             rp.getData().setHFreedom(rp.getData().getHFreedom() - (hDistance / 2.0D));
-            if(rp.getData().getHFreedom() > 0.0D) {
+            if (rp.getData().getHFreedom() > 0.0D) {
                 hDistance = 0.0D;
             }
         }
@@ -106,7 +103,7 @@ public class CheckSpeed extends RTrigger {
     }
 
     private double getBunnyHop(ReflexPlayer rp) {
-        if(rp.getData().getBhopDelay() > (bhopValues.length - 1)) {
+        if (rp.getData().getBhopDelay() > (bhopValues.length - 1)) {
             return defaultBhop;
         }
         return bhopValues[rp.getData().getBhopDelay()];
@@ -118,7 +115,7 @@ public class CheckSpeed extends RTrigger {
         ReflexPlayer rp = Reflex.getInstance().getCache().getReflexPlayer(p);
         double x = Math.abs(e.getX()) * 5.0D;
         double z = Math.abs(e.getZ()) * 5.0D;
-        if(x + z > rp.getData().getHFreedom()) {
+        if (x + z > rp.getData().getHFreedom()) {
             rp.getData().setHFreedom(x + z);
         }
     }
@@ -139,29 +136,22 @@ public class CheckSpeed extends RTrigger {
                 double maxSpeed = calculateMaxSpeed(p, e.getFrom(), e.getTo());
                 double speed = rp.getData().getHDistance(e.getFrom(), e.getTo());
 
-                //p.sendMessage(ChatColor.DARK_GRAY + "MAX: " + df.format(maxSpeed));
-
                 if (speed > maxSpeed && speed < lagThreshold) { // < 10 in case of lag
                     final double beforeSpeed = speed;
                     speed = recalculateFail(rp, speed);
 
-                  //  p.sendMessage("--- " + ChatColor.RED + df.format(beforeSpeed) + ChatColor.WHITE + " / " + ChatColor.GRAY + df.format(maxSpeed));
 
-
-                    if(speed > 0.0D) {
-                     //   p.sendMessage(ChatColor.DARK_RED + "FAIL - " + beforeSpeed + " > " + maxSpeed);
+                    if (speed > 0.0D) {
+                        //   p.sendMessage(ChatColor.DARK_RED + "FAIL - " + beforeSpeed + " > " + maxSpeed);
                         rp.addAlertVL(getCheckType());
-                        if(rp.getAlertVL(getCheckType()) >= alertThreshold) {
-                            if(fail(rp, (df.format(beforeSpeed)) + " m/s > " + df.format(maxSpeed) + " m/s").isCancelled()) {
+                        if (rp.getAlertVL(getCheckType()) >= alertThreshold) {
+                            if (fail(rp, (df.format(beforeSpeed)) + " m/s > " + df.format(maxSpeed) + " m/s").isCancelled()) {
                                 e.setTo(e.getFrom());
                             }
                             rp.setAlertVL(getCheckType(), 0);
                         }
                     }
                 }
-             /*   else{
-                    p.sendMessage("" + ChatColor.GREEN + df.format(speed) + ChatColor.WHITE + " / " + ChatColor.GRAY + df.format(maxSpeed));
-                }*/
             }
 
         }

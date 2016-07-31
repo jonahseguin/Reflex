@@ -59,7 +59,7 @@ public class TriggerVClip extends RTrigger {
         if (Math.round(distance.getYDifference()) < 2) {
             return;
         }
-        if(e.getTo().getBlockY() < e.getFrom().getBlockY()) {
+        if (e.getTo().getBlockY() < e.getFrom().getBlockY()) {
             //VClip down
             for (int i = 0; i < Math.round(distance.getYDifference()) + 1; i++) {
                 Block block = new Location(pl.getWorld(), pl.getLocation().getX(), to + i, pl.getLocation().getZ()).getBlock();
@@ -71,7 +71,7 @@ public class TriggerVClip extends RTrigger {
                 }
             }
         }
-        else{
+        else {
             //VClip up
             for (int i = 0; i < Math.round(distance.getYDifference()) + 1; i++) {
                 Block block = new Location(pl.getWorld(), pl.getLocation().getX(), to - i, pl.getLocation().getZ()).getBlock();
@@ -99,7 +99,8 @@ public class TriggerVClip extends RTrigger {
             if (p.getData().getVclipY() == e.getTo().getBlockY()) {
                 p.getData().setTriedVClip(false);
                 p.getData().setVclipY(-1);
-                if (triggerLater(p, result -> {})) {
+                if (triggerLater(p, result -> {
+                })) {
                     //Can cancel
                     e.setTo(p.getData().getLastVClipLocation());
                 }

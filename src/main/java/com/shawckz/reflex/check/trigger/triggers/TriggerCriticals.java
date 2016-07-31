@@ -63,12 +63,12 @@ public class TriggerCriticals extends RTrigger {
         if (e.getDamager() instanceof Player) {
             Player p = (Player) e.getDamager();
             ReflexPlayer rp = Reflex.getInstance().getCache().getReflexPlayer(p);
-            if(canCrit(p)) {
+            if (canCrit(p)) {
                 //Was critical hit
                 rp.getData().setConsecutiveCriticalHits(rp.getData().getConsecutiveCriticalHits() + 1);
 
-                if(rp.getData().getConsecutiveCriticalHits() >= minCriticalHits) {
-                    if(rp.getData().getTotalCriticalY() <= maxTotalY) {
+                if (rp.getData().getConsecutiveCriticalHits() >= minCriticalHits) {
+                    if (rp.getData().getTotalCriticalY() <= maxTotalY) {
                         fail(rp, "" + Math.round(rp.getData().getTotalCriticalY()) + " total y");
                         rp.getData().setConsecutiveCriticalHits(0);
                     }
@@ -77,24 +77,24 @@ public class TriggerCriticals extends RTrigger {
 
                 rp.getData().setLastCriticalY(p.getLocation().getY());
             }
-            else{
+            else {
                 //Not critical hit
                 rp.getData().setConsecutiveCriticalHits(rp.getData().getConsecutiveHits() - nonCriticalPenalty);
-                if(rp.getData().getConsecutiveCriticalHits() < 0) {
+                if (rp.getData().getConsecutiveCriticalHits() < 0) {
                     rp.getData().setConsecutiveCriticalHits(0);
                 }
                 rp.getData().setTotalCriticalY(rp.getData().getTotalCriticalY() * 0.75);
             }
-          //  p.sendMessage(ChatColor.GOLD + "Critical hits: " + rp.getData().getConsecutiveCriticalHits());
-          //  p.sendMessage(ChatColor.GRAY + "Total y: " + rp.getData().getTotalCriticalY());
+            //  p.sendMessage(ChatColor.GOLD + "Critical hits: " + rp.getData().getConsecutiveCriticalHits());
+            //  p.sendMessage(ChatColor.GRAY + "Total y: " + rp.getData().getTotalCriticalY());
         }
 
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onMove(PlayerMoveEvent e) {
-        if(e.isCancelled()) return;
-        if(e.getTo().getY() == e.getFrom().getY()) return;
+        if (e.isCancelled()) return;
+        if (e.getTo().getY() == e.getFrom().getY()) return;
         Player p = e.getPlayer();
         ReflexPlayer rp = Reflex.getInstance().getCache().getReflexPlayer(p);
 

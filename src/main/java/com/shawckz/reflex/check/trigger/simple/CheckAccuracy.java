@@ -57,39 +57,39 @@ public class CheckAccuracy extends RTrigger {
         Player p = e.getPlayer();
         ReflexPlayer rp = Reflex.getInstance().getCache().getReflexPlayer(p);
 
-        if(rp.getData().getTarget() != null && rp.getData().getTarget().getWorld().equals(p.getWorld()) &&
+        if (rp.getData().getTarget() != null && rp.getData().getTarget().getWorld().equals(p.getWorld()) &&
                 rp.getData().getTarget().getLocation().distance(p.getLocation()) < maxTargetDistance) {
             double aimValue = Math.abs(TrigUtils.getDirection(p.getLocation(), rp.getData().getTarget().getLocation()));
             double yawValue = Math.abs(TrigUtils.wrapAngleTo180(p.getLocation().getYaw()));
             double difference = Math.abs(aimValue - yawValue);
 
-            if(difference <= maxYawOffset) {//Looking at target
+            if (difference <= maxYawOffset) {//Looking at target
                 rp.getData().setHits(rp.getData().getHits() + 1);
                 rp.getData().setConsecutiveHits(rp.getData().getConsecutiveHits() + 1);
                 rp.getData().setConsecutiveMisses(0);
 
-                if(rp.getData().getHits() >= minHits && rp.getData().getConsecutiveHits() >= minConsecutiveHits) {
+                if (rp.getData().getHits() >= minHits && rp.getData().getConsecutiveHits() >= minConsecutiveHits) {
                     double accuracy = calculateAccuracy(rp.getData().getHits(), rp.getData().getMisses());
-                    if(accuracy >= minAccuracy) {
+                    if (accuracy >= minAccuracy) {
                         rp.addAlertVL(getCheckType());
-                        if(rp.getAlertVL(getCheckType()) >= failThreshold) {
+                        if (rp.getAlertVL(getCheckType()) >= failThreshold) {
                             fail(rp, df.format(accuracy * 100) + "% accuracy");
                             rp.setAlertVL(getCheckType(), 0);
                         }
                     }
-                    else{
+                    else {
                         rp.modifyAlertVL(getCheckType(), -1);
                     }
                 }
 
             }
-            else{
+            else {
                 //Not looking at target
                 miss(rp);
             }
 
         }
-        else{
+        else {
             //Missed
             miss(rp);
         }
@@ -97,13 +97,13 @@ public class CheckAccuracy extends RTrigger {
     }
 
     public double calculateAccuracy(int hits, int misses) {
-        if(hits == 0 && misses == 0) {
+        if (hits == 0 && misses == 0) {
             return 0.0D;
         }
         else if (hits == 0) {
             return 0.0D;
         }
-        else if(misses == 0) {
+        else if (misses == 0) {
             return 1.0D;
         }
         return hits / misses;
@@ -111,11 +111,11 @@ public class CheckAccuracy extends RTrigger {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onAttack(EntityDamageByEntityEvent e) {
-        if(e.getEntity() instanceof Player && e.getDamager() instanceof Player) {
+        if (e.getEntity() instanceof Player && e.getDamager() instanceof Player) {
             Player p = (Player) e.getEntity();
             Player d = (Player) e.getDamager();
             ReflexPlayer rp = Reflex.getInstance().getCache().getReflexPlayer(d);
-            if(!rp.getData().getLastTarget().equals(p)) {
+            if (!rp.getData().getLastTarget().equals(p)) {
                 rp.getData().setConsecutiveHits(0);
                 rp.getData().setConsecutiveMisses(0);
                 rp.getData().setHits(0);

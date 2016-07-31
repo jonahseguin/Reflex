@@ -102,23 +102,6 @@ public class PlayerData extends CheckData {
     private double fallingVelocityY = -1D;
     private double lastFallingVelocity = -1D;
     private double lastFallingVelocityY = -1D;
-
-    public void updateFallingVelocity(double x, double y, double z) {
-        this.lastFallingVelocity = this.fallingVelocity;
-        this.lastFallingVelocityY = this.fallingVelocityY;
-
-        this.fallingVelocity = x + z;
-        this.fallingVelocityY = y;
-
-
-        if(this.lastFallingVelocityY == -1D) {
-            this.lastFallingVelocityY = this.fallingVelocityY;
-        }
-        if(this.lastFallingVelocity == -1D) {
-            this.lastFallingVelocity = this.fallingVelocity;
-        }
-    }
-
     /**
      * Phase
      */
@@ -127,7 +110,6 @@ public class PlayerData extends CheckData {
     private Location lastPhaseLocation = null;
     private long lastPhaseTime = -1;
     private int linkedPhaseAttempts = 0;
-
     /**
      * Accuracy
      */
@@ -141,40 +123,58 @@ public class PlayerData extends CheckData {
      * MorePackets
      */
     private int packets = 0;
-
     /**
      * Aura
      */
     private Player target = null;
     private Player lastTarget = null;
-
     /**
      * Aura Twitch
      */
     private float lastYaw = -1;
-
     /**
      * Criticals
      */
     private double consecutiveCriticalHits = 0;
     private double lastCriticalY = -1;
     private double totalCriticalY = 0;
-
     /**
      * Smooth Aim
      */
     private float aimSpeed = 0F;
     private float lastAimSpeed = 0F;
+    /**
+     * Triggerbot
+     */
+    private long trigLastCheck = -1L;
+    private double cpsOn = 0;
+    private double cpsOff = 0;
+
+    public void updateFallingVelocity(double x, double y, double z) {
+        this.lastFallingVelocity = this.fallingVelocity;
+        this.lastFallingVelocityY = this.fallingVelocityY;
+
+        this.fallingVelocity = x + z;
+        this.fallingVelocityY = y;
+
+
+        if (this.lastFallingVelocityY == -1D) {
+            this.lastFallingVelocityY = this.fallingVelocityY;
+        }
+        if (this.lastFallingVelocity == -1D) {
+            this.lastFallingVelocity = this.fallingVelocity;
+        }
+    }
 
     /**
      * Util methods
      */
 
     public boolean underBlock(Location location) {
-        for(Location loc : getLocationsAround(location)) {
-           // Material below = loc.clone().add(0, -1.0D, 0).getBlock().getType();
+        for (Location loc : getLocationsAround(location)) {
+            // Material below = loc.clone().add(0, -1.0D, 0).getBlock().getType();
             Material above = loc.clone().add(0, 2.2D, 0).getBlock().getType();
-            if(above.isSolid()) {
+            if (above.isSolid()) {
                 return true;
             }
         }
@@ -183,10 +183,10 @@ public class PlayerData extends CheckData {
 
 
     public boolean onType(Location location, Material type) {
-        for(Location loc : getLocationsAround(location)) {
+        for (Location loc : getLocationsAround(location)) {
             Material below = loc.clone().add(0, -1.0D, 0).getBlock().getType();
             // Material above = loc.clone().add(0, 2.2D, 0).getBlock().getType();
-            if(below.equals(type)) {
+            if (below.equals(type)) {
                 return true;
             }
         }
@@ -194,10 +194,10 @@ public class PlayerData extends CheckData {
     }
 
     public boolean underType(Location location, Material type) {
-        for(Location loc : getLocationsAround(location)) {
+        for (Location loc : getLocationsAround(location)) {
             //Material below = loc.clone().add(0, -1.0D, 0).getBlock().getType();
             Material above = loc.clone().add(0, 2.2D, 0).getBlock().getType();
-            if(above.equals(type)) {
+            if (above.equals(type)) {
                 return true;
             }
         }
@@ -213,10 +213,10 @@ public class PlayerData extends CheckData {
     }
 
     public boolean isOnGround(Location location) {
-        for(Location loc : getLocationsAround(location)) {
+        for (Location loc : getLocationsAround(location)) {
             Material below = loc.clone().add(0, -1.0D, 0).getBlock().getType();
             //Material above = loc.clone().add(0, 2.2D, 0).getBlock().getType();
-            if(below.isSolid()) {
+            if (below.isSolid()) {
                 return true;
             }
         }

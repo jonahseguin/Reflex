@@ -19,13 +19,13 @@ public class XListenAuth implements Emitter.Listener {
     }
 
     public final void call(Object... objects) {
-        if(objects != null && objects.length > 0) {
+        if (objects != null && objects.length > 0) {
             String result = (String) objects[0];
-            if(result.equalsIgnoreCase("true")) {
+            if (result.equalsIgnoreCase("true")) {
                 autheer.authorize(socketAuth);
                 autheer.onAuth(true);
             }
-            else{
+            else {
                 autheer.onAuth(false);
             }
         }

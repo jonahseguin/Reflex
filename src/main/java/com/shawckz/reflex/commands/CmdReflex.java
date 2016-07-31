@@ -45,25 +45,25 @@ public class CmdReflex implements RCommand {
 
         boolean toSet = !rp.isAlertsEnabled();
 
-        if(args.getArgs().length > 0) {
+        if (args.getArgs().length > 0) {
             String s = args.getArg(0);
-            if(s.equalsIgnoreCase("on")) {
+            if (s.equalsIgnoreCase("on")) {
                 toSet = true;
             }
             else if (s.equalsIgnoreCase("off")) {
                 toSet = false;
             }
-            else{
+            else {
                 p.sendMessage(ChatColor.RED + "Incorrect usage: Argument 1 must be 'on' or 'off'.");
                 return;
             }
         }
 
         rp.setAlertsEnabled(toSet);
-        if(toSet) {
+        if (toSet) {
             RLang.send(p, ReflexLang.ALERTS_ENABLED);
         }
-        else{
+        else {
             RLang.send(p, ReflexLang.ALERTS_DISABLED);
         }
 

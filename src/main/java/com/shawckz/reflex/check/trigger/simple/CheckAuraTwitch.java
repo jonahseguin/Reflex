@@ -49,7 +49,6 @@ public class CheckAuraTwitch extends RTrigger {
                 if (difference <= maxYawOffset) {//Looking at target
 
 
-
                     rp.getData().setLastYaw(p.getLocation().getYaw());
                 }
                 else {

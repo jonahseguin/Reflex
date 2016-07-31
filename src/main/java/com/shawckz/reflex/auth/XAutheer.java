@@ -13,13 +13,12 @@ public abstract class XAutheer {
     }
 
     public final void authorize(XSocketAuth auth) {
-        if(auth.isValid()) {
+        if (auth.isValid()) {
             authorized = true;
         }
     }
 
     public abstract void onAuth(boolean result);
-
 
 
 }

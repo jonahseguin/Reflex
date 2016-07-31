@@ -55,11 +55,11 @@ public class CmdLookup implements RCommand {
             public void run() {
                 ReflexPlayer t = Reflex.getInstance().getCache().getReflexPlayer(sTargetFinal);
                 if (t != null) {
-                    if(sender instanceof Player) {
+                    if (sender instanceof Player) {
                         LookupPlayerMenu lookupPlayerMenu = new LookupPlayerMenu(t);
-                        lookupPlayerMenu.open(((Player)sender));
+                        lookupPlayerMenu.open(((Player) sender));
                     }
-                    else{
+                    else {
                         RLang.send(sender, ReflexLang.HEADER_FOOTER);
                         msg(sender, "&7Player Lookup - &a" + t.getName());
                         msg(sender, "&eSession VL&7: &9" + t.getSessionVL());
@@ -228,14 +228,13 @@ public class CmdLookup implements RCommand {
             public void run() {
                 AutoMongo mongo = RViolation.selectOne(new BasicDBObject("_id", id), RViolation.class);
 
-                if(mongo != null) {
+                if (mongo != null) {
                     RLang.send(sender, ReflexLang.HEADER_FOOTER);
-
 
 
                     RLang.send(sender, ReflexLang.HEADER_FOOTER);
                 }
-                else{
+                else {
                     RLang.send(sender, ReflexLang.VIOLATION_NOT_FOUND, id);
                 }
             }

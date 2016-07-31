@@ -30,19 +30,17 @@ public class TriggerManager {
         register(new TriggerRegen());
         register(new TriggerReach());
         register(new TriggerFly());
-        register(new TriggerPhase());
-    //    register(new TriggerCriticals());
+        //    register(new TriggerCriticals());
 
         //Simple checks
         register(new CheckSpeed());
         register(new CheckHeadRoll());
         register(new CheckTabComplete());
         register(new CheckXray());
-        register(new CheckNoSwing());
         register(new CheckMorePackets());
         register(new CheckAuraTwitch());
         register(new CheckAccuracy());
-        register(new CheckPreventHealthTags());
+        register(new CheckPhase());
 
         triggers.values().stream().forEach(RTrigger::setupConfig);
     }

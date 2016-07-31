@@ -13,6 +13,9 @@ import com.shawckz.reflex.check.trigger.RTrigger;
 import com.shawckz.reflex.player.reflex.ReflexPlayer;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.List;
+
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -23,8 +26,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.material.Gate;
 
-import java.util.List;
-
 /**
  * Created by jonahseguin on 2016-07-28.
  */
@@ -32,15 +33,14 @@ import java.util.List;
 @Setter
 public class CheckPhase extends RTrigger {
 
+    private double box = 0.42500001192093;
+    private double radi = box / 2;
+    @ConfigData("translucent-materials")
+    private List<Material> translucentMaterials = Lists.newArrayList();
+
     public CheckPhase() {
         super(CheckType.PHASE, RCheckType.TRIGGER);
     }
-
-    private double box = 0.42500001192093;
-    private double radi = box / 2;
-
-    @ConfigData("translucent-materials")
-    private List<Material> translucentMaterials = Lists.newArrayList();
 
     public void addToList(Material mat) {
         this.translucentMaterials.add(mat);

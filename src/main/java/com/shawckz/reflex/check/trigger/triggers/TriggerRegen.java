@@ -14,7 +14,6 @@ import com.shawckz.reflex.player.reflex.ReflexPlayer;
 import lombok.Getter;
 import lombok.Setter;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
@@ -30,7 +29,7 @@ public class TriggerRegen extends RTrigger implements RTimer {
     private int threshold = 8;
 
     @ConfigData("capture-time")
-    private int captureTime = 10;
+    private int captureTime = 30;
 
     public TriggerRegen() {
         super(CheckType.REGEN, RCheckType.TRIGGER);
@@ -55,9 +54,7 @@ public class TriggerRegen extends RTrigger implements RTimer {
 
     @Override
     public void runTimer() {
-        for (Player pl : Bukkit.getOnlinePlayers()) {
-            ReflexPlayer player = Reflex.getInstance().getCache().getReflexPlayer(pl);
-
+        Reflex.getOnlinePlayers().forEach(player -> {
             if (player.getData().getHealthPerSecond() > maxHps) {
                 triggerLater(player, result -> {
 
@@ -65,7 +62,6 @@ public class TriggerRegen extends RTrigger implements RTimer {
             }
 
             player.getData().setHealthPerSecond(0);
-
-        }
+        });
     }
 }

@@ -10,7 +10,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public abstract class AuthMe extends JavaPlugin {
 
     public final void doAuth(ShawXAuth autheer) {
-        if(autheer == null || !autheer.getClass().isAssignableFrom(ShawXAuth.class)) {
+        if (autheer == null || !autheer.getClass().isAssignableFrom(ShawXAuth.class)) {
             throw new AuthException("Attempted to do auth from unknown ShawXAuth instance!");
         }
         auth(autheer).call();

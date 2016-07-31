@@ -46,26 +46,27 @@ public class TriggerAura extends RTrigger {
 
     @EventHandler
     public void onNotLookingAtTarget(final ReflexUseEntityEvent e) {
-        new BukkitRunnable(){
+        new BukkitRunnable() {
             @Override
             public void run() {
                 Player p = e.getPlayer();
                 ReflexPlayer rp = Reflex.getInstance().getCache().getReflexPlayer(p);
 
-                if(rp.getData().getTarget() != null && rp.getData().getTarget().getWorld().equals(p.getWorld()) &&
+                if (rp.getData().getTarget() != null && rp.getData().getTarget().getWorld().equals(p.getWorld()) &&
                         rp.getData().getTarget().getLocation().distance(p.getLocation()) < maxTargetDistance) {
                     double aimValue = Math.abs(TrigUtils.getDirection(p.getLocation(), rp.getData().getTarget().getLocation()));
                     double yawValue = Math.abs(TrigUtils.wrapAngleTo180(p.getLocation().getYaw()));
                     double difference = Math.abs(aimValue - yawValue);
 
-                    if(difference > maxYawOffset) {//Is looking > X yaw away from target
+                    if (difference > maxYawOffset) {//Is looking > X yaw away from target
                         rp.addAlertVL(getCheckType());
-                        if(rp.getAlertVL(getCheckType()) >= minFails) {
-                            triggerLater(rp, result -> {});
+                        if (rp.getAlertVL(getCheckType()) >= minFails) {
+                            triggerLater(rp, result -> {
+                            });
                             rp.setAlertVL(getCheckType(), 0);
                         }
                     }
-                    else{
+                    else {
                         rp.modifyAlertVL(getCheckType(), (passPenalty * -1));
                     }
 
@@ -75,10 +76,9 @@ public class TriggerAura extends RTrigger {
     }
 
 
-
     @EventHandler
     public void onUpdateTarget(EntityDamageByEntityEvent e) {
-        if(e.getEntity() instanceof Player && e.getDamager() instanceof Player) {
+        if (e.getEntity() instanceof Player && e.getDamager() instanceof Player) {
             Player p = (Player) e.getDamager();
             Player target = (Player) e.getEntity();
 

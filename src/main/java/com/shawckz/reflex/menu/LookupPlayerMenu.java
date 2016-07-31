@@ -50,14 +50,14 @@ public class LookupPlayerMenu extends ItemMenu {
                 ib.setName(ChatColor.BLUE + "Violation Levels");
                 int i = 0;
                 ib.addLoreLine(" ");
-                for(CheckType checkType : CheckType.values()) {
-                    if(player.hasVL(checkType)) {
+                for (CheckType checkType : CheckType.values()) {
+                    if (player.hasVL(checkType)) {
                         int vl = player.getVL(checkType);
                         ib.addLoreLine(ChatColor.DARK_GRAY + checkType.getName() + ": " + ChatColor.GRAY + vl);
                         i++;
                     }
                 }
-                if(i == 0) {
+                if (i == 0) {
                     ib.addLoreLine(ChatColor.DARK_GRAY + "No violation levels.");
                 }
                 return ib.toItemStack();
@@ -82,7 +82,6 @@ public class LookupPlayerMenu extends ItemMenu {
                 ib.setName(ChatColor.BLUE + "Is Banned");
                 ib.addLoreLine(" ");
                 ib.addLoreLine(ChatColor.DARK_GRAY + "Not yet implemented...");
-
 
 
                 return ib.toItemStack();

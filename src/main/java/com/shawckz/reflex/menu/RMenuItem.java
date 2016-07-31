@@ -7,7 +7,6 @@ package com.shawckz.reflex.menu;
 import ninja.amp.ampmenus.events.ItemClickEvent;
 import ninja.amp.ampmenus.items.MenuItem;
 
-
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -28,7 +27,7 @@ public class RMenuItem extends MenuItem {
     @Override
     public ItemStack getFinalIcon(Player player) {
         ItemStack i = action.getFinalIcon(player);
-        if(i == null) {
+        if (i == null) {
             return super.getFinalIcon(player);
         }
         return i;

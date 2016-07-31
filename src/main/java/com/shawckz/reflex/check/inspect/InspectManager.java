@@ -93,7 +93,7 @@ public class InspectManager {
                 }
             }
         }
-        else{
+        else {
             throw new ReflexException("Unknown action (ResultType) for inspectInternal: " + resultType.toString());
         }
 

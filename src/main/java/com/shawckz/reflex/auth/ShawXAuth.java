@@ -22,7 +22,7 @@ public class ShawXAuth extends Configuration {
     public ShawXAuth(Reflex plugin) {
         super(plugin, "key.yml");
 
-        if(sxa != null){
+        if (sxa != null) {
             throw new ReflexException("ShawXAuth has already been instantiated");
         }
 
@@ -30,7 +30,7 @@ public class ShawXAuth extends Configuration {
         load();
         save();
 
-        if(key.equals("xxx")) {
+        if (key.equals("xxx")) {
             Bukkit.getLogger().info(" ");
             Bukkit.getLogger().info("-------------------------------------");
             Bukkit.getLogger().info("Reflex - v" + Reflex.getInstance().getDescription().getVersion() + " by Shawckz");
@@ -56,17 +56,17 @@ public class ShawXAuth extends Configuration {
     }
 
     public static void auth(final AuthMe me) {
-        if(sxa == null) {
+        if (sxa == null) {
             new ShawXAuth(Reflex.getInstance());
         }
         final ShawXAuth shawXAuth = sxa;
-        new BukkitRunnable(){
+        new BukkitRunnable() {
             @Override
             public void run() {
                 final XSocketAuth auth = new XSocketAuth(shawXAuth);
 
                 auth.auth(me, result -> {
-                    if(result) {
+                    if (result) {
                         me.doAuth(shawXAuth);
                         Bukkit.getLogger().info(" ");
                         Bukkit.getLogger().info("-------------------------------------");
@@ -77,7 +77,7 @@ public class ShawXAuth extends Configuration {
                         Bukkit.getLogger().info("-------------------------------------");
                         Bukkit.getLogger().info(" ");
                     }
-                    else{
+                    else {
                         Bukkit.getLogger().info(" ");
                         Bukkit.getLogger().info("-------------------------------------");
                         Bukkit.getLogger().info("Reflex - v" + Reflex.getInstance().getDescription().getVersion() + " by Shawckz");
@@ -91,7 +91,7 @@ public class ShawXAuth extends Configuration {
                         Bukkit.getLogger().info("If you do not have an authentication key and/or obtained this copy of Reflex illegally, your IP has been logged and appropriate action will be taken.");
                         Bukkit.getLogger().info("-------------------------------------");
                         Bukkit.getLogger().info(" ");
-                        new BukkitRunnable(){
+                        new BukkitRunnable() {
                             @Override
                             public void run() {
                                 Bukkit.getServer().getPluginManager().disablePlugin(me);

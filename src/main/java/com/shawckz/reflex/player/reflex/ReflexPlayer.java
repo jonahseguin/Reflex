@@ -25,31 +25,26 @@ import org.bukkit.entity.Player;
 @Setter
 public class ReflexPlayer extends CachePlayer {
 
+    private final PlayerData data = new PlayerData();
+    private final RCapturePlayer capturePlayer = new RCapturePlayer(this);
     @MongoColumn(name = "username")
     @NonNull
     private String name;
-
     @MongoColumn(name = "uuid", identifier = true)
     @NonNull
     private String uniqueId;
-
     private int sessionVL = 0;
-
     //Non-persistent...
     private Map<String, Integer> vl = new HashMap<>();
-
     private Map<String, Integer> alertVL = new HashMap<>(); //VL before alert...
-
-    private final PlayerData data = new PlayerData();
-
-    private final RCapturePlayer capturePlayer = new RCapturePlayer(this);
-
     @Getter
     @Setter
     private Player bukkitPlayer = null;
     @Getter
     @Setter
     private boolean alertsEnabled = true;
+
+    private boolean online = false;
 
     public ReflexPlayer() {//So that AutoMongo can instantiate without throwing an InstantiationException
     }
@@ -83,7 +78,7 @@ public class ReflexPlayer extends CachePlayer {
     public void modifyVL(CheckType checkType, int change) {
         int vl = getVL(checkType);
         vl += change;
-        if(vl < 0) {
+        if (vl < 0) {
             vl = 0;
         }
         this.vl.put(checkType.getName(), vl);
@@ -101,7 +96,7 @@ public class ReflexPlayer extends CachePlayer {
     public void modifyAlertVL(CheckType checkType, int change) {
         int vl = getAlertVL(checkType);
         vl += change;
-        if(vl < 0) {
+        if (vl < 0) {
             vl = 0;
         }
         this.alertVL.put(checkType.getName(), vl);

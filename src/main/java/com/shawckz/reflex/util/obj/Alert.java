@@ -44,6 +44,7 @@ public class Alert {
     private String detail = null;
     @Setter
     private RInspectResult inspectResult = null;
+
     public Alert(ReflexPlayer violator, CheckType checkType, Type type, RViolation violation, int vl) {
         this.violator = violator;
         this.checkType = checkType;

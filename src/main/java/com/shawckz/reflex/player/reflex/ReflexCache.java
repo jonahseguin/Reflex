@@ -9,7 +9,9 @@ import com.shawckz.reflex.backend.configuration.RLang;
 import com.shawckz.reflex.backend.configuration.ReflexLang;
 import com.shawckz.reflex.backend.configuration.ReflexPerm;
 import com.shawckz.reflex.player.cache.AbstractCache;
-import com.shawckz.reflex.player.cache.CachePlayer;
+
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.bukkit.entity.Player;
 
@@ -19,48 +21,49 @@ import org.bukkit.entity.Player;
 public class ReflexCache extends AbstractCache {
 
     public ReflexCache(Reflex plugin) {
-        super(plugin, ReflexPlayer.class);
+        super(plugin);
     }
 
     //See superclass for documentation
     public ReflexPlayer getReflexPlayer(String name) {
-        CachePlayer cachePlayer = getBasePlayer(name);
+        ReflexPlayer cachePlayer = getBasePlayer(name);
         if (cachePlayer != null) {
-            return (ReflexPlayer) getBasePlayer(name);
+            return getBasePlayer(name);
         }
         return null;
     }
 
     public ReflexPlayer getReflexPlayerByUUID(String uuid) {
-        CachePlayer cachePlayer = getBasePlayerByUUID(uuid);
+        ReflexPlayer cachePlayer = getBasePlayerByUUID(uuid);
         if (cachePlayer != null) {
-            return (ReflexPlayer) getBasePlayerByUUID(uuid);
+            return getBasePlayerByUUID(uuid);
         }
         return null;
     }
 
     //See superclass for documentation
     public ReflexPlayer getReflexPlayer(Player p) {
-        if(p != null) {
+        if (p != null) {
             return getReflexPlayer(p.getName());
         }
         return null;
     }
 
+    public Set<ReflexPlayer> getOnlinePlayers() {
+        return getPlayers().values().stream().filter(ReflexPlayer::isOnline).collect(Collectors.toSet());
+    }
+
     @Override
-    public CachePlayer create(String name, String uuid) {
+    public ReflexPlayer create(String name, String uuid) {
         return new ReflexPlayer(name, uuid);
     }
 
     @Override
-    public void init(Player p, CachePlayer cachePlayer) {
-        if (cachePlayer instanceof ReflexPlayer) {
-            ReflexPlayer reflexPlayer = (ReflexPlayer) cachePlayer;
-            reflexPlayer.setBukkitPlayer(p);
-            if (ReflexPerm.ALERTS.hasPerm(p)) {
-                reflexPlayer.setAlertsEnabled(true);
-                RLang.send(p, ReflexLang.ALERTS_ENABLED);
-            }
+    public void init(Player p, ReflexPlayer reflexPlayer) {
+        reflexPlayer.setBukkitPlayer(p);
+        if (ReflexPerm.ALERTS.hasPerm(p)) {
+            reflexPlayer.setAlertsEnabled(true);
+            RLang.send(p, ReflexLang.ALERTS_ENABLED);
         }
     }
 }

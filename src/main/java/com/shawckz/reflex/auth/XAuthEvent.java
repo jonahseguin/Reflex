@@ -8,9 +8,7 @@ public enum XAuthEvent {
 
     AUTHORIZE_RESULT("auth:result"),
     AUTHORIZE_REQUEST("auth:request"),
-    CANCEL("product:cancel")
-
-    ;
+    CANCEL("product:cancel");
 
     private final String name;
 

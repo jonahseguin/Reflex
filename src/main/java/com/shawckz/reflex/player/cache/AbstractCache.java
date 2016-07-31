@@ -1,15 +1,19 @@
+/*
+ * Copyright (c) Jonah Seguin (Shawckz) 2016.  You may not copy, re-sell, distribute, modify, or use any code contained in this document or file, collection of documents or files, or project.  Thank you.
+ */
+
 package com.shawckz.reflex.player.cache;
 
-import com.mongodb.BasicDBObject;
 import com.shawckz.reflex.backend.database.mongo.AutoMongo;
 import com.shawckz.reflex.backend.database.mongo.annotations.MongoColumn;
+import com.shawckz.reflex.player.reflex.ReflexPlayer;
+import org.bson.Document;
 
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-import org.bson.Document;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -21,42 +25,42 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
-/*
- * Copyright (c) 2015 Jonah Seguin (Shawckz).  All rights reserved.  You may not modify, decompile, distribute or use any code/text contained in this document(plugin) without explicit signed permission from Jonah Seguin.
- */
-
 /**
  * Created by Jonah on 6/11/2015.
  */
 public abstract class AbstractCache implements Listener {
 
-    private final static ConcurrentMap<String, CachePlayer> players = new ConcurrentHashMap<>();
-    private final static ConcurrentMap<String, CachePlayer> playersUUID = new ConcurrentHashMap<>();
+    private final ConcurrentMap<String, ReflexPlayer> players = new ConcurrentHashMap<>();
+    private final ConcurrentMap<String, ReflexPlayer> playersUUID = new ConcurrentHashMap<>();
     private final Plugin plugin;
-    private final Class<? extends CachePlayer> aClass;
+    private final Class<? extends ReflexPlayer> aClass;
 
-    public AbstractCache(Plugin plugin, Class<? extends CachePlayer> aClass) {
+    public AbstractCache(Plugin plugin) {
         this.plugin = plugin;
-        this.aClass = aClass;
+        this.aClass = ReflexPlayer.class;
         Bukkit.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
+    public static ConcurrentMap<String, ReflexPlayer> getPlayers() {
+        return players;
+    }
+
     /**
-     * Returns a CachePlayer instance if in local cache, if not in local cache this will attempt to load their CachePlayer object from the database
+     * Returns a ReflexPlayer instance if in local cache, if not in local cache this will attempt to load their ReflexPlayer object from the database
      * If they are not in the database or the name is null, will return null.
      *
-     * @param name The Player's name to get a CachePlayer instance of
+     * @param name The Player's name to get a ReflexPlayer instance of
      *
-     * @return The CachePlayer, null if not found in database && cache
+     * @return The ReflexPlayer, null if not found in database && cache
      *
      * Please note that the name is case sensitive.
      */
-    public CachePlayer getBasePlayer(String name) {
+    public ReflexPlayer getBasePlayer(String name) {
         if (players.containsKey(name)) {
             return players.get(name);
         }
         else {
-            CachePlayer cp = loadCachePlayer(name);
+            ReflexPlayer cp = loadReflexPlayer(name);
             if (cp != null) {
                 return cp;
             }
@@ -66,12 +70,12 @@ public abstract class AbstractCache implements Listener {
         }
     }
 
-    public CachePlayer getBasePlayerByUUID(String uuid) {
+    public ReflexPlayer getBasePlayerByUUID(String uuid) {
         if (playersUUID.containsKey(uuid)) {
             return playersUUID.get(uuid);
         }
         else {
-            CachePlayer cp = loadCachePlayerByid(uuid);
+            ReflexPlayer cp = loadReflexPlayerByid(uuid);
             if (cp != null) {
                 put(cp);
                 return cp;
@@ -82,7 +86,7 @@ public abstract class AbstractCache implements Listener {
         }
     }
 
-    public CachePlayer loadCachePlayer(String name) {
+    public ReflexPlayer loadReflexPlayer(String name) {
         String key = "username";
         for (Field f : aClass.getDeclaredFields()) {
             MongoColumn row = f.getAnnotation(MongoColumn.class);
@@ -96,17 +100,17 @@ public abstract class AbstractCache implements Listener {
             }
         }
 
-        List<AutoMongo> autoMongos = CachePlayer.select(new Document(key, name), aClass);
+        List<AutoMongo> autoMongos = ReflexPlayer.select(new Document(key, name), aClass);
         for (AutoMongo mongo : autoMongos) {
-            if (mongo instanceof CachePlayer) {
-                CachePlayer cachePlayer = (CachePlayer) mongo;
-                return cachePlayer;
+            if (mongo instanceof ReflexPlayer) {
+                ReflexPlayer ReflexPlayer = (ReflexPlayer) mongo;
+                return ReflexPlayer;
             }
         }
         return null;
     }
 
-    public CachePlayer loadCachePlayerByid(String name) {
+    public ReflexPlayer loadReflexPlayerByid(String name) {
         String key = "uniqueId";
         for (Field f : aClass.getDeclaredFields()) {
             MongoColumn row = f.getAnnotation(MongoColumn.class);
@@ -120,17 +124,17 @@ public abstract class AbstractCache implements Listener {
             }
         }
 
-        List<AutoMongo> autoMongos = CachePlayer.select(new Document(key, name), aClass);
+        List<AutoMongo> autoMongos = ReflexPlayer.select(new Document(key, name), aClass);
         for (AutoMongo mongo : autoMongos) {
-            if (mongo instanceof CachePlayer) {
-                CachePlayer cachePlayer = (CachePlayer) mongo;
-                return cachePlayer;
+            if (mongo instanceof ReflexPlayer) {
+                ReflexPlayer ReflexPlayer = (ReflexPlayer) mongo;
+                return ReflexPlayer;
             }
         }
         return null;
     }
 
-    public CachePlayer getBasePlayer(Player p) {
+    public ReflexPlayer getBasePlayer(Player p) {
         return getBasePlayer(p.getName());
     }
 
@@ -146,20 +150,20 @@ public abstract class AbstractCache implements Listener {
     }
 
     /**
-     * Adds a CachePlayer to the local cache.  Does not get cleared until server restart.
+     * Adds a ReflexPlayer to the local cache.  Does not get cleared until server restart.
      *
-     * @param cachePlayer The CachePlayer to add to the local cache
+     * @param ReflexPlayer The ReflexPlayer to add to the local cache
      */
-    public void put(CachePlayer cachePlayer) {
-        players.put(cachePlayer.getName(), cachePlayer);
-        playersUUID.put(cachePlayer.getUniqueId(), cachePlayer);
+    public void put(ReflexPlayer ReflexPlayer) {
+        players.put(ReflexPlayer.getName(), ReflexPlayer);
+        playersUUID.put(ReflexPlayer.getUniqueId(), ReflexPlayer);
     }
 
     /**
      * Clear the local cache.
      * Used in onDisable to prevent memory leaks (due to the cache being static)
      */
-    public static void clear() {
+    public void clear() {
         players.clear();
     }
 
@@ -167,7 +171,7 @@ public abstract class AbstractCache implements Listener {
     public void onCache(final AsyncPlayerPreLoginEvent e) {
         final String name = e.getName();
         final String uuid = e.getUniqueId().toString();
-        CachePlayer cp = loadCachePlayer(e.getName());
+        ReflexPlayer cp = loadReflexPlayer(e.getName());
         if (cp != null) {
             put(cp);
         }
@@ -182,28 +186,33 @@ public abstract class AbstractCache implements Listener {
     public void onJoin(final PlayerJoinEvent e) {
         Player p = e.getPlayer();
         if (contains(p.getName())) {
-            CachePlayer cp = getBasePlayer(p);
+            ReflexPlayer cp = getBasePlayer(p);
+            cp.setOnline(true);
             init(p, cp);
         }
     }
 
-    public abstract CachePlayer create(String name, String uuid);
+    public abstract ReflexPlayer create(String name, String uuid);
 
-    public abstract void init(Player player, CachePlayer cachePlayer);
+    public abstract void init(Player player, ReflexPlayer ReflexPlayer);
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onQuit(final PlayerQuitEvent e) {
         final Player p = e.getPlayer();
-        save(p);
+        if (contains(p.getName())) {
+            ReflexPlayer reflexPlayer = getBasePlayer(p);
+            reflexPlayer.setOnline(false);
+            save(p);
+        }
     }
 
     public void save(Player p) {
         if (contains(p.getName())) {
-            final CachePlayer cachePlayer = (aClass.cast(getBasePlayer(p)));
+            final ReflexPlayer ReflexPlayer = (aClass.cast(getBasePlayer(p)));
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    cachePlayer.update();
+                    ReflexPlayer.update();
                 }
             }.runTaskAsynchronously(plugin);
         }
@@ -211,8 +220,8 @@ public abstract class AbstractCache implements Listener {
 
     public void saveSync(Player p) {
         if (contains(p.getName())) {
-            final CachePlayer cachePlayer = (aClass.cast(getBasePlayer(p)));
-            cachePlayer.update();
+            final ReflexPlayer ReflexPlayer = (aClass.cast(getBasePlayer(p)));
+            ReflexPlayer.update();
         }
     }
 

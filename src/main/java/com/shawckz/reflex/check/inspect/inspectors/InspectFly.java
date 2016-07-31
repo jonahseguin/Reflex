@@ -29,7 +29,7 @@ public class InspectFly extends RInspect {
     private int autobanVL = 3;
 
     @ConfigData("threshold-airtime")
-    private int thresholdAirtime = 8;
+    private int thresholdAirtime = 5;
 
     @ConfigData("threshold-yps")
     private double thresholdYps = 10;
@@ -46,12 +46,12 @@ public class InspectFly extends RInspect {
         if (checkData instanceof DataFly) {
             DataFly data = (DataFly) checkData;
 
-            if(data.getPeakAirTime() != -1) {
-                if(data.getPeakAirTime() >= thresholdAirtime) {
+            if (data.getPeakAirTime() != -1) {
+                if (data.getPeakAirTime() >= thresholdAirtime) {
                     return new RInspectResultData(RInspectResultType.FAILED, df.format(data.getPeakAirTime()) + "s in air");
                 }
             }
-            else if(data.getPeakYps() >= thresholdYps) {
+            else if (data.getPeakYps() >= thresholdYps) {
                 return new RInspectResultData(RInspectResultType.FAILED, df.format(data.getPeakYps()) + " peak y/sec");
             }
             else if (data.getPeakBps() >= thresholdBps) {

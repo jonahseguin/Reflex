@@ -14,7 +14,6 @@ import com.shawckz.reflex.player.reflex.ReflexPlayer;
 import lombok.Getter;
 import lombok.Setter;
 
-import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -34,10 +33,10 @@ public class CaptureFly extends RDataCapture implements RTimer {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onMove(PlayerMoveEvent e) {
-        if(e.isCancelled()) return;
+        if (e.isCancelled()) return;
         Player p = e.getPlayer();
-        if(isCapturing(p)) {
-            if(p.getAllowFlight()) {
+        if (isCapturing(p)) {
+            if (p.getAllowFlight()) {
                 return;
             }
             ReflexPlayer rp = Reflex.getInstance().getCache().getReflexPlayer(p);
@@ -52,13 +51,13 @@ public class CaptureFly extends RDataCapture implements RTimer {
 
             data.setBps(data.getBps() + distance);
 
-            if(e.getTo().getY() >= e.getFrom().getY()) {
+            if (e.getTo().getY() >= e.getFrom().getY()) {
                 data.setHasPositiveVelocity(true);
             }
 
-            Block b = p.getLocation().clone().subtract(0,1,0).getBlock();
+            Block b = p.getLocation().clone().subtract(0, 1, 0).getBlock();
 
-            if(p.isOnGround() || b.isLiquid() || b.getType().isSolid()) {
+            if (p.isOnGround() || b.isLiquid() || b.getType().isSolid()) {
                 data.setLastGroundTime(System.currentTimeMillis());
             }
         }
@@ -70,27 +69,26 @@ public class CaptureFly extends RDataCapture implements RTimer {
 
     @Override
     public void runTimer() {
-        for (Player pl : Bukkit.getOnlinePlayers()) {
-            ReflexPlayer p = Reflex.getInstance().getCache().getReflexPlayer(pl);
+        Reflex.getOnlinePlayers().forEach(p -> {
+            Player pl = p.getBukkitPlayer();
             if (p.getCapturePlayer().isCapturing(getCheckType())) {
-                if(pl.getAllowFlight()) {
-                    continue;
-                }
-                DataFly data = getData(p);
-                if(data.getYps() > data.getPeakYps()) {
-                    data.setPeakYps(data.getYps());
-                }
-
-                if(data.getLastGroundTime() != -1) {
-                    int airTime = (int) (System.currentTimeMillis() - data.getLastGroundTime()) / 1000;
-                    if(airTime > data.getPeakAirTime()) {
-                        data.setPeakAirTime(airTime);
+                if (!pl.getAllowFlight()) {
+                    DataFly data = getData(p);
+                    if (data.getYps() > data.getPeakYps()) {
+                        data.setPeakYps(data.getYps());
                     }
-                }
 
-                data.setBps(0);
-                data.setYps(0);
+                    if (data.getLastGroundTime() != -1) {
+                        int airTime = (int) (System.currentTimeMillis() - data.getLastGroundTime()) / 1000;
+                        if (airTime > data.getPeakAirTime()) {
+                            data.setPeakAirTime(airTime);
+                        }
+                    }
+
+                    data.setBps(0);
+                    data.setYps(0);
+                }
             }
-        }
+        });
     }
 }

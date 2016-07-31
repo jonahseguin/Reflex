@@ -57,7 +57,7 @@ public class CaptureVClip extends RDataCapture {
         if (Math.round(distance.getYDifference()) < 2) {
             return;
         }
-        if(e.getTo().getBlockY() < e.getFrom().getBlockY()) {
+        if (e.getTo().getBlockY() < e.getFrom().getBlockY()) {
             //VClip down
             for (int i = 0; i < Math.round(distance.getYDifference()) + 1; i++) {
                 Block block = new Location(pl.getWorld(), pl.getLocation().getX(), to + i, pl.getLocation().getZ()).getBlock();
@@ -69,7 +69,7 @@ public class CaptureVClip extends RDataCapture {
                 }
             }
         }
-        else{
+        else {
             //VClip up
             for (int i = 0; i < Math.round(distance.getYDifference()) + 1; i++) {
                 Block block = new Location(pl.getWorld(), pl.getLocation().getX(), to - i, pl.getLocation().getZ()).getBlock();

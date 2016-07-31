@@ -26,7 +26,7 @@ public abstract class RDynMenuItem extends MenuItem {
 
     @Override
     public void onItemClick(ItemClickEvent event) {
-        if(action != null) {
+        if (action != null) {
             action.onClick(event);
         }
     }

@@ -50,7 +50,7 @@ public class CheckMorePackets extends RTrigger implements RTimer {
 
     @EventHandler
     public void onMove(PlayerMoveEvent e) {
-        if(e.isCancelled()) {
+        if (e.isCancelled()) {
             Player p = e.getPlayer();
             ReflexPlayer rp = Reflex.getInstance().getCache().getReflexPlayer(p);
             rp.getData().setPackets(rp.getData().getPackets() - 2);
@@ -66,12 +66,12 @@ public class CheckMorePackets extends RTrigger implements RTimer {
 
     @Override
     public void runTimer() {
-        for(Player pl : Bukkit.getOnlinePlayers()) {
+        for (Player pl : Bukkit.getOnlinePlayers()) {
             ReflexPlayer rp = Reflex.getInstance().getCache().getReflexPlayer(pl);
 
-            if(rp.getData().getPackets() > calcMaxPPS()) {
+            if (rp.getData().getPackets() > calcMaxPPS()) {
                 rp.addAlertVL(getCheckType());
-                if(rp.getAlertVL(getCheckType()) >= trigger) {
+                if (rp.getAlertVL(getCheckType()) >= trigger) {
                     fail(rp, rp.getData().getPackets() + " packets");
                     rp.setAlertVL(getCheckType(), 0);
                 }

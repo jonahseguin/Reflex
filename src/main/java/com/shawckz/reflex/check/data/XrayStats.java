@@ -15,24 +15,18 @@ import org.bukkit.Material;
 
 public class XrayStats {
 
-    public enum Stat {
-        DIAMOND(32D, Material.DIAMOND_ORE),
-        EMERALD(40D, Material.EMERALD_ORE),
-        GOLD(45D, Material.GOLD_ORE);
+    private Map<Stat, Double> stats = new HashMap<>();
 
-        public final double max;
-        public final Material type;
 
-        Stat(double max, Material type) {
-            this.max = max;
-            this.type = type;
+    public XrayStats() {
+        for (Stat stat : Stat.values()) {
+            stats.put(stat, 0D);
         }
     }
 
-
     public boolean isTracking(Material type) {
-        for(Stat stat : Stat.values()){
-            if(stat.type.equals(type)) {
+        for (Stat stat : Stat.values()) {
+            if (stat.type.equals(type)) {
                 return true;
             }
         }
@@ -40,20 +34,12 @@ public class XrayStats {
     }
 
     public Stat convertStat(Material type) {
-        for(Stat stat : Stat.values()){
-            if(stat.type.equals(type)) {
+        for (Stat stat : Stat.values()) {
+            if (stat.type.equals(type)) {
                 return stat;
             }
         }
         return null;
-    }
-
-    private Map<Stat, Double> stats = new HashMap<>();
-
-    public XrayStats() {
-        for(Stat stat : Stat.values()) {
-            stats.put(stat, 0D);
-        }
     }
 
     public Map<Stat, Double> getStats() {
@@ -66,7 +52,7 @@ public class XrayStats {
 
     public double modifyStat(Stat stat, double change) {
         double current = 0;
-        if(stats.containsKey(stat)) {
+        if (stats.containsKey(stat)) {
             current = stats.get(stat);
         }
         current += change;
@@ -76,17 +62,17 @@ public class XrayStats {
 
     public double getMax(Stat stat) {
         CheckXray checkXray = (CheckXray) Reflex.getInstance().getTriggerManager().getTrigger(CheckType.XRAY);
-        if(checkXray.getMax().containsKey(stat)) {
+        if (checkXray.getMax().containsKey(stat)) {
             return checkXray.getMax().get(stat);
         }
-        else{
+        else {
             return stat.max;
         }
     }
 
     public boolean overMax(Stat stat) {
-        if(stats.containsKey(stat)) {
-            if(stats.get(stat) >= getMax(stat)) {
+        if (stats.containsKey(stat)) {
+            if (stats.get(stat) >= getMax(stat)) {
                 return true;
             }
         }
@@ -95,8 +81,22 @@ public class XrayStats {
 
     public void reset() {
         stats.clear();
-        for(Stat stat : Stat.values()) {
+        for (Stat stat : Stat.values()) {
             stats.put(stat, 0D);
+        }
+    }
+
+    public enum Stat {
+        DIAMOND(32D, Material.DIAMOND_ORE),
+        EMERALD(40D, Material.EMERALD_ORE),
+        GOLD(45D, Material.GOLD_ORE);
+
+        public final double max;
+        public final Material type;
+
+        Stat(double max, Material type) {
+            this.max = max;
+            this.type = type;
         }
     }
 

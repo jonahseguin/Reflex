@@ -14,7 +14,6 @@ import com.shawckz.reflex.player.reflex.ReflexPlayer;
 import lombok.Getter;
 import lombok.Setter;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -64,8 +63,7 @@ public class TriggerAutoClick extends RTrigger implements RTimer {
 
     @Override
     public void runTimer() {
-        for (Player pl : Bukkit.getOnlinePlayers()) {
-            ReflexPlayer player = Reflex.getInstance().getCache().getReflexPlayer(pl);
+        Reflex.getOnlinePlayers().forEach(player -> {
             double[] cps = player.getData().getClicksPerSecond();
 
             if (cps[3] >= maxClicksPerSecond
@@ -87,7 +85,7 @@ public class TriggerAutoClick extends RTrigger implements RTimer {
             cps[2] = cps[3];
             cps[3] = 0.0;
             player.getData().setClicksPerSecond(cps);
-        }
+        });
     }
 
 

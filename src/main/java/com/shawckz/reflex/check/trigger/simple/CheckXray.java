@@ -19,7 +19,6 @@ import lombok.Setter;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -39,24 +38,20 @@ public class CheckXray extends RTrigger {
     private Map<XrayStats.Stat, Double> max = new HashMap<>();
 
 
-
     public CheckXray() {
         super(CheckType.XRAY, RCheckType.TRIGGER);
 
-        for(XrayStats.Stat stat : XrayStats.Stat.values()) {
-            if(!max.containsKey(stat)) {
+        for (XrayStats.Stat stat : XrayStats.Stat.values()) {
+            if (!max.containsKey(stat)) {
                 max.put(stat, stat.max);
             }
         }
         save();
 
-        new BukkitRunnable(){
+        new BukkitRunnable() {
             @Override
             public void run() {
-                for(Player pl : Bukkit.getOnlinePlayers()) {
-                    ReflexPlayer rp = Reflex.getInstance().getCache().getReflexPlayer(pl);
-                    rp.getData().getXrayStats().reset();
-                }
+                Reflex.getOnlinePlayers().forEach(rp -> rp.getData().getXrayStats().reset());
             }
         }.runTaskTimerAsynchronously(Reflex.getInstance(), 72000, 72000);
     }
@@ -65,14 +60,14 @@ public class CheckXray extends RTrigger {
     public void onBreak(BlockBreakEvent e) {
         Player p = e.getPlayer();
         ReflexPlayer rp = Reflex.getInstance().getCache().getReflexPlayer(p);
-        if(!isEnabled()) return;
+        if (!isEnabled()) return;
 
-        if(!e.getBlock().hasMetadata("ReflexXrayPlaced")) {
+        if (!e.getBlock().hasMetadata("ReflexXrayPlaced")) {
             XrayStats xrayStats = rp.getData().getXrayStats();
             XrayStats.Stat stat = xrayStats.convertStat(e.getBlock().getType());
             double val = xrayStats.modifyStat(stat, 1);
-            if(xrayStats.overMax(stat)) {
-                if(fail(rp, val + " " + stat.toString().toLowerCase() + "/hr").isCancelled()) {
+            if (xrayStats.overMax(stat)) {
+                if (fail(rp, val + " " + stat.toString().toLowerCase() + "/hr").isCancelled()) {
                     e.setCancelled(true);
                     xrayStats.modifyStat(stat, ((-1) * violationPenalty));
                 }
@@ -84,7 +79,7 @@ public class CheckXray extends RTrigger {
     public void onPlace(BlockPlaceEvent e) {
         Player p = e.getPlayer();
         ReflexPlayer rp = Reflex.getInstance().getCache().getReflexPlayer(p);
-        if(rp.getData().getXrayStats().isTracking(e.getBlock().getType())) {
+        if (rp.getData().getXrayStats().isTracking(e.getBlock().getType())) {
             e.getBlock().setMetadata("ReflexXrayPlaced", new FixedMetadataValue(Reflex.getInstance(), true));
         }
     }

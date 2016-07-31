@@ -47,13 +47,13 @@ public class ReflexTimer implements Runnable {
      */
     public void run() {
         for (RTimer timer : timers) {
-            if(timer instanceof Check) {
+            if (timer instanceof Check) {
                 Check check = (Check) timer;
-                if(check.isEnabled()) {
+                if (check.isEnabled()) {
                     timer.runTimer();
                 }
             }
-            else{
+            else {
                 timer.runTimer();
             }
         }
@@ -67,7 +67,7 @@ public class ReflexTimer implements Runnable {
     }
 
     private void updatePingAndLag(ReflexPlayer player, RDataCapture check) {
-        if(player != null && player.getBukkitPlayer() != null) {
+        if (player != null && player.getBukkitPlayer() != null) {
             if (check.isCapturing(player.getBukkitPlayer())) {
                 player.getCapturePlayer().getData(check.getCheckType()).setPing(((CraftPlayer) player.getBukkitPlayer()).getHandle().ping);
                 player.getCapturePlayer().getData(check.getCheckType()).setTps(Lag.getTPS());

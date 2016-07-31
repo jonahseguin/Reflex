@@ -70,7 +70,7 @@ public class DBManager extends Configuration {
     }
 
     private void setup() {
-        if(host.equals("xxx")) {
+        if (host.equals("xxx")) {
             Bukkit.getLogger().info(" ");
             Bukkit.getLogger().info("-------------------------------------");
             Bukkit.getLogger().info("Reflex - v" + Reflex.getInstance().getDescription().getVersion() + " by Shawckz");
