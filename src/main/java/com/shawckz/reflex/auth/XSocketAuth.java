@@ -8,7 +8,6 @@ import com.shawckz.reflex.Reflex;
 import com.shawckz.reflex.auth.listen.XListenAuth;
 import io.socket.client.IO;
 import io.socket.client.Socket;
-import io.socket.emitter.Emitter;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -76,39 +75,20 @@ public class XSocketAuth {
                     .append("product", authMe.authName());
             socket.emit(XAuthEvent.AUTHORIZE_REQUEST.getName(), args);
 
-           /* socket.on(XAuthEvent.AUTHORIZE_RESULT.getName(), new Emitter.Listener() {
-                @Override
-                public void call(Object... objects) {
-                    ShawXAuth.log("Received object (manual)");
-                    if (objects != null && objects.length > 0) {
-                        String result = (String) objects[0];
-                        if (result.equalsIgnoreCase("true")) {
-                            r.auth(true);
-                        }
-                        else {
-                            r.auth(false);
-                        }
-                    }
-                }
-            });*/
-
-            socket.on(XAuthEvent.CANCEL.getName(), new Emitter.Listener() {
-                @Override
-                public void call(Object... objects) {
-                    if (objects != null && objects.length > 0) {
-                        String result = (String) objects[0];
-                        if (result.equalsIgnoreCase(ShawXAuth.getKey())) {
-                            Bukkit.getLogger().info(" ");
-                            Bukkit.getLogger().info("-------------------------------------");
-                            Bukkit.getLogger().info("Reflex - v" + Reflex.getInstance().getDescription().getVersion() + " by Shawckz");
-                            Bukkit.getLogger().info("https://shawckz.com/product/Reflex");
-                            Bukkit.getLogger().info(" ");
-                            Bukkit.getLogger().info("AUTHENTICATION FAILURE - Reflex is not authorized to run on this server!");
-                            Bukkit.getLogger().info(" ");
-                            Bukkit.getLogger().info("The authentication key you have selected to use on this server has been cancelled or suspended.");
-                            Bukkit.getLogger().info("-------------------------------------");
-                            Bukkit.getLogger().info(" ");
-                        }
+            socket.on(XAuthEvent.CANCEL.getName(), objects -> {
+                if (objects != null && objects.length > 0) {
+                    String result = (String) objects[0];
+                    if (result.equalsIgnoreCase(ShawXAuth.getKey())) {
+                        Bukkit.getLogger().info(" ");
+                        Bukkit.getLogger().info("-------------------------------------");
+                        Bukkit.getLogger().info("Reflex - v" + Reflex.getInstance().getDescription().getVersion() + " by Shawckz");
+                        Bukkit.getLogger().info("https://shawckz.com/product/Reflex");
+                        Bukkit.getLogger().info(" ");
+                        Bukkit.getLogger().info("AUTHENTICATION FAILURE - Reflex is not authorized to run on this server!");
+                        Bukkit.getLogger().info(" ");
+                        Bukkit.getLogger().info("The authentication key you have selected to use on this server has been cancelled or suspended.");
+                        Bukkit.getLogger().info("-------------------------------------");
+                        Bukkit.getLogger().info(" ");
                     }
                 }
             });
