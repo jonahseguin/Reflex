@@ -32,7 +32,7 @@ public class PacketListener {
                 }
             }
         }).start();
-        
+
         //SwingEvent
         instance.getProtocolManager().addPacketListener(new PacketAdapter(instance, ListenerPriority.NORMAL, PacketType.Play.Client.ARM_ANIMATION) {
             public void onPacketReceiving(PacketEvent event) {

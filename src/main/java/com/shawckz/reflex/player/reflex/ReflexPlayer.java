@@ -4,6 +4,7 @@
 
 package com.shawckz.reflex.player.reflex;
 
+import com.google.common.collect.Maps;
 import com.shawckz.reflex.backend.database.mongo.annotations.CollectionName;
 import com.shawckz.reflex.backend.database.mongo.annotations.MongoColumn;
 import com.shawckz.reflex.check.base.CheckType;
@@ -11,13 +12,10 @@ import com.shawckz.reflex.check.data.PlayerData;
 import com.shawckz.reflex.check.data.RCapturePlayer;
 import com.shawckz.reflex.player.cache.CachePlayer;
 import lombok.*;
-import org.bukkit.ChatColor;
 
-import java.util.HashMap;
 import java.util.Map;
 
-import com.google.common.collect.Maps;
-
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 @RequiredArgsConstructor
@@ -49,7 +47,7 @@ public class ReflexPlayer extends CachePlayer {
     private boolean online = false;
 
     public ReflexPlayer() { //So that AutoMongo can instantiate without throwing an InstantiationException
-    
+
     }
 
 
