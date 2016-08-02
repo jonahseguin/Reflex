@@ -10,6 +10,7 @@ import com.shawckz.reflex.backend.command.RCmdArgs;
 import com.shawckz.reflex.backend.command.RCommand;
 import com.shawckz.reflex.backend.configuration.RLang;
 import com.shawckz.reflex.backend.configuration.ReflexLang;
+import com.shawckz.reflex.backend.configuration.ReflexPerm;
 import com.shawckz.reflex.ban.AutobanManager;
 import com.shawckz.reflex.util.obj.Alert;
 
@@ -19,7 +20,7 @@ import org.bukkit.entity.Player;
 
 public class CmdCancel implements RCommand {
 
-    @RCmd(name = "reflex cancel", usage = "/cancel <player>", minArgs = 1, permission = "reflex.cancel", aliases = {"! cancel", "reflex cancel", "rx cancel", "rflex cancel", "cancel"}, description = "Cancel an autoban on a player")
+    @RCmd(name = "reflex cancel", usage = "/cancel <player>", minArgs = 1, permission = ReflexPerm.CANCEL, aliases = {"! cancel", "reflex cancel", "rx cancel", "rflex cancel", "cancel"}, description = "Cancel an autoban on a player")
     public void onCmdCancel(RCmdArgs args) {
         CommandSender sender = args.getSender().getCommandSender();
 

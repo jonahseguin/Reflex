@@ -4,6 +4,8 @@
 
 package com.shawckz.reflex.backend.command;
 
+import com.shawckz.reflex.backend.configuration.ReflexPerm;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -27,7 +29,7 @@ public @interface RCmd {
 
     String description() default "";
 
-    String permission() default "";
+    ReflexPerm permission() default ReflexPerm.NONE;
 
     boolean playerOnly() default false;
 

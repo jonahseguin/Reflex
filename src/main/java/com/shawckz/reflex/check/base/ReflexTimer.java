@@ -14,8 +14,13 @@ import java.util.Set;
 
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_7_R4.entity.CraftPlayer;
-import org.bukkit.entity.Player;
 
+/**
+ * The ReflexTimer automatically calls a method in any registered check that implements RTimer, once a second.
+ * Async.
+ *
+ * Also updates the Ping and Lag variables within all player's data
+ */
 public class ReflexTimer implements Runnable {
 
     private final Set<RTimer> timers = new HashSet<>();
@@ -57,13 +62,13 @@ public class ReflexTimer implements Runnable {
                 timer.runTimer();
             }
         }
-        for (Player pl : Reflex.getOnlinePlayers()) {
-            Reflex.getInstance().getCache().getReflexPlayer(pl).getData().setTps(Lag.getTPS());
-            Reflex.getInstance().getCache().getReflexPlayer(pl).getData().setPing(((CraftPlayer) pl).getHandle().ping);
+        Reflex.getReflexPlayers().forEach(reflexPlayer -> {
+            reflexPlayer.getData().setTps(Lag.getTPS());
+            reflexPlayer.getData().setPing(((CraftPlayer) reflexPlayer.getBukkitPlayer()).getHandle().ping);
             for (RDataCapture check : Reflex.getInstance().getDataCaptureManager().getDataCaptures().values()) {
-                updatePingAndLag(Reflex.getInstance().getCache().getReflexPlayer(pl), check);
+                updatePingAndLag(Reflex.getInstance().getCache().getReflexPlayer(reflexPlayer.getBukkitPlayer()), check);
             }
-        }
+        });
     }
 
     private void updatePingAndLag(ReflexPlayer player, RDataCapture check) {

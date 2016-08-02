@@ -38,7 +38,7 @@ public class CmdReflex implements RCommand {
         msg.send(sender);
     }
 
-    @RCmd(name = "alerts", usage = "/alerts [on|off]", description = "Toggle alerts on or off", permission = "reflex.alerts", playerOnly = true)
+    @RCmd(name = "alerts", usage = "/alerts [on|off]", description = "Toggle alerts on or off", permission = ReflexPerm.ALERTS, playerOnly = true)
     public void onCmdAlerts(RCmdArgs args) {
         Player p = args.getSender().getPlayer();
         ReflexPlayer rp = Reflex.getInstance().getCache().getReflexPlayer(p);
@@ -133,7 +133,7 @@ public class CmdReflex implements RCommand {
         RLang.send(sender, ReflexLang.HEADER_FOOTER);
     }
 
-    @RCmd(name = "reflex status", aliases = {"! status", "reflex status", "rx status", "rflex status"}, permission = "reflex.use", description = "Plugin/server information and check statuses", usage = "/reflex status")
+    @RCmd(name = "reflex status", aliases = {"! status", "reflex status", "rx status", "rflex status"}, permission = ReflexPerm.USE, description = "Plugin/server information and check statuses", usage = "/reflex status")
     public void onCmdStatus(RCmdArgs args) {
         CommandSender sender = args.getSender().getCommandSender();
         RLang.send(sender, ReflexLang.HEADER_FOOTER);
@@ -152,7 +152,7 @@ public class CmdReflex implements RCommand {
         RLang.send(sender, ReflexLang.HEADER_FOOTER);
     }
 
-    @RCmd(name = "reflex cmdhelp", minArgs = 1, aliases = {"! cmdhelp", "rx cmdhelp"}, permission = "reflex.use", description = "Command information and help", usage = "/reflex cmdhelp <command>")
+    @RCmd(name = "reflex cmdhelp", minArgs = 1, aliases = {"! cmdhelp", "rx cmdhelp"}, permission = ReflexPerm.USE, description = "Command information and help", usage = "/reflex cmdhelp <command>")
     public void onCmdHelp(RCmdArgs args) {
         CommandSender sender = args.getSender().getCommandSender();
 

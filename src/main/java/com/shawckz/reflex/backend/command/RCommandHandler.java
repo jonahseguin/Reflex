@@ -91,7 +91,7 @@ public class RCommandHandler {
             }
         };
 
-        RCmdWrapper wrapper = new RCmdWrapper(command, caller, data.name(), data.aliases(), data.usage(), data.description(), data.permission(), data.playerOnly(), data.minArgs());
+        RCmdWrapper wrapper = new RCmdWrapper(command, caller, data.name(), data.aliases(), data.usage(), data.description(), data.permission().getPerm(), data.playerOnly(), data.minArgs());
         String commandName = wrapper.getName().replace(" ", ".");
         commandMap.put(commandName, wrapper);
         commandMap.put(plugin.getName() + ":" + commandName, wrapper);//Add support for /<pluginName>:command format
@@ -122,7 +122,7 @@ public class RCommandHandler {
             map.getCommand(bukkitCommandName).setUsage(data.usage());
         }
         if (!data.permission().equals("")) {
-            map.getCommand(bukkitCommandName).setPermission(data.permission());
+            map.getCommand(bukkitCommandName).setPermission(data.permission().getPerm());
         }
         if (data.aliases().length > 0) {
             List<String> aliases = new ArrayList<>();

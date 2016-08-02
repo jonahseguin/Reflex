@@ -28,6 +28,11 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 @Getter
 @Setter
+/**
+ * Reflex AutoBan
+ * Automatically ban a player after X seconds via the set method in the config (CONSOLE COMMAND or REFLEX BAN)
+ * Can be cancelled using the Reflex Cancel command by anyone with the permission (staff..)
+ */
 public class Autoban {
 
     private ReflexPlayer player;
@@ -44,6 +49,9 @@ public class Autoban {
         this.violation = violation;
     }
 
+    /**
+     * Start the AutoBan countdown
+     */
     public void run() {
 
         if (player.getBukkitPlayer() == null) return;
@@ -99,6 +107,12 @@ public class Autoban {
         }.runTaskTimer(Reflex.getInstance(), 20L, 20L);
     }
 
+    /**
+     * Force the ban,
+     * called by the #run method once the countdown is completed.
+     * Unfreezes the player, removes their autoban, resets their VL, and bans using the configured AutobanMethod
+     * Also calls a ReflexBanEvent that can be cancelled - ReflexBanEvent is ONLY called when the AutobanMethod is set to REFLEX
+     */
     public void ban() {
         if (player.getBukkitPlayer() != null && player.getBukkitPlayer().isOnline()) {
             Freeze.removeFreeze(player.getBukkitPlayer());
@@ -108,6 +122,7 @@ public class Autoban {
 
         if (Reflex.getInstance().getReflexConfig().getAutobanMethod() == AutobanMethod.CONSOLE) {
             //Dispatch console command
+
             String format = Reflex.getInstance().getReflexConfig().getAutobanConsoleCommand();
             format = format.replace("{0}", player.getName());
             format = format.replace("{1}", check.getName());
@@ -162,6 +177,10 @@ public class Autoban {
         Alert.staffMsg(fm);
     }
 
+    /**
+     * Cancel the autoban
+     * @param cancelled whether or not to cancel it
+     */
     public void setCancelled(boolean cancelled) {
         this.cancelled = cancelled;
         if (cancelled) {

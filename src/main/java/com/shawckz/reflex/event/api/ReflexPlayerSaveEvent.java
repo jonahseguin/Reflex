@@ -6,6 +6,12 @@ package com.shawckz.reflex.event.api;
 
 import com.shawckz.reflex.player.reflex.ReflexPlayer;
 
+import org.bukkit.entity.Player;
+
+/**
+ * Called when a local {@link ReflexPlayer} is saved to the database via {@link com.shawckz.reflex.player.cache.AbstractCache#saveSync(Player)},
+ * and all other save methods, in ReflexCache aswell
+ */
 public class ReflexPlayerSaveEvent extends ReflexAPIEvent {
 
     private final ReflexPlayer player;

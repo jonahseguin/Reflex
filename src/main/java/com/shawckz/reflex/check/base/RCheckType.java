@@ -4,6 +4,9 @@
 
 package com.shawckz.reflex.check.base;
 
+/**
+ * Represents "Stage" or "Check Type" in the Trigger -> Capture (Data) -> Inspect process.
+ */
 public enum RCheckType {
 
     DATA, INSPECT, TRIGGER

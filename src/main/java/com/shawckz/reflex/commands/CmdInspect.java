@@ -10,6 +10,7 @@ import com.shawckz.reflex.backend.command.RCmdArgs;
 import com.shawckz.reflex.backend.command.RCommand;
 import com.shawckz.reflex.backend.configuration.RLang;
 import com.shawckz.reflex.backend.configuration.ReflexLang;
+import com.shawckz.reflex.backend.configuration.ReflexPerm;
 import com.shawckz.reflex.check.base.CheckType;
 import com.shawckz.reflex.check.inspect.RInspectResult;
 import com.shawckz.reflex.player.reflex.ReflexPlayer;
@@ -23,7 +24,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public class CmdInspect implements RCommand {
 
-    @RCmd(name = "reflex inspect", usage = "/reflex inspect <player> <check> <seconds>", minArgs = 3, permission = "reflex.inspect", aliases = {"! inspect", "reflex inspect", "rx inspect", "rflex inspect"},
+    @RCmd(name = "reflex inspect", usage = "/reflex inspect <player> <check> <seconds>", minArgs = 3, permission = ReflexPerm.INSPECT, aliases = {"! inspect", "reflex inspect", "rx inspect", "rflex inspect"},
             description = "Start an inspection on a player")
     public void onCmdInspect(RCmdArgs args) {
         final CommandSender sender = args.getSender().getCommandSender();

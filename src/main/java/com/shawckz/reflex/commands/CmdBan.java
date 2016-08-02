@@ -10,6 +10,7 @@ import com.shawckz.reflex.backend.command.RCmdArgs;
 import com.shawckz.reflex.backend.command.RCommand;
 import com.shawckz.reflex.backend.configuration.RLang;
 import com.shawckz.reflex.backend.configuration.ReflexLang;
+import com.shawckz.reflex.backend.configuration.ReflexPerm;
 import com.shawckz.reflex.ban.ReflexBan;
 import com.shawckz.reflex.event.api.ReflexConfirmBanEvent;
 import com.shawckz.reflex.event.api.ReflexUnbanEvent;
@@ -23,7 +24,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public class CmdBan implements RCommand {
 
-    @RCmd(name = "reflex unban", usage = "/reflex unban <player>", permission = "reflex.unban", description = "Unban a player that was banned by Reflex",
+    @RCmd(name = "reflex unban", usage = "/reflex unban <player>", permission = ReflexPerm.UNBAN, description = "Unban a player that was banned by Reflex",
             aliases = {"! unban", "reflex unban", "rx unban", "rflex unban"}, minArgs = 1)
     public void onCmdUnban(final RCmdArgs args) {
         final CommandSender sender = args.getSender().getCommandSender();
@@ -59,7 +60,7 @@ public class CmdBan implements RCommand {
         }.runTaskAsynchronously(Reflex.getInstance());
     }
 
-    @RCmd(name = "reflex confirmban", usage = "/reflex confirmban <player> <banned correctly(true/false)>", permission = "reflex.confirmban", description = "Confirm the result of a Reflex-ban",
+    @RCmd(name = "reflex confirmban", usage = "/reflex confirmban <player> <banned correctly(true/false)>", permission = ReflexPerm.CONFIRM_BAN, description = "Confirm the result of a Reflex-ban",
             aliases = {"! confirmban", "reflex confirmban", "rx confirmban", "rflex confirmban"}, minArgs = 2)
     public void onCmdConfirmBan(final RCmdArgs args) {
         final CommandSender sender = args.getSender().getCommandSender();

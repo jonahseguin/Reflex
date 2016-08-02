@@ -12,6 +12,9 @@ import java.util.*;
 
 import org.bukkit.scheduler.BukkitRunnable;
 
+/**
+ * Handles the Reflex BanCache and provides utility methods for ReflexBans
+ */
 public class ReflexBanManager {
 
     private Map<String, BanCache> cache = new HashMap<>();

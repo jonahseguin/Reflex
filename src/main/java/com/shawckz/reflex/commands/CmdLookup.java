@@ -10,6 +10,7 @@ import com.shawckz.reflex.backend.command.RCmdArgs;
 import com.shawckz.reflex.backend.command.RCommand;
 import com.shawckz.reflex.backend.configuration.RLang;
 import com.shawckz.reflex.backend.configuration.ReflexLang;
+import com.shawckz.reflex.backend.configuration.ReflexPerm;
 import com.shawckz.reflex.backend.database.mongo.AutoMongo;
 import com.shawckz.reflex.ban.ReflexBan;
 import com.shawckz.reflex.check.base.RViolation;
@@ -37,7 +38,7 @@ public class CmdLookup implements RCommand {
 
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-    @RCmd(name = "reflex lookup player", usage = "/reflex lookup player <player>", minArgs = 1, permission = "reflex.lookup.player",
+    @RCmd(name = "reflex lookup player", usage = "/reflex lookup player <player>", minArgs = 1, permission = ReflexPerm.LOOKUP_PLAYER,
             aliases = {"! lookup player", "rx lookup player", "rflex lookup player", "reflex lookup p", "reflex l p"}, description = "Lookup details on a player")
     public void onCmdLookupPlayer(RCmdArgs args) {
         final CommandSender sender = args.getSender().getCommandSender();
@@ -87,7 +88,7 @@ public class CmdLookup implements RCommand {
         }.runTaskAsynchronously(Reflex.getInstance());
     }
 
-    @RCmd(name = "reflex lookup inspection", usage = "/reflex lookup inspection <id>", minArgs = 1, permission = "reflex.lookup.inspection",
+    @RCmd(name = "reflex lookup inspection", usage = "/reflex lookup inspection <id>", minArgs = 1, permission = ReflexPerm.LOOKUP_INSPECTION,
             aliases = {"! lookup inspection", "rx lookup inspection", "rflex lookup inspection", "reflex lookup i", "reflex l i"}, description = "Lookup details on an inspection")
     public void onCmdLookupInspection(RCmdArgs args) {
         final CommandSender sender = args.getSender().getCommandSender();
@@ -118,7 +119,7 @@ public class CmdLookup implements RCommand {
         }.runTaskAsynchronously(Reflex.getInstance());
     }
 
-    @RCmd(name = "reflex lookup ban", usage = "/reflex lookup ban <player>", minArgs = 1, permission = "reflex.lookup.ban",
+    @RCmd(name = "reflex lookup ban", usage = "/reflex lookup ban <player>", minArgs = 1, permission = ReflexPerm.LOOKUP_BAN,
             aliases = {"! lookup ban", "rx lookup ban", "rflex lookup ban", "reflex lookup b", "reflex l b"}, description = "Show bans on a player")
     public void onCmdLookupBan(RCmdArgs args) {
         final CommandSender sender = args.getSender().getCommandSender();
@@ -193,7 +194,7 @@ public class CmdLookup implements RCommand {
         }.runTaskAsynchronously(Reflex.getInstance());
     }
 
-    @RCmd(name = "reflex lookup baninfo", usage = "/reflex lookup baninfo <id>", minArgs = 1, permission = "reflex.lookup.ban",
+    @RCmd(name = "reflex lookup baninfo", usage = "/reflex lookup baninfo <id>", minArgs = 1, permission = ReflexPerm.LOOKUP_BAN,
             aliases = {"! lookup baninfo", "rx lookup baninfo", "rflex lookup baninfo", "reflex lookup bi", "reflex l bi"}, description = "Lookup details on a reflex ban")
     public void onCmdLookupBanInfo(RCmdArgs args) {
         final CommandSender sender = args.getSender().getCommandSender();
@@ -213,7 +214,7 @@ public class CmdLookup implements RCommand {
         }.runTaskAsynchronously(Reflex.getInstance());
     }
 
-    @RCmd(name = "reflex lookup violation", usage = "/reflex lookup violation <id>", minArgs = 1, permission = "reflex.lookup.violation",
+    @RCmd(name = "reflex lookup violation", usage = "/reflex lookup violation <id>", minArgs = 1, permission = ReflexPerm.LOOKUP_VIOLATION,
             aliases = {"! lookup violation", "rx lookup violation", "rflex lookup violation", "reflex lookup vl", "reflex l vl"}, description = "Lookup details on a violation")
     public void onCmdLookupViolation(RCmdArgs args) {
         final CommandSender sender = args.getSender().getCommandSender();

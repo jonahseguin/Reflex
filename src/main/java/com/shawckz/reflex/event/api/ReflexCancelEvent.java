@@ -8,6 +8,12 @@ import com.shawckz.reflex.check.base.Check;
 import com.shawckz.reflex.check.base.CheckType;
 import com.shawckz.reflex.check.base.RCheckType;
 
+/**
+ * Called when a check is failed and it can be cancelled by the Check,
+ * for example in speed, if there it can be cancelled: the player will be setback X blocks
+ * From within this event you can set whether or not the check shouldCancel via the shouldCancel field, however you cannot modify the actual
+ * value of whether cancel is enabled via the Check (canCancel)
+ */
 public class ReflexCancelEvent extends ReflexAPIEvent {
 
     private final Check check;

@@ -10,6 +10,9 @@ import com.shawckz.reflex.player.reflex.ReflexPlayer;
 
 import org.bukkit.event.Cancellable;
 
+/**
+ * Called when a Trigger is called via {@link RTrigger}, can be cancelled
+ */
 public class ReflexTriggerEvent extends ReflexAPIEvent implements Cancellable {
 
     private final RTrigger trigger;

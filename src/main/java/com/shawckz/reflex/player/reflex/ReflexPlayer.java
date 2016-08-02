@@ -5,6 +5,7 @@
 package com.shawckz.reflex.player.reflex;
 
 import com.google.common.collect.Maps;
+import com.shawckz.reflex.backend.configuration.ReflexPerm;
 import com.shawckz.reflex.backend.database.mongo.annotations.CollectionName;
 import com.shawckz.reflex.backend.database.mongo.annotations.MongoColumn;
 import com.shawckz.reflex.check.base.CheckType;
@@ -48,6 +49,10 @@ public class ReflexPlayer extends CachePlayer {
 
     public void msg(String msg) {
         bukkitPlayer.sendMessage(ChatColor.translateAlternateColorCodes('&', msg));
+    }
+
+    public boolean hasPermission(ReflexPerm perm) {
+        return bukkitPlayer != null && bukkitPlayer.isOnline() && perm.hasPerm(bukkitPlayer);
     }
 
     public PlayerData getData() {

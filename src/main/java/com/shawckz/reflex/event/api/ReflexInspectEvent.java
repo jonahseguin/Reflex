@@ -9,6 +9,9 @@ import com.shawckz.reflex.check.data.CheckData;
 import com.shawckz.reflex.check.inspect.RInspect;
 import com.shawckz.reflex.player.reflex.ReflexPlayer;
 
+/**
+ * Called when any data is inspected by {@link com.shawckz.reflex.check.inspect.InspectManager#inspect}
+ */
 public class ReflexInspectEvent extends ReflexAPIEvent {
 
     private final RInspect inspector;

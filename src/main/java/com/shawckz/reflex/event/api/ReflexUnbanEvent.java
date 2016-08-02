@@ -9,6 +9,10 @@ import com.shawckz.reflex.player.reflex.ReflexPlayer;
 
 import org.bukkit.event.Cancellable;
 
+/**
+ * Called when a played banned by Reflex via a ReflexBan (in REFLEX ban mode) is unbanned.
+ * Can be cancelled.
+ */
 public class ReflexUnbanEvent extends ReflexAPIEvent implements Cancellable {
 
     private final ReflexPlayer player;

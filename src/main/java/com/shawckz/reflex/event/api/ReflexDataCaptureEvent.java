@@ -10,6 +10,9 @@ import com.shawckz.reflex.player.reflex.ReflexPlayer;
 
 import org.bukkit.event.Cancellable;
 
+/**
+ * Called when a DataCapture period is triggered, manually or by an {@link com.shawckz.reflex.check.trigger.RTrigger}
+ */
 public class ReflexDataCaptureEvent extends ReflexAPIEvent implements Cancellable {
 
     private final CheckType checkType;

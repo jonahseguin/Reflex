@@ -6,6 +6,9 @@ package com.shawckz.reflex.event.api;
 
 import com.shawckz.reflex.player.reflex.ReflexPlayer;
 
+/**
+ * Called when a player joins the server and their ReflexPlayer along with all of their data is loaded from the database or cache.
+ */
 public class ReflexPlayerLoadEvent extends ReflexAPIEvent {
 
     private final ReflexPlayer player;

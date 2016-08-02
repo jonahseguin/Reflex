@@ -18,6 +18,12 @@ import java.util.List;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 
+/**
+ * Superclass of all Checks, sorted into directories based on their RCheckType
+ * Each individual check has it's own Config file
+ * All fields annotated with @ConfigData will be automatically loaded to the fields from the respective configuration file upon #load being called.
+ * And saved from the local fields to the config when #save is called.
+ */
 public class CheckConfig {
 
     private final File file;

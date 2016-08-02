@@ -7,6 +7,9 @@ package com.shawckz.reflex.ban;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Local ban cache for ReflexBans
+ */
 public class BanCache {
 
     private final Set<ReflexBan> bans = new HashSet<>();

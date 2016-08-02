@@ -10,6 +10,7 @@ import com.shawckz.reflex.backend.command.RCmdArgs;
 import com.shawckz.reflex.backend.command.RCommand;
 import com.shawckz.reflex.backend.configuration.RLang;
 import com.shawckz.reflex.backend.configuration.ReflexLang;
+import com.shawckz.reflex.backend.configuration.ReflexPerm;
 import com.shawckz.reflex.check.base.CheckType;
 import com.shawckz.reflex.check.trigger.RTrigger;
 import com.shawckz.reflex.util.obj.Alert;
@@ -19,7 +20,7 @@ import org.bukkit.command.CommandSender;
 
 public class CmdSettings implements RCommand {
 
-    @RCmd(name = "reflex settings", usage = "/reflex settings <toggle|on|off> <enabled|cancel|freeze|autoban> [check(blank for all)]", permission = "reflex.settings", description = "Manage settings of checks",
+    @RCmd(name = "reflex settings", usage = "/reflex settings <toggle|on|off> <enabled|cancel|freeze|autoban> [check(blank for all)]", permission = ReflexPerm.SETTINGS, description = "Manage settings of checks",
             aliases = {"! settings", "reflex settings", "rx settings", "rflex settings", "reflex setting", "rx setting"}, minArgs = 2)
     public void onCmdSettings(final RCmdArgs args) {
         final CommandSender sender = args.getSender().getCommandSender();

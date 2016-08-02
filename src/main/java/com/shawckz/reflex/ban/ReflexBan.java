@@ -17,6 +17,10 @@ import lombok.Setter;
 
 import java.util.UUID;
 
+/**
+ * A custom "Reflex Ban" - Created and used when the plugin is the the REFLEX ban mode via the config.
+ * However, existing ReflexBans will still be enforced if the plugin is not in REFLEX ban mode.
+ */
 @CollectionName(name = "reflex_bans")
 @Getter
 @Setter

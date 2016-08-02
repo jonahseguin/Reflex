@@ -4,10 +4,15 @@
 
 package com.shawckz.reflex.event.api;
 
+import com.shawckz.reflex.backend.command.RCmdArgs;
 import com.shawckz.reflex.ban.ReflexBan;
 
 import org.bukkit.event.Cancellable;
 
+/**
+ * Called when the /reflex confirmban Command is called and a ban is confirmed on a player
+ * Can be cancelled. {@link com.shawckz.reflex.commands.CmdBan#onCmdConfirmBan(RCmdArgs)}
+ */
 public class ReflexConfirmBanEvent extends ReflexAPIEvent implements Cancellable {
 
     private final ReflexBan ban;

@@ -8,6 +8,10 @@ import com.shawckz.reflex.ban.ReflexBan;
 
 import org.bukkit.event.Cancellable;
 
+/**
+ * Called when a player is banned by a ReflexBan, and can be cancelled.
+ * Is NOT called when a played is automatically banned whilst the plugin is in a non-REFLEX ban mode (via configuration)
+ */
 public class ReflexBanEvent extends ReflexAPIEvent implements Cancellable {
 
     private final ReflexBan ban;

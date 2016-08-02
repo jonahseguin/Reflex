@@ -11,6 +11,19 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 
+/**
+ * The Basic, bare-bones Check superclass
+ * The 3 different "Check Types" extend this class: Trigger, Capture (data), and Inspect
+ * Basic Flowchart for this is Trigger a capture -> Capture period, collect data -> Inspect data collected from capture period
+ *
+ * This also implements Bukkit's Listener and is automatically registered when the check is set to enabled.
+ * And vice-versa when the check is disabled.
+ *
+ * CheckType representing the type of Check it is; or the Hack it is checking for
+ * RCheckType representing which of the 3 Check Types or stages it is, Trigger, Capture, or Inspect
+ *
+ * Each type has their own Manager and implementation in their respective packages
+ */
 public abstract class Check extends CheckConfig implements Listener {
 
     private final CheckType checkType;
