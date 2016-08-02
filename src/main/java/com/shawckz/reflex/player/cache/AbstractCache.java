@@ -5,18 +5,17 @@
 package com.shawckz.reflex.player.cache;
 
 import com.shawckz.reflex.backend.database.mongo.AutoMongo;
-import com.shawckz.reflex.backend.database.mongo.annotations.MongoColumn;
+import com.shawckz.reflex.event.api.ReflexPlayerLoadEvent;
+import com.shawckz.reflex.event.api.ReflexPlayerSaveEvent;
 import com.shawckz.reflex.player.reflex.ReflexPlayer;
 import org.bson.Document;
 
-import java.lang.reflect.Field;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -44,7 +43,7 @@ public abstract class AbstractCache implements Listener {
         this.plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
-    public ConcurrentMap<String, ReflexPlayer> getPlayers() {
+    protected ConcurrentMap<String, ReflexPlayer> getPlayers() {
         return players;
     }
 
@@ -62,7 +61,7 @@ public abstract class AbstractCache implements Listener {
      *
      * Please note that the name is case sensitive.
      */
-    public ReflexPlayer getBasePlayer(String name) {
+    protected ReflexPlayer getBasePlayer(String name) {
         if (players.containsKey(name)) {
             return players.get(name);
         }
@@ -77,12 +76,12 @@ public abstract class AbstractCache implements Listener {
         }
     }
 
-    public ReflexPlayer getBasePlayerByUUID(String uuid) {
+    protected ReflexPlayer getBasePlayerByUUID(String uuid) {
         if (playersUUID.containsKey(uuid)) {
             return playersUUID.get(uuid);
         }
         else {
-            ReflexPlayer cp = loadReflexPlayerByid(uuid);
+            ReflexPlayer cp = loadReflexPlayerById(uuid);
             if (cp != null) {
                 put(cp);
                 return cp;
@@ -94,19 +93,7 @@ public abstract class AbstractCache implements Listener {
     }
 
     public ReflexPlayer loadReflexPlayer(String name) {
-        String key = "username";
-        for (Field f : aClass.getDeclaredFields()) {
-            MongoColumn row = f.getAnnotation(MongoColumn.class);
-            if (row != null) {
-                if (row.identifier()) {
-                    if (row.name().equalsIgnoreCase("name") || f.getName().equalsIgnoreCase("username")) {
-                        key = row.name();
-                        break;
-                    }
-                }
-            }
-        }
-
+        final String key = "username"; //Matching the field in ReflexPlayer
         List<AutoMongo> autoMongos = ReflexPlayer.select(new Document(key, name), aClass);
         for (AutoMongo mongo : autoMongos) {
             if (mongo instanceof ReflexPlayer) {
@@ -117,21 +104,9 @@ public abstract class AbstractCache implements Listener {
         return null;
     }
 
-    public ReflexPlayer loadReflexPlayerByid(String name) {
-        String key = "uniqueId";
-        for (Field f : aClass.getDeclaredFields()) {
-            MongoColumn row = f.getAnnotation(MongoColumn.class);
-            if (row != null) {
-                if (row.identifier()) {
-                    if (row.name().equalsIgnoreCase("uniqueId") || f.getName().equalsIgnoreCase("uuid")) {
-                        key = row.name();
-                        break;
-                    }
-                }
-            }
-        }
-
-        List<AutoMongo> autoMongos = ReflexPlayer.select(new Document(key, name), aClass);
+    public ReflexPlayer loadReflexPlayerById(String id) {
+        final String key = "uuid"; //Matching the field in ReflexPlayer
+        List<AutoMongo> autoMongos = ReflexPlayer.select(new Document(key, id), aClass);
         for (AutoMongo mongo : autoMongos) {
             if (mongo instanceof ReflexPlayer) {
                 ReflexPlayer ReflexPlayer = (ReflexPlayer) mongo;
@@ -187,6 +162,7 @@ public abstract class AbstractCache implements Listener {
             put(cp);
             cp.update();
         }
+        plugin.getServer().getPluginManager().callEvent(new ReflexPlayerLoadEvent(cp));
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
@@ -217,22 +193,20 @@ public abstract class AbstractCache implements Listener {
         }
     }
 
-    public void save(Player p) {
-        if (contains(p.getName())) {
-            final ReflexPlayer ReflexPlayer = (aClass.cast(getBasePlayer(p)));
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    ReflexPlayer.update();
-                }
-            }.runTaskAsynchronously(plugin);
-        }
+    public void save(final Player p) {
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                saveSync(p);
+            }
+        }.runTaskAsynchronously(plugin);
     }
 
     public void saveSync(Player p) {
         if (contains(p.getName())) {
-            final ReflexPlayer ReflexPlayer = (aClass.cast(getBasePlayer(p)));
-            ReflexPlayer.update();
+            final ReflexPlayer reflexPlayer = getBasePlayer(p);
+            reflexPlayer.update();
+            plugin.getServer().getPluginManager().callEvent(new ReflexPlayerSaveEvent(reflexPlayer));
         }
     }
 

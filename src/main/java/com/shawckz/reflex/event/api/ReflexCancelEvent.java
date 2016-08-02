@@ -13,11 +13,13 @@ public class ReflexCancelEvent extends ReflexAPIEvent {
     private final Check check;
     private final CheckType checkType;
     private final RCheckType checkSource;
+    private boolean shouldCancel;
 
-    public ReflexCancelEvent(Check check, CheckType checkType, RCheckType checkSource) {
+    public ReflexCancelEvent(Check check, CheckType checkType, RCheckType checkSource, boolean shouldCancel) {
         this.check = check;
         this.checkType = checkType;
         this.checkSource = checkSource;
+        this.shouldCancel = shouldCancel;
     }
 
     public Check getCheck() {
@@ -30,5 +32,13 @@ public class ReflexCancelEvent extends ReflexAPIEvent {
 
     public RCheckType getCheckSource() {
         return checkSource;
+    }
+
+    public boolean isShouldCancel() {
+        return shouldCancel;
+    }
+
+    public void setShouldCancel(boolean shouldCancel) {
+        this.shouldCancel = shouldCancel;
     }
 }

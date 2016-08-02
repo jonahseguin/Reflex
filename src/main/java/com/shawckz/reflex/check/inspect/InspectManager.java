@@ -11,6 +11,7 @@ import com.shawckz.reflex.check.base.RTimer;
 import com.shawckz.reflex.check.base.RViolation;
 import com.shawckz.reflex.check.data.CheckData;
 import com.shawckz.reflex.check.inspect.inspectors.*;
+import com.shawckz.reflex.event.api.ReflexInspectEvent;
 import com.shawckz.reflex.player.reflex.ReflexPlayer;
 import com.shawckz.reflex.util.obj.Alert;
 import com.shawckz.reflex.util.utility.ReflexException;
@@ -18,6 +19,7 @@ import com.shawckz.reflex.util.utility.ReflexException;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class InspectManager {
@@ -38,7 +40,7 @@ public class InspectManager {
         register(new InspectReach());
         register(new InspectFly());
 
-        inspectors.values().stream().forEach(RInspect::setupConfig);
+        inspectors.values().forEach(RInspect::setupConfig);
     }
 
     public RInspect getInspector(CheckType checkType) {
@@ -50,6 +52,10 @@ public class InspectManager {
     }
 
     public RInspectResult inspect(final ReflexPlayer player, final CheckType checkType, final CheckData data, final int dataPeriod) {
+
+        ReflexInspectEvent inspectEvent = new ReflexInspectEvent(getInspector(checkType), player, data, checkType, dataPeriod);
+        Bukkit.getServer().getPluginManager().callEvent(inspectEvent);
+
         return inspectInternal(player, checkType, data, dataPeriod);
     }
 
@@ -99,6 +105,7 @@ public class InspectManager {
         final RViolation finalViolation = violation;
 
         final RInspectResult result = new RInspectResult(resultData, finalViolation, dataPeriod);
+
 
         if (alert != null) {
             if (alert.getType() == Alert.Type.INSPECT_FAIL || alert.getType() == Alert.Type.INSPECT_PASS) {

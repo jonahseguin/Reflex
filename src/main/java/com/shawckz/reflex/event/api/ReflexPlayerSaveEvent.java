@@ -6,11 +6,11 @@ package com.shawckz.reflex.event.api;
 
 import com.shawckz.reflex.player.reflex.ReflexPlayer;
 
-public class ReflexCacheEvent extends ReflexAPIEvent {
+public class ReflexPlayerSaveEvent extends ReflexAPIEvent {
 
     private final ReflexPlayer player;
 
-    public ReflexCacheEvent(ReflexPlayer player) {
+    public ReflexPlayerSaveEvent(ReflexPlayer player) {
         this.player = player;
     }
 

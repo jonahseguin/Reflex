@@ -8,11 +8,14 @@ import com.shawckz.reflex.Reflex;
 import com.shawckz.reflex.check.base.CheckType;
 import com.shawckz.reflex.check.base.RTimer;
 import com.shawckz.reflex.check.data.capturers.*;
+import com.shawckz.reflex.event.api.ReflexDataCaptureEvent;
 import com.shawckz.reflex.player.reflex.ReflexPlayer;
 import com.shawckz.reflex.util.utility.ReflexCaller;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+
+import org.bukkit.Bukkit;
 
 public class DataCaptureManager {
 
@@ -52,13 +55,17 @@ public class DataCaptureManager {
     }
 
     public void startCaptureTask(ReflexPlayer player, CheckType checkType, int captureTime, final ReflexCaller<CheckData> callback) {
-        CaptureTask task = new CaptureTask(player, checkType, captureTime) {
-            @Override
-            public void onFinish(CheckData data) {
-                callback.call(data);
-            }
-        };
-        task.start();
+        ReflexDataCaptureEvent dataCaptureEvent = new ReflexDataCaptureEvent(checkType, getDataCapture(checkType), player, captureTime);
+        Bukkit.getServer().getPluginManager().callEvent(dataCaptureEvent);
+        if (!dataCaptureEvent.isCancelled()) {
+            CaptureTask task = new CaptureTask(player, checkType, dataCaptureEvent.getCaptureTime()) {
+                @Override
+                public void onFinish(CheckData data) {
+                    callback.call(data);
+                }
+            };
+            task.start();
+        }
     }
 
 }

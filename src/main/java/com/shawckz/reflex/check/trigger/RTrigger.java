@@ -13,12 +13,16 @@ import com.shawckz.reflex.check.base.RCheckType;
 import com.shawckz.reflex.check.base.RViolation;
 import com.shawckz.reflex.check.inspect.RInspectResult;
 import com.shawckz.reflex.check.inspect.RInspectResultType;
+import com.shawckz.reflex.event.api.ReflexCancelEvent;
+import com.shawckz.reflex.event.api.ReflexTriggerEvent;
 import com.shawckz.reflex.player.reflex.ReflexPlayer;
 import com.shawckz.reflex.util.obj.Alert;
 import com.shawckz.reflex.util.utility.ReflexCaller;
 import com.shawckz.reflex.util.utility.ReflexException;
 import lombok.Getter;
 import lombok.Setter;
+
+import org.bukkit.Bukkit;
 
 @Getter
 @Setter
@@ -41,40 +45,58 @@ public abstract class RTrigger extends Check {
     }
 
     public final boolean triggerLater(ReflexPlayer player, ReflexCaller<RTriggerResult> result) {
-        //  if (ReflexPerm.BYPASS.hasPerm(player.getBukkitPlayer())) return false;
-        if (getCheckType().isCapture()) {
-            if (!player.getCapturePlayer().isCapturing(getCheckType())) {
-                if (!Reflex.getInstance().getAutobanManager().hasAutoban(player.getName())) {
+        ReflexTriggerEvent triggerEvent = new ReflexTriggerEvent(this, player, getCheckType());
+        Bukkit.getServer().getPluginManager().callEvent(triggerEvent);
+        if (!triggerEvent.isCancelled()) {
+            ReflexCancelEvent cancelEvent = new ReflexCancelEvent(this, getCheckType(), getrCheckType(), this.cancel);
+            Bukkit.getServer().getPluginManager().callEvent(cancelEvent);
+            final boolean cancel = cancelEvent.isShouldCancel();
 
-                    //Add a violation level (even if they pass - to make that they failed a trigger)
-                    player.addVL(getCheckType());
+            if (getCheckType().isCapture()) {
+                if (!player.getCapturePlayer().isCapturing(getCheckType())) {
+                    if (!Reflex.getInstance().getAutobanManager().hasAutoban(player.getName())) {
 
-                    Alert alert = new Alert(player, getCheckType(), Alert.Type.TRIGGER, null, -1);
-                    alert.sendAlert();
+                        //Add a violation level (even if they pass - to make that they failed a trigger)
+                        player.addVL(getCheckType());
 
-                    Reflex.getInstance().getDataCaptureManager().startCaptureTask(player, getCheckType(), getCaptureTime(), checkData -> {
-                        RInspectResult inspectResult = Reflex.getInstance().getInspectManager().inspect(player, getCheckType(), checkData, getCaptureTime());
-                        handleInspect(player, inspectResult, true);
-                        result.call(new RTriggerResult(this.cancel && inspectResult.getData().getType() == RInspectResultType.FAILED, this.cancel));
-                    });
+                        Alert alert = new Alert(player, getCheckType(), Alert.Type.TRIGGER, null, -1);
+                        alert.sendAlert();
+
+                        Reflex.getInstance().getDataCaptureManager().startCaptureTask(player, getCheckType(), getCaptureTime(), checkData -> {
+                            RInspectResult inspectResult = Reflex.getInstance().getInspectManager().inspect(player, getCheckType(), checkData, getCaptureTime());
+                            handleInspect(player, inspectResult, true);
+
+                            result.call(new RTriggerResult(cancel && inspectResult.getData().getType() == RInspectResultType.FAILED, cancel));
+                        });
+                    }
                 }
             }
+            else {
+                throw new ReflexException("This trigger must call trigger instead of triggerLater (" + getCheckType().getName() + ")");
+            }
+            return cancel;
         }
         else {
-            throw new ReflexException("This trigger must call trigger instead of triggerLater (" + getCheckType().getName() + ")");
+            return false;
         }
-        return this.cancel;
     }
 
     public final RTriggerResult trigger(ReflexPlayer player) {
         if (!getCheckType().isCapture()) {
-            if (!Reflex.getInstance().getAutobanManager().hasAutoban(player.getName())) {
-                RInspectResult inspectResult = Reflex.getInstance().getInspectManager().inspect(player, getCheckType(), player.getData().copy(), 1);
-                handleInspect(player, inspectResult, false);
-                return new RTriggerResult(this.cancel && inspectResult.getData().getType() == RInspectResultType.FAILED, this.cancel);
+            ReflexTriggerEvent triggerEvent = new ReflexTriggerEvent(this, player, getCheckType());
+            Bukkit.getServer().getPluginManager().callEvent(triggerEvent);
+            if (!triggerEvent.isCancelled()) {
+                if (!Reflex.getInstance().getAutobanManager().hasAutoban(player.getName())) {
+                    RInspectResult inspectResult = Reflex.getInstance().getInspectManager().inspect(player, getCheckType(), player.getData().copy(), 1);
+                    handleInspect(player, inspectResult, false);
+                    return new RTriggerResult(this.cancel && inspectResult.getData().getType() == RInspectResultType.FAILED, this.cancel);
+                }
+                else {
+                    return new RTriggerResult(false, this.cancel);
+                }
             }
             else {
-                return new RTriggerResult(false, this.cancel);
+                return new RTriggerResult(false, false);
             }
         }
         else {
@@ -146,6 +168,10 @@ public abstract class RTrigger extends Check {
                 autoban.run();
             }
         }
+
+        ReflexCancelEvent cancelEvent = new ReflexCancelEvent(this, getCheckType(), getrCheckType(), cancel);
+        Bukkit.getServer().getPluginManager().callEvent(cancelEvent);
+        cancel = cancelEvent.isShouldCancel();
 
         return new SimpleCheckResult(cancel, violation);
     }

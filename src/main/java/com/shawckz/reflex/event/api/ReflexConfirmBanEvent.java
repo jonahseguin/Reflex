@@ -6,10 +6,13 @@ package com.shawckz.reflex.event.api;
 
 import com.shawckz.reflex.ban.ReflexBan;
 
-public class ReflexConfirmBanEvent extends ReflexAPIEvent {
+import org.bukkit.event.Cancellable;
+
+public class ReflexConfirmBanEvent extends ReflexAPIEvent implements Cancellable {
 
     private final ReflexBan ban;
     private boolean result;
+    private boolean cancelled = false;
 
     public ReflexConfirmBanEvent(ReflexBan ban, boolean result) {
         this.ban = ban;
@@ -26,5 +29,15 @@ public class ReflexConfirmBanEvent extends ReflexAPIEvent {
 
     public void setResult(boolean result) {
         this.result = result;
+    }
+
+    @Override
+    public boolean isCancelled() {
+        return cancelled;
+    }
+
+    @Override
+    public void setCancelled(boolean cancelled) {
+        this.cancelled = cancelled;
     }
 }

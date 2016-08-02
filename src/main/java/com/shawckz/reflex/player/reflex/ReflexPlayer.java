@@ -33,17 +33,12 @@ public class ReflexPlayer extends CachePlayer {
     @MongoColumn(name = "uuid", identifier = true)
     @NonNull
     private String uniqueId;
-    private int sessionVL = 0;
     //Non-persistent...
-    private Map<String, Integer> vl = Maps.newHashMap();
-    private Map<String, Integer> alertVL = Maps.newHashMap(); //VL before alert...
-    @Getter
-    @Setter
+    private int sessionVL = 0;
+    private Map<String, Integer> vl = Maps.newHashMap(); //Violation Level for each check, <CheckType#toString, VL>
+    private Map<String, Integer> alertVL = Maps.newHashMap();//Pre-Failure VLs for each check, <CheckType#toString, VL>
     private Player bukkitPlayer = null;
-    @Getter
-    @Setter
     private boolean alertsEnabled = true;
-
     private boolean online = false;
 
     public ReflexPlayer() { //So that AutoMongo can instantiate without throwing an InstantiationException

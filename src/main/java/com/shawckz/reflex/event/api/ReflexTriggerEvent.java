@@ -8,11 +8,14 @@ import com.shawckz.reflex.check.base.CheckType;
 import com.shawckz.reflex.check.trigger.RTrigger;
 import com.shawckz.reflex.player.reflex.ReflexPlayer;
 
-public class ReflexTriggerEvent extends ReflexAPIEvent {
+import org.bukkit.event.Cancellable;
+
+public class ReflexTriggerEvent extends ReflexAPIEvent implements Cancellable {
 
     private final RTrigger trigger;
     private final ReflexPlayer player;
     private final CheckType checkType;
+    private boolean cancelled = false;
 
     public ReflexTriggerEvent(RTrigger trigger, ReflexPlayer player, CheckType checkType) {
         this.trigger = trigger;
@@ -30,5 +33,15 @@ public class ReflexTriggerEvent extends ReflexAPIEvent {
 
     public CheckType getCheckType() {
         return checkType;
+    }
+
+    @Override
+    public boolean isCancelled() {
+        return cancelled;
+    }
+
+    @Override
+    public void setCancelled(boolean cancelled) {
+        this.cancelled = cancelled;
     }
 }
