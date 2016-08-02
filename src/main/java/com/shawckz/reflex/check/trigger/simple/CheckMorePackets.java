@@ -28,20 +28,18 @@ public class CheckMorePackets extends RTrigger implements RTimer {
         super(CheckType.MORE_PACKETS, RCheckType.TRIGGER);
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onMove(PlayerMoveEvent e) {
-        if (e.isCancelled()) {
-            Player p = e.getPlayer();
-            ReflexPlayer rp = Reflex.getInstance().getCache().getReflexPlayer(p);
-            rp.getData().setPackets(rp.getData().getPackets() + 1);
-        }
+        Player p = e.getPlayer();
+        ReflexPlayer rp = Reflex.getInstance().getCache().getReflexPlayer(p);
+        rp.getData().setPackets(rp.getData().getPackets() + 1);
     }
 
     @Override
     public void runTimer() {
-        final double maxPPS = calcMaxPPS();
+        final double newMaxPPS = calcMaxPPS();
         Reflex.getReflexPlayers().forEach(rp -> {
-            if (rp.getData().getPackets() > maxPPS) {
+            if (rp.getData().getPackets() > newMaxPPS) {
                 rp.addAlertVL(getCheckType());
                 if (rp.getAlertVL(getCheckType()) >= trigger) {
                     fail(rp, rp.getData().getPackets() + " packets");
