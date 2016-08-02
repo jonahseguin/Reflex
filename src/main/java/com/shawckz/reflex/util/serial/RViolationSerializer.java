@@ -4,11 +4,11 @@
 
 package com.shawckz.reflex.util.serial;
 
-import com.mongodb.BasicDBObject;
 import com.shawckz.reflex.backend.configuration.AbstractSerializer;
 import com.shawckz.reflex.backend.database.mongo.AutoMongo;
 import com.shawckz.reflex.check.base.RViolation;
 import com.shawckz.reflex.util.utility.ReflexException;
+import org.bson.Document;
 
 public class RViolationSerializer extends AbstractSerializer<RViolation> {
 
@@ -21,7 +21,7 @@ public class RViolationSerializer extends AbstractSerializer<RViolation> {
     public RViolation fromString(Object data) {
         if (data instanceof String) {
             String s = (String) data;
-            AutoMongo mongo = RViolation.selectOne(new BasicDBObject("_id", s), RViolation.class);
+            AutoMongo mongo = RViolation.selectOne(new Document("_id", s), RViolation.class);
             if (mongo != null && mongo instanceof RViolation) {
                 return (RViolation) mongo;
             }

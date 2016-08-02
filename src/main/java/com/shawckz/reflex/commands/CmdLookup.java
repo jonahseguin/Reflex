@@ -4,7 +4,6 @@
 
 package com.shawckz.reflex.commands;
 
-import com.mongodb.BasicDBObject;
 import com.shawckz.reflex.Reflex;
 import com.shawckz.reflex.backend.command.RCmd;
 import com.shawckz.reflex.backend.command.RCmdArgs;
@@ -16,10 +15,12 @@ import com.shawckz.reflex.ban.ReflexBan;
 import com.shawckz.reflex.check.base.RViolation;
 import com.shawckz.reflex.check.inspect.RInspectResult;
 import com.shawckz.reflex.menu.LookupPlayerMenu;
+import com.shawckz.reflex.menu.LookupViolationMenu;
 import com.shawckz.reflex.player.reflex.ReflexPlayer;
 import com.shawckz.reflex.util.obj.TimeUtil;
 import mkremins.fanciful.FancyMessage;
 import net.md_5.bungee.api.ChatColor;
+import org.bson.Document;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -95,7 +96,7 @@ public class CmdLookup implements RCommand {
         new BukkitRunnable() {
             @Override
             public void run() {
-                AutoMongo mongo = RInspectResult.selectOne(new BasicDBObject("_id", id), RInspectResult.class);
+                AutoMongo mongo = RInspectResult.selectOne(new Document("_id", id), RInspectResult.class);
                 if (mongo != null && mongo instanceof RInspectResult) {
                     RInspectResult result = (RInspectResult) mongo;
                     ReflexPlayer t = Reflex.getInstance().getCache().getReflexPlayerByUUID(result.getViolation().getUniqueId());
@@ -105,10 +106,6 @@ public class CmdLookup implements RCommand {
                     msg(sender, "&eResult&7: &9" + result.getData().getType().toString());
                     msg(sender, "&eData Period&7: &9" + result.getInspectionPeriod() + " seconds");
                     msg(sender, "&eDate&7: &9" + DATE_FORMAT.format(new Date(result.getViolation().getTime())));
-                   /* if(result.getData() != null) {
-                        msg(sender, "&eTPS&7: &9" + result.getViolation().getData().getTps());
-                        msg(sender, "&ePing&7: &9" + result.getViolation().getData().getPing());
-                    }*/
                     if (result.getData().getDetail() != null) {
                         msg(sender, "&eDetail&7: &9" + result.getData().getDetail());
                     }
@@ -175,8 +172,7 @@ public class CmdLookup implements RCommand {
                         empty = false;
                         msg(sender, "&6Found &e" + bans.size() + "&6 inactive Reflex Bans:");
 
-                        bans.stream().forEach(ban -> {
-
+                        bans.forEach(ban -> {
                             new FancyMessage(color("&7- &e" + ban.getViolation().getCheckType().getName() + " &9#" + ban.getId().substring(0, 6) + " &7[" + (ban.isActive() ? "&aActive" : "&cInactive") + "&7]"))
                                     .tooltip(color("&eClick for ban information"))
                                     .command("/reflex lookup baninfo " + ban.getId())
@@ -226,13 +222,42 @@ public class CmdLookup implements RCommand {
         new BukkitRunnable() {
             @Override
             public void run() {
-                AutoMongo mongo = RViolation.selectOne(new BasicDBObject("_id", id), RViolation.class);
+                AutoMongo mongo = RViolation.selectOne(new Document("_id", id), RViolation.class);
 
                 if (mongo != null) {
-                    RLang.send(sender, ReflexLang.HEADER_FOOTER);
+                    if (sender instanceof Player) {
+                        RViolation vl = (RViolation) mongo;
+                        ReflexPlayer reflexPlayer = Reflex.getInstance().getCache().getReflexPlayerByUUID(vl.getUniqueId());
+                        if (reflexPlayer != null) {
+                            LookupViolationMenu lookupViolationMenu = new LookupViolationMenu(reflexPlayer, vl);
+                            lookupViolationMenu.open(((Player) sender));
+                        }
+                        else {
+                            msg(sender, "&cTarget player in violation could not be found (" + vl.getUniqueId() + ")");
+                        }
+                    }
+                    else {
+                        RLang.send(sender, ReflexLang.HEADER_FOOTER);
+                        RViolation vl = (RViolation) mongo;
 
+                        msg(sender, "&7Violation Lookup - &a" + vl.getId());
 
-                    RLang.send(sender, ReflexLang.HEADER_FOOTER);
+                        ReflexPlayer reflexPlayer = Reflex.getInstance().getCache().getReflexPlayerByUUID(vl.getUniqueId());
+
+                        if (reflexPlayer != null) {
+                            msg(sender, "&ePlayer&7: &9" + reflexPlayer.getName());
+                        }
+                        else {
+                            msg(sender, "&ePlayer&7: &7Not found");
+                        }
+
+                        msg(sender, "&eCheck&7: " + vl.getCheckType().getName());
+                        msg(sender, "&eSource&7: " + vl.getSource().toString());
+                        msg(sender, "&eVL&7: " + vl.getVl());
+                        msg(sender, "&eTime&7: " + TimeUtil.format(vl.getTime()));
+
+                        RLang.send(sender, ReflexLang.HEADER_FOOTER);
+                    }
                 }
                 else {
                     RLang.send(sender, ReflexLang.VIOLATION_NOT_FOUND, id);

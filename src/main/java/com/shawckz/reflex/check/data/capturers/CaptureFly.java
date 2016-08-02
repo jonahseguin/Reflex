@@ -69,7 +69,7 @@ public class CaptureFly extends RDataCapture implements RTimer {
 
     @Override
     public void runTimer() {
-        Reflex.getOnlinePlayers().forEach(p -> {
+        Reflex.getReflexPlayers().forEach(p -> {
             Player pl = p.getBukkitPlayer();
             if (p.getCapturePlayer().isCapturing(getCheckType())) {
                 if (!pl.getAllowFlight()) {

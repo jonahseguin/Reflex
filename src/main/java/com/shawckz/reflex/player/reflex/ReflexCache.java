@@ -49,7 +49,7 @@ public class ReflexCache extends AbstractCache {
         return null;
     }
 
-    public Set<ReflexPlayer> getOnlinePlayers() {
+    public Set<ReflexPlayer> getOnlineReflexPlayers() {
         return getPlayers().values().stream().filter(ReflexPlayer::isOnline).collect(Collectors.toSet());
     }
 

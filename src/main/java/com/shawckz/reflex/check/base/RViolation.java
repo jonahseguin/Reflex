@@ -52,13 +52,17 @@ public class RViolation extends AutoMongo {
     @DatabaseSerializer(serializer = RCheckTypeSerializer.class)
     private RCheckType source;
 
-    public RViolation(String uniqueId, CheckData data, CheckType checkType, RCheckType source) {
+    @MongoColumn(name = "vl")
+    private int vl;
+
+    public RViolation(String uniqueId, CheckData data, CheckType checkType, RCheckType source, int vl) {
         this.id = UUID.randomUUID().toString();
         this.time = System.currentTimeMillis();
         this.uniqueId = uniqueId;
         this.data = data;
         this.source = source;
         this.checkType = checkType;
+        this.vl = vl;
     }
 
 

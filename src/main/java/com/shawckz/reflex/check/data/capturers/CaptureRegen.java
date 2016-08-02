@@ -51,7 +51,7 @@ public class CaptureRegen extends RDataCapture implements RTimer {
 
     @Override
     public void runTimer() {
-        Reflex.getOnlinePlayers().forEach(p -> {
+        Reflex.getReflexPlayers().forEach(p -> {
             if (p.getCapturePlayer().isCapturing(getCheckType())) {
                 double health = getData(p).getHealthRegenerated();
                 if (health > getData(p).getHps()) {

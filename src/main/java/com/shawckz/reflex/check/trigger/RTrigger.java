@@ -127,10 +127,10 @@ public abstract class RTrigger extends Check {
             d = detail[0];
         }
 
-        RViolation violation = new RViolation(player.getUniqueId(), player.getData().copy(), getCheckType(), RCheckType.TRIGGER);
-        Reflex.getInstance().getViolationCache().saveViolation(violation);
-
         player.addVL(getCheckType());
+
+        RViolation violation = new RViolation(player.getUniqueId(), player.getData().copy(), getCheckType(), RCheckType.TRIGGER, player.getVL(getCheckType()));
+        Reflex.getInstance().getViolationCache().saveViolation(violation);
 
         if (!Reflex.getInstance().getAutobanManager().hasAutoban(player.getName())) {
             Alert alert = new Alert(player, getCheckType(), Alert.Type.FAIL, violation, player.getVL(getCheckType()));

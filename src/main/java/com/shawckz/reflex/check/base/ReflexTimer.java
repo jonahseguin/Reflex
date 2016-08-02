@@ -57,7 +57,7 @@ public class ReflexTimer implements Runnable {
                 timer.runTimer();
             }
         }
-        for (Player pl : Bukkit.getOnlinePlayers()) {
+        for (Player pl : Reflex.getOnlinePlayers()) {
             Reflex.getInstance().getCache().getReflexPlayer(pl).getData().setTps(Lag.getTPS());
             Reflex.getInstance().getCache().getReflexPlayer(pl).getData().setPing(((CraftPlayer) pl).getHandle().ping);
             for (RDataCapture check : Reflex.getInstance().getDataCaptureManager().getDataCaptures().values()) {

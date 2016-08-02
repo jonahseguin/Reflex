@@ -54,7 +54,7 @@ public class TriggerRegen extends RTrigger implements RTimer {
 
     @Override
     public void runTimer() {
-        Reflex.getOnlinePlayers().forEach(player -> {
+        Reflex.getReflexPlayers().forEach(player -> {
             if (player.getData().getHealthPerSecond() > maxHps) {
                 triggerLater(player, result -> {
 

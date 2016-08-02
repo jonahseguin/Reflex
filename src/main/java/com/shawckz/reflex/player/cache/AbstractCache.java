@@ -10,7 +10,9 @@ import com.shawckz.reflex.player.reflex.ReflexPlayer;
 import org.bson.Document;
 
 import java.lang.reflect.Field;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -32,6 +34,7 @@ public abstract class AbstractCache implements Listener {
 
     private final ConcurrentMap<String, ReflexPlayer> players = new ConcurrentHashMap<>();
     private final ConcurrentMap<String, ReflexPlayer> playersUUID = new ConcurrentHashMap<>();
+    private final Set<Player> onlinePlayers = new HashSet<>();
     private final Plugin plugin;
     private final Class<? extends ReflexPlayer> aClass;
 
@@ -41,8 +44,12 @@ public abstract class AbstractCache implements Listener {
         Bukkit.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
-    public static ConcurrentMap<String, ReflexPlayer> getPlayers() {
+    public ConcurrentMap<String, ReflexPlayer> getPlayers() {
         return players;
+    }
+
+    public Set<Player> getOnlinePlayers() {
+        return onlinePlayers;
     }
 
     /**
@@ -184,12 +191,13 @@ public abstract class AbstractCache implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onJoin(final PlayerJoinEvent e) {
-        Player p = e.getPlayer();
+        final Player p = e.getPlayer();
         if (contains(p.getName())) {
             ReflexPlayer cp = getBasePlayer(p);
             cp.setOnline(true);
             init(p, cp);
         }
+        onlinePlayers.add(p);
     }
 
     public abstract ReflexPlayer create(String name, String uuid);
@@ -203,6 +211,9 @@ public abstract class AbstractCache implements Listener {
             ReflexPlayer reflexPlayer = getBasePlayer(p);
             reflexPlayer.setOnline(false);
             save(p);
+        }
+        if (onlinePlayers.contains(p)) {
+            onlinePlayers.remove(p);
         }
     }
 

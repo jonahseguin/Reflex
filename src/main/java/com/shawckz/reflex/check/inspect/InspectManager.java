@@ -61,10 +61,9 @@ public class InspectManager {
         Alert alert = null;
         if (resultType == RInspectResultType.FAILED && !Reflex.getInstance().getAutobanManager().hasAutoban(player.getName())) {
             //Only make a violation if they FAIL the inspection - also alert
-            violation = new RViolation(player.getUniqueId(), data, checkType, RCheckType.INSPECT);
-            Reflex.getInstance().getViolationCache().cacheViolation(violation);
-
             player.addVL(inspector.getCheckType());
+            violation = new RViolation(player.getUniqueId(), data, checkType, RCheckType.INSPECT, player.getVL(inspector.getCheckType()));
+            Reflex.getInstance().getViolationCache().cacheViolation(violation);
 
             if (checkType.isCapture()) {
                 alert = new Alert(player, checkType, resultType.translateToAlertType(), violation, player.getVL(inspector.getCheckType()));
@@ -83,7 +82,7 @@ public class InspectManager {
             throw new ReflexException("Should not fail check while having an autoban");
         }
         else if (resultType == RInspectResultType.PASSED) {
-            violation = new RViolation(player.getUniqueId(), data, checkType, RCheckType.INSPECT);
+            violation = new RViolation(player.getUniqueId(), data, checkType, RCheckType.INSPECT, player.getVL(inspector.getCheckType()));
             Reflex.getInstance().getViolationCache().cacheViolation(violation);
 
             if (checkType.isCapture()) {

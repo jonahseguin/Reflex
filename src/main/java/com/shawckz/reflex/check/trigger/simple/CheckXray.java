@@ -51,7 +51,7 @@ public class CheckXray extends RTrigger {
         new BukkitRunnable() {
             @Override
             public void run() {
-                Reflex.getOnlinePlayers().forEach(rp -> rp.getData().getXrayStats().reset());
+                Reflex.getReflexPlayers().forEach(rp -> rp.getData().getXrayStats().reset());
             }
         }.runTaskTimerAsynchronously(Reflex.getInstance(), 72000, 72000);
     }

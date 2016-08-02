@@ -40,7 +40,7 @@ public class CheckMorePackets extends RTrigger implements RTimer {
     @Override
     public void runTimer() {
         final double maxPPS = calcMaxPPS();
-        Reflex.getOnlinePlayers().forEach(rp -> {
+        Reflex.getReflexPlayers().forEach(rp -> {
             if (rp.getData().getPackets() > maxPPS) {
                 rp.addAlertVL(getCheckType());
                 if (rp.getAlertVL(getCheckType()) >= trigger) {

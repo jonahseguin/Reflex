@@ -98,7 +98,7 @@ public class PacketListener {
             public void onPacketReceiving(PacketEvent event) {
                 if (event.getPacketType() == PacketType.Play.Client.LOOK) {
                     Player p = event.getPlayer();
-                    // ReflexPlayer ap = Reflex.getInstance().getCache().getReflexPlayer(p);
+                    // ReflexPlayer ap = Reflex.getInstance().getCache().getReflexPlayers(p);
                     float yaw = event.getPacket().getFloat().readSafely(0);
                     float pitch = event.getPacket().getFloat().readSafely(1);
 

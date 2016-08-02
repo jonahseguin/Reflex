@@ -29,6 +29,8 @@ public class LookupPlayerMenu extends ItemMenu {
         super("Reflex - " + player.getName(), Size.ONE_LINE, Reflex.getInstance());
         this.player = player;
 
+        final LookupPlayerMenu thisMenu = this;
+
         setItem(0, new StaticMenuItem(ChatColor.BLUE + player.getName(), new ItemBuilder(new ItemStack(Material.SKULL_ITEM, 1, (short) SkullType.PLAYER.ordinal())).setSkullOwner(player.getName()).toItemStack(),
                 " ", ChatColor.DARK_GRAY + (Bukkit.getPlayer(player.getName()) != null ? ChatColor.GREEN + "Online" : ChatColor.RED + "Offline")));
 
@@ -83,12 +85,30 @@ public class LookupPlayerMenu extends ItemMenu {
                 ib.addLoreLine(" ");
                 ib.addLoreLine(ChatColor.DARK_GRAY + "Not yet implemented...");
 
-
                 return ib.toItemStack();
             }
         });
 
-        setItem(7, new RDynMenuItem() {
+        setItem(5, new RDynMenuItem() {
+            @Override
+            public ItemStack getFinalIcon(Player viewer) {
+                ItemBuilder ib = new ItemBuilder(Material.PORTAL);
+                ib.setName(ChatColor.BLUE + "All Violations");
+                ib.addLoreLine(" ");
+                ib.addLoreLine(ChatColor.DARK_GRAY + "Click to view all violations");
+                return ib.toItemStack();
+            }
+        }.action(new RMenuHandler() {
+            @Override
+            public void onClick(ItemClickEvent event) {
+                Player p = event.getPlayer();
+                ShowViolationsMenu showViolationsMenu = new ShowViolationsMenu(player);
+                showViolationsMenu.setParent(thisMenu);
+                showViolationsMenu.open(p);
+            }
+        }));
+
+        setItem(6, new RDynMenuItem() {
             @Override
             public ItemStack getFinalIcon(Player viewer) {
                 return new ItemBuilder(Material.BOOK_AND_QUILL)
@@ -101,7 +121,6 @@ public class LookupPlayerMenu extends ItemMenu {
         }.action(new RMenuHandler() {
             @Override
             public void onClick(ItemClickEvent event) {
-                event.setWillClose(true);
                 event.getPlayer().sendMessage(ChatColor.RED + "This feature is not yet implemented.  Yell at Shawckz.");
             }
         }));
@@ -113,7 +132,7 @@ public class LookupPlayerMenu extends ItemMenu {
     public void setParent(ItemMenu parent) {
         super.setParent(parent);
         if (parent != null) {
-            setItem(25, new BackItem());
+            setItem(8, new BackItem());
         }
     }
 

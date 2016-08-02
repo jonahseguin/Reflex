@@ -4,9 +4,9 @@
 
 package com.shawckz.reflex.ban;
 
-import com.mongodb.BasicDBObject;
 import com.shawckz.reflex.Reflex;
 import com.shawckz.reflex.backend.database.mongo.AutoMongo;
+import org.bson.Document;
 
 import java.util.*;
 
@@ -34,7 +34,7 @@ public class ReflexBanManager {
                 return cache.get(uniqueId).getActiveBan();
             }
         }
-        List<AutoMongo> mongos = ReflexBan.select(new BasicDBObject("uniqueId", uniqueId).append("banned", true), ReflexBan.class);
+        List<AutoMongo> mongos = ReflexBan.select(new Document("uniqueId", uniqueId).append("banned", true), ReflexBan.class);
         for (AutoMongo mongo : mongos) {
             if (mongo != null && mongo instanceof ReflexBan) {
                 ReflexBan ban = (ReflexBan) mongo;
@@ -48,7 +48,7 @@ public class ReflexBanManager {
     }
 
     public ReflexBan getBanById(String id) {
-        AutoMongo mongo = ReflexBan.selectOne(new BasicDBObject("_id", id), ReflexBan.class);
+        AutoMongo mongo = ReflexBan.selectOne(new Document("_id", id), ReflexBan.class);
         if (mongo != null && mongo instanceof ReflexBan) {
             ReflexBan ban = (ReflexBan) mongo;
             return ban;
@@ -62,7 +62,7 @@ public class ReflexBanManager {
             bans.addAll(cache.get(uniqueId).getBans());
         }
 
-        List<AutoMongo> mongos = ReflexBan.select(new BasicDBObject("uniqueId", uniqueId), ReflexBan.class);
+        List<AutoMongo> mongos = ReflexBan.select(new Document("uniqueId", uniqueId), ReflexBan.class);
         for (AutoMongo mongo : mongos) {
             if (mongo != null && mongo instanceof ReflexBan) {
                 ReflexBan ban = (ReflexBan) mongo;

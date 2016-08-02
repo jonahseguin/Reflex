@@ -47,27 +47,20 @@ import org.bukkit.entity.Player;
 public class Reflex extends AuthMe {
 
     public static boolean couldStart = true;
-
     private static Reflex instance;
-
     private ReflexConfig reflexConfig;
     private ProtocolManager protocolManager;
     private LanguageConfig lang;
-
     private TriggerManager triggerManager;
     private DataCaptureManager dataCaptureManager;
     private InspectManager inspectManager;
-
     private ReflexCache cache;
     private ReflexTimer reflexTimer;
     private RDataCache violationCache;
-
     private AutobanManager autobanManager;
     private ReflexBanManager banManager;
-
     private RCommandHandler commandHandler;
     private boolean en = false;
-    private boolean authenticated = false;
 
     public static String getPrefix() {
         return RLang.format(ReflexLang.ALERT_PREFIX);
@@ -77,7 +70,11 @@ public class Reflex extends AuthMe {
         return instance;
     }
 
-    public static Set<ReflexPlayer> getOnlinePlayers() {
+    public static Set<ReflexPlayer> getReflexPlayers() {
+        return getInstance().getCache().getOnlineReflexPlayers();
+    }
+
+    public static Set<Player> getOnlinePlayers() {
         return getInstance().getCache().getOnlinePlayers();
     }
 
@@ -102,7 +99,7 @@ public class Reflex extends AuthMe {
             getLogger().info("[Stop] Disabling Reflex v" + getDescription().getVersion());
             //Make reload-friendly, save all online players
             int saved = 0;
-            for (Player pl : Bukkit.getOnlinePlayers()) {
+            for (Player pl : getOnlinePlayers()) {
                 cache.saveSync(pl);
                 saved++;
             }
@@ -131,14 +128,13 @@ public class Reflex extends AuthMe {
         if (autheer == null) throw new ReflexException("Invalid autheer");
         return () -> {
             en = true;
-            authenticated = true;
             reflexConfig = new ReflexConfig(instance);
             lang = new LanguageConfig(instance);
             new DBManager(instance);
             cache = new ReflexCache(instance);
 
             //Make reload-friendly, load all online players
-            for (Player pl : Bukkit.getOnlinePlayers()) {
+            for (Player pl : getOnlinePlayers()) {
                 ReflexPlayer cp = cache.loadReflexPlayer(pl.getName());
                 if (cp != null) {
                     cache.put(cp);
@@ -190,10 +186,6 @@ public class Reflex extends AuthMe {
     @Override
     public final String authName() {
         return "Reflex";
-    }
-
-    public boolean isAuthenticated() {
-        return authenticated;
     }
 
     public RCommandHandler getCommandHandler() {

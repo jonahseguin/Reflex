@@ -1,13 +1,12 @@
 /*
- * Copyright (c) Jonah Seguin (Shawckz) 2016.  You may not copy, re-sell, distribute, modify, or use any code contained in this document or file, collection of documents or files, or project.
- * Thank you.
+ * Copyright (c) Jonah Seguin (Shawckz) 2016.  You may not copy, re-sell, distribute, modify, or use any code contained in this document or file, collection of documents or files, or project.  Thank you.
  */
 
 package com.shawckz.reflex.util.serial;
 
-import com.mongodb.BasicDBObject;
 import com.shawckz.reflex.backend.database.mongo.AutoMongo;
 import com.shawckz.reflex.check.data.CheckData;
+import org.bson.Document;
 
 import java.util.List;
 
@@ -30,7 +29,7 @@ public class CheckDataSerializer extends ReflexSerializer<CheckData> {
     @Override
     public CheckData fromString(Object data, Class<? extends CheckData> type) {
         String s = (String) data;
-        List<AutoMongo> mongos = AutoMongo.select(new BasicDBObject("_id", s), type);
+        List<AutoMongo> mongos = AutoMongo.select(new Document("_id", s), type);
         for (AutoMongo mongo : mongos) {
             if (mongo instanceof CheckData) {
                 return (CheckData) mongo;

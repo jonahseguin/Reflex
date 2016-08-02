@@ -63,7 +63,7 @@ public class TriggerAutoClick extends RTrigger implements RTimer {
 
     @Override
     public void runTimer() {
-        Reflex.getOnlinePlayers().forEach(player -> {
+        Reflex.getReflexPlayers().forEach(player -> {
             double[] cps = player.getData().getClicksPerSecond();
 
             if (cps[3] >= maxClicksPerSecond

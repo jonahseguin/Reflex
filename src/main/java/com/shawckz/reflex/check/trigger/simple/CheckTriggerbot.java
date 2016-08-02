@@ -29,7 +29,7 @@ public class CheckTriggerbot extends RTrigger implements RTimer {
 
     @Override
     public void runTimer() {
-        Reflex.getOnlinePlayers().forEach(rp -> {
+        Reflex.getReflexPlayers().forEach(rp -> {
             if (rp.getData().getTrigLastCheck() == -1L || ((System.currentTimeMillis() - rp.getData().getTrigLastCheck()) / 1000 >= 15)) {
 
                 double cpsOn = rp.getData().getCpsOn();

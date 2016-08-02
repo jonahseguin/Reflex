@@ -57,7 +57,7 @@ public class Alert {
     }
 
     public static void staffMsg(String msg) {
-        for (Player pl : Bukkit.getOnlinePlayers()) {
+        for (Player pl : Reflex.getOnlinePlayers()) {
             ReflexPlayer p = Reflex.getInstance().getCache().getReflexPlayer(pl);
             if (p.isAlertsEnabled() && ReflexPerm.ALERTS.hasPerm(pl)) {
                 p.msg(msg);
@@ -67,7 +67,7 @@ public class Alert {
     }
 
     public static void staffMsg(FancyMessage msg) {
-        for (Player pl : Bukkit.getOnlinePlayers()) {
+        for (Player pl : Reflex.getOnlinePlayers()) {
             ReflexPlayer p = Reflex.getInstance().getCache().getReflexPlayer(pl);
             if (p.isAlertsEnabled() && ReflexPerm.ALERTS.hasPerm(pl)) {
                 msg.send(pl);

@@ -45,7 +45,7 @@ public class CheckSmoothAim extends RTrigger implements RTimer {
 
     @Override
     public void runTimer() {
-        Reflex.getOnlinePlayers().forEach(rp -> {
+        Reflex.getReflexPlayers().forEach(rp -> {
             float aimSpeed = rp.getData().getAimSpeed();
             float lastAimSpeed = rp.getData().getLastAimSpeed();
 
