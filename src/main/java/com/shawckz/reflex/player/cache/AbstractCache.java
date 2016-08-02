@@ -38,7 +38,7 @@ public abstract class AbstractCache implements Listener {
     public AbstractCache(Plugin plugin) {
         this.plugin = plugin;
         this.aClass = ReflexPlayer.class;
-        Bukkit.getServer().getPluginManager().registerEvents(this, plugin);
+        this.plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
     public static ConcurrentMap<String, ReflexPlayer> getPlayers() {
