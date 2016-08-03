@@ -100,7 +100,7 @@ public class CmdLookup implements RCommand {
                 AutoMongo mongo = RInspectResult.selectOne(new Document("_id", id), RInspectResult.class);
                 if (mongo != null && mongo instanceof RInspectResult) {
                     RInspectResult result = (RInspectResult) mongo;
-                    ReflexPlayer t = Reflex.getInstance().getCache().getReflexPlayerByUUID(result.getViolation().getUniqueId());
+                    ReflexPlayer t = Reflex.getInstance().getCache().getReflexPlayerByUniqueId(result.getViolation().getUniqueId());
                     RLang.send(sender, ReflexLang.HEADER_FOOTER);
                     msg(sender, "&7Inspection Lookup - &a" + t.getName() + " &7(" + result.getId() + ")");
                     msg(sender, "&eCheck&7: &9" + result.getViolation().getCheckType().getName());
@@ -228,7 +228,7 @@ public class CmdLookup implements RCommand {
                 if (mongo != null) {
                     if (sender instanceof Player) {
                         RViolation vl = (RViolation) mongo;
-                        ReflexPlayer reflexPlayer = Reflex.getInstance().getCache().getReflexPlayerByUUID(vl.getUniqueId());
+                        ReflexPlayer reflexPlayer = Reflex.getInstance().getCache().getReflexPlayerByUniqueId(vl.getUniqueId());
                         if (reflexPlayer != null) {
                             LookupViolationMenu lookupViolationMenu = new LookupViolationMenu(reflexPlayer, vl);
                             lookupViolationMenu.open(((Player) sender));
@@ -243,7 +243,7 @@ public class CmdLookup implements RCommand {
 
                         msg(sender, "&7Violation Lookup - &a" + vl.getId());
 
-                        ReflexPlayer reflexPlayer = Reflex.getInstance().getCache().getReflexPlayerByUUID(vl.getUniqueId());
+                        ReflexPlayer reflexPlayer = Reflex.getInstance().getCache().getReflexPlayerByUniqueId(vl.getUniqueId());
 
                         if (reflexPlayer != null) {
                             msg(sender, "&ePlayer&7: &9" + reflexPlayer.getName());
@@ -268,7 +268,7 @@ public class CmdLookup implements RCommand {
     }
 
     private void msgBanInfo(CommandSender sender, ReflexBan ban) {
-        ReflexPlayer player = Reflex.getInstance().getCache().getReflexPlayerByUUID(ban.getUniqueId());
+        ReflexPlayer player = Reflex.getInstance().getCache().getReflexPlayerByUniqueId(ban.getUniqueId());
         msg(sender, (ban.isActive() ? "&2[ACTIVE] " : "") + "&7Ban Lookup - &a" + player.getName());
         msg(sender, "&eBanned&7: &9" + ban.isBanned());
         msg(sender, "&eCheck&7: &9" + ban.getViolation().getCheckType().getName());

@@ -14,8 +14,8 @@ import org.bukkit.entity.Player;
 
 public abstract class RDataCapture extends Check {
 
-    public RDataCapture(CheckType checkType, RCheckType rCheckType) {
-        super(checkType, rCheckType);
+    public RDataCapture(Reflex instance, CheckType checkType, RCheckType rCheckType) {
+        super(instance, checkType, rCheckType);
     }
 
     public final void startCapturing(ReflexPlayer player) {
@@ -27,7 +27,7 @@ public abstract class RDataCapture extends Check {
     }
 
     public final boolean isCapturing(Player player) {
-        ReflexPlayer reflexPlayer = Reflex.getInstance().getCache().getReflexPlayer(player);
+        ReflexPlayer reflexPlayer = getReflex().getCache().getReflexPlayer(player);
         return reflexPlayer.getCapturePlayer().isCapturing(getCheckType());
     }
 

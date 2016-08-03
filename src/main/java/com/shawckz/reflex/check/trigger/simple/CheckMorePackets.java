@@ -19,19 +19,20 @@ import org.bukkit.event.player.PlayerMoveEvent;
 
 public class CheckMorePackets extends RTrigger implements RTimer {
 
-    private final double maxPPS = 25; //Maximum packets per-second per-player (1 packet per tick) + 5 (lag safety)
+    @ConfigData("max-packets-per-second")
+    private double maxPPS = 25; //Maximum packets per-second per-player (1 packet per tick) + 5 (lag safety)
 
     @ConfigData("trigger-threshold")
     private int trigger = 3;
 
-    public CheckMorePackets() {
-        super(CheckType.MORE_PACKETS, RCheckType.TRIGGER);
+    public CheckMorePackets(Reflex instance) {
+        super(instance, CheckType.MORE_PACKETS, RCheckType.TRIGGER);
     }
 
     @EventHandler(ignoreCancelled = true)
     public void onMove(PlayerMoveEvent e) {
         Player p = e.getPlayer();
-        ReflexPlayer rp = Reflex.getInstance().getCache().getReflexPlayer(p);
+        ReflexPlayer rp = getPlayer(p);
         rp.getData().setPackets(rp.getData().getPackets() + 1);
     }
 

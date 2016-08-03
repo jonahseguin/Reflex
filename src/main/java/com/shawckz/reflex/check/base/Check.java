@@ -6,8 +6,11 @@ package com.shawckz.reflex.check.base;
 
 import com.shawckz.reflex.Reflex;
 import com.shawckz.reflex.backend.configuration.annotations.ConfigData;
+import com.shawckz.reflex.player.reflex.ReflexCache;
+import com.shawckz.reflex.player.reflex.ReflexPlayer;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 
@@ -26,38 +29,60 @@ import org.bukkit.event.Listener;
  */
 public abstract class Check extends CheckConfig implements Listener {
 
+    private final Reflex instance;
+
     private final CheckType checkType;
     private final RCheckType rCheckType;
 
     @ConfigData("enabled")
     private boolean enabled = true;
 
-    public Check(CheckType checkType, RCheckType rCheckType) {
+    public Check(Reflex instance, CheckType checkType, RCheckType rCheckType) {
         super(checkType, rCheckType);
+        this.instance = instance;
         this.checkType = checkType;
         this.rCheckType = rCheckType;
     }
 
-    //Can be overriden
     public String getName() {
         return checkType.getName();
     }
 
-    public CheckType getCheckType() {
+    public final Reflex getReflex() {
+        return instance;
+    }
+
+    public final ReflexCache getCache() {
+        return instance.getCache();
+    }
+
+    public final ReflexPlayer getPlayer(Player player) {
+        return getPlayerByUniqueID(player.getUniqueId().toString());
+    }
+
+    public final ReflexPlayer getPlayerByName(String name) {
+        return getCache().getReflexPlayer(name);
+    }
+
+    public final ReflexPlayer getPlayerByUniqueID(String uniqueId) {
+        return getCache().getReflexPlayerByUniqueId(uniqueId);
+    }
+
+    public final CheckType getCheckType() {
         return checkType;
     }
 
-    public RCheckType getrCheckType() {
+    public final RCheckType getRCheckType() {
         return rCheckType;
     }
 
-    public boolean isEnabled() {
+    public final boolean isEnabled() {
         return enabled;
     }
 
     public final void setEnabled(final boolean enabled) {
         if (enabled) {
-            Bukkit.getServer().getPluginManager().registerEvents(this, Reflex.getInstance());
+            Bukkit.getServer().getPluginManager().registerEvents(this, instance);
         }
         else {
             HandlerList.unregisterAll(this);

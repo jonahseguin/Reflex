@@ -18,16 +18,16 @@ import org.bukkit.entity.Player;
 
 public class CheckHeadRoll extends RTrigger {
 
-    public CheckHeadRoll() {
-        super(CheckType.HEAD_ROLL, RCheckType.TRIGGER);
+    public CheckHeadRoll(Reflex instance) {
+        super(instance, CheckType.HEAD_ROLL, RCheckType.TRIGGER);
 
-        Reflex.getInstance().getProtocolManager().addPacketListener(new PacketAdapter(Reflex.getInstance(), ListenerPriority.HIGHEST,
+        instance.getProtocolManager().addPacketListener(new PacketAdapter(instance, ListenerPriority.HIGHEST,
                 PacketType.Play.Client.LOOK) {
             @Override
             public void onPacketReceiving(PacketEvent event) {
                 if (!isEnabled()) return;
                 Player p = event.getPlayer();
-                ReflexPlayer ap = Reflex.getInstance().getCache().getReflexPlayer(p);
+                ReflexPlayer ap = getPlayer(p); //Use new handy local method that gets a player from the cache, via the provided instance
                 if (event.getPacketType() == PacketType.Play.Client.LOOK) {
                     float pitch = event.getPacket().getFloat().readSafely(1);
                     if (pitch > 90.1F || pitch < -90.1F) { //.1 because sometimes head can glitch when spinning fast

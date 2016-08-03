@@ -33,10 +33,10 @@ public class ReflexCache extends AbstractCache {
         return null;
     }
 
-    public ReflexPlayer getReflexPlayerByUUID(String uuid) {
-        ReflexPlayer cachePlayer = getBasePlayerByUUID(uuid);
+    public ReflexPlayer getReflexPlayerByUniqueId(String uuid) {
+        ReflexPlayer cachePlayer = getBasePlayerByUniqueId(uuid);
         if (cachePlayer != null) {
-            return getBasePlayerByUUID(uuid);
+            return getBasePlayerByUniqueId(uuid);
         }
         return null;
     }

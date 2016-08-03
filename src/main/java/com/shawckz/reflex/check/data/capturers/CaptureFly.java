@@ -25,8 +25,8 @@ import org.bukkit.event.player.PlayerMoveEvent;
 public class CaptureFly extends RDataCapture implements RTimer {
 
 
-    public CaptureFly() {
-        super(CheckType.FLY, RCheckType.DATA);
+    public CaptureFly(Reflex instance) {
+        super(instance, CheckType.FLY, RCheckType.DATA);
     }
 
     //yps, bps, hasPositiveVelocity, lastGroundTime
@@ -39,7 +39,7 @@ public class CaptureFly extends RDataCapture implements RTimer {
             if (p.getAllowFlight()) {
                 return;
             }
-            ReflexPlayer rp = Reflex.getInstance().getCache().getReflexPlayer(p);
+            ReflexPlayer rp = getPlayer(p);
             DataFly data = getData(rp);
             double yDifference = e.getTo().getY() - e.getFrom().getY();
             data.setYps(data.getYps() + yDifference);

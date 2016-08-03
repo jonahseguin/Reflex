@@ -30,8 +30,8 @@ public class TriggerVClip extends RTrigger {
     @ConfigData("capture-time")
     private int captureTime = 10;
 
-    public TriggerVClip() {
-        super(CheckType.VCLIP, RCheckType.TRIGGER);
+    public TriggerVClip(Reflex instance) {
+        super(instance, CheckType.VCLIP, RCheckType.TRIGGER);
     }
 
 
@@ -44,7 +44,7 @@ public class TriggerVClip extends RTrigger {
             return;
         }
         Player pl = e.getPlayer();
-        ReflexPlayer p = Reflex.getInstance().getCache().getReflexPlayer(pl);
+        ReflexPlayer p = getPlayer(pl);
         if (pl.getGameMode() == GameMode.CREATIVE) {
             return;
         }
@@ -91,7 +91,7 @@ public class TriggerVClip extends RTrigger {
             return;
         }
         Player pl = e.getPlayer();
-        ReflexPlayer p = Reflex.getInstance().getCache().getReflexPlayer(pl);
+        ReflexPlayer p = getPlayer(pl);
         if ((e.getTo().getBlockX() == e.getFrom().getBlockX()) && (e.getTo().getBlockY() == e.getFrom().getBlockY()) && (e.getTo().getBlockZ() == e.getFrom().getBlockZ())) {
             return;
         }

@@ -30,8 +30,8 @@ public class TriggerFly extends RTrigger {
     @ConfigData("threshold-air-time")
     private int thresholdAirTime = 15;
 
-    public TriggerFly() {
-        super(CheckType.FLY, RCheckType.TRIGGER);
+    public TriggerFly(Reflex instance) {
+        super(instance, CheckType.FLY, RCheckType.TRIGGER);
     }
 
     @EventHandler
@@ -40,7 +40,8 @@ public class TriggerFly extends RTrigger {
         if (e.getPlayer().getAllowFlight()) return;
         if (e.getPlayer().getVehicle() != null) return;
 
-        ReflexPlayer rp = Reflex.getInstance().getCache().getReflexPlayer(e.getPlayer());
+        ReflexPlayer rp = getPlayer(e.getPlayer());
+
         if (e.getTo().getY() >= e.getFrom().getY()) {
             rp.getData().setHasPositiveVelocity(true);
         }

@@ -49,12 +49,12 @@ public class CheckSpeed extends RTrigger {
     private double speedMultiplier = 2.5D;
 
 
-    public CheckSpeed() {
-        super(CheckType.SPEED, RCheckType.TRIGGER);
+    public CheckSpeed(Reflex instance) {
+        super(instance, CheckType.SPEED, RCheckType.TRIGGER);
     }
 
     private double calculateMaxSpeed(Player p, Location from, Location to) {
-        ReflexPlayer rp = Reflex.getInstance().getCache().getReflexPlayer(p);
+        ReflexPlayer rp = getPlayer(p);
 
         double speed = movementSpeed * (p.getWalkSpeed() / 0.2D);
 
@@ -112,7 +112,7 @@ public class CheckSpeed extends RTrigger {
     @EventHandler
     public void onVelocity(ReflexVelocityEvent e) {
         Player p = e.getPlayer();
-        ReflexPlayer rp = Reflex.getInstance().getCache().getReflexPlayer(p);
+        ReflexPlayer rp = getPlayer(p);
         double x = Math.abs(e.getX()) * 5.0D;
         double z = Math.abs(e.getZ()) * 5.0D;
         if (x + z > rp.getData().getHFreedom()) {
@@ -124,7 +124,7 @@ public class CheckSpeed extends RTrigger {
     public void onMove(PlayerMoveEvent e) {
         Player p = e.getPlayer();
         if (!e.isCancelled()) {
-            ReflexPlayer rp = Reflex.getInstance().getCache().getReflexPlayer(p);
+            ReflexPlayer rp = getPlayer(p);
             if (rp.getData().isOnGround(e.getTo())) {
                 rp.getData().setBhopDelay(0);
             }
@@ -142,7 +142,6 @@ public class CheckSpeed extends RTrigger {
 
 
                     if (speed > 0.0D) {
-                        //   p.sendMessage(ChatColor.DARK_RED + "FAIL - " + beforeSpeed + " > " + maxSpeed);
                         rp.addAlertVL(getCheckType());
                         if (rp.getAlertVL(getCheckType()) >= alertThreshold) {
                             if (fail(rp, (df.format(beforeSpeed)) + " m/s > " + df.format(maxSpeed) + " m/s").isCancelled()) {

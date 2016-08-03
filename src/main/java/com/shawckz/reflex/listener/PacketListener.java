@@ -16,9 +16,8 @@ import org.bukkit.entity.Player;
 
 public class PacketListener {
 
-    public PacketListener(Reflex instance) {
+    public PacketListener(final Reflex instance) {
         //AsyncMoveEvent
-
         instance.getProtocolManager().getAsynchronousManager().registerAsyncHandler(new PacketAdapter(instance, ListenerPriority.NORMAL, PacketType.Play.Client.POSITION, PacketType.Play.Client.POSITION_LOOK) {
             public void onPacketReceiving(PacketEvent event) {
                 if (event.getPacketType().equals(PacketType.Play.Client.POSITION) || event.getPacketType().equals(PacketType.Play.Client.POSITION_LOOK)) {
@@ -32,7 +31,6 @@ public class PacketListener {
                 }
             }
         }).start();
-
         //SwingEvent
         instance.getProtocolManager().addPacketListener(new PacketAdapter(instance, ListenerPriority.NORMAL, PacketType.Play.Client.ARM_ANIMATION) {
             public void onPacketReceiving(PacketEvent event) {
@@ -63,23 +61,7 @@ public class PacketListener {
                 }
             }
         });
-        /* FOR MINECRAFT 1.8, UNCOMMENT
-        instance.getProtocolManager().addPacketListener(new PacketAdapter(instance, ListenerPriority.NORMAL, PacketType.Play.Server.ENTITY_VELOCITY) {
-            public void onPacketSending(PacketEvent event) {
-                if (event.getPacketType().equals(PacketType.Play.Server.ENTITY_VELOCITY)) {
-                     double x = event.getPacket().getIntegers().getValues().get(1);
-                        double y = event.getPacket().getIntegers().getValues().get(2);
-                        double z = event.getPacket().getIntegers().getValues().get(3);
-
-                        x /= 8000.0D;
-                        y /= 8000.0D;
-                        z /= 8000.0D;
-
-                        //Call ReflexVelocityEvent
-                }
-            }
-        });
-        */
+        //VelocityEvent
         instance.getProtocolManager().addPacketListener(new PacketAdapter(instance, ListenerPriority.NORMAL, PacketType.Play.Server.EXPLOSION) {
             public void onPacketSending(PacketEvent event) {
                 if (event.getPacketType().equals(PacketType.Play.Server.EXPLOSION)) {
@@ -92,7 +74,8 @@ public class PacketListener {
                 }
             }
         });
-        instance.getProtocolManager().addPacketListener(new PacketAdapter(Reflex.getInstance(), ListenerPriority.NORMAL,
+        //LookEvent
+        instance.getProtocolManager().addPacketListener(new PacketAdapter(instance, ListenerPriority.NORMAL,
                 PacketType.Play.Client.LOOK) {
             @Override
             public void onPacketReceiving(PacketEvent event) {

@@ -24,9 +24,8 @@ import org.bukkit.event.player.PlayerInteractEvent;
 @Setter
 public class CaptureAutoClick extends RDataCapture {
 
-
-    public CaptureAutoClick() {
-        super(CheckType.AUTO_CLICK, RCheckType.DATA);
+    public CaptureAutoClick(Reflex instance) {
+        super(instance, CheckType.AUTO_CLICK, RCheckType.DATA);
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
@@ -34,7 +33,7 @@ public class CaptureAutoClick extends RDataCapture {
         if (!isCapturing(e.getPlayer())) return;
         Player pl = e.getPlayer();
         if (e.getAction() == Action.LEFT_CLICK_AIR || e.getAction() == Action.LEFT_CLICK_BLOCK) {
-            ReflexPlayer p = Reflex.getInstance().getCache().getReflexPlayer(pl);
+            ReflexPlayer p = getPlayer(pl);
             updateCps(p, 1);//Add 1 to their most recent CPS
         }
     }
@@ -44,7 +43,7 @@ public class CaptureAutoClick extends RDataCapture {
         if (e.isCancelled()) return;
         if (!isCapturing(e.getPlayer())) return;
         Player pl = e.getPlayer();
-        ReflexPlayer p = Reflex.getInstance().getCache().getReflexPlayer(pl);
+        ReflexPlayer p = getPlayer(pl);
         updateCps(p, -0.5D);
     }
 

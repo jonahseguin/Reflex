@@ -6,4 +6,6 @@ package com.shawckz.reflex.check.trigger.triggers;
 
 public class TriggerJesus {
 
+    // TODO
+
 }

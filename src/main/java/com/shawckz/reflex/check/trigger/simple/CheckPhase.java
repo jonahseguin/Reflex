@@ -38,8 +38,8 @@ public class CheckPhase extends RTrigger {
     @ConfigData("translucent-materials")
     private List<Material> translucentMaterials = Lists.newArrayList();
 
-    public CheckPhase() {
-        super(CheckType.PHASE, RCheckType.TRIGGER);
+    public CheckPhase(Reflex instance) {
+        super(instance, CheckType.PHASE, RCheckType.TRIGGER);
     }
 
     public void addToList(Material mat) {
@@ -75,7 +75,7 @@ public class CheckPhase extends RTrigger {
         double middle = -1;
 
         Player p = e.getPlayer();
-        ReflexPlayer rp = Reflex.getInstance().getCache().getReflexPlayer(p);
+        ReflexPlayer rp = getPlayer(p);
 
         switch (gate.getFacing()) {
             case NORTH:

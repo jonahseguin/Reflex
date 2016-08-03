@@ -34,14 +34,11 @@ public class TriggerAura extends RTrigger {
     @ConfigData("maximum-yaw-offset")
     private double maxYawOffset = 30.0D;
 
-    @ConfigData("minimum-fails")
-    private int minFails = 6;
-
     @ConfigData("pass-vl-penalty")
     private int passPenalty = 2;
 
-    public TriggerAura() {
-        super(CheckType.AURA, RCheckType.TRIGGER);
+    public TriggerAura(Reflex instance) {
+        super(instance, CheckType.AURA, RCheckType.TRIGGER);
     }
 
     @EventHandler
@@ -50,7 +47,7 @@ public class TriggerAura extends RTrigger {
             @Override
             public void run() {
                 Player p = e.getPlayer();
-                ReflexPlayer rp = Reflex.getInstance().getCache().getReflexPlayer(p);
+                ReflexPlayer rp = getPlayer(p);
 
                 if (rp.getData().getTarget() != null && rp.getData().getTarget().getWorld().equals(p.getWorld()) &&
                         rp.getData().getTarget().getLocation().distance(p.getLocation()) < maxTargetDistance) {
@@ -59,12 +56,9 @@ public class TriggerAura extends RTrigger {
                     double difference = Math.abs(aimValue - yawValue);
 
                     if (difference > maxYawOffset) {//Is looking > X yaw away from target
-                        rp.addAlertVL(getCheckType());
-                        if (rp.getAlertVL(getCheckType()) >= minFails) {
-                            triggerLater(rp, result -> {
-                            });
-                            rp.setAlertVL(getCheckType(), 0);
-                        }
+                        triggerLater(rp, result -> {
+
+                        });
                     }
                     else {
                         rp.modifyAlertVL(getCheckType(), (passPenalty * -1));
@@ -72,7 +66,7 @@ public class TriggerAura extends RTrigger {
 
                 }
             }
-        }.runTaskAsynchronously(Reflex.getInstance());
+        }.runTaskAsynchronously(getReflex());
     }
 
 
@@ -82,7 +76,7 @@ public class TriggerAura extends RTrigger {
             Player p = (Player) e.getDamager();
             Player target = (Player) e.getEntity();
 
-            ReflexPlayer rp = Reflex.getInstance().getCache().getReflexPlayer(p);
+            ReflexPlayer rp = getPlayer(p);
 
             rp.getData().setLastTarget(rp.getData().getLastTarget());
             rp.getData().setTarget(target);

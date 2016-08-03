@@ -31,8 +31,8 @@ import org.bukkit.scheduler.BukkitRunnable;
  */
 public abstract class AbstractCache implements Listener {
 
-    private final ConcurrentMap<String, ReflexPlayer> players = new ConcurrentHashMap<>();
-    private final ConcurrentMap<String, ReflexPlayer> playersUUID = new ConcurrentHashMap<>();
+    private final ConcurrentMap<String, ReflexPlayer> players = new ConcurrentHashMap<>(); // Player username as key
+    private final ConcurrentMap<String, ReflexPlayer> playersUUID = new ConcurrentHashMap<>(); // Player UniqueID as key
     private final Set<Player> onlinePlayers = new HashSet<>();
     private final Plugin plugin;
     private final Class<? extends ReflexPlayer> aClass;
@@ -76,12 +76,12 @@ public abstract class AbstractCache implements Listener {
         }
     }
 
-    protected ReflexPlayer getBasePlayerByUUID(String uuid) {
+    protected ReflexPlayer getBasePlayerByUniqueId(String uuid) {
         if (playersUUID.containsKey(uuid)) {
             return playersUUID.get(uuid);
         }
         else {
-            ReflexPlayer cp = loadReflexPlayerById(uuid);
+            ReflexPlayer cp = loadReflexPlayerByUniqueId(uuid);
             if (cp != null) {
                 put(cp);
                 return cp;
@@ -104,7 +104,7 @@ public abstract class AbstractCache implements Listener {
         return null;
     }
 
-    public ReflexPlayer loadReflexPlayerById(String id) {
+    public ReflexPlayer loadReflexPlayerByUniqueId(String id) {
         final String key = "uuid"; //Matching the field in ReflexPlayer
         List<AutoMongo> autoMongos = ReflexPlayer.select(new Document(key, id), aClass);
         for (AutoMongo mongo : autoMongos) {

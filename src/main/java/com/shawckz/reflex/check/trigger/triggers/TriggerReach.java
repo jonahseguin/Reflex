@@ -26,8 +26,8 @@ public class TriggerReach extends RTrigger {
     @ConfigData("capture-time")
     private int captureTime = 10;
 
-    public TriggerReach() {
-        super(CheckType.REACH, RCheckType.TRIGGER);
+    public TriggerReach(Reflex instance) {
+        super(instance, CheckType.REACH, RCheckType.TRIGGER);
     }
 
     @EventHandler
@@ -40,7 +40,7 @@ public class TriggerReach extends RTrigger {
                 double distance = p.getLocation().distance(d.getLocation());
 
                 if (distance > maxDistance) {
-                    triggerLater(Reflex.getInstance().getCache().getReflexPlayer(d), result -> {
+                    triggerLater(getPlayer(d), result -> {
 
                     });
                 }

@@ -16,6 +16,7 @@ import org.apache.commons.lang.StringUtils;
 public enum CheckType {
 
     /* DONE */
+    PLAYER_DATA("PlayerData", false, null),
     VCLIP("VClip", true, DataVClip.class),
     AUTO_CLICK("AutoClick", true, DataAutoClick.class),
     REGEN(true, DataRegen.class),

@@ -26,8 +26,8 @@ public class CaptureRegen extends RDataCapture implements RTimer {
     @ConfigData("cancel-threshold")
     private int cancelThreshold = 2;
 
-    public CaptureRegen() {
-        super(CheckType.REGEN, RCheckType.DATA);
+    public CaptureRegen(Reflex instance) {
+        super(instance, CheckType.REGEN, RCheckType.DATA);
     }
 
     @EventHandler
@@ -36,7 +36,7 @@ public class CaptureRegen extends RDataCapture implements RTimer {
             Player pl = (Player) e.getEntity();
             if (e.getRegainReason() == EntityRegainHealthEvent.RegainReason.SATIATED) {
                 if (!isCapturing(pl)) return;
-                ReflexPlayer p = Reflex.getInstance().getCache().getReflexPlayer(pl);
+                ReflexPlayer p = getPlayer(pl);
                 getData(p).setHealthRegenerated(getData(p).getHealthRegenerated() + e.getAmount());
                 if (getData(p).getHealthRegenerated() >= cancelThreshold) {
                     e.setCancelled(true);

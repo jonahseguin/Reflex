@@ -11,7 +11,6 @@ import com.shawckz.reflex.check.base.RCheckType;
 import com.shawckz.reflex.check.trigger.RTrigger;
 import com.shawckz.reflex.event.internal.ReflexUseEntityEvent;
 import com.shawckz.reflex.player.reflex.ReflexPlayer;
-import com.shawckz.reflex.util.obj.TrigUtils;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -40,28 +39,24 @@ public class CheckAccuracy extends RTrigger {
     @ConfigData("fail-threshold")
     private int failThreshold = 2;
 
-    @ConfigData("max-target-distance")
-    private double maxTargetDistance = 4.5D;
-
     @ConfigData("max-yaw-offset")
     private double maxYawOffset = 30.0D;
 
     //last hit time, last miss time, total hits, total misses, consecutive hits (hits in a row), consecutive misses (misses in a row), lastTarget
 
-    public CheckAccuracy() {
-        super(CheckType.ACCURACY, RCheckType.TRIGGER);
+    public CheckAccuracy(Reflex instance) {
+        super(instance, CheckType.ACCURACY, RCheckType.TRIGGER);
     }
 
     @EventHandler
     public void onUseEntity(ReflexUseEntityEvent e) {
         Player p = e.getPlayer();
-        ReflexPlayer rp = Reflex.getInstance().getCache().getReflexPlayer(p);
+        ReflexPlayer rp = getPlayer(p);
 
         if (rp.getData().getTarget() != null && rp.getData().getTarget().getWorld().equals(p.getWorld()) &&
-                rp.getData().getTarget().getLocation().distance(p.getLocation()) < maxTargetDistance) {
-            double aimValue = Math.abs(TrigUtils.getDirection(p.getLocation(), rp.getData().getTarget().getLocation()));
-            double yawValue = Math.abs(TrigUtils.wrapAngleTo180(p.getLocation().getYaw()));
-            double difference = Math.abs(aimValue - yawValue);
+                rp.getData().getTarget().getLocation().distance(p.getLocation()) < 4.5D) { //Make configurable?
+
+            double difference = rp.getData().getAimOffset();
 
             if (difference <= maxYawOffset) {//Looking at target
                 rp.getData().setHits(rp.getData().getHits() + 1);
@@ -114,7 +109,7 @@ public class CheckAccuracy extends RTrigger {
         if (e.getEntity() instanceof Player && e.getDamager() instanceof Player) {
             Player p = (Player) e.getEntity();
             Player d = (Player) e.getDamager();
-            ReflexPlayer rp = Reflex.getInstance().getCache().getReflexPlayer(d);
+            ReflexPlayer rp = getPlayer(d);
             if (!rp.getData().getLastTarget().equals(p)) {
                 rp.getData().setConsecutiveHits(0);
                 rp.getData().setConsecutiveMisses(0);
@@ -126,9 +121,9 @@ public class CheckAccuracy extends RTrigger {
     }
 
     private void miss(ReflexPlayer rp) {
-        rp.getData().setMisses(rp.getData().getMisses() + 1);
+        rp.getData().misses += 1;
         rp.getData().setConsecutiveHits(0);
-        rp.getData().setConsecutiveMisses(rp.getData().getConsecutiveMisses() + 1);
+        rp.getData().consecutiveMisses += 1;
     }
 
     @Override

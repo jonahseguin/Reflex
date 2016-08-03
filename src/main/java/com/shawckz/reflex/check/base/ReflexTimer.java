@@ -12,7 +12,6 @@ import com.shawckz.reflex.util.obj.Lag;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_7_R4.entity.CraftPlayer;
 
 /**
@@ -24,9 +23,11 @@ import org.bukkit.craftbukkit.v1_7_R4.entity.CraftPlayer;
 public class ReflexTimer implements Runnable {
 
     private final Set<RTimer> timers = new HashSet<>();
+    private final Reflex instance;
 
     public ReflexTimer(Reflex instance) {
-        Bukkit.getServer().getScheduler().runTaskTimerAsynchronously(instance, this, 20L, 20L);
+        this.instance = instance;
+        instance.getServer().getScheduler().runTaskTimerAsynchronously(instance, this, 20L, 20L);
     }
 
     public void registerTimer(RTimer timer) {
@@ -51,6 +52,14 @@ public class ReflexTimer implements Runnable {
      *  ** ASYNC **
      */
     public void run() {
+        //Update ping and lag before doing timer checks
+        Reflex.getReflexPlayers().forEach(reflexPlayer -> {
+            reflexPlayer.getData().setTps(Lag.getTPS());
+            reflexPlayer.getData().setPing(((CraftPlayer) reflexPlayer.getBukkitPlayer()).getHandle().ping);
+            for (RDataCapture check : instance.getDataCaptureManager().getDataCaptures().values()) {
+                updatePingAndLag(instance.getCache().getReflexPlayer(reflexPlayer.getBukkitPlayer()), check);
+            }
+        });
         for (RTimer timer : timers) {
             if (timer instanceof Check) {
                 Check check = (Check) timer;
@@ -62,13 +71,6 @@ public class ReflexTimer implements Runnable {
                 timer.runTimer();
             }
         }
-        Reflex.getReflexPlayers().forEach(reflexPlayer -> {
-            reflexPlayer.getData().setTps(Lag.getTPS());
-            reflexPlayer.getData().setPing(((CraftPlayer) reflexPlayer.getBukkitPlayer()).getHandle().ping);
-            for (RDataCapture check : Reflex.getInstance().getDataCaptureManager().getDataCaptures().values()) {
-                updatePingAndLag(Reflex.getInstance().getCache().getReflexPlayer(reflexPlayer.getBukkitPlayer()), check);
-            }
-        });
     }
 
     private void updatePingAndLag(ReflexPlayer player, RDataCapture check) {

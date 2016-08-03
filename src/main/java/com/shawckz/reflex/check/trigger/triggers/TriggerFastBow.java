@@ -36,14 +36,14 @@ public class TriggerFastBow extends RTrigger {
     @ConfigData("capture-time")
     private int captureTime = 15;
 
-    public TriggerFastBow() {
-        super(CheckType.FAST_BOW, RCheckType.TRIGGER);
+    public TriggerFastBow(Reflex instance) {
+        super(instance, CheckType.FAST_BOW, RCheckType.TRIGGER);
     }
 
     @EventHandler
     public void onPull(PlayerInteractEvent e) {
         Player pl = e.getPlayer();
-        ReflexPlayer p = Reflex.getInstance().getCache().getReflexPlayer(pl);
+        ReflexPlayer p = getPlayer(pl);
         if (pl.getItemInHand() != null) {
             if (pl.getItemInHand().getType() == Material.BOW) {
                 p.getData().setBowPull(System.currentTimeMillis());
@@ -58,7 +58,7 @@ public class TriggerFastBow extends RTrigger {
             if (arrow.getShooter() != null) {
                 if (arrow.getShooter() instanceof Player) {
                     Player pl = (Player) arrow.getShooter();
-                    ReflexPlayer p = Reflex.getInstance().getCache().getReflexPlayer(pl);
+                    ReflexPlayer p = getPlayer(pl);
                     p.getData().setBowShoot(System.currentTimeMillis());
                     p.getData().setBowPower(e.getEntity().getVelocity().length());
                     if (check(p)) {
@@ -86,14 +86,14 @@ public class TriggerFastBow extends RTrigger {
     @EventHandler
     public void onSwap(PlayerItemHeldEvent e) {
         Player pl = e.getPlayer();
-        ReflexPlayer p = Reflex.getInstance().getCache().getReflexPlayer(pl);
+        ReflexPlayer p = getPlayer(pl);
         reset(p);
     }
 
     @EventHandler
     public void onDrop(PlayerDropItemEvent e) {
         Player pl = e.getPlayer();
-        ReflexPlayer p = Reflex.getInstance().getCache().getReflexPlayer(pl);
+        ReflexPlayer p = getPlayer(pl);
         reset(p);
     }
 

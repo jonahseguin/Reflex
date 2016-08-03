@@ -6,7 +6,6 @@ package com.shawckz.reflex.check.data;
 
 
 import com.shawckz.reflex.backend.database.mongo.annotations.CollectionName;
-import com.shawckz.reflex.backend.database.mongo.annotations.MongoColumn;
 import com.shawckz.reflex.util.obj.TrigUtils;
 import com.shawckz.reflex.util.utility.ReflexException;
 import lombok.Getter;
@@ -30,125 +29,70 @@ import org.bukkit.entity.Player;
 @CollectionName(name = "reflex_checkdata")
 public class PlayerData extends CheckData {
 
-    /**
-     * AutoClick
-     */
-    @MongoColumn(name = "clicksPerSecond")
-    private double[] clicksPerSecond = {0, 0, 0, 0};
 
-    /**
-     * Speed
-     */
-    @MongoColumn(name = "blocksPerSecond")
-    private double blocksPerSecond = 0;
+    public double aimValue = 0;
+    public double aimYawValue = 0;
+    public double aimOffset = 0;
 
-    private double hFreedom = 0;
+    public double[] clicksPerSecond = {0, 0, 0, 0};
 
-    private int bhopDelay = 0;
+    public double blocksPerSecond = 0;
+    public double hFreedom = 0;
+    public int bhopDelay = 0;
 
-    /**
-     * NoSwing
-     */
-    @MongoColumn(name = "hasSwung")
-    private boolean hasSwung = false;
+    public boolean hasSwung = false;
 
-    /**
-     * BedFly
-     */
-    @MongoColumn(name = "enteredBed")
-    private boolean enteredBed = false;
+    public boolean enteredBed = false;
+    public long bowPull = 0;
+    public long bowShoot = 0;
+    public double bowPower = 0;
+    public double healthPerSecond = 0;
 
-    /**
-     * FastBow
-     */
-    @MongoColumn(name = "bowPull")
-    private long bowPull = 0;
-    @MongoColumn(name = "bowShoot")
-    private long bowShoot = 0;
-    @MongoColumn(name = "bowPower")
-    private double bowPower = 0;
+    public boolean jumping = false;
 
-    /**
-     * Regen
-     */
-    @MongoColumn(name = "healthPerSecond")
-    private double healthPerSecond = 0;
+    public boolean triedVClip = false;
+    public int vclipY = -1;
+    public Location lastVClipLocation = null;
 
-    /**
-     * HighJump
-     */
-    @MongoColumn(name = "jumping")
-    private boolean jumping = false;
+    public XrayStats xrayStats = new XrayStats();
 
-    /**
-     * VClip
-     */
+    public long lastGroundtime = -1;
+    public boolean hasPositiveVelocity = false;
+    public double fallingVelocity = -1D;
+    public double fallingVelocityY = -1D;
+    public double lastFallingVelocity = -1D;
+    public double lastFallingVelocityY = -1D;
 
-    private boolean triedVClip = false;
-    private int vclipY = -1;
-    private Location lastVClipLocation = null;
+    public boolean triedPhase = false;
+    public int phaseY = -1;
+    public Location lastPhaseLocation = null;
+    public long lastPhaseTime = -1;
+    public int linkedPhaseAttempts = 0;
 
-    /**
-     * Xray
-     */
-    private XrayStats xrayStats = new XrayStats();
+    public int hits = 0;
+    public int misses = 0;
+    public long lastHitTime = -1;
+    public long lastMissTime = -1;
+    public int consecutiveHits = 0;
+    public int consecutiveMisses = 0;
 
-    /**
-     * Fly
-     */
-    private long lastGroundtime = -1;
-    private boolean hasPositiveVelocity = false;
-    private double fallingVelocity = -1D;
-    private double fallingVelocityY = -1D;
-    private double lastFallingVelocity = -1D;
-    private double lastFallingVelocityY = -1D;
-    /**
-     * Phase
-     */
-    private boolean triedPhase = false;
-    private int phaseY = -1;
-    private Location lastPhaseLocation = null;
-    private long lastPhaseTime = -1;
-    private int linkedPhaseAttempts = 0;
-    /**
-     * Accuracy
-     */
-    private int hits = 0;
-    private int misses = 0;
-    private long lastHitTime = -1;
-    private long lastMissTime = -1;
-    private int consecutiveHits = 0;
-    private int consecutiveMisses = 0;
-    /**
-     * MorePackets
-     */
-    private int packets = 0;
-    /**
-     * Aura
-     */
-    private Player target = null;
-    private Player lastTarget = null;
-    /**
-     * Aura Twitch
-     */
-    private float lastYaw = -1;
-    /**
-     * Criticals
-     */
-    private double consecutiveCriticalHits = 0;
-    private double lastCriticalY = -1;
-    private double totalCriticalY = 0;
-    /**
-     * Smooth Aim
-     */
-    private float aimSpeed = 0F;
-    private float lastAimSpeed = 0F;
-    /**
-     * Triggerbot
-     */
-    private long trigLastCheck = -1L;
-    private double cpsOn = 0;
-    private double cpsOff = 0;
+    public int packets = 0;
+
+    public Player target = null;
+    public Player lastTarget = null;
+
+    public float lastYaw = -1;
+
+    public double consecutiveCriticalHits = 0;
+    public double lastCriticalY = -1;
+    public double totalCriticalY = 0;
+
+    public float aimSpeed = 0F;
+    public float lastAimSpeed = 0F;
+
+    public long trigLastCheck = -1L;
+    public double cpsOn = 0;
+    public double cpsOff = 0;
 
     public void updateFallingVelocity(double x, double y, double z) {
         this.lastFallingVelocity = this.fallingVelocity;
@@ -165,10 +109,6 @@ public class PlayerData extends CheckData {
             this.lastFallingVelocity = this.fallingVelocity;
         }
     }
-
-    /**
-     * Util methods
-     */
 
     public boolean underBlock(Location location) {
         for (Location loc : getLocationsAround(location)) {
@@ -246,7 +186,7 @@ public class PlayerData extends CheckData {
         return playerData;
     }
 
-    private void load(Map<Field, Object> data) {
+    public void load(Map<Field, Object> data) {
         try {
             for (Field f : data.keySet()) {
                 Field lf = this.getClass().getDeclaredField(f.getName());

@@ -39,8 +39,8 @@ public class TriggerCriticals extends RTrigger {
     @ConfigData("max-total-y")
     private double maxTotalY = 20.0D;
 
-    public TriggerCriticals() {
-        super(CheckType.CRITICALS, RCheckType.TRIGGER);
+    public TriggerCriticals(Reflex instance) {
+        super(instance, CheckType.CRITICALS, RCheckType.TRIGGER);
     }
 
     private boolean canCrit(Player player) {
@@ -62,7 +62,7 @@ public class TriggerCriticals extends RTrigger {
         if (e.isCancelled()) return;
         if (e.getDamager() instanceof Player) {
             Player p = (Player) e.getDamager();
-            ReflexPlayer rp = Reflex.getInstance().getCache().getReflexPlayer(p);
+            ReflexPlayer rp = getPlayer(p);
             if (canCrit(p)) {
                 //Was critical hit
                 rp.getData().setConsecutiveCriticalHits(rp.getData().getConsecutiveCriticalHits() + 1);
@@ -96,7 +96,7 @@ public class TriggerCriticals extends RTrigger {
         if (e.isCancelled()) return;
         if (e.getTo().getY() == e.getFrom().getY()) return;
         Player p = e.getPlayer();
-        ReflexPlayer rp = Reflex.getInstance().getCache().getReflexPlayer(p);
+        ReflexPlayer rp = getPlayer(p);
 
         rp.getData().setTotalCriticalY(rp.getData().getTotalCriticalY() + (e.getTo().getY() > e.getFrom().getY() ? e.getTo().getY() - e.getFrom().getY() : e.getFrom().getY() - e.getTo().getY()));
     }

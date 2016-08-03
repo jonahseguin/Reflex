@@ -24,15 +24,15 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public class InspectManager {
 
-    private ConcurrentMap<CheckType, RInspect> inspectors = new ConcurrentHashMap<>();
+    private final ConcurrentMap<CheckType, RInspect> inspectors = new ConcurrentHashMap<>();
+    private final Reflex instance;
+
 
     public InspectManager(Reflex instance) {
-
+        this.instance = instance;
     }
 
     public void setup() {
-        //TODO: Register inspectors
-
         register(new InspectAutoClick());
         register(new InspectFastBow());
         register(new InspectVClip());
@@ -65,7 +65,7 @@ public class InspectManager {
         RInspectResultType resultType = resultData.getType();
         RViolation violation = null;
         Alert alert = null;
-        if (resultType == RInspectResultType.FAILED && !Reflex.getInstance().getAutobanManager().hasAutoban(player.getName())) {
+        if (resultType == RInspectResultType.FAILED && !instance.getAutobanManager().hasAutoban(player.getName())) {
             //Only make a violation if they FAIL the inspection - also alert
             player.addVL(inspector.getCheckType());
             violation = new RViolation(player.getUniqueId(), data, checkType, RCheckType.INSPECT, player.getVL(inspector.getCheckType()));
@@ -84,12 +84,12 @@ public class InspectManager {
                 }
             }
         }
-        else if (resultType == RInspectResultType.FAILED && Reflex.getInstance().getAutobanManager().hasAutoban(player.getName())) {
+        else if (resultType == RInspectResultType.FAILED && instance.getAutobanManager().hasAutoban(player.getName())) {
             throw new ReflexException("Should not fail check while having an autoban");
         }
         else if (resultType == RInspectResultType.PASSED) {
             violation = new RViolation(player.getUniqueId(), data, checkType, RCheckType.INSPECT, player.getVL(inspector.getCheckType()));
-            Reflex.getInstance().getViolationCache().cacheViolation(violation);
+            instance.getViolationCache().cacheViolation(violation);
 
             if (checkType.isCapture()) {
                 alert = new Alert(player, checkType, resultType.translateToAlertType(), violation, player.getVL(inspector.getCheckType()));
@@ -123,7 +123,7 @@ public class InspectManager {
                 result.update();
                 finalViolation.update();
             }
-        }.runTaskAsynchronously(Reflex.getInstance());
+        }.runTaskAsynchronously(instance);
         return result;
     }
 
@@ -132,7 +132,7 @@ public class InspectManager {
         inspect.setEnabled(inspect.isEnabled());
         if (inspect instanceof RTimer) {
             RTimer timer = (RTimer) inspect;
-            Reflex.getInstance().getReflexTimer().registerTimer(timer);
+            instance.getReflexTimer().registerTimer(timer);
         }
     }
 

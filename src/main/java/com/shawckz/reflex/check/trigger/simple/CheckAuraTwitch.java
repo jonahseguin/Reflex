@@ -30,14 +30,14 @@ public class CheckAuraTwitch extends RTrigger {
     @ConfigData("max-yaw-offset")
     private double maxYawOffset = 30.0D;
 
-    public CheckAuraTwitch() {
-        super(CheckType.AURA_TWITCH, RCheckType.TRIGGER);
+    public CheckAuraTwitch(Reflex instance) {
+        super(instance, CheckType.AURA_TWITCH, RCheckType.TRIGGER);
     }
 
     @EventHandler
     public void onUseEntity(ReflexUseEntityEvent e) {
         Player p = e.getPlayer();
-        ReflexPlayer rp = Reflex.getInstance().getCache().getReflexPlayer(p);
+        ReflexPlayer rp = getPlayer(p);
 
         if (rp.getData().getTarget() != null && rp.getData().getTarget().getWorld().equals(p.getWorld())) {
             double distance = rp.getData().getTarget().getLocation().distance(p.getLocation());

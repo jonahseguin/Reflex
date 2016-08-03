@@ -40,21 +40,21 @@ public abstract class RTrigger extends Check {
     @ConfigData("simple-check-autoban-vl")
     private int simpleAutobanVL = 3;
 
-    public RTrigger(CheckType checkType, RCheckType rCheckType) {
-        super(checkType, rCheckType);
+    public RTrigger(Reflex instance, CheckType checkType, RCheckType rCheckType) {
+        super(instance, checkType, rCheckType);
     }
 
     public final boolean triggerLater(ReflexPlayer player, ReflexCaller<RTriggerResult> result) {
         ReflexTriggerEvent triggerEvent = new ReflexTriggerEvent(this, player, getCheckType());
         Bukkit.getServer().getPluginManager().callEvent(triggerEvent);
         if (!triggerEvent.isCancelled()) {
-            ReflexCancelEvent cancelEvent = new ReflexCancelEvent(this, getCheckType(), getrCheckType(), this.cancel);
+            ReflexCancelEvent cancelEvent = new ReflexCancelEvent(this, getCheckType(), getRCheckType(), this.cancel);
             Bukkit.getServer().getPluginManager().callEvent(cancelEvent);
             final boolean cancel = cancelEvent.isShouldCancel();
 
             if (getCheckType().isCapture()) {
                 if (!player.getCapturePlayer().isCapturing(getCheckType())) {
-                    if (!Reflex.getInstance().getAutobanManager().hasAutoban(player.getName())) {
+                    if (!getReflex().getAutobanManager().hasAutoban(player.getName())) {
 
                         //Add a violation level (even if they pass - to make that they failed a trigger)
                         player.addVL(getCheckType());
@@ -62,8 +62,8 @@ public abstract class RTrigger extends Check {
                         Alert alert = new Alert(player, getCheckType(), Alert.Type.TRIGGER, null, -1);
                         alert.sendAlert();
 
-                        Reflex.getInstance().getDataCaptureManager().startCaptureTask(player, getCheckType(), getCaptureTime(), checkData -> {
-                            RInspectResult inspectResult = Reflex.getInstance().getInspectManager().inspect(player, getCheckType(), checkData, getCaptureTime());
+                        getReflex().getDataCaptureManager().startCaptureTask(player, getCheckType(), getCaptureTime(), checkData -> {
+                            RInspectResult inspectResult = getReflex().getInspectManager().inspect(player, getCheckType(), checkData, getCaptureTime());
                             handleInspect(player, inspectResult, true);
 
                             result.call(new RTriggerResult(cancel && inspectResult.getData().getType() == RInspectResultType.FAILED, cancel));
@@ -86,8 +86,8 @@ public abstract class RTrigger extends Check {
             ReflexTriggerEvent triggerEvent = new ReflexTriggerEvent(this, player, getCheckType());
             Bukkit.getServer().getPluginManager().callEvent(triggerEvent);
             if (!triggerEvent.isCancelled()) {
-                if (!Reflex.getInstance().getAutobanManager().hasAutoban(player.getName())) {
-                    RInspectResult inspectResult = Reflex.getInstance().getInspectManager().inspect(player, getCheckType(), player.getData().copy(), 1);
+                if (!getReflex().getAutobanManager().hasAutoban(player.getName())) {
+                    RInspectResult inspectResult = getReflex().getInspectManager().inspect(player, getCheckType(), player.getData().copy(), 1);
                     handleInspect(player, inspectResult, false);
                     return new RTriggerResult(this.cancel && inspectResult.getData().getType() == RInspectResultType.FAILED, this.cancel);
                 }
@@ -111,15 +111,15 @@ public abstract class RTrigger extends Check {
         if (capture) {
             //Was probably sure about the result, ---> ban
             if (autoban && inspectResult.getData().getType() == RInspectResultType.FAILED) {
-                if (!Reflex.getInstance().getAutobanManager().hasAutoban(player.getName())) {
-                    Autoban autoban = new Autoban(player, Reflex.getInstance().getReflexConfig().getAutobanTime(), getCheckType(), inspectResult.getViolation());
-                    Reflex.getInstance().getAutobanManager().putAutoban(autoban);
+                if (!getReflex().getAutobanManager().hasAutoban(player.getName())) {
+                    Autoban autoban = new Autoban(player, getReflex().getReflexConfig().getAutobanTime(), getCheckType(), inspectResult.getViolation());
+                    getReflex().getAutobanManager().putAutoban(autoban);
                     autoban.run();
                 }
             }
         }
         else {
-            int vl = Reflex.getInstance().getInspectManager().getInspector(getCheckType()).getAutobanVL();
+            int vl = getReflex().getInspectManager().getInspector(getCheckType()).getAutobanVL();
 
             if (player.getVL(getCheckType()) > vl) {
                 vl *= 2;
@@ -127,10 +127,10 @@ public abstract class RTrigger extends Check {
 
             if (player.getVL(getCheckType()) >= vl) {
                 if (autoban) {
-                    if (!Reflex.getInstance().getAutobanManager().hasAutoban(player.getName())) {
+                    if (!getReflex().getAutobanManager().hasAutoban(player.getName())) {
                         //Only if they aren't already being autobanned...
-                        Autoban autoban = new Autoban(player, Reflex.getInstance().getReflexConfig().getAutobanTime(), getCheckType(), inspectResult.getViolation());
-                        Reflex.getInstance().getAutobanManager().putAutoban(autoban);
+                        Autoban autoban = new Autoban(player, getReflex().getReflexConfig().getAutobanTime(), getCheckType(), inspectResult.getViolation());
+                        getReflex().getAutobanManager().putAutoban(autoban);
                         autoban.run();
                     }
                 }
@@ -139,7 +139,7 @@ public abstract class RTrigger extends Check {
     }
 
     public SimpleCheckResult fail(ReflexPlayer player, String... detail) {
-        if (player.getCapturePlayer().isCapturing(getCheckType()) || Reflex.getInstance().getAutobanManager().hasAutoban(player.getName())) {
+        if (player.getCapturePlayer().isCapturing(getCheckType()) || getReflex().getAutobanManager().hasAutoban(player.getName())) {
             //No failures (for this check) if capturing data (for this check)..
             return new SimpleCheckResult(false, null);
         }
@@ -152,9 +152,9 @@ public abstract class RTrigger extends Check {
         player.addVL(getCheckType());
 
         RViolation violation = new RViolation(player.getUniqueId(), player.getData().copy(), getCheckType(), RCheckType.TRIGGER, player.getVL(getCheckType()));
-        Reflex.getInstance().getViolationCache().saveViolation(violation);
+        getReflex().getViolationCache().saveViolation(violation);
 
-        if (!Reflex.getInstance().getAutobanManager().hasAutoban(player.getName())) {
+        if (!getReflex().getAutobanManager().hasAutoban(player.getName())) {
             Alert alert = new Alert(player, getCheckType(), Alert.Type.FAIL, violation, player.getVL(getCheckType()));
             if (d != null) {
                 alert.setDetail(d);
@@ -163,13 +163,13 @@ public abstract class RTrigger extends Check {
 
             //Assuming this is a simple check due to the fact that the method called was #fail
             if (player.getVL(getCheckType()) >= simpleAutobanVL && isAutoban()) {
-                Autoban autoban = new Autoban(player, Reflex.getInstance().getReflexConfig().getAutobanTime(), getCheckType(), violation);
-                Reflex.getInstance().getAutobanManager().putAutoban(autoban);
+                Autoban autoban = new Autoban(player, getReflex().getReflexConfig().getAutobanTime(), getCheckType(), violation);
+                getReflex().getAutobanManager().putAutoban(autoban);
                 autoban.run();
             }
         }
 
-        ReflexCancelEvent cancelEvent = new ReflexCancelEvent(this, getCheckType(), getrCheckType(), cancel);
+        ReflexCancelEvent cancelEvent = new ReflexCancelEvent(this, getCheckType(), getRCheckType(), cancel);
         Bukkit.getServer().getPluginManager().callEvent(cancelEvent);
         cancel = cancelEvent.isShouldCancel();
 

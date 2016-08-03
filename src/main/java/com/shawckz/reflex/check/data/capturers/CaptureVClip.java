@@ -28,8 +28,8 @@ import org.bukkit.event.player.PlayerMoveEvent;
 public class CaptureVClip extends RDataCapture {
 
 
-    public CaptureVClip() {
-        super(CheckType.VCLIP, RCheckType.DATA);
+    public CaptureVClip(Reflex instance) {
+        super(instance, CheckType.VCLIP, RCheckType.DATA);
     }
 
     @EventHandler(priority = EventPriority.HIGH)
@@ -42,7 +42,7 @@ public class CaptureVClip extends RDataCapture {
             return;
         }
         Player pl = e.getPlayer();
-        ReflexPlayer p = Reflex.getInstance().getCache().getReflexPlayer(pl);
+        ReflexPlayer p = getPlayer(pl);
         if (pl.getGameMode() == GameMode.CREATIVE) {
             return;
         }
@@ -90,7 +90,7 @@ public class CaptureVClip extends RDataCapture {
         }
         if (!isCapturing(e.getPlayer())) return;
         Player pl = e.getPlayer();
-        ReflexPlayer p = Reflex.getInstance().getCache().getReflexPlayer(pl);
+        ReflexPlayer p = getPlayer(pl);
         if ((e.getTo().getBlockX() == e.getFrom().getBlockX()) && (e.getTo().getBlockY() == e.getFrom().getBlockY()) && (e.getTo().getBlockZ() == e.getFrom().getBlockZ())) {
             return;
         }

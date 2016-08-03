@@ -31,8 +31,8 @@ public class TriggerRegen extends RTrigger implements RTimer {
     @ConfigData("capture-time")
     private int captureTime = 30;
 
-    public TriggerRegen() {
-        super(CheckType.REGEN, RCheckType.TRIGGER);
+    public TriggerRegen(Reflex instance) {
+        super(instance, CheckType.REGEN, RCheckType.TRIGGER);
     }
 
     @EventHandler
@@ -40,14 +40,13 @@ public class TriggerRegen extends RTrigger implements RTimer {
         if (e.getEntity() instanceof Player) {
             Player pl = (Player) e.getEntity();
             if (e.getRegainReason() == EntityRegainHealthEvent.RegainReason.SATIATED) {
-                ReflexPlayer p = Reflex.getInstance().getCache().getReflexPlayer(pl);
+                ReflexPlayer p = getPlayer(pl);
                 p.getData().setHealthPerSecond(p.getData().getHealthPerSecond() + e.getAmount());
-                /* -- Remove because too spammy
                 if(p.getData().getHealthPerSecond() >= threshold) {
-                    if(fail(p).isCancelled()) {
+                    if (this.isCancel()) {
                         e.setCancelled(true);
                     }
-                }*/
+                }
             }
         }
     }

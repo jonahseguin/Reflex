@@ -18,22 +18,23 @@ import org.bukkit.entity.Player;
 
 public class CheckTabComplete extends RTrigger {
 
+    public CheckTabComplete(Reflex instance) {
+        super(instance, CheckType.TAB_COMPLETE, RCheckType.TRIGGER);
 
-    public CheckTabComplete() {
-        super(CheckType.TAB_COMPLETE, RCheckType.TRIGGER);
-
-        Reflex.getInstance().getProtocolManager().addPacketListener(new PacketAdapter(Reflex.getInstance(), ListenerPriority.NORMAL,
+        instance.getProtocolManager().addPacketListener(new PacketAdapter(instance, ListenerPriority.NORMAL,
                 PacketType.Play.Client.TAB_COMPLETE) {
             @Override
             public void onPacketReceiving(PacketEvent event) {
                 if (!isEnabled()) return;
                 Player p = event.getPlayer();
-                ReflexPlayer ap = Reflex.getInstance().getCache().getReflexPlayer(p);
+                ReflexPlayer ap = getPlayer(p);
                 if (event.getPacketType() == PacketType.Play.Client.TAB_COMPLETE) {
                     String s = event.getPacket().getStrings().read(0);
                     if (s.length() <= 2) return;
                     if (s.startsWith(".") && !s.startsWith("./")) {
-                        fail(ap, s);
+                        if (fail(ap, s).isCancelled()) {
+                            event.setCancelled(true);
+                        }
                     }
                 }
             }

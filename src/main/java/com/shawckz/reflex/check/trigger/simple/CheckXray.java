@@ -38,8 +38,8 @@ public class CheckXray extends RTrigger {
     private Map<XrayStats.Stat, Double> max = new HashMap<>();
 
 
-    public CheckXray() {
-        super(CheckType.XRAY, RCheckType.TRIGGER);
+    public CheckXray(Reflex instance) {
+        super(instance, CheckType.XRAY, RCheckType.TRIGGER);
 
         for (XrayStats.Stat stat : XrayStats.Stat.values()) {
             if (!max.containsKey(stat)) {
@@ -53,13 +53,13 @@ public class CheckXray extends RTrigger {
             public void run() {
                 Reflex.getReflexPlayers().forEach(rp -> rp.getData().getXrayStats().reset());
             }
-        }.runTaskTimerAsynchronously(Reflex.getInstance(), 72000, 72000);
+        }.runTaskTimerAsynchronously(instance, 72000, 72000);
     }
 
     @EventHandler
     public void onBreak(BlockBreakEvent e) {
         Player p = e.getPlayer();
-        ReflexPlayer rp = Reflex.getInstance().getCache().getReflexPlayer(p);
+        ReflexPlayer rp = getPlayer(p);
         if (!isEnabled()) return;
 
         if (!e.getBlock().hasMetadata("ReflexXrayPlaced")) {
@@ -78,9 +78,9 @@ public class CheckXray extends RTrigger {
     @EventHandler
     public void onPlace(BlockPlaceEvent e) {
         Player p = e.getPlayer();
-        ReflexPlayer rp = Reflex.getInstance().getCache().getReflexPlayer(p);
+        ReflexPlayer rp = getPlayer(p);
         if (rp.getData().getXrayStats().isTracking(e.getBlock().getType())) {
-            e.getBlock().setMetadata("ReflexXrayPlaced", new FixedMetadataValue(Reflex.getInstance(), true));
+            e.getBlock().setMetadata("ReflexXrayPlaced", new FixedMetadataValue(getReflex(), true));
         }
     }
 

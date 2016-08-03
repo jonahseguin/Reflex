@@ -15,26 +15,25 @@ import com.shawckz.reflex.util.utility.ReflexCaller;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-import org.bukkit.Bukkit;
-
 public class DataCaptureManager {
 
+    private final Reflex instance;
     private ConcurrentMap<CheckType, RDataCapture> dataCaptures = new ConcurrentHashMap<>();
 
     public DataCaptureManager(Reflex instance) {
-
+        this.instance = instance;
     }
 
     public void setup() {
-        //TODO: Register
+        register(new CapturePlayerData(instance));
 
-        register(new CaptureAutoClick());
-        register(new CaptureVClip());
-        register(new CaptureRegen());
-        register(new CaptureReach());
-        register(new CaptureFly());
+        register(new CaptureAutoClick(instance));
+        register(new CaptureVClip(instance));
+        register(new CaptureRegen(instance));
+        register(new CaptureReach(instance));
+        register(new CaptureFly(instance));
 
-        dataCaptures.values().stream().forEach(RDataCapture::setupConfig);
+        dataCaptures.values().forEach(RDataCapture::setupConfig);
     }
 
     public ConcurrentMap<CheckType, RDataCapture> getDataCaptures() {
@@ -50,13 +49,13 @@ public class DataCaptureManager {
         dataCapture.setEnabled(dataCapture.isEnabled());
         if (dataCapture instanceof RTimer) {
             RTimer timer = (RTimer) dataCapture;
-            Reflex.getInstance().getReflexTimer().registerTimer(timer);
+            instance.getReflexTimer().registerTimer(timer);
         }
     }
 
     public void startCaptureTask(ReflexPlayer player, CheckType checkType, int captureTime, final ReflexCaller<CheckData> callback) {
         ReflexDataCaptureEvent dataCaptureEvent = new ReflexDataCaptureEvent(checkType, getDataCapture(checkType), player, captureTime);
-        Bukkit.getServer().getPluginManager().callEvent(dataCaptureEvent);
+        instance.getServer().getPluginManager().callEvent(dataCaptureEvent);
         if (!dataCaptureEvent.isCancelled()) {
             CaptureTask task = new CaptureTask(player, checkType, dataCaptureEvent.getCaptureTime()) {
                 @Override

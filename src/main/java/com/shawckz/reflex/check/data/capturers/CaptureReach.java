@@ -29,8 +29,8 @@ public class CaptureReach extends RDataCapture {
     @ConfigData("cancel-threshold")
     private int cancelThreshold = 2;
 
-    public CaptureReach() {
-        super(CheckType.REACH, RCheckType.DATA);
+    public CaptureReach(Reflex instance) {
+        super(instance, CheckType.REACH, RCheckType.DATA);
     }
 
     @EventHandler
@@ -46,7 +46,7 @@ public class CaptureReach extends RDataCapture {
                 int ping = ((CraftPlayer) d).getHandle().ping;
                 Bukkit.getLogger().info("(CAPTURE) " + d.getName() + " hit " + d.getName() + " from " + distance);
 
-                ReflexPlayer rd = Reflex.getInstance().getCache().getReflexPlayer(d);
+                ReflexPlayer rd = getPlayer(d);
 
                 getData(rd).getEntries().add(new AbstractMap.SimpleEntry<>(distance, ping));
 

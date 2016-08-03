@@ -28,14 +28,14 @@ public class CheckSmoothAim extends RTrigger implements RTimer {
     @ConfigData("minimum-aimspeed")
     private float minAimSpeed = 20F;
 
-    public CheckSmoothAim() {
-        super(CheckType.SMOOTH_AIM, RCheckType.TRIGGER);
+    public CheckSmoothAim(Reflex instance) {
+        super(instance, CheckType.SMOOTH_AIM, RCheckType.TRIGGER);
     }
 
     @EventHandler
     public void onMove(PlayerMoveEvent e) {
         Player p = e.getPlayer();
-        ReflexPlayer rp = Reflex.getInstance().getCache().getReflexPlayer(p);
+        ReflexPlayer rp = getPlayer(p);
 
         float aimSpeed = difference(e.getTo().getYaw(), e.getFrom().getYaw());
 

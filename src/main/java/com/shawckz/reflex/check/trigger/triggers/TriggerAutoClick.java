@@ -34,15 +34,15 @@ public class TriggerAutoClick extends RTrigger implements RTimer {
     @ConfigData("capture-time")
     private int captureTime = 15;
 
-    public TriggerAutoClick() {
-        super(CheckType.AUTO_CLICK, RCheckType.TRIGGER);
+    public TriggerAutoClick(Reflex instance) {
+        super(instance, CheckType.AUTO_CLICK, RCheckType.TRIGGER);
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onClick(PlayerInteractEvent e) {
         Player pl = e.getPlayer();
         if (e.getAction() == Action.LEFT_CLICK_AIR || e.getAction() == Action.LEFT_CLICK_BLOCK) {
-            ReflexPlayer p = Reflex.getInstance().getCache().getReflexPlayer(pl);
+            ReflexPlayer p = getPlayer(pl);
             updateCps(p, 1);//Add 1 to their most recent CPS
         }
     }
@@ -51,7 +51,7 @@ public class TriggerAutoClick extends RTrigger implements RTimer {
     public void onBreak(BlockBreakEvent e) {
         if (e.isCancelled()) return;
         Player pl = e.getPlayer();
-        ReflexPlayer p = Reflex.getInstance().getCache().getReflexPlayer(pl);
+        ReflexPlayer p = getPlayer(pl);
         updateCps(p, -0.5);
     }
 
