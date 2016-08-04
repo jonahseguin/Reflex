@@ -33,12 +33,12 @@ public class InspectManager {
     }
 
     public void setup() {
-        register(new InspectAutoClick());
-        register(new InspectFastBow());
-        register(new InspectVClip());
-        register(new InspectRegen());
-        register(new InspectReach());
-        register(new InspectFly());
+        register(new InspectAutoClick(instance));
+        register(new InspectFastBow(instance));
+        register(new InspectVClip(instance));
+        register(new InspectRegen(instance));
+        register(new InspectReach(instance));
+        register(new InspectFly(instance));
 
         inspectors.values().forEach(RInspect::setupConfig);
     }

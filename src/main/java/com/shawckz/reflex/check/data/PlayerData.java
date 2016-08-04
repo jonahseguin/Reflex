@@ -13,10 +13,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -29,6 +26,18 @@ import org.bukkit.entity.Player;
 @CollectionName(name = "reflex_checkdata")
 public class PlayerData extends CheckData {
 
+    public static final Set<Material> SOLID_MATERIAL_WHITELIST = new HashSet<>();
+    public static final Set<Integer> SPECIAL_SOLID_MATERIAL_ID_WHITELIST = new HashSet<>(); //Fences, etc
+
+    static {
+        SOLID_MATERIAL_WHITELIST.addAll(Arrays.asList(Material.SNOW, Material.SNOW_BLOCK, Material.CARPET, Material.DIODE,
+                Material.DIODE_BLOCK_OFF, Material.DIODE_BLOCK_ON, Material.REDSTONE_COMPARATOR, Material.REDSTONE_COMPARATOR_OFF,
+                Material.REDSTONE_COMPARATOR_ON, Material.SKULL, Material.SKULL_ITEM, Material.LADDER, Material.WATER_LILY));
+
+        SPECIAL_SOLID_MATERIAL_ID_WHITELIST.addAll(Arrays.asList(85, 188, 189, 190, 191, 192, 113, 107, 183, 184, 185, 186, 187, 139, 65));
+    }
+
+    public Location from = null;
 
     public double aimValue = 0;
     public double aimYawValue = 0;
@@ -56,7 +65,8 @@ public class PlayerData extends CheckData {
 
     public XrayStats xrayStats = new XrayStats();
 
-    public long lastGroundtime = -1;
+    public long lastGroundTimeUpdate = -1;
+    public long lastGroundTime = -1;
     public boolean hasPositiveVelocity = false;
     public double fallingVelocity = -1D;
     public double fallingVelocityY = -1D;
@@ -93,6 +103,15 @@ public class PlayerData extends CheckData {
     public long trigLastCheck = -1L;
     public double cpsOn = 0;
     public double cpsOff = 0;
+
+    public boolean onGround = false;
+    public boolean onLadder = false; //Also vines
+    public boolean inWater = false;
+    public boolean inLava = false;
+    public boolean onIce = false;
+    public boolean underBlock = false;
+    public boolean onPiston = false;
+    public boolean inWeb = false;
 
     public void updateFallingVelocity(double x, double y, double z) {
         this.lastFallingVelocity = this.fallingVelocity;
@@ -152,11 +171,66 @@ public class PlayerData extends CheckData {
         return player.getLocation().getBlock().getLocation().clone().subtract(0, 1, 0).getBlock();
     }
 
+    public void updateMoveValues(Location to) {
+        //ground, ladder, liquid, ice, under, inside, piston
+        onGround = (onLadder = inWater = inLava = onIce = underBlock = onPiston = inWeb = false);
+
+        for (Location loc : getLocationsAround(to)) {
+            Material below = loc.clone().add(0, -1.0E-13D, 0).getBlock().getType();
+            Material liquid = loc.clone().add(0, 0.0625D, 0).getBlock().getType();
+            Material special = loc.clone().add(0, -0.5000000000001D, 0).getBlock().getType();
+            Material above = loc.clone().add(0, 2.2D, 0).getBlock().getType();
+            if (!onGround) {
+                if (below.isSolid() || SOLID_MATERIAL_WHITELIST.contains(below)) {
+                    onGround = true;
+                }
+                else if (SPECIAL_SOLID_MATERIAL_ID_WHITELIST.contains(special.getId())) {
+                    onGround = true;
+                }
+            }
+            if (!inWeb) {
+                inWeb = below.equals(Material.WEB) || above.equals(Material.WEB);
+            }
+            if (!onLadder) {
+                onLadder = below.equals(Material.LADDER) || above.equals(Material.LADDER) || below.equals(Material.VINE) || above.equals(Material.VINE);
+            }
+            if (!inWater) {
+                inWater = liquid.equals(Material.STATIONARY_WATER) || liquid.equals(Material.WATER) || above.equals(Material.STATIONARY_WATER) || above.equals(Material.WATER);
+            }
+            if (!inLava) {
+                inLava = liquid.equals(Material.STATIONARY_LAVA) || liquid.equals(Material.LAVA) || above.equals(Material.STATIONARY_LAVA) || above.equals(Material.LAVA);
+            }
+            if (!onPiston) {
+                onPiston = below.equals(Material.PISTON_BASE) || below.equals(Material.PISTON_EXTENSION) || below.equals(Material.PISTON_MOVING_PIECE) || below.equals(Material.PISTON_STICKY_BASE);
+            }
+            if (!onIce) {
+                onIce = below.equals(Material.ICE) || below.equals(Material.PACKED_ICE);
+            }
+            if (!underBlock) {
+                underBlock = isSolid(above);
+            }
+        }
+    }
+
+    public boolean isSolid(Material material) {
+        if (material.isSolid() || SOLID_MATERIAL_WHITELIST.contains(material)) {
+            return true;
+        }
+        else if (SPECIAL_SOLID_MATERIAL_ID_WHITELIST.contains(material.getId())) {
+            return true;
+        }
+        return false;
+    }
+
     public boolean isOnGround(Location location) {
         for (Location loc : getLocationsAround(location)) {
-            Material below = loc.clone().add(0, -1.0D, 0).getBlock().getType();
-            //Material above = loc.clone().add(0, 2.2D, 0).getBlock().getType();
-            if (below.isSolid()) {
+            Material below = loc.clone().add(0, -1.0E-13D, 0).getBlock().getType();
+            if (below.isSolid() || SOLID_MATERIAL_WHITELIST.contains(below)) {
+                return true;
+            }
+            //For when standing on fences, etc.
+            Material specialBelow = loc.clone().add(0, -0.5000000000001D, 0).getBlock().getType();
+            if (SPECIAL_SOLID_MATERIAL_ID_WHITELIST.contains(specialBelow.getId())) {
                 return true;
             }
         }

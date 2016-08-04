@@ -14,7 +14,6 @@ import com.shawckz.reflex.player.reflex.ReflexPlayer;
 import lombok.Getter;
 import lombok.Setter;
 
-import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -41,23 +40,24 @@ public class CaptureFly extends RDataCapture implements RTimer {
             }
             ReflexPlayer rp = getPlayer(p);
             DataFly data = getData(rp);
+
+            //YPS
             double yDifference = e.getTo().getY() - e.getFrom().getY();
             data.setYps(data.getYps() + yDifference);
 
+            //BPS
             final double xDistance = e.getTo().getX() - e.getFrom().getX();
             final double zDistance = e.getTo().getZ() - e.getFrom().getZ();
-
             final double distance = Math.sqrt(xDistance * xDistance + zDistance * zDistance);
-
             data.setBps(data.getBps() + distance);
 
+            //POSITIVE VELOCITY
             if (e.getTo().getY() >= e.getFrom().getY()) {
                 data.setHasPositiveVelocity(true);
             }
 
-            Block b = p.getLocation().clone().subtract(0, 1, 0).getBlock();
-
-            if (p.isOnGround() || b.isLiquid() || b.getType().isSolid()) {
+            //GROUND TIME
+            if (rp.getData().isOnGround()) {
                 data.setLastGroundTime(System.currentTimeMillis());
             }
         }
@@ -76,6 +76,11 @@ public class CaptureFly extends RDataCapture implements RTimer {
                     DataFly data = getData(p);
                     if (data.getYps() > data.getPeakYps()) {
                         data.setPeakYps(data.getYps());
+                    }
+
+                    //Update ground time again, in case they stood still
+                    if (p.getData().isOnGround()) {
+                        data.setLastGroundTime(System.currentTimeMillis());
                     }
 
                     if (data.getLastGroundTime() != -1) {

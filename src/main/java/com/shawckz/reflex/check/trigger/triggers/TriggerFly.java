@@ -49,25 +49,29 @@ public class TriggerFly extends RTrigger {
             rp.getData().setHasPositiveVelocity(false);
         }
 
-        if (rp.getData().isOnGround(e.getTo())) {
-            rp.getData().setLastGroundtime(System.currentTimeMillis());
+        if (rp.getData().isOnGround()) {
+            rp.getData().setLastGroundTime(System.currentTimeMillis());
         }
         else {
-            if (rp.getData().getLastGroundtime() != -1) {
-                int airTime = (int) (System.currentTimeMillis() - rp.getData().getLastGroundtime()) / 1000;
-                if (rp.getData().isHasPositiveVelocity()) {
-                    if (airTime >= triggerAirTime) {
-                        triggerLater(rp, result -> {
-                        });
+            if (rp.getData().getLastGroundTimeUpdate() != -1 && ((System.currentTimeMillis() - rp.getData().getLastGroundTimeUpdate()) / 1000 < triggerAirTime)) {
+                if (rp.getData().getLastGroundTime() != -1) {
+                    int airTime = (int) (System.currentTimeMillis() - rp.getData().getLastGroundTime()) / 1000;
+                    if (rp.getData().isHasPositiveVelocity()) {
+                        if (airTime >= triggerAirTime) {
+                            triggerLater(rp, result -> {
+                            });
+                        }
                     }
-                }
-                else {
-                    if (airTime >= thresholdAirTime) {
-                        fail(rp, "> " + thresholdAirTime + "s in air");
+                    else {
+                        if (airTime >= thresholdAirTime) {
+                            fail(rp, "> " + thresholdAirTime + "s in air");
+                        }
                     }
                 }
             }
         }
+
+        rp.getData().setLastGroundTimeUpdate(System.currentTimeMillis());
     }
 
 

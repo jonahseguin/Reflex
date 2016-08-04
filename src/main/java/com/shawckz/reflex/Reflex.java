@@ -24,6 +24,7 @@ import com.shawckz.reflex.check.inspect.InspectManager;
 import com.shawckz.reflex.check.trigger.TriggerManager;
 import com.shawckz.reflex.commands.*;
 import com.shawckz.reflex.listener.BanListener;
+import com.shawckz.reflex.listener.BukkitListener;
 import com.shawckz.reflex.listener.PacketListener;
 import com.shawckz.reflex.player.reflex.ReflexCache;
 import com.shawckz.reflex.player.reflex.ReflexPlayer;
@@ -173,6 +174,7 @@ public class Reflex extends AuthMe {
             commandHandler.registerCommands(new CmdConfig());
 
             getServer().getPluginManager().registerEvents(new BanListener(), instance);
+            getServer().getPluginManager().registerEvents(new BukkitListener(instance), instance);
 
             MenuListener.getInstance().register(instance);
 

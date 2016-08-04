@@ -4,6 +4,7 @@
 
 package com.shawckz.reflex.check.inspect.inspectors;
 
+import com.shawckz.reflex.Reflex;
 import com.shawckz.reflex.backend.configuration.annotations.ConfigData;
 import com.shawckz.reflex.check.base.CheckType;
 import com.shawckz.reflex.check.base.RCheckType;
@@ -38,8 +39,8 @@ public class InspectReach extends RInspect {
     @ConfigData("distance-threshold")
     private double threshold = 8;
 
-    public InspectReach() {
-        super(CheckType.REACH, RCheckType.INSPECT);
+    public InspectReach(Reflex instance) {
+        super(instance, CheckType.REACH, RCheckType.INSPECT);
     }
 
     @Override

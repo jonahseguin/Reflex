@@ -4,6 +4,7 @@
 
 package com.shawckz.reflex.check.inspect.inspectors;
 
+import com.shawckz.reflex.Reflex;
 import com.shawckz.reflex.backend.configuration.annotations.ConfigData;
 import com.shawckz.reflex.check.base.CheckType;
 import com.shawckz.reflex.check.base.RCheckType;
@@ -48,8 +49,8 @@ public class InspectVClip extends RInspect {
     @ConfigData("vclip-vl-threshold")
     private int vlThreshold = 3;
 
-    public InspectVClip() {
-        super(CheckType.VCLIP, RCheckType.INSPECT);
+    public InspectVClip(Reflex instance) {
+        super(instance, CheckType.VCLIP, RCheckType.INSPECT);
     }
 
     @Override

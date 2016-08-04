@@ -4,6 +4,7 @@
 
 package com.shawckz.reflex.check.inspect;
 
+import com.shawckz.reflex.Reflex;
 import com.shawckz.reflex.backend.configuration.annotations.ConfigData;
 import com.shawckz.reflex.check.base.Check;
 import com.shawckz.reflex.check.base.CheckType;
@@ -20,8 +21,8 @@ public abstract class RInspect extends Check {
     @ConfigData("inspection-delay")
     private int inspectionDelay = 5;//To leave time for potential lag spikes to propagate - delay the inspection
 
-    public RInspect(CheckType checkType, RCheckType rCheckType) {
-        super(checkType, rCheckType);
+    public RInspect(Reflex instance, CheckType checkType, RCheckType rCheckType) {
+        super(instance, checkType, rCheckType);
     }
 
     public abstract RInspectResultData inspect(ReflexPlayer player, CheckData checkData, int dataPeriod);

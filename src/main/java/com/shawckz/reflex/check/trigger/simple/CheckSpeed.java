@@ -17,7 +17,6 @@ import lombok.Setter;
 import java.text.DecimalFormat;
 
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -66,12 +65,12 @@ public class CheckSpeed extends RTrigger {
             }
         }
 
-        if (rp.getData().underBlock(to)) {
+        if (rp.getData().isUnderBlock()) {
             if (rp.getData().getHFreedom() < 1.7175D) {
                 rp.getData().setHFreedom(1.7175D);
             }
         }
-        if (rp.getData().onType(to, Material.ICE)) {
+        if (rp.getData().isOnIce()) {
             if (rp.getData().getHFreedom() < 2.175D) {
                 rp.getData().setHFreedom(2.175D);
             }

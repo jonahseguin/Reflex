@@ -2,20 +2,20 @@
  * Copyright (c) Jonah Seguin (Shawckz) 2016.  You may not copy, re-sell, distribute, modify, or use any code contained in this document or file, collection of documents or files, or project.  Thank you.
  */
 
-package com.shawckz.reflex.check.data.capturers;
+package com.shawckz.reflex.check.data;
 
 import com.shawckz.reflex.Reflex;
 import com.shawckz.reflex.backend.configuration.annotations.ConfigData;
 import com.shawckz.reflex.check.base.CheckType;
 import com.shawckz.reflex.check.base.RCheckType;
-import com.shawckz.reflex.check.data.PlayerData;
-import com.shawckz.reflex.check.data.RDataCapture;
+import com.shawckz.reflex.event.internal.ReflexAsyncMoveEvent;
 import com.shawckz.reflex.event.internal.ReflexUseEntityEvent;
 import com.shawckz.reflex.player.reflex.ReflexPlayer;
 import com.shawckz.reflex.util.obj.TrigUtils;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 
 /**
  * Not an actual RDataCapture;
@@ -23,16 +23,16 @@ import org.bukkit.event.EventHandler;
  *
  * Should never check if #isCapturing in this class
  */
-public class CapturePlayerData extends RDataCapture {
+public class PlayerDataCapturer extends RDataCapture {
 
     @ConfigData("max-target-distance")
     private double maxTargetDistance = 4.5D;
 
-    public CapturePlayerData(Reflex instance) {
+    public PlayerDataCapturer(Reflex instance) {
         super(instance, CheckType.PLAYER_DATA, RCheckType.DATA);
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOW)
     public void onUseEntity(ReflexUseEntityEvent e) {
         Player p = e.getPlayer();
         ReflexPlayer rp = getPlayer(p);
@@ -49,5 +49,16 @@ public class CapturePlayerData extends RDataCapture {
             rp.getData().setAimOffset(aimOffset);
         }
     }
+
+    @EventHandler(priority = EventPriority.LOW)
+    public void onMove(ReflexAsyncMoveEvent e) {
+        ReflexPlayer rp = e.getPlayer();
+        PlayerData data = rp.getData();
+
+        data.updateMoveValues(e.getTo());
+
+        rp.getBukkitPlayer().sendMessage("On ground: " + data.isOnGround());
+    }
+
 
 }

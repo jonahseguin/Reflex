@@ -4,24 +4,25 @@
 
 package com.shawckz.reflex.event.internal;
 
+import com.shawckz.reflex.player.reflex.ReflexPlayer;
 import lombok.Getter;
+import lombok.Setter;
 
-import org.bukkit.entity.Player;
+import org.bukkit.Location;
 
 @Getter
+@Setter
 public class ReflexAsyncMoveEvent extends ReflexInternalEvent {
 
-    private final Player player;
-    private final double x;
-    private final double y;
-    private final double z;
+    private final ReflexPlayer player;
+    private final Location from;
     private final boolean ground;
+    private Location to;
 
-    public ReflexAsyncMoveEvent(Player player, double x, double y, double z, boolean ground) {
+    public ReflexAsyncMoveEvent(ReflexPlayer player, Location to, Location from, boolean ground) {
         this.player = player;
-        this.x = x;
-        this.y = y;
-        this.z = z;
+        this.to = to;
+        this.from = from;
         this.ground = ground;
     }
 

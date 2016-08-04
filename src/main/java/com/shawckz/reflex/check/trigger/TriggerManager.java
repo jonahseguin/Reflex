@@ -38,7 +38,6 @@ public class TriggerManager {
         register(new CheckTabComplete(instance));
         register(new CheckXray(instance));
         register(new CheckMorePackets(instance));
-        register(new CheckAuraTwitch(instance));
         register(new CheckAccuracy(instance));
         register(new CheckPhase(instance));
 

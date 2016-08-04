@@ -4,6 +4,7 @@
 
 package com.shawckz.reflex.check.inspect.inspectors;
 
+import com.shawckz.reflex.Reflex;
 import com.shawckz.reflex.backend.configuration.annotations.ConfigData;
 import com.shawckz.reflex.check.base.CheckType;
 import com.shawckz.reflex.check.base.RCheckType;
@@ -37,8 +38,8 @@ public class InspectFly extends RInspect {
     @ConfigData("threshold-bps")
     private double thresholdBps = 28;
 
-    public InspectFly() {
-        super(CheckType.FLY, RCheckType.INSPECT);
+    public InspectFly(Reflex instance) {
+        super(instance, CheckType.FLY, RCheckType.INSPECT);
     }
 
     @Override

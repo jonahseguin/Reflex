@@ -20,6 +20,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -30,6 +31,26 @@ import org.bukkit.event.player.PlayerMoveEvent;
 public class Freeze implements Listener {
 
     private static Map<String, Freeze> freezes = new HashMap<>();
+    private String name;
+    private Player p;
+    private boolean cancelled;
+    private Location freeze;
+
+    public Freeze(Player p) {
+        this.p = p;
+        this.name = p.getName();
+        this.cancelled = false;
+        this.freeze = p.getLocation();
+        freezes.put(p.getName(), this);
+    }
+
+    public Freeze(Player p, Location freeze) {
+        this.p = p;
+        this.name = p.getName();
+        this.cancelled = false;
+        this.freeze = freeze;
+        freezes.put(p.getName(), this);
+    }
 
     public static Freeze getFreeze(Player p) {
         return freezes.get(p.getName());
@@ -60,25 +81,12 @@ public class Freeze implements Listener {
         }
     }
 
-    private String name;
-    private Player p;
-    private boolean cancelled;
-    private Location freeze;
-
-    public Freeze(Player p) {
-        this.p = p;
-        this.name = p.getName();
-        this.cancelled = false;
-        this.freeze = p.getLocation();
-        freezes.put(p.getName(), this);
+    public static void sendWallBlock(Player p, Location loc) {
+        p.sendBlockChange(loc, Material.STAINED_GLASS, DyeColor.RED.getData());
     }
 
-    public Freeze(Player p, Location freeze) {
-        this.p = p;
-        this.name = p.getName();
-        this.cancelled = false;
-        this.freeze = freeze;
-        freezes.put(p.getName(), this);
+    public static void removeWallBlock(Player p, Location loc) {
+        p.sendBlockChange(loc, loc.getWorld().getBlockAt(loc).getType(), loc.getWorld().getBlockAt(loc).getData());
     }
 
     public void run() {
@@ -108,24 +116,12 @@ public class Freeze implements Listener {
         return locations;
     }
 
-    public static void sendWallBlock(Player p, Location loc) {
-        p.sendBlockChange(loc, Material.STAINED_GLASS, DyeColor.RED.getData());
-    }
-
-    public static void removeWallBlock(Player p, Location loc) {
-        p.sendBlockChange(loc, loc.getWorld().getBlockAt(loc).getType(), (byte) loc.getWorld().getBlockAt(loc).getData());
-    }
-
     public Player getPlayer() {
         return p;
     }
 
     public boolean isCancelled() {
         return cancelled;
-    }
-
-    public Location getFreeze() {
-        return freeze;
     }
 
     public void setCancelled(boolean cancelled) {
@@ -138,6 +134,10 @@ public class Freeze implements Listener {
                 }
             }
         }
+    }
+
+    public Location getFreeze() {
+        return freeze;
     }
 
     @EventHandler
@@ -191,19 +191,35 @@ public class Freeze implements Listener {
     }
 
     @EventHandler
+    public void onAttack(EntityDamageByEntityEvent e) {
+        if (cancelled) {
+            HandlerList.unregisterAll(this);
+        }
+        else {
+            if (e.getDamager() instanceof Player) {
+                Player p = (Player) e.getDamager();
+                if (p.getName().equalsIgnoreCase(name)) {
+                    e.setCancelled(true);
+                }
+            }
+        }
+    }
+
+    @EventHandler
     public void onDamage(EntityDamageEvent e) {
         if (cancelled) {
             HandlerList.unregisterAll(this);
-            return;
         }
-        if (e.getEntity() instanceof Player) {
-            Player p = (Player) e.getEntity();
+        else {
+            if (e.getEntity() instanceof Player) {
+                Player p = (Player) e.getEntity();
 
-            if (p.getName().equalsIgnoreCase(name)) {
-                e.setDamage(0.0);
-                e.setCancelled(true);
+                if (p.getName().equalsIgnoreCase(name)) {
+                    e.setDamage(0.0);
+                    e.setCancelled(true);
+                }
+
             }
-
         }
     }
 

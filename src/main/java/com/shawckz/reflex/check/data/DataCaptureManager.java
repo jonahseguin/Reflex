@@ -25,7 +25,7 @@ public class DataCaptureManager {
     }
 
     public void setup() {
-        register(new CapturePlayerData(instance));
+        register(new PlayerDataCapturer(instance));
 
         register(new CaptureAutoClick(instance));
         register(new CaptureVClip(instance));
