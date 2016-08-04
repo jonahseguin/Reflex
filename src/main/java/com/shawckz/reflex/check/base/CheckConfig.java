@@ -78,6 +78,10 @@ public class CheckConfig {
         }
     }
 
+    public YamlConfiguration getConfig() {
+        return config;
+    }
+
     public void save() {
         Class c = this.getClass();
 

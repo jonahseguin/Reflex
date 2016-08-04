@@ -4,6 +4,7 @@
 
 package com.shawckz.reflex.check.trigger.simple;
 
+import com.google.common.collect.Maps;
 import com.shawckz.reflex.Reflex;
 import com.shawckz.reflex.backend.configuration.annotations.ConfigData;
 import com.shawckz.reflex.backend.configuration.annotations.ConfigSerializer;
@@ -16,7 +17,6 @@ import com.shawckz.reflex.util.serial.XrayStatsMaxSerializer;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import org.bukkit.entity.Player;
@@ -35,7 +35,7 @@ public class CheckXray extends RTrigger {
 
     @ConfigData("xray-stats-max")
     @ConfigSerializer(serializer = XrayStatsMaxSerializer.class)
-    private Map<XrayStats.Stat, Double> max = new HashMap<>();
+    private Map<XrayStats.Stat, Double> max = Maps.newHashMap();
 
 
     public CheckXray(Reflex instance) {
@@ -56,7 +56,7 @@ public class CheckXray extends RTrigger {
         }.runTaskTimerAsynchronously(instance, 72000, 72000);
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onBreak(BlockBreakEvent e) {
         Player p = e.getPlayer();
         ReflexPlayer rp = getPlayer(p);
@@ -65,11 +65,13 @@ public class CheckXray extends RTrigger {
         if (!e.getBlock().hasMetadata("ReflexXrayPlaced")) {
             XrayStats xrayStats = rp.getData().getXrayStats();
             XrayStats.Stat stat = xrayStats.convertStat(e.getBlock().getType());
-            double val = xrayStats.modifyStat(stat, 1);
-            if (xrayStats.overMax(stat)) {
-                if (fail(rp, val + " " + stat.toString().toLowerCase() + "/hr").isCancelled()) {
-                    e.setCancelled(true);
-                    xrayStats.modifyStat(stat, ((-1) * violationPenalty));
+            if (stat != null) {
+                double val = xrayStats.modifyStat(stat, 1);
+                if (xrayStats.overMax(stat)) {
+                    if (fail(rp, val + " " + stat.toString().toLowerCase() + "/hr").isCancelled()) {
+                        e.setCancelled(true);
+                        xrayStats.modifyStat(stat, ((-1) * violationPenalty));
+                    }
                 }
             }
         }

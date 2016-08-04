@@ -9,6 +9,7 @@ import com.shawckz.reflex.backend.configuration.annotations.ConfigData;
 import com.shawckz.reflex.check.base.CheckType;
 import com.shawckz.reflex.check.base.RCheckType;
 import com.shawckz.reflex.check.trigger.RTrigger;
+import com.shawckz.reflex.event.internal.ReflexAsyncMoveEvent;
 import com.shawckz.reflex.event.internal.ReflexVelocityEvent;
 import com.shawckz.reflex.player.reflex.ReflexPlayer;
 import lombok.Getter;
@@ -20,7 +21,6 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -119,39 +119,34 @@ public class CheckSpeed extends RTrigger {
         }
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
-    public void onMove(PlayerMoveEvent e) {
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onMove(ReflexAsyncMoveEvent e) {
         Player p = e.getPlayer();
-        if (!e.isCancelled()) {
-            ReflexPlayer rp = getPlayer(p);
-            if (rp.getData().isOnGround(e.getTo())) {
-                rp.getData().setBhopDelay(0);
-            }
-            else {
-                rp.getData().setBhopDelay(rp.getData().getBhopDelay() + 1);
-            }
+        ReflexPlayer rp = e.getReflexPlayer();
+        if (rp.getData().isOnGround(e.getTo())) {
+            rp.getData().setBhopDelay(0);
+        }
+        else {
+            rp.getData().setBhopDelay(rp.getData().getBhopDelay() + 1);
+        }
+        if (p.getVehicle() == null && !p.getAllowFlight()) {
+            double maxSpeed = calculateMaxSpeed(p, e.getFrom(), e.getTo());
+            double speed = rp.getData().getHDistance(e.getFrom(), e.getTo());
 
-            if (p.getVehicle() == null && !p.getAllowFlight()) {
-                double maxSpeed = calculateMaxSpeed(p, e.getFrom(), e.getTo());
-                double speed = rp.getData().getHDistance(e.getFrom(), e.getTo());
+            if (speed > maxSpeed && speed < lagThreshold) { // < 10 in case of lag
+                final double beforeSpeed = speed;
+                speed = recalculateFail(rp, speed);
 
-                if (speed > maxSpeed && speed < lagThreshold) { // < 10 in case of lag
-                    final double beforeSpeed = speed;
-                    speed = recalculateFail(rp, speed);
-
-
-                    if (speed > 0.0D) {
-                        rp.addAlertVL(getCheckType());
-                        if (rp.getAlertVL(getCheckType()) >= alertThreshold) {
-                            if (fail(rp, (df.format(beforeSpeed)) + " m/s > " + df.format(maxSpeed) + " m/s").isCancelled()) {
-                                e.setTo(e.getFrom());
-                            }
-                            rp.setAlertVL(getCheckType(), 0);
+                if (speed > 0.0D) {
+                    rp.addAlertVL(getCheckType());
+                    if (rp.getAlertVL(getCheckType()) >= alertThreshold) {
+                        if (fail(rp, (df.format(beforeSpeed)) + " m/s > " + df.format(maxSpeed) + " m/s").isCancelled()) {
+                            e.setTo(e.getFrom());
                         }
+                        rp.setAlertVL(getCheckType(), 0);
                     }
                 }
             }
-
         }
     }
 

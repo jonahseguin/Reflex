@@ -12,6 +12,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.Transient;
 import java.lang.reflect.Field;
 import java.util.*;
 
@@ -26,7 +27,10 @@ import org.bukkit.entity.Player;
 @CollectionName(name = "reflex_checkdata")
 public class PlayerData extends CheckData {
 
+    @Transient
     public static final Set<Material> SOLID_MATERIAL_WHITELIST = new HashSet<>();
+
+    @Transient
     public static final Set<Integer> SPECIAL_SOLID_MATERIAL_ID_WHITELIST = new HashSet<>(); //Fences, etc
 
     static {
@@ -113,6 +117,8 @@ public class PlayerData extends CheckData {
     public boolean onPiston = false;
     public boolean inWeb = false;
 
+    public Location setBack = null;
+
     public void updateFallingVelocity(double x, double y, double z) {
         this.lastFallingVelocity = this.fallingVelocity;
         this.lastFallingVelocityY = this.fallingVelocityY;
@@ -181,12 +187,7 @@ public class PlayerData extends CheckData {
             Material special = loc.clone().add(0, -0.5000000000001D, 0).getBlock().getType();
             Material above = loc.clone().add(0, 2.2D, 0).getBlock().getType();
             if (!onGround) {
-                if (below.isSolid() || SOLID_MATERIAL_WHITELIST.contains(below)) {
-                    onGround = true;
-                }
-                else if (SPECIAL_SOLID_MATERIAL_ID_WHITELIST.contains(special.getId())) {
-                    onGround = true;
-                }
+                onGround = isSolid(below);
             }
             if (!inWeb) {
                 inWeb = below.equals(Material.WEB) || above.equals(Material.WEB);
@@ -210,6 +211,11 @@ public class PlayerData extends CheckData {
                 underBlock = isSolid(above);
             }
         }
+
+        if (to.getBlock().getType().isTransparent()) {
+            setBack = to;
+        }
+
     }
 
     public boolean isSolid(Material material) {
@@ -264,8 +270,10 @@ public class PlayerData extends CheckData {
         try {
             for (Field f : data.keySet()) {
                 Field lf = this.getClass().getDeclaredField(f.getName());
-                lf.setAccessible(true);
-                lf.set(this, data.get(f));
+                if (!lf.isAnnotationPresent(Transient.class)) {
+                    lf.setAccessible(true);
+                    lf.set(this, data.get(f));
+                }
             }
         }
         catch (NoSuchFieldException | IllegalAccessException ex) {
@@ -278,8 +286,10 @@ public class PlayerData extends CheckData {
 
         try {
             for (Field f : this.getClass().getDeclaredFields()) {
-                f.setAccessible(true);
-                data.put(f, f.get(this));
+                if (!f.isAnnotationPresent(Transient.class)) {
+                    f.setAccessible(true);
+                    data.put(f, f.get(this));
+                }
             }
         }
         catch (IllegalAccessException ex) {

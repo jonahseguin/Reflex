@@ -9,18 +9,21 @@ import lombok.Getter;
 import lombok.Setter;
 
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 
 @Getter
 @Setter
 public class ReflexAsyncMoveEvent extends ReflexInternalEvent {
 
-    private final ReflexPlayer player;
+    private final Player player;
+    private final ReflexPlayer reflexPlayer;
     private final Location from;
     private final boolean ground;
     private Location to;
 
-    public ReflexAsyncMoveEvent(ReflexPlayer player, Location to, Location from, boolean ground) {
+    public ReflexAsyncMoveEvent(Player player, ReflexPlayer reflexPlayer, Location to, Location from, boolean ground) {
         this.player = player;
+        this.reflexPlayer = reflexPlayer;
         this.to = to;
         this.from = from;
         this.ground = ground;

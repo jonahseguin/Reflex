@@ -5,6 +5,8 @@
 package com.shawckz.reflex.player.reflex;
 
 import com.google.common.collect.Maps;
+import com.shawckz.reflex.backend.configuration.RLang;
+import com.shawckz.reflex.backend.configuration.ReflexLang;
 import com.shawckz.reflex.backend.configuration.ReflexPerm;
 import com.shawckz.reflex.backend.database.mongo.annotations.CollectionName;
 import com.shawckz.reflex.backend.database.mongo.annotations.MongoColumn;
@@ -49,6 +51,10 @@ public class ReflexPlayer extends CachePlayer {
 
     public void msg(String msg) {
         bukkitPlayer.sendMessage(ChatColor.translateAlternateColorCodes('&', msg));
+    }
+
+    public void msg(ReflexLang lang, String... args) {
+        RLang.send(bukkitPlayer, lang, args);
     }
 
     public boolean hasPermission(ReflexPerm perm) {

@@ -34,7 +34,9 @@ public enum ReflexLang {
     CONFIG_LOAD("&7The configuration was reloaded by &e{0}&7."),
     CONFIG_SET("&7Config value '{0}' set to '{1}' by &e{2}&7."),
     SETTINGS_ALL("&7Setting &e{0}&7 updated to &9{1}&7 for &aall checks &7by &e{2}&7."),
-    SETTINGS("&7Setting &e{0}&7 updated to &9{1}&7 for &a{2}&7 by &e{3}&7.");
+    SETTINGS("&7Setting &e{0}&7 updated to &9{1}&7 for &a{2}&7 by &e{3}&7."),
+    AUTOBAN_CHEATER("&7[Reflex] &4&lYou will be automatically banned for &r{0}&4&l shortly."),
+    AUTOBAN_CHEATER_CANCEL("&7[Reflex] &a&lYou are no longer being automatically banned.  &fSorry for the inconvenience.");
 
     private final String defaultValue;
 

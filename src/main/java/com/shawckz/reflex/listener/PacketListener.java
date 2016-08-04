@@ -21,37 +21,93 @@ public class PacketListener {
 
     public PacketListener(final Reflex instance) {
         //AsyncMoveEvent
-        instance.getProtocolManager().getAsynchronousManager().registerAsyncHandler(new PacketAdapter(instance, ListenerPriority.NORMAL, PacketType.Play.Client.POSITION_LOOK) {
+        instance.getProtocolManager().getAsynchronousManager().registerAsyncHandler(new PacketAdapter(instance, ListenerPriority.NORMAL, PacketType.Play.Client.POSITION_LOOK, PacketType.Play.Client.POSITION, PacketType.Play.Client.LOOK) {
             public void onPacketReceiving(PacketEvent event) {
-                if (event.getPacketType().equals(PacketType.Play.Client.POSITION_LOOK)) {
+                if (event.getPacketType().equals(PacketType.Play.Client.POSITION_LOOK) || event.getPacketType().equals(PacketType.Play.Client.POSITION) || event.getPacketType().equals(PacketType.Play.Client.LOOK)) {
                     ReflexPlayer reflexPlayer = instance.getCache().getReflexPlayer(event.getPlayer());
+                    Location location = event.getPlayer().getLocation();
                     World world = event.getPlayer().getWorld();
-                    double x = event.getPacket().getDoubles().getValues().get(0);
-                    double y = event.getPacket().getDoubles().getValues().get(1);
-                    double z = event.getPacket().getDoubles().getValues().get(2);
-                    float yaw = event.getPacket().getFloat().getValues().get(0);
-                    float pitch = event.getPacket().getFloat().getValues().get(1);
+                    Location from = reflexPlayer.getData().getFrom();
                     boolean ground = event.getPacket().getBooleans().getValues().get(0);
 
-                    Location to = new Location(world, x, y, z, yaw, pitch);
-                    Location from = reflexPlayer.getData().getFrom();
-                    if (from == null) {
+                    if (event.getPacketType().equals(PacketType.Play.Client.POSITION_LOOK)) {
+                        double x = event.getPacket().getDoubles().getValues().get(0);
+                        double y = event.getPacket().getDoubles().getValues().get(1);
+                        double z = event.getPacket().getDoubles().getValues().get(2);
+                        float yaw = event.getPacket().getFloat().getValues().get(0);
+                        float pitch = event.getPacket().getFloat().getValues().get(1);
+
+                        Location to = new Location(world, x, y, z, yaw, pitch);
+
+                        if (from == null) {
+                            reflexPlayer.getData().setFrom(to);
+                            from = to;
+                        }
+
+                        ReflexAsyncMoveEvent moveEvent = new ReflexAsyncMoveEvent(event.getPlayer(), reflexPlayer, to, from, ground);
+                        instance.getServer().getPluginManager().callEvent(moveEvent);
+
+                        x = moveEvent.getTo().getX();
+                        y = moveEvent.getTo().getY();
+                        z = moveEvent.getTo().getZ();
+                        yaw = moveEvent.getTo().getYaw();
+                        pitch = moveEvent.getTo().getPitch();
+
+                        event.getPacket().getDoubles().write(0, x);
+                        event.getPacket().getDoubles().write(1, y);
+                        event.getPacket().getDoubles().write(2, z);
+                        event.getPacket().getFloat().write(0, yaw);
+                        event.getPacket().getFloat().write(1, pitch);
+
                         reflexPlayer.getData().setFrom(to);
-                        from = to;
                     }
+                    else if (event.getPacketType().equals(PacketType.Play.Client.POSITION)) {
+                        double x = event.getPacket().getDoubles().getValues().get(0);
+                        double y = event.getPacket().getDoubles().getValues().get(1);
+                        double z = event.getPacket().getDoubles().getValues().get(2);
 
-                    ReflexAsyncMoveEvent moveEvent = new ReflexAsyncMoveEvent(reflexPlayer, to, from, ground);
-                    instance.getServer().getPluginManager().callEvent(moveEvent);
+                        Location to = new Location(world, x, y, z, location.getYaw(), location.getPitch());
 
-                    x = moveEvent.getTo().getX();
-                    y = moveEvent.getTo().getY();
-                    z = moveEvent.getTo().getZ();
+                        if (from == null) {
+                            reflexPlayer.getData().setFrom(to);
+                            from = to;
+                        }
 
-                    event.getPacket().getDoubles().getValues().set(0, x);
-                    event.getPacket().getDoubles().getValues().set(1, y);
-                    event.getPacket().getDoubles().getValues().set(2, z);
+                        ReflexAsyncMoveEvent moveEvent = new ReflexAsyncMoveEvent(event.getPlayer(), reflexPlayer, to, from, ground);
+                        instance.getServer().getPluginManager().callEvent(moveEvent);
 
-                    reflexPlayer.getData().setFrom(to);
+                        x = moveEvent.getTo().getX();
+                        y = moveEvent.getTo().getY();
+                        z = moveEvent.getTo().getZ();
+
+                        event.getPacket().getDoubles().write(0, x);
+                        event.getPacket().getDoubles().write(1, y);
+                        event.getPacket().getDoubles().write(2, z);
+
+                        reflexPlayer.getData().setFrom(to);
+                    }
+                    else if (event.getPacketType().equals(PacketType.Play.Client.LOOK)) {
+                        float yaw = event.getPacket().getFloat().getValues().get(0);
+                        float pitch = event.getPacket().getFloat().getValues().get(1);
+
+                        Location to = new Location(world, location.getX(), location.getY(), location.getZ(), yaw, pitch);
+
+                        if (from == null) {
+                            reflexPlayer.getData().setFrom(to);
+                            from = to;
+                        }
+
+                        ReflexAsyncMoveEvent moveEvent = new ReflexAsyncMoveEvent(event.getPlayer(), reflexPlayer, to, from, ground);
+                        instance.getServer().getPluginManager().callEvent(moveEvent);
+
+                        yaw = moveEvent.getTo().getYaw();
+                        pitch = moveEvent.getTo().getPitch();
+
+                        event.getPacket().getFloat().write(0, yaw);
+                        event.getPacket().getFloat().write(1, pitch);
+
+                        reflexPlayer.getData().setFrom(to);
+                    }
                 }
             }
         }).start();

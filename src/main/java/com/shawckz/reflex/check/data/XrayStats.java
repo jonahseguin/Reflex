@@ -11,6 +11,7 @@ import com.shawckz.reflex.check.trigger.simple.CheckXray;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 
 public class XrayStats {
@@ -61,13 +62,11 @@ public class XrayStats {
     }
 
     public double getMax(Stat stat) {
+        Bukkit.getLogger().info(stat.toString());
+        Bukkit.getLogger().info("" + stat.max);
+
         CheckXray checkXray = (CheckXray) Reflex.getInstance().getTriggerManager().getTrigger(CheckType.XRAY);
-        if (checkXray.getMax().containsKey(stat)) {
-            return checkXray.getMax().get(stat);
-        }
-        else {
-            return stat.max;
-        }
+        return checkXray.getMax().get(stat);
     }
 
     public boolean overMax(Stat stat) {
@@ -87,8 +86,8 @@ public class XrayStats {
     }
 
     public enum Stat {
-        DIAMOND(32D, Material.DIAMOND_ORE),
-        EMERALD(40D, Material.EMERALD_ORE),
+        DIAMOND(40D, Material.DIAMOND_ORE),
+        EMERALD(32D, Material.EMERALD_ORE),
         GOLD(45D, Material.GOLD_ORE);
 
         public final double max;

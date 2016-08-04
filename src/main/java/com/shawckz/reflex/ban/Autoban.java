@@ -60,13 +60,7 @@ public class Autoban {
             if (Reflex.getInstance().getTriggerManager().getTrigger(check).isAutobanFreeze()) {
                 Freeze freeze = new Freeze(player.getBukkitPlayer());
                 freeze.run();
-                player.msg("&4&l╔==============================");
-                player.msg("&4&l║ &7[&cReflex&7]");
-                player.msg("&4&l║ &4Hey there, Mr. Cheater!");
-                player.msg("&4&l║");
-                player.msg("&4&l║ &eI see you are using [" + check.getName() + "]");
-                player.msg("&4&l║ &cYou will be automatically banned shortly. :)");
-                player.msg("&4&l╚==============================");
+                player.msg(ReflexLang.AUTOBAN_CHEATER, check.getName());
             }
         }
 
@@ -191,10 +185,7 @@ public class Autoban {
                     Player p = player.getBukkitPlayer();
                     Freeze.removeFreeze(p);
                     p.setAllowFlight(false);
-                    player.msg("&2&l╔==============================");
-                    player.msg("&2&l║&7 You are no longer being automatically banned for hacking.");
-                    player.msg("&2&l║&a Sorry for the inconvenience.");
-                    player.msg("&2&l╚==============================");
+                    player.msg(ReflexLang.AUTOBAN_CHEATER_CANCEL);
                 }
             }
         }

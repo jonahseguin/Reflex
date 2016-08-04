@@ -63,6 +63,9 @@ public class ShowViolationsMenu extends ItemMenu {
                     }
                 }));
                 i++;
+                if (i >= 53) {
+                    break;
+                }
             }
         }
 

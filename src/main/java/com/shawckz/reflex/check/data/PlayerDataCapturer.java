@@ -52,12 +52,10 @@ public class PlayerDataCapturer extends RDataCapture {
 
     @EventHandler(priority = EventPriority.LOW)
     public void onMove(ReflexAsyncMoveEvent e) {
-        ReflexPlayer rp = e.getPlayer();
-        PlayerData data = rp.getData();
+        final ReflexPlayer rp = e.getReflexPlayer();
+        final PlayerData data = rp.getData();
 
         data.updateMoveValues(e.getTo());
-
-        rp.getBukkitPlayer().sendMessage("On ground: " + data.isOnGround());
     }
 
 
