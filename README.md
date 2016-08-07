@@ -38,7 +38,6 @@ For some more details on the project, view https://shawckz.com/product/Reflex an
 - Health Tags
 - FastLadder
 - NoSlowDown, NoWeb, FastEat
-- 
 
 # Contributing
 
