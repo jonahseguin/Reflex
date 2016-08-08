@@ -6,7 +6,7 @@
 
     <groupId>com.shawckz.reflex</groupId>
     <artifactId>Reflex</artifactId>
-    <version>1.0.1BETA-${maven.build.timestamp}</version>
+    <version>1.0.2BETA-${maven.build.timestamp}</version>
 
     <properties>
         <maven.build.timestamp.format>MM-dd-yyyy</maven.build.timestamp.format>
@@ -64,6 +64,7 @@
             <scope>provided</scope>
         </dependency>
 
+
         <!-- COMPILE -->
         <dependency>
             <groupId>ninja.amp</groupId>
@@ -77,12 +78,6 @@
             <version>LATEST</version>
             <scope>compile</scope>
         </dependency>
-      <!--  <dependency>
-            <groupId>org.json</groupId>
-            <artifactId>json</artifactId>
-            <version>20160212</version>
-            <scope>compile</scope>
-        </dependency> -->
         <dependency>
             <groupId>org.mongodb</groupId>
             <artifactId>mongo-java-driver</artifactId>

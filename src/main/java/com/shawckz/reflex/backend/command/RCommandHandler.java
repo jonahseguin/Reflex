@@ -46,6 +46,7 @@ public class RCommandHandler {
                 e.printStackTrace();
             }
         }
+
     }
 
     public RCmdWrapper getCommand(String key) {
