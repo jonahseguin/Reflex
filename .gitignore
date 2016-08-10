@@ -1,0 +1,7 @@
+.idea
+.idea/*
+target/*
+.DS_Store
+./*.jar
+ProtocolLib-3.4.0.jar
+SPIGOT-HACK.jar

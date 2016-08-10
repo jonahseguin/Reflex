@@ -1,7 +1,0 @@
-name: Reflex
-main: com.shawckz.reflex.Reflex
-version: 1.0.0
-authors: [Shawckz]
-website: https://shawckz.com/product/Reflex
-depend: [ProtocolLib]
-description: Reflex Anti-Cheat by Shawckz | https://shawckz.com
