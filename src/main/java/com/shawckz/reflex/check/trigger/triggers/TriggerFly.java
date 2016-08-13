@@ -39,6 +39,7 @@ public class TriggerFly extends RTrigger {
         if (!isEnabled()) return;
         if (e.getPlayer().getAllowFlight()) return;
         if (e.getPlayer().getVehicle() != null) return;
+        if (e.getPlayer().isOnGround()) return;
 
         ReflexPlayer rp = getPlayer(e.getPlayer());
 
