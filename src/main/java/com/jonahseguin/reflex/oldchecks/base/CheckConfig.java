@@ -30,15 +30,13 @@ public class CheckConfig {
     private final File file;
     private final File directory;
     private YamlConfiguration config;
-    private RCheckType rCheckType;
     private CheckType checkType;
     private Check check;
 
-    public CheckConfig(CheckType checkType, RCheckType rCheckType) {
+    public CheckConfig(CheckType checkType) {
         String directory = Reflex.getInstance().getDataFolder().getPath();
         this.checkType = checkType;
-        this.rCheckType = rCheckType;
-        this.directory = new File(directory + File.separator + rCheckType.toString().toLowerCase());
+        this.directory = new File(directory + File.separator + "checks");
         this.file = new File(this.directory, checkType.getName() + ".yml");
         this.config = new YamlConfiguration();
         createFile();
@@ -68,15 +66,6 @@ public class CheckConfig {
         save();
         load();
         saveConfig();
-        if (rCheckType == RCheckType.INSPECT) {
-            check = Reflex.getInstance().getInspectManager().getInspector(checkType);
-        }
-        else if (rCheckType == RCheckType.DATA) {
-            check = Reflex.getInstance().getDataCaptureManager().getDataCapture(checkType);
-        }
-        else if (rCheckType == RCheckType.TRIGGER) {
-            check = Reflex.getInstance().getTriggerManager().getTrigger(checkType);
-        }
     }
 
     public YamlConfiguration getConfig() {
