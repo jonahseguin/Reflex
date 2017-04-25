@@ -28,6 +28,10 @@ public class ReflexConfig extends Configuration {
     private String autobanConsoleCommand = "ban {0} [Reflex] Hacking ({1})";
     @ConfigData("ban.tempban-time-minutes")
     private int autobanTimeMinutes = 1440;//1 day
+    @ConfigData("alerts.supress-on-autoban")
+    private boolean suppressAlertsOnAutoban = true;
+    @ConfigData("violation.cache-expiry-minutes")
+    private int violationCacheExpiryMinutes = 120; // 2 hours
 
     public ReflexConfig(Plugin plugin) {
         super(plugin);
