@@ -2,7 +2,7 @@
 ### Copyright (c) Jonah Seguin (Shawckz) 2016.  You may not copy, re-sell, distribute, modify, or use any code contained in this document or file, collection of documents or files, or project.  Thank you.
 ###
 name: Reflex
-main: com.shawckz.reflex.Reflex
+main: Reflex
 version: ${project.version} (MC1.7.10)
 authors: [Shawckz]
 website: https://shawckz.com/product/Reflex
@@ -65,5 +65,5 @@ permissions:
       description: Cancel an autoban
       default: op
   reflex.inspect:
-      description: Manually inspect a player for a check
+      description: Manually inspect a player for a oldchecks
       default: op
