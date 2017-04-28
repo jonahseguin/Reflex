@@ -4,7 +4,9 @@
 
 package com.jonahseguin.reflex.check;
 
+import com.jonahseguin.reflex.Reflex;
 import com.jonahseguin.reflex.oldchecks.base.RTimer;
+import org.bukkit.entity.Player;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -14,7 +16,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  */
 public class AlertManager implements RTimer {
 
-    public static final int MAX_ALERTS_PER_SECOND = 2;
+    public static final int MAX_ALERTS_PER_PLAYER_PER_SECOND = 3;
 
     private final ConcurrentLinkedQueue<AlertGroup> alertQueue = new ConcurrentLinkedQueue<>();
 
@@ -23,12 +25,33 @@ public class AlertManager implements RTimer {
 
     @Override
     public void runTimer() {
-        // once per second, 2 alerts per second
+        //TODO CHANGE: WE ONLY WANT THIS TO RUN EVERY 3 SECONDS
+        // WE WANT ALERTS TO BUILD UP, GROUP THEM, AND THEN SEND AS A GROUP
+        // once per second
+        for (Player pl : Reflex.getOnlinePlayers()) {
+            if(alertQueue.isEmpty()) {
+                break;
+            }
+            for (int i = 0; i < MAX_ALERTS_PER_PLAYER_PER_SECOND; i++) {
+                if(alertQueue.isEmpty()) {
+                    break;
+                }
+                AlertGroup alertGroup = alertQueue.poll();
+                if (alertGroup != null) {
+                    if (alertGroup.shouldSendAsGrouped()) {
+                        GroupedAlert groupedAlert = createGroupedAlert(alertGroup);
 
-        for (int i = 0; i < 2; i++) {
-
+                        alertGroup.clearAlerts(); // Clear the alerts since we've now dealt with them for this check
+                    }
+                }
+            }
         }
     }
+
+    public GroupedAlert createGroupedAlert(AlertGroup alertGroup) {
+        return new GroupedAlert(alertGroup.copy()); // Make sure we use the .copy() to preserve data
+    }
+
 
 
 

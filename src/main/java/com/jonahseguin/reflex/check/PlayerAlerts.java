@@ -27,8 +27,12 @@ public class PlayerAlerts {
             return alertGroups.get(checkType);
         }
         else{
-            return alertGroups.put(checkType, new AlertGroup(checkType));
+            return alertGroups.put(checkType, new AlertGroup(player, checkType));
         }
+    }
+
+    public boolean shouldGroupAlert(CheckType checkType) {
+        return alertGroups.containsKey(checkType) && !alertGroups.get(checkType).getAlerts().isEmpty();
     }
 
 }

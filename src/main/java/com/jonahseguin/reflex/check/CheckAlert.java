@@ -19,7 +19,7 @@ import org.bukkit.entity.Player;
  * Project: Reflex
  */
 @Getter
-public class CheckAlert {
+public class CheckAlert implements Alert {
 
     private final String id;
     private final CheckViolation violation;
@@ -55,9 +55,23 @@ public class CheckAlert {
         msg.send(Bukkit.getConsoleSender());
     }
 
+    @Override
     public void sendAlert() {
-
+        // TODO: Send Alert
     }
 
+    @Override
+    public ReflexPlayer getReflexPlayer() {
+        return violation.getReflexPlayer();
+    }
 
+    @Override
+    public int getVl() {
+        return violation.getVl();
+    }
+
+    @Override
+    public CheckType getCheckType() {
+        return violation.getCheckType();
+    }
 }
