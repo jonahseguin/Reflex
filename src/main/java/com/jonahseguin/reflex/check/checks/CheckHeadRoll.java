@@ -10,6 +10,7 @@ import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketEvent;
 import com.jonahseguin.reflex.Reflex;
 import com.jonahseguin.reflex.check.Check;
+import com.jonahseguin.reflex.check.CheckResult;
 import com.jonahseguin.reflex.check.CheckType;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
 import org.bukkit.entity.Player;
@@ -37,8 +38,10 @@ public class CheckHeadRoll extends Check {
                 if (event.getPacketType() == PacketType.Play.Client.LOOK) {
                     float pitch = event.getPacket().getFloat().readSafely(1);
                     if (pitch > 90.1F || pitch < -90.1F) { //.1 because sometimes head can glitch when spinning fast
-                        if (fail(ap).isCancelled()) {
+                        CheckResult result = fail(ap);
+                        if (result.canCancel()) {
                             event.setCancelled(true);
+                            result.doCancel();
                         }
                     }
                 }

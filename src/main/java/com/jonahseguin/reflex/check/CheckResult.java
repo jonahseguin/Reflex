@@ -28,4 +28,7 @@ public class CheckResult {
         return this;
     }
 
+    public boolean canCancel() {
+        return canCancel;
+    }
 }
