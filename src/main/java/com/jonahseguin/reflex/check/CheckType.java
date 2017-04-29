@@ -4,9 +4,7 @@
 
 package com.jonahseguin.reflex.check;
 
-import com.jonahseguin.reflex.oldchecks.data.CheckData;
-import com.jonahseguin.reflex.oldchecks.data.checkdata.*;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.WordUtils;
 
 /**
  * The CheckType enumerator
@@ -15,67 +13,47 @@ import org.apache.commons.lang.StringUtils;
  */
 public enum CheckType {
 
-    /* DONE */
-    PLAYER_DATA("PlayerData", false, null),
-    VCLIP("VClip", true, DataVClip.class),
-    AUTO_CLICK("AutoClick", true, DataAutoClick.class),
-    REGEN(true, DataRegen.class),
-    HEAD_ROLL("HeadRoll", null),
-    TAB_COMPLETE("TabComplete", null),
-    FAST_BOW("FastBow", false, null),
-    SPEED(false, null),
-    REACH(true, DataReach.class),
-    AURA(false, null),
-    XRAY(null),
-    FLY(true, DataFly.class),
-    AURA_TWITCH("AuraTwitch", false, null),
-    ACCURACY(false, null),
-    MORE_PACKETS("MorePackets", false, null),
-    PHASE(null),
-    CRITICALS(null),
-    SMOOTH_AIM("SmoothAim", null),
-    HEALTH_TAGS("HealthTags", null),
-
-    /* TODO */
-
-    //ones i want to do..
-    TRIGGER_BOT("TriggerBot", null),
-
-    //other ones...
-    ANTI_KNOCKBACK("AntiKnockback", null),
-    NO_SLOW_DOWN("NoSlowDown", null),
-    BAD_PACKETS("BadPackets", null),
-    BED_FLY("BedFly", null),
-    ANGLE(null),
-    NO_SWING(null),
-    HIGH_JUMP("HighJump", null);
+    VCLIP("VClip"),
+    AUTO_CLICK("AutoClick"),
+    REGEN("Regen"),
+    HEAD_ROLL("HeadRoll"),
+    TAB_COMPLETE("TabComplete"),
+    FAST_BOW("FastBow"),
+    SPEED("Speed"),
+    REACH("Reach"),
+    WRONG_TARGET("WrongTarget"),
+    XRAY("Xray"),
+    FLY("Fly"),
+    AURA_TWITCH("AuraTwitch"),
+    ACCURACY("Accuracy"),
+    MORE_PACKETS("MorePackets"),
+    PHASE("Phase"),
+    CRITICALS("Criticals"),
+    SMOOTH_AIM("SmoothAim"),
+    HEALTH_TAGS("HealthTags"),
+    TRIGGER_BOT("TriggerBot"),
+    ANTI_KNOCKBACK("AntiKnockback"),
+    NO_SLOW_DOWN("NoSlowDown"),
+    BAD_PACKETS("BadPackets"),
+    BED_FLY("BedFly"),
+    ANGLE("Angle"),
+    NO_SWING("NoSwing"),
+    HIGH_JUMP("HighJump"),
+    GLIDE("Glide"),
+    FAST_EAT("FastEat"),
+    SELF_HIT("SelfHit"),
+    AUTO_SOUP("AutoSoup"),
+    BLINK("Blink"),
+    ATTACK_SPEED("AttackSpeed");
 
     private final String name;
-    private final boolean capture;
-    private final Class<? extends CheckData> data;
 
-    CheckType(String name, Class<? extends CheckData> data) {
+    CheckType() {
+        this.name = WordUtils.capitalizeFully(super.toString().replaceAll("_", " ")).replaceAll(" ", "");
+    }
+
+    CheckType(String name) {
         this.name = name;
-        this.capture = false;
-        this.data = data;
-    }
-
-    CheckType(String name, boolean capture, Class<? extends CheckData> data) {
-        this.name = name;
-        this.capture = capture;
-        this.data = data;
-    }
-
-    CheckType(boolean capture, Class<? extends CheckData> data) {
-        this.name = StringUtils.capitalize(name().toLowerCase().replaceAll("_", ""));
-        this.capture = capture;
-        this.data = data;
-    }
-
-    CheckType(Class<? extends CheckData> data) {
-        this.name = StringUtils.capitalize(name().toLowerCase().replaceAll("_", ""));
-        this.capture = false;
-        this.data = data;
     }
 
     public static CheckType fromString(String s) {
@@ -89,14 +67,6 @@ public enum CheckType {
 
     public String getName() {
         return name;
-    }
-
-    public boolean isCapture() {
-        return capture;
-    }
-
-    public Class<? extends CheckData> getData() {
-        return data;
     }
 
     @SuppressWarnings("all")
