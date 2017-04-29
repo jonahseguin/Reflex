@@ -2,42 +2,45 @@
 The trainable AntiCheat that learns your rules - for Minecraft Spigot/Bukkit
 
 # About
+Version 1 of The Reflex project was started in May of 2016, with the idea of a lagless solution for Minecraft servers.
+As of April 24, 2017 version 2 has begun development.  A new check system has been introduced and continues to follow the idea of a performance-oriented solution to this day.
 
-The Reflex project was started in May of 2016, with the idea of a lagless solution for Minecraft servers.
+Reflex is still unfinished, and being developed.
 
-For some more details on the project, view https://shawckz.com/product/Reflex and https://shawckz.com/project/reflex
+The lead developer on the project is Jonah Seguin (username Shawckz).
 
 # Checks
 
-** Finished or In progress **
+** Finished **
 
-- Accuracy (TriggerBot variation, Aura variation)
-- Head Roll (Aura variation)
-- More Packets (various hacks)
-- Phase
-- [Unfinished] Smooth Aim (TriggerBot / SmoothAimBot variation)
-- Speed
-- Tab Complete (pick up tab completes that start with .<command>, and other hack client prefixes
-- Xray Statistics (based on ores per hour)
-- [Unfinished] Aura (head snapping, not looking at target)
-- Auto Click (consistent CPS, threshold)
-- [Unfinished] Criticals
-- FastBow //TODO: Can use same method to implement FastEat
-- [Unfinished] Fly
-- [Unfinished] Jesus
-- [Unfinished] Knockback
-- [Unfinished] Reach
-- Regen
+- HeadRoll
 - VClip
+- Regen
+- FastBow
+- TabComplete
+- MorePackets
 
-** Planned **
-- TriggerBot (compare CPS on target vs CPS off target)
+** Unfinished and/or Planned **
+
+- Reach
+- Accuracy
+- Fly
+- Speed
+- AutoClick
+- Sneak
 - AutoSoup
-- AutoPot
+- AttackSpeed
+- AuraTwitch
+- Knockback
+- Jesus
+- Criticals
+- Aura (simple)
+- TriggerBot
+- SmoothAim
+- Phase
+- NoFall
 - Glide
-- Health Tags
-- FastLadder
-- NoSlowDown, NoWeb, FastEat
+
 
 # Contributing
 
