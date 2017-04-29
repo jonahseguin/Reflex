@@ -11,7 +11,6 @@ import com.comphenix.protocol.events.PacketEvent;
 import com.jonahseguin.reflex.Reflex;
 import com.jonahseguin.reflex.event.internal.*;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
-
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -60,8 +59,7 @@ public class PacketListener {
                         event.getPacket().getFloat().write(1, pitch);
 
                         reflexPlayer.getData().setFrom(to);
-                    }
-                    else if (event.getPacketType().equals(PacketType.Play.Client.POSITION)) {
+                    } else if (event.getPacketType().equals(PacketType.Play.Client.POSITION)) {
                         double x = event.getPacket().getDoubles().getValues().get(0);
                         double y = event.getPacket().getDoubles().getValues().get(1);
                         double z = event.getPacket().getDoubles().getValues().get(2);
@@ -85,8 +83,7 @@ public class PacketListener {
                         event.getPacket().getDoubles().write(2, z);
 
                         reflexPlayer.getData().setFrom(to);
-                    }
-                    else if (event.getPacketType().equals(PacketType.Play.Client.LOOK)) {
+                    } else if (event.getPacketType().equals(PacketType.Play.Client.LOOK)) {
                         float yaw = event.getPacket().getFloat().getValues().get(0);
                         float pitch = event.getPacket().getFloat().getValues().get(1);
 

@@ -18,7 +18,9 @@ public class CheckResult {
     private final CheckType checkType;
     private final ReflexPlayer player;
     private final CheckViolation violation;
-    @NonNull private boolean cancelled;
-    @NonNull private boolean canCancel;
+    @NonNull
+    private boolean cancelled;
+    @NonNull
+    private boolean canCancel;
 
 }

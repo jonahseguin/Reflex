@@ -14,7 +14,6 @@ import com.jonahseguin.reflex.backend.configuration.ReflexPerm;
 import com.jonahseguin.reflex.check.CheckType;
 import com.jonahseguin.reflex.oldchecks.trigger.RTrigger;
 import com.jonahseguin.reflex.util.obj.Alert;
-
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
@@ -41,14 +40,12 @@ public class CmdSettings implements RCommand {
                 sender.sendMessage(ChatColor.GRAY + "Updating setting '" + setting + "' for all checks to: " + mode);
                 Alert.staffMsg(RLang.format(ReflexLang.ALERT_PREFIX) + RLang.format(ReflexLang.SETTINGS_ALL, setting, mode, sender.getName()));
             }
-        }
-        else if (args.getArgs().length > 2) {
+        } else if (args.getArgs().length > 2) {
             //One oldchecks
             CheckType checkType = CheckType.fromString(args.getArg(2));
             if (checkType != null) {
                 editSetting(sender, checkType, setting, mode, true);
-            }
-            else {
+            } else {
                 sender.sendMessage(ChatColor.RED + "Invalid oldchecks '" + args.getArg(2) + "'.");
             }
         }
@@ -68,8 +65,7 @@ public class CmdSettings implements RCommand {
                         sender.sendMessage(ChatColor.GRAY + "Updated setting '" + setting + "' for oldchecks '" + check.getName() + "' to: " + mode);
                         Alert.staffMsg(RLang.format(ReflexLang.ALERT_PREFIX) + RLang.format(ReflexLang.SETTINGS, setting, (setValue ? "on" : "off"), check.getName(), sender.getName()));
                     }
-                }
-                else if (setting.equals("cancel")) {
+                } else if (setting.equals("cancel")) {
                     boolean setValue = (mode.equals("toggle") ? !Reflex.getInstance().getTriggerManager().getTrigger(check).isCancel() : mode.equals("on"));
                     Reflex.getInstance().getTriggerManager().getTrigger(check).setCancel(setValue);
                     Reflex.getInstance().getTriggerManager().getTrigger(check).save();
@@ -77,8 +73,7 @@ public class CmdSettings implements RCommand {
                         sender.sendMessage(ChatColor.GRAY + "Updated setting '" + setting + "' for oldchecks '" + check.getName() + "' to: " + mode);
                         Alert.staffMsg(RLang.format(ReflexLang.ALERT_PREFIX) + RLang.format(ReflexLang.SETTINGS, setting, (setValue ? "on" : "off"), check.getName(), sender.getName()));
                     }
-                }
-                else if (setting.equals("freeze")) {
+                } else if (setting.equals("freeze")) {
                     boolean setValue = (mode.equals("toggle") ? !Reflex.getInstance().getTriggerManager().getTrigger(check).isEnabled() : mode.equals("on"));
                     Reflex.getInstance().getTriggerManager().getTrigger(check).setAutobanFreeze(setValue);
                     Reflex.getInstance().getTriggerManager().getTrigger(check).save();
@@ -86,8 +81,7 @@ public class CmdSettings implements RCommand {
                         sender.sendMessage(ChatColor.GRAY + "Updated setting '" + setting + "' for oldchecks '" + check.getName() + "' to: " + mode);
                         Alert.staffMsg(RLang.format(ReflexLang.ALERT_PREFIX) + RLang.format(ReflexLang.SETTINGS, setting, (setValue ? "on" : "off"), check.getName(), sender.getName()));
                     }
-                }
-                else if (setting.equals("autoban")) {
+                } else if (setting.equals("autoban")) {
                     boolean setValue = (mode.equals("toggle") ? !Reflex.getInstance().getTriggerManager().getTrigger(check).isEnabled() : mode.equals("on"));
                     Reflex.getInstance().getTriggerManager().getTrigger(check).setAutoban(setValue);
                     Reflex.getInstance().getTriggerManager().getTrigger(check).save();
@@ -96,12 +90,10 @@ public class CmdSettings implements RCommand {
                         Alert.staffMsg(RLang.format(ReflexLang.ALERT_PREFIX) + RLang.format(ReflexLang.SETTINGS, setting, (setValue ? "on" : "off"), check.getName(), sender.getName()));
                     }
                 }
-            }
-            else {
+            } else {
                 sender.sendMessage(ChatColor.RED + "Mode (argument 1) must be: 'toggle', 'on', or 'off'.");
             }
-        }
-        else {
+        } else {
             sender.sendMessage(ChatColor.RED + "Setting (argument 2) must be: 'enabled', 'cancel', 'freeze', or 'autoban'.");
             return false;
         }

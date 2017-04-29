@@ -5,8 +5,8 @@
 package com.jonahseguin.reflex.util.serial;
 
 import com.jonahseguin.reflex.backend.configuration.AbstractSerializer;
-import com.mongodb.util.JSON;
 import com.jonahseguin.reflex.oldchecks.data.XrayStats;
+import com.mongodb.util.JSON;
 
 import java.util.HashMap;
 import java.util.Map;

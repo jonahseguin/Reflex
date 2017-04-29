@@ -2,10 +2,12 @@
  * Copyright (c) Jonah Seguin (Shawckz) 2017.  You may not copy, re-sell, distribute, modify, or use any code contained in this document or file, collection of documents or files, or project.  Thank you.
  */
 
-package com.jonahseguin.reflex.check;
+package com.jonahseguin.reflex.check.alert;
 
 import com.jonahseguin.reflex.Reflex;
 import com.jonahseguin.reflex.backend.configuration.ReflexPerm;
+import com.jonahseguin.reflex.check.CheckType;
+import com.jonahseguin.reflex.check.CheckViolation;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,6 +15,8 @@ import mkremins.fanciful.FancyMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+
+import java.util.UUID;
 
 /**
  * Created by Jonah Seguin on Mon 2017-04-24 at 20:52.
@@ -27,9 +31,10 @@ public class CheckAlert implements Alert {
     private final int ping;
     @Setter
     private String detail = "";
+    private final AlertType ALERT_TYPE = AlertType.SINGLE;
 
-    public CheckAlert(String id, CheckViolation violation, double tps, int ping) {
-        this.id = id;
+    public CheckAlert(CheckViolation violation, double tps, int ping) {
+        this.id = UUID.randomUUID().toString().toLowerCase();
         this.violation = violation;
         this.tps = tps;
         this.ping = ping;
@@ -73,5 +78,10 @@ public class CheckAlert implements Alert {
     @Override
     public CheckType getCheckType() {
         return violation.getCheckType();
+    }
+
+    @Override
+    public AlertType getAlertType() {
+        return ALERT_TYPE;
     }
 }

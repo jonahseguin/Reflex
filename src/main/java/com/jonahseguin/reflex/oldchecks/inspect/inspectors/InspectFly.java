@@ -5,14 +5,14 @@
 package com.jonahseguin.reflex.oldchecks.inspect.inspectors;
 
 import com.jonahseguin.reflex.Reflex;
-import com.jonahseguin.reflex.oldchecks.inspect.RInspect;
-import com.jonahseguin.reflex.oldchecks.inspect.RInspectResultData;
-import com.jonahseguin.reflex.oldchecks.inspect.RInspectResultType;
 import com.jonahseguin.reflex.backend.configuration.annotations.ConfigData;
 import com.jonahseguin.reflex.check.CheckType;
 import com.jonahseguin.reflex.oldchecks.base.RCheckType;
 import com.jonahseguin.reflex.oldchecks.data.CheckData;
 import com.jonahseguin.reflex.oldchecks.data.checkdata.DataFly;
+import com.jonahseguin.reflex.oldchecks.inspect.RInspect;
+import com.jonahseguin.reflex.oldchecks.inspect.RInspectResultData;
+import com.jonahseguin.reflex.oldchecks.inspect.RInspectResultType;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
 import com.jonahseguin.reflex.util.utility.ReflexException;
 import lombok.Getter;
@@ -51,18 +51,15 @@ public class InspectFly extends RInspect {
                 if (data.getPeakAirTime() >= thresholdAirtime) {
                     return new RInspectResultData(RInspectResultType.FAILED, df.format(data.getPeakAirTime()) + "s in air");
                 }
-            }
-            else if (data.getPeakYps() >= thresholdYps) {
+            } else if (data.getPeakYps() >= thresholdYps) {
                 return new RInspectResultData(RInspectResultType.FAILED, df.format(data.getPeakYps()) + " peak y/sec");
-            }
-            else if (data.getPeakBps() >= thresholdBps) {
+            } else if (data.getPeakBps() >= thresholdBps) {
                 return new RInspectResultData(RInspectResultType.FAILED, df.format(data.getPeakBps()) + " peak blocks/sec");
             }
 
             return new RInspectResultData(RInspectResultType.PASSED);
 
-        }
-        else {
+        } else {
             throw new ReflexException("Cannot inspect data (CheckData type != inspect type)");
         }
     }

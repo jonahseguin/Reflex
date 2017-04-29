@@ -11,15 +11,14 @@ import com.jonahseguin.reflex.util.utility.ReflexException;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import javax.persistence.Transient;
-import java.lang.reflect.Field;
-import java.util.*;
-
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+
+import javax.persistence.Transient;
+import java.lang.reflect.Field;
+import java.util.*;
 
 @Getter
 @Setter
@@ -221,8 +220,7 @@ public class PlayerData extends CheckData {
     public boolean isSolid(Material material) {
         if (material.isSolid() || SOLID_MATERIAL_WHITELIST.contains(material)) {
             return true;
-        }
-        else if (SPECIAL_SOLID_MATERIAL_ID_WHITELIST.contains(material.getId())) {
+        } else if (SPECIAL_SOLID_MATERIAL_ID_WHITELIST.contains(material.getId())) {
             return true;
         }
         return false;
@@ -275,8 +273,7 @@ public class PlayerData extends CheckData {
                     lf.set(this, data.get(f));
                 }
             }
-        }
-        catch (NoSuchFieldException | IllegalAccessException ex) {
+        } catch (NoSuchFieldException | IllegalAccessException ex) {
             throw new ReflexException("Could not load data into checkdata", ex);
         }
     }
@@ -291,8 +288,7 @@ public class PlayerData extends CheckData {
                     data.put(f, f.get(this));
                 }
             }
-        }
-        catch (IllegalAccessException ex) {
+        } catch (IllegalAccessException ex) {
             throw new ReflexException("Could not fetch data from checkdata", ex);
         }
 

@@ -4,8 +4,8 @@
 
 package com.jonahseguin.reflex.event.api;
 
-import com.jonahseguin.reflex.oldchecks.base.Check;
 import com.jonahseguin.reflex.check.CheckType;
+import com.jonahseguin.reflex.oldchecks.base.Check;
 import com.jonahseguin.reflex.oldchecks.base.RCheckType;
 
 /**

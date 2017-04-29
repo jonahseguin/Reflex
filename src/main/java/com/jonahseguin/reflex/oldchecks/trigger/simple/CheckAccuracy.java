@@ -5,21 +5,20 @@
 package com.jonahseguin.reflex.oldchecks.trigger.simple;
 
 import com.jonahseguin.reflex.Reflex;
+import com.jonahseguin.reflex.backend.configuration.annotations.ConfigData;
 import com.jonahseguin.reflex.check.CheckType;
+import com.jonahseguin.reflex.event.internal.ReflexUseEntityEvent;
 import com.jonahseguin.reflex.oldchecks.base.RCheckType;
 import com.jonahseguin.reflex.oldchecks.trigger.RTrigger;
-import com.jonahseguin.reflex.backend.configuration.annotations.ConfigData;
-import com.jonahseguin.reflex.event.internal.ReflexUseEntityEvent;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.text.DecimalFormat;
-
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+
+import java.text.DecimalFormat;
 
 @Getter
 @Setter
@@ -71,20 +70,17 @@ public class CheckAccuracy extends RTrigger {
                             fail(rp, df.format(accuracy * 100) + "% accuracy");
                             rp.setAlertVL(getCheckType(), 0);
                         }
-                    }
-                    else {
+                    } else {
                         rp.modifyAlertVL(getCheckType(), -1);
                     }
                 }
 
-            }
-            else {
+            } else {
                 //Not looking at target
                 miss(rp);
             }
 
-        }
-        else {
+        } else {
             //Missed
             miss(rp);
         }
@@ -94,11 +90,9 @@ public class CheckAccuracy extends RTrigger {
     public double calculateAccuracy(int hits, int misses) {
         if (hits == 0 && misses == 0) {
             return 0.0D;
-        }
-        else if (hits == 0) {
+        } else if (hits == 0) {
             return 0.0D;
-        }
-        else if (misses == 0) {
+        } else if (misses == 0) {
             return 1.0D;
         }
         return hits / misses;

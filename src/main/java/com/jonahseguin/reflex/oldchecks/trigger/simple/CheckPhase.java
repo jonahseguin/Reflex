@@ -6,16 +6,13 @@ package com.jonahseguin.reflex.oldchecks.trigger.simple;
 
 import com.google.common.collect.Sets;
 import com.jonahseguin.reflex.Reflex;
+import com.jonahseguin.reflex.backend.configuration.annotations.ConfigData;
 import com.jonahseguin.reflex.check.CheckType;
 import com.jonahseguin.reflex.oldchecks.base.RCheckType;
 import com.jonahseguin.reflex.oldchecks.trigger.RTrigger;
-import com.jonahseguin.reflex.backend.configuration.annotations.ConfigData;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.Set;
-
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -26,6 +23,8 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.material.Gate;
+
+import java.util.Set;
 
 /**
  * Created by jonahseguin on 2016-07-28.
@@ -72,8 +71,7 @@ public class CheckPhase extends RTrigger {
             this.translucentMaterials = materials;
 
             save();
-        }
-        else {
+        } else {
             translucentMaterialsString.forEach(s -> translucentMaterials.add(Material.valueOf(s)));
         }
     }
@@ -152,8 +150,7 @@ public class CheckPhase extends RTrigger {
             if (fail(rp, "Type 1").isCancelled()) {
                 if (rp.getData().getSetBack() != null) {
                     e.setTo(rp.getData().getSetBack());
-                }
-                else {
+                } else {
                     e.setTo(from);
                 }
             }
@@ -169,8 +166,7 @@ public class CheckPhase extends RTrigger {
                     e.setTo(from);
                 }
             }
-        }
-        else if (fromy > plusb) {
+        } else if (fromy > plusb) {
             if (toy <= plusb) {
                 if (fail(rp, "Type 2B").isCancelled()) {
                     e.setTo(from);

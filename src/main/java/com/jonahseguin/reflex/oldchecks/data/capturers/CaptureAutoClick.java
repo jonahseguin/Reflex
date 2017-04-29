@@ -12,7 +12,6 @@ import com.jonahseguin.reflex.oldchecks.data.checkdata.DataAutoClick;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
 import lombok.Getter;
 import lombok.Setter;
-
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;

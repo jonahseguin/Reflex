@@ -5,13 +5,12 @@
 package com.jonahseguin.reflex.oldchecks.trigger.triggers;
 
 import com.jonahseguin.reflex.Reflex;
+import com.jonahseguin.reflex.backend.configuration.annotations.ConfigData;
 import com.jonahseguin.reflex.check.CheckType;
 import com.jonahseguin.reflex.oldchecks.base.RCheckType;
 import com.jonahseguin.reflex.oldchecks.trigger.RTrigger;
-import com.jonahseguin.reflex.backend.configuration.annotations.ConfigData;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
 import lombok.Getter;
-
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -76,8 +75,7 @@ public class TriggerCriticals extends RTrigger {
                 }
 
                 rp.getData().setLastCriticalY(p.getLocation().getY());
-            }
-            else {
+            } else {
                 //Not critical hit
                 rp.getData().setConsecutiveCriticalHits(rp.getData().getConsecutiveHits() - nonCriticalPenalty);
                 if (rp.getData().getConsecutiveCriticalHits() < 0) {

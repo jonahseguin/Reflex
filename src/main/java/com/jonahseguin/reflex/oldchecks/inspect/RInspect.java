@@ -5,9 +5,9 @@
 package com.jonahseguin.reflex.oldchecks.inspect;
 
 import com.jonahseguin.reflex.Reflex;
-import com.jonahseguin.reflex.oldchecks.base.Check;
 import com.jonahseguin.reflex.backend.configuration.annotations.ConfigData;
 import com.jonahseguin.reflex.check.CheckType;
+import com.jonahseguin.reflex.oldchecks.base.Check;
 import com.jonahseguin.reflex.oldchecks.base.RCheckType;
 import com.jonahseguin.reflex.oldchecks.data.CheckData;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;

@@ -5,16 +5,15 @@
 package com.jonahseguin.reflex.oldchecks.trigger.triggers;
 
 import com.jonahseguin.reflex.Reflex;
-import com.jonahseguin.reflex.util.obj.TrigUtils;
 import com.jonahseguin.reflex.backend.configuration.annotations.ConfigData;
 import com.jonahseguin.reflex.check.CheckType;
+import com.jonahseguin.reflex.event.internal.ReflexUseEntityEvent;
 import com.jonahseguin.reflex.oldchecks.base.RCheckType;
 import com.jonahseguin.reflex.oldchecks.trigger.RTrigger;
-import com.jonahseguin.reflex.event.internal.ReflexUseEntityEvent;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
+import com.jonahseguin.reflex.util.obj.TrigUtils;
 import lombok.Getter;
 import lombok.Setter;
-
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -59,8 +58,7 @@ public class TriggerAura extends RTrigger {
                         triggerLater(rp, result -> {
 
                         });
-                    }
-                    else {
+                    } else {
                         rp.modifyAlertVL(getCheckType(), (passPenalty * -1));
                     }
 

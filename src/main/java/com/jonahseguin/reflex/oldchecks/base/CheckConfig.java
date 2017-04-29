@@ -6,18 +6,17 @@ package com.jonahseguin.reflex.oldchecks.base;
 
 import com.jonahseguin.reflex.Reflex;
 import com.jonahseguin.reflex.backend.configuration.AbstractSerializer;
+import com.jonahseguin.reflex.backend.configuration.annotations.ConfigData;
 import com.jonahseguin.reflex.backend.configuration.annotations.ConfigSerializer;
 import com.jonahseguin.reflex.check.CheckType;
-import com.jonahseguin.reflex.backend.configuration.annotations.ConfigData;
+import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.configuration.file.YamlConfiguration;
 
 /**
  * Superclass of all Checks, sorted into directories based on their RCheckType
@@ -49,15 +48,13 @@ public class CheckConfig {
         if (!file.exists()) {
             try {
                 file.createNewFile();
-            }
-            catch (IOException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }
         try {
             config.load(file);
-        }
-        catch (IOException | InvalidConfigurationException ex) {
+        } catch (IOException | InvalidConfigurationException ex) {
             ex.printStackTrace();
         }
     }
@@ -116,15 +113,12 @@ public class CheckConfig {
                     try {
                         config.addDefault(path, saveValue);
                         config.set(path, saveValue);
-                    }
-                    catch (Exception e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
-                }
-                catch (IllegalAccessException e) {
+                } catch (IllegalAccessException e) {
                     e.printStackTrace();
-                }
-                catch (InstantiationException e) {
+                } catch (InstantiationException e) {
                     e.printStackTrace();
                 }
             }
@@ -135,8 +129,7 @@ public class CheckConfig {
     public void saveConfig() {
         try {
             config.save(file);
-        }
-        catch (IOException ex) {
+        } catch (IOException ex) {
             ex.printStackTrace();
         }
     }
@@ -182,21 +175,17 @@ public class CheckConfig {
                         try {
                             if (f.getClass().isInstance(check)) {
                                 f.set(check, config.get(path));
-                            }
-                            else {
+                            } else {
                                 f.set(this, config.get(path));
                             }
-                        }
-                        catch (IllegalAccessException e) {
+                        } catch (IllegalAccessException e) {
                             e.printStackTrace();
                         }
-                    }
-                    else {
+                    } else {
                         try {
                             AbstractSerializer serializer = (AbstractSerializer) f.getAnnotation(ConfigSerializer.class).serializer().newInstance();
                             f.set(this, serializer.fromString(config.get(path)));
-                        }
-                        catch (InstantiationException | IllegalAccessException e) {
+                        } catch (InstantiationException | IllegalAccessException e) {
                             e.printStackTrace();
                         }
                     }

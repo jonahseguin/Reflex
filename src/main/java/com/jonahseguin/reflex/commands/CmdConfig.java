@@ -12,7 +12,6 @@ import com.jonahseguin.reflex.backend.configuration.RLang;
 import com.jonahseguin.reflex.backend.configuration.ReflexLang;
 import com.jonahseguin.reflex.backend.configuration.ReflexPerm;
 import com.jonahseguin.reflex.util.obj.Alert;
-
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
@@ -44,8 +43,7 @@ public class CmdConfig implements RCommand {
         if (success) {
             sender.sendMessage(ChatColor.GRAY + "Updated config value '" + key + "' to '" + value + "'");
             Alert.staffMsg(RLang.format(ReflexLang.ALERT_PREFIX) + RLang.format(ReflexLang.CONFIG_SET, key, value, sender.getName()));
-        }
-        else {
+        } else {
             sender.sendMessage(ChatColor.RED + "Failed to set config value '" + key + "' to '" + value + "'.  (type is not string?  path not in config?)");
         }
 

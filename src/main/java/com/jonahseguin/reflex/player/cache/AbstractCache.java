@@ -4,18 +4,11 @@
 
 package com.jonahseguin.reflex.player.cache;
 
-import com.jonahseguin.reflex.event.api.ReflexPlayerSaveEvent;
 import com.jonahseguin.reflex.backend.database.mongo.AutoMongo;
 import com.jonahseguin.reflex.event.api.ReflexPlayerLoadEvent;
+import com.jonahseguin.reflex.event.api.ReflexPlayerSaveEvent;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
 import org.bson.Document;
-
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
-
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -25,6 +18,12 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 /**
  * Created by Jonah on 6/11/2015.
@@ -56,21 +55,18 @@ public abstract class AbstractCache implements Listener {
      * If they are not in the database or the name is null, will return null.
      *
      * @param name The Player's name to get a ReflexPlayer instance of
-     *
      * @return The ReflexPlayer, null if not found in database && cache
-     *
+     * <p>
      * Please note that the name is case sensitive.
      */
     protected ReflexPlayer getBasePlayer(String name) {
         if (players.containsKey(name)) {
             return players.get(name);
-        }
-        else {
+        } else {
             ReflexPlayer cp = loadReflexPlayer(name);
             if (cp != null) {
                 return cp;
-            }
-            else {
+            } else {
                 return null;
             }
         }
@@ -79,14 +75,12 @@ public abstract class AbstractCache implements Listener {
     protected ReflexPlayer getBasePlayerByUniqueId(String uuid) {
         if (playersUUID.containsKey(uuid)) {
             return playersUUID.get(uuid);
-        }
-        else {
+        } else {
             ReflexPlayer cp = loadReflexPlayerByUniqueId(uuid);
             if (cp != null) {
                 put(cp);
                 return cp;
-            }
-            else {
+            } else {
                 return null;
             }
         }
@@ -124,7 +118,6 @@ public abstract class AbstractCache implements Listener {
      * Gets if the player by name is in the local cache
      *
      * @param name The Player's name
-     *
      * @return true if in the cache, false if not
      */
     public boolean contains(String name) {
@@ -156,8 +149,7 @@ public abstract class AbstractCache implements Listener {
         ReflexPlayer cp = loadReflexPlayer(e.getName());
         if (cp != null) {
             put(cp);
-        }
-        else {
+        } else {
             cp = create(name, uuid);
             put(cp);
             cp.update();

@@ -8,7 +8,6 @@ import com.jonahseguin.reflex.Reflex;
 import com.jonahseguin.reflex.check.CheckType;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
 import com.jonahseguin.reflex.util.utility.ReflexException;
-
 import org.bukkit.scheduler.BukkitRunnable;
 
 public abstract class CaptureTask {
@@ -41,20 +40,17 @@ public abstract class CaptureTask {
                                 CheckData data = player.getCapturePlayer().getData(checkType);
                                 player.getCapturePlayer().stopCapturing(checkType);
                                 onFinish(data);
-                            }
-                            else {
+                            } else {
                                 throw new ReflexException("Finished CaptureTask but player was not capturing");
                             }
                         }
                         cancel();
                     }
                 }.runTaskLaterAsynchronously(Reflex.getInstance(), (seconds * 20));
-            }
-            else {
+            } else {
                 throw new ReflexException("Cannot start CaptureTask (player is already capturing)");
             }
-        }
-        else {
+        } else {
             throw new ReflexException("Cannot start CaptureTask (task already running)");
         }
     }
@@ -67,12 +63,10 @@ public abstract class CaptureTask {
                 player.getCapturePlayer().stopCapturing(checkType);
                 onFinish(data);
                 return data;
-            }
-            else {
+            } else {
                 throw new ReflexException("Cannot stop CaptureTask (player is not capturing)");
             }
-        }
-        else {
+        } else {
             throw new ReflexException("Cannot stop CaptureTask (not running)");
         }
     }

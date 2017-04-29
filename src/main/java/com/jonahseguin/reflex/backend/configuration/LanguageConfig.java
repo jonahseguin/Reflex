@@ -6,12 +6,11 @@ package com.jonahseguin.reflex.backend.configuration;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.ChatColor;
+import org.bukkit.plugin.Plugin;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import org.bukkit.ChatColor;
-import org.bukkit.plugin.Plugin;
 
 @Getter
 @Setter

@@ -6,14 +6,13 @@ package com.jonahseguin.reflex.menu;
 
 import com.jonahseguin.reflex.Reflex;
 import com.jonahseguin.reflex.oldchecks.base.RViolation;
-import com.jonahseguin.reflex.util.obj.ItemBuilder;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
+import com.jonahseguin.reflex.util.obj.ItemBuilder;
 import com.jonahseguin.reflex.util.obj.TimeUtil;
 import ninja.amp.ampmenus.events.ItemClickEvent;
 import ninja.amp.ampmenus.items.BackItem;
 import ninja.amp.ampmenus.items.CloseItem;
 import ninja.amp.ampmenus.menus.ItemMenu;
-
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.SkullType;

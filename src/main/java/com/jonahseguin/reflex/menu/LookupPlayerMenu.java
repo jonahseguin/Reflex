@@ -5,15 +5,14 @@
 package com.jonahseguin.reflex.menu;
 
 import com.jonahseguin.reflex.Reflex;
-import com.jonahseguin.reflex.util.obj.ItemBuilder;
 import com.jonahseguin.reflex.check.CheckType;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
+import com.jonahseguin.reflex.util.obj.ItemBuilder;
 import ninja.amp.ampmenus.events.ItemClickEvent;
 import ninja.amp.ampmenus.items.BackItem;
 import ninja.amp.ampmenus.items.CloseItem;
 import ninja.amp.ampmenus.items.StaticMenuItem;
 import ninja.amp.ampmenus.menus.ItemMenu;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;

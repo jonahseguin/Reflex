@@ -9,8 +9,8 @@ import com.jonahseguin.reflex.check.CheckType;
 import com.jonahseguin.reflex.event.api.ReflexDataCaptureEvent;
 import com.jonahseguin.reflex.oldchecks.base.RTimer;
 import com.jonahseguin.reflex.oldchecks.data.capturers.*;
-import com.jonahseguin.reflex.util.utility.ReflexCaller;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
+import com.jonahseguin.reflex.util.utility.ReflexCaller;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;

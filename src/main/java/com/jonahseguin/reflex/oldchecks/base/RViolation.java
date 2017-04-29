@@ -25,9 +25,9 @@ import java.util.UUID;
  *
  * @author Shawckz
  *         Shawckz.com
- *
- * An RViolation represents a violation or failure made by a Check, Simple oldchecks, or inspection result.
- * All RViolations are saved, and are not always 'failures': When an inspection is PASSED, the violation is also saved with the result.
+ *         <p>
+ *         An RViolation represents a violation or failure made by a Check, Simple oldchecks, or inspection result.
+ *         All RViolations are saved, and are not always 'failures': When an inspection is PASSED, the violation is also saved with the result.
  */
 
 @CollectionName(name = "reflex_violations")

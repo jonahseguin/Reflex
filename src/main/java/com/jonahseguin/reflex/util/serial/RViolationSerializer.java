@@ -24,8 +24,7 @@ public class RViolationSerializer extends AbstractSerializer<RViolation> {
             AutoMongo mongo = RViolation.selectOne(new Document("_id", s), RViolation.class);
             if (mongo != null && mongo instanceof RViolation) {
                 return (RViolation) mongo;
-            }
-            else {
+            } else {
                 throw new ReflexException("RViolation serializer could not find (or is not same type) violation with ID " + s);
             }
         }

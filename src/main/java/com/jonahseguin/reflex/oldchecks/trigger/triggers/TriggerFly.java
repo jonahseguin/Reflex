@@ -5,14 +5,13 @@
 package com.jonahseguin.reflex.oldchecks.trigger.triggers;
 
 import com.jonahseguin.reflex.Reflex;
+import com.jonahseguin.reflex.backend.configuration.annotations.ConfigData;
 import com.jonahseguin.reflex.check.CheckType;
 import com.jonahseguin.reflex.oldchecks.base.RCheckType;
 import com.jonahseguin.reflex.oldchecks.trigger.RTrigger;
-import com.jonahseguin.reflex.backend.configuration.annotations.ConfigData;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
 import lombok.Getter;
 import lombok.Setter;
-
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerMoveEvent;
 
@@ -44,15 +43,13 @@ public class TriggerFly extends RTrigger {
 
         if (e.getTo().getY() >= e.getFrom().getY()) {
             rp.getData().setHasPositiveVelocity(true);
-        }
-        else {
+        } else {
             rp.getData().setHasPositiveVelocity(false);
         }
 
         if (rp.getData().isOnGround()) {
             rp.getData().setLastGroundTime(System.currentTimeMillis());
-        }
-        else {
+        } else {
             if (rp.getData().getLastGroundTimeUpdate() != -1 && ((System.currentTimeMillis() - rp.getData().getLastGroundTimeUpdate()) / 1000 < triggerAirTime)) {
                 if (rp.getData().getLastGroundTime() != -1) {
                     int airTime = (int) (System.currentTimeMillis() - rp.getData().getLastGroundTime()) / 1000;
@@ -61,8 +58,7 @@ public class TriggerFly extends RTrigger {
                             triggerLater(rp, result -> {
                             });
                         }
-                    }
-                    else {
+                    } else {
                         if (airTime >= thresholdAirTime) {
                             fail(rp, "> " + thresholdAirTime + "s in air");
                         }

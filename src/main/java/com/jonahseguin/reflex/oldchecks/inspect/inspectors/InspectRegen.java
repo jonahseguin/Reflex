@@ -70,8 +70,7 @@ public class InspectRegen extends RInspect {
                                 return new RInspectResultData(RInspectResultType.FAILED, "peak " + peakHps + " hps");
                             }
                         }
-                    }
-                    else {
+                    } else {
                         if (peakHps >= maxHps) {
                             return new RInspectResultData(RInspectResultType.FAILED, "peak " + peakHps + " hps");
                         }
@@ -84,8 +83,7 @@ public class InspectRegen extends RInspect {
             }
 
             return new RInspectResultData(RInspectResultType.PASSED, "peak " + peakHps + " hps");
-        }
-        else {
+        } else {
             throw new ReflexException("Cannot inspect data (CheckData type != inspect type)");
         }
     }

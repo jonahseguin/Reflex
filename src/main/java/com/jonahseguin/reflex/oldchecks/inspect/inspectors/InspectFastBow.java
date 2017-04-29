@@ -5,16 +5,16 @@
 package com.jonahseguin.reflex.oldchecks.inspect.inspectors;
 
 import com.jonahseguin.reflex.Reflex;
+import com.jonahseguin.reflex.backend.configuration.annotations.ConfigData;
 import com.jonahseguin.reflex.check.CheckType;
 import com.jonahseguin.reflex.oldchecks.base.RCheckType;
+import com.jonahseguin.reflex.oldchecks.data.CheckData;
+import com.jonahseguin.reflex.oldchecks.data.PlayerData;
 import com.jonahseguin.reflex.oldchecks.inspect.RInspect;
 import com.jonahseguin.reflex.oldchecks.inspect.RInspectResultData;
 import com.jonahseguin.reflex.oldchecks.inspect.RInspectResultType;
-import com.jonahseguin.reflex.util.utility.ReflexException;
-import com.jonahseguin.reflex.backend.configuration.annotations.ConfigData;
-import com.jonahseguin.reflex.oldchecks.data.CheckData;
-import com.jonahseguin.reflex.oldchecks.data.PlayerData;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
+import com.jonahseguin.reflex.util.utility.ReflexException;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -60,16 +60,14 @@ public class InspectFastBow extends RInspect {
                         if (pingOffset <= pingThreshold && tpsOffset <= tpsThreshold) {
                             return new RInspectResultData(RInspectResultType.FAILED);
                         }
-                    }
-                    else {
+                    } else {
                         //They have ideal ping and tps
                         return new RInspectResultData(RInspectResultType.FAILED);
                     }
                 }
             }
             return new RInspectResultData(RInspectResultType.PASSED);
-        }
-        else {
+        } else {
             throw new ReflexException("Cannot inspect data (CheckData type != inspect type)");
         }
     }

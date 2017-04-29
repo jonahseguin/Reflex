@@ -71,8 +71,7 @@ public class InspectReach extends RInspect {
 
 
             return new RInspectResultData(RInspectResultType.PASSED, "peak range " + data.getPeakReach());
-        }
-        else {
+        } else {
             throw new ReflexException("Cannot inspect data (CheckData type != inspect type)");
         }
     }

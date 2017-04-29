@@ -5,18 +5,17 @@
 package com.jonahseguin.reflex.backend.configuration;
 
 
+import com.jonahseguin.reflex.backend.configuration.annotations.ConfigData;
 import com.jonahseguin.reflex.backend.configuration.annotations.ConfigSerializer;
 import com.jonahseguin.reflex.util.obj.RReflecUtil;
-import com.jonahseguin.reflex.backend.configuration.annotations.ConfigData;
 import lombok.Getter;
+import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.Plugin;
 
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
-
-import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.plugin.Plugin;
 
 
 @Getter
@@ -48,15 +47,13 @@ public class Configuration {
         if (!file.exists()) {
             try {
                 file.createNewFile();
-            }
-            catch (IOException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }
         try {
             config.load(file);
-        }
-        catch (IOException | InvalidConfigurationException e) {
+        } catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();
         }
     }
@@ -76,16 +73,14 @@ public class Configuration {
                     }
                     config.addDefault(configData.value(), saveValue);
                     config.set(configData.value(), saveValue);
-                }
-                catch (IllegalAccessException | InstantiationException e) {
+                } catch (IllegalAccessException | InstantiationException e) {
                     e.printStackTrace();
                 }
             }
         }
         try {
             config.save(file);
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -102,23 +97,18 @@ public class Configuration {
                         val = RReflecUtil.toObject(f.getType(), value);
                         try {
                             f.set(this, val);
-                        }
-                        catch (IllegalAccessException expected) {
+                        } catch (IllegalAccessException expected) {
                             return false;
                         }
-                    }
-                    else {
+                    } else {
                         try {
                             AbstractSerializer serializer = (AbstractSerializer) f.getAnnotation(ConfigSerializer.class).serializer().newInstance();
                             f.set(this, serializer.fromString(value));
-                        }
-                        catch (InstantiationException expected) {
+                        } catch (InstantiationException expected) {
                             return false;
-                        }
-                        catch (IllegalAccessException expected) {
+                        } catch (IllegalAccessException expected) {
                             return false;
-                        }
-                        catch (Exception expected) {
+                        } catch (Exception expected) {
                             return false;
                         }
                     }
@@ -140,20 +130,16 @@ public class Configuration {
                     if (!f.isAnnotationPresent(ConfigSerializer.class)) {
                         try {
                             f.set(this, config.get(configData.value()));
-                        }
-                        catch (IllegalAccessException e) {
+                        } catch (IllegalAccessException e) {
                             e.printStackTrace();
                         }
-                    }
-                    else {
+                    } else {
                         try {
                             AbstractSerializer serializer = (AbstractSerializer) f.getAnnotation(ConfigSerializer.class).serializer().newInstance();
                             f.set(this, serializer.fromString(config.get(configData.value())));
-                        }
-                        catch (InstantiationException e) {
+                        } catch (InstantiationException e) {
                             e.printStackTrace();
-                        }
-                        catch (IllegalAccessException e) {
+                        } catch (IllegalAccessException e) {
                             e.printStackTrace();
                         }
                     }

@@ -2,8 +2,9 @@
  * Copyright (c) Jonah Seguin (Shawckz) 2017.  You may not copy, re-sell, distribute, modify, or use any code contained in this document or file, collection of documents or files, or project.  Thank you.
  */
 
-package com.jonahseguin.reflex.check;
+package com.jonahseguin.reflex.check.alert;
 
+import com.jonahseguin.reflex.check.CheckType;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
 
 import java.util.UUID;
@@ -12,13 +13,13 @@ import java.util.UUID;
  * Created by Jonah Seguin on Fri 2017-04-28 at 01:27.
  * Project: Reflex
  */
-public class GroupedAlert implements Alert{
+public class GroupedAlert implements Alert {
 
     private final ReflexPlayer reflexPlayer;
     private final AlertGroup alertGroup;
     private final int vl;
     private final String id;
-    private final AlertType alertType = AlertType.GROUPED;
+    private final AlertType ALERT_TYPE = AlertType.GROUPED;
 
     public GroupedAlert(AlertGroup alertGroup) {
         this.reflexPlayer = alertGroup.getReflexPlayer();
@@ -59,6 +60,6 @@ public class GroupedAlert implements Alert{
 
     @Override
     public AlertType getAlertType() {
-        return alertType;
+        return ALERT_TYPE;
     }
 }

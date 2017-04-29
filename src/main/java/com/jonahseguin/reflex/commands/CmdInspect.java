@@ -7,15 +7,14 @@ package com.jonahseguin.reflex.commands;
 import com.jonahseguin.reflex.Reflex;
 import com.jonahseguin.reflex.backend.command.RCmd;
 import com.jonahseguin.reflex.backend.command.RCmdArgs;
-import com.jonahseguin.reflex.check.CheckType;
-import com.jonahseguin.reflex.oldchecks.inspect.RInspectResult;
 import com.jonahseguin.reflex.backend.command.RCommand;
 import com.jonahseguin.reflex.backend.configuration.RLang;
 import com.jonahseguin.reflex.backend.configuration.ReflexLang;
 import com.jonahseguin.reflex.backend.configuration.ReflexPerm;
+import com.jonahseguin.reflex.check.CheckType;
+import com.jonahseguin.reflex.oldchecks.inspect.RInspectResult;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
 import com.jonahseguin.reflex.util.obj.Alert;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -51,8 +50,7 @@ public class CmdInspect implements RCommand {
                         int seconds;
                         try {
                             seconds = Integer.parseInt(sSeconds);
-                        }
-                        catch (NumberFormatException expected) {
+                        } catch (NumberFormatException expected) {
                             sender.sendMessage(ChatColor.RED + "Seconds must be an integer.");
                             return;
                         }
@@ -67,16 +65,13 @@ public class CmdInspect implements RCommand {
                                 RLang.send(sender, ReflexLang.INSPECT_MANUAL_RESULT, reflexPlayer.getName(), result.getData().getType().toString());
                             });
 
-                        }
-                        else {
+                        } else {
                             sender.sendMessage(ChatColor.RED + "That oldchecks does not support data capture/inspection.");
                         }
-                    }
-                    else {
+                    } else {
                         RLang.send(sender, ReflexLang.CHECK_NOT_FOUND, sCheck);
                     }
-                }
-                else {
+                } else {
                     RLang.send(sender, ReflexLang.PLAYER_NOT_FOUND, sTargetFinal);
                 }
             }

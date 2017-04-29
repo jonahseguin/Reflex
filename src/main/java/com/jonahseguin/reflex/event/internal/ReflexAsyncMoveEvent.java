@@ -7,7 +7,6 @@ package com.jonahseguin.reflex.event.internal;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
 import lombok.Getter;
 import lombok.Setter;
-
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 

@@ -12,7 +12,6 @@ import com.jonahseguin.reflex.oldchecks.base.RTimer;
 import com.jonahseguin.reflex.oldchecks.trigger.RTrigger;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
 import com.jonahseguin.reflex.util.obj.Lag;
-
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerMoveEvent;

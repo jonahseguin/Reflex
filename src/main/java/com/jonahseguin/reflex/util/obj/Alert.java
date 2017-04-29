@@ -5,23 +5,22 @@
 package com.jonahseguin.reflex.util.obj;
 
 import com.jonahseguin.reflex.Reflex;
-import com.jonahseguin.reflex.check.CheckType;
-import com.jonahseguin.reflex.oldchecks.base.RViolation;
-import com.jonahseguin.reflex.oldchecks.inspect.RInspectResult;
-import com.jonahseguin.reflex.util.utility.ReflexException;
 import com.jonahseguin.reflex.backend.configuration.RLang;
 import com.jonahseguin.reflex.backend.configuration.ReflexLang;
 import com.jonahseguin.reflex.backend.configuration.ReflexPerm;
+import com.jonahseguin.reflex.check.CheckType;
+import com.jonahseguin.reflex.oldchecks.base.RViolation;
+import com.jonahseguin.reflex.oldchecks.inspect.RInspectResult;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
+import com.jonahseguin.reflex.util.utility.ReflexException;
 import lombok.Getter;
 import lombok.Setter;
 import mkremins.fanciful.FancyMessage;
-
-import java.util.UUID;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+
+import java.util.UUID;
 
 /**
  * Created by Jonah Seguin on 5/9/2016.
@@ -86,45 +85,38 @@ public class Alert {
             String format;
             if (detail != null) {
                 format = RLang.format(ReflexLang.ALERT_INSPECT_DETAIL, violator.getName(), checkType.getName(), detail, vl + "");
-            }
-            else {
+            } else {
                 format = RLang.format(ReflexLang.ALERT_INSPECT, violator.getName(), checkType.getName(), vl + "");
             }
             message.then(format)
                     .tooltip(ChatColor.translateAlternateColorCodes('&', "&7[Inspect &cFail&7] &eClick for more information"))
                     .command("/reflex lookup inspection " + inspectResult.getId());
-        }
-        else if (type == Type.INSPECT_PASS) {
+        } else if (type == Type.INSPECT_PASS) {
             if (inspectResult == null) {
                 throw new ReflexException("Cannot send inspect pass alert because inspectResult is null");
             }
             String format;
             if (detail != null) {
                 format = RLang.format(ReflexLang.ALERT_INSPECT_PASS_DETAIL, violator.getName(), checkType.getName(), detail);
-            }
-            else {
+            } else {
                 format = RLang.format(ReflexLang.ALERT_INSPECT_PASS, violator.getName(), checkType.getName());
             }
             message.then(format)
                     .tooltip(ChatColor.translateAlternateColorCodes('&', "&7[Inspect &aPass&7] &eClick for more information"))
                     .command("/reflex lookup inspection " + inspectResult.getId());
-        }
-        else if (type == Type.TRIGGER) {
+        } else if (type == Type.TRIGGER) {
             message.then(RLang.format(ReflexLang.ALERT_TRIGGER, violator.getName(), checkType.getName()));
-        }
-        else if (type == Type.FAIL) {
+        } else if (type == Type.FAIL) {
             if (detail == null) {
                 message.then(RLang.format(ReflexLang.ALERT_FAIL, violator.getName(), checkType.getName(), vl + ""))
                         .tooltip(ChatColor.translateAlternateColorCodes('&', "&7[Fail] &eClick for more information"))
                         .command("/reflex lookup violation " + violation.getId());
-            }
-            else {
+            } else {
                 message.then(RLang.format(ReflexLang.ALERT_FAIL_DETAIL, violator.getName(), checkType.getName(), detail, vl + ""))
                         .tooltip(ChatColor.translateAlternateColorCodes('&', "&7[Fail] &eClick for more information"))
                         .command("/reflex lookup violation " + violation.getId());
             }
-        }
-        else {
+        } else {
             throw new ReflexException("Unknown Alert Type " + type.toString());
         }
         staffMsg(message);

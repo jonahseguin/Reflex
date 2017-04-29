@@ -9,7 +9,6 @@ import com.jonahseguin.reflex.backend.configuration.annotations.ConfigData;
 import com.jonahseguin.reflex.check.CheckType;
 import com.jonahseguin.reflex.player.reflex.ReflexCache;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
-
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
@@ -19,13 +18,13 @@ import org.bukkit.event.Listener;
  * The Basic, bare-bones Check superclass
  * The 3 different "Check Types" extend this class: Trigger, Capture (data), and Inspect
  * Basic Flowchart for this is Trigger a capture -> Capture period, collect data -> Inspect data collected from capture period
- *
+ * <p>
  * This also implements Bukkit's Listener and is automatically registered when the oldchecks is set to enabled.
  * And vice-versa when the oldchecks is disabled.
- *
+ * <p>
  * CheckType representing the type of Check it is; or the Hack it is checking for
  * RCheckType representing which of the 3 Check Types or stages it is, Trigger, Capture, or Inspect
- *
+ * <p>
  * Each type has their own Manager and implementation in their respective packages
  */
 public abstract class Check extends CheckConfig implements Listener {
@@ -84,8 +83,7 @@ public abstract class Check extends CheckConfig implements Listener {
     public final void setEnabled(final boolean enabled) {
         if (enabled) {
             Bukkit.getServer().getPluginManager().registerEvents(this, instance);
-        }
-        else {
+        } else {
             HandlerList.unregisterAll(this);
         }
         this.enabled = enabled;

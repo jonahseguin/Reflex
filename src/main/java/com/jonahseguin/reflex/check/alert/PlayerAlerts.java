@@ -2,8 +2,9 @@
  * Copyright (c) Jonah Seguin (Shawckz) 2017.  You may not copy, re-sell, distribute, modify, or use any code contained in this document or file, collection of documents or files, or project.  Thank you.
  */
 
-package com.jonahseguin.reflex.check;
+package com.jonahseguin.reflex.check.alert;
 
+import com.jonahseguin.reflex.check.CheckType;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
 
 import java.util.HashMap;
@@ -25,8 +26,7 @@ public class PlayerAlerts {
     public AlertGroup getAlertGroup(CheckType checkType) {
         if (alertGroups.containsKey(checkType)) {
             return alertGroups.get(checkType);
-        }
-        else{
+        } else {
             return alertGroups.put(checkType, new AlertGroup(player, checkType));
         }
     }

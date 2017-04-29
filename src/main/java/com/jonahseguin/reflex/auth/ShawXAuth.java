@@ -5,10 +5,9 @@
 package com.jonahseguin.reflex.auth;
 
 import com.jonahseguin.reflex.Reflex;
-import com.jonahseguin.reflex.util.utility.ReflexException;
 import com.jonahseguin.reflex.backend.configuration.Configuration;
 import com.jonahseguin.reflex.backend.configuration.annotations.ConfigData;
-
+import com.jonahseguin.reflex.util.utility.ReflexException;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -76,8 +75,7 @@ public class ShawXAuth extends Configuration {
                         Bukkit.getLogger().info("Authenticated successfully.  Thank you.");
                         Bukkit.getLogger().info("-------------------------------------");
                         Bukkit.getLogger().info(" ");
-                    }
-                    else {
+                    } else {
                         Bukkit.getLogger().info(" ");
                         Bukkit.getLogger().info("-------------------------------------");
                         Bukkit.getLogger().info("Reflex - v" + Reflex.getInstance().getDescription().getVersion() + " by Shawckz");

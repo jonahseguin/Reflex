@@ -7,12 +7,11 @@ package com.jonahseguin.reflex.oldchecks.data;
 import com.jonahseguin.reflex.Reflex;
 import com.jonahseguin.reflex.check.CheckType;
 import com.jonahseguin.reflex.oldchecks.trigger.simple.CheckXray;
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
 
 public class XrayStats {
 

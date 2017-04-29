@@ -18,15 +18,14 @@ import org.bukkit.event.Listener;
 /**
  * Created by Jonah Seguin on Mon 2017-04-24 at 19:53.
  * Project: Reflex
- *
+ * <p>
  * The Check superclass;  All checks inherit from this class
- *
+ * <p>
  * Implements Bukkit's Listener and is automatically registered/unregistered on enable/disable
- *
+ * <p>
  * Managed in the CheckManager
- *
+ * <p>
  * Each check has a CheckType
- *
  */
 public abstract class Check extends CheckConfig implements Listener {
 
@@ -90,15 +89,14 @@ public abstract class Check extends CheckConfig implements Listener {
     public final void setEnabled(final boolean enabled) {
         if (enabled) {
             Bukkit.getServer().getPluginManager().registerEvents(this, instance);
-        }
-        else {
+        } else {
             HandlerList.unregisterAll(this);
         }
         this.enabled = enabled;
     }
 
     public CheckResult fail(ReflexPlayer player, String... detail) {
-        if(getReflexConfig().isSuppressAlertsOnAutoban() && getReflex().getAutobanManager().hasAutoban(player.getName())) {
+        if (getReflexConfig().isSuppressAlertsOnAutoban() && getReflex().getAutobanManager().hasAutoban(player.getName())) {
             return new CheckResult(getCheckType(), player, null, false, cancel);
         }
 

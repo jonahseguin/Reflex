@@ -24,8 +24,7 @@ public class XListenAuth implements Emitter.Listener {
             if (result.equalsIgnoreCase("true")) {
                 autheer.authorize(socketAuth);
                 autheer.onAuth(true);
-            }
-            else {
+            } else {
                 autheer.onAuth(false);
             }
         }

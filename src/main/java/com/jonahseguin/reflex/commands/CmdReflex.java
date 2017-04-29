@@ -8,20 +8,19 @@ import com.jonahseguin.reflex.Reflex;
 import com.jonahseguin.reflex.backend.command.RCmd;
 import com.jonahseguin.reflex.backend.command.RCmdArgs;
 import com.jonahseguin.reflex.backend.command.RCmdWrapper;
-import com.jonahseguin.reflex.oldchecks.trigger.RTrigger;
 import com.jonahseguin.reflex.backend.command.RCommand;
 import com.jonahseguin.reflex.backend.configuration.RLang;
 import com.jonahseguin.reflex.backend.configuration.ReflexLang;
 import com.jonahseguin.reflex.backend.configuration.ReflexPerm;
+import com.jonahseguin.reflex.oldchecks.trigger.RTrigger;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
 import com.jonahseguin.reflex.util.obj.Lag;
 import mkremins.fanciful.FancyMessage;
 import net.md_5.bungee.api.ChatColor;
-
-import java.util.Arrays;
-
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import java.util.Arrays;
 
 public class CmdReflex implements RCommand {
 
@@ -49,11 +48,9 @@ public class CmdReflex implements RCommand {
             String s = args.getArg(0);
             if (s.equalsIgnoreCase("on")) {
                 toSet = true;
-            }
-            else if (s.equalsIgnoreCase("off")) {
+            } else if (s.equalsIgnoreCase("off")) {
                 toSet = false;
-            }
-            else {
+            } else {
                 p.sendMessage(ChatColor.RED + "Incorrect usage: Argument 1 must be 'on' or 'off'.");
                 return;
             }
@@ -62,8 +59,7 @@ public class CmdReflex implements RCommand {
         rp.setAlertsEnabled(toSet);
         if (toSet) {
             RLang.send(p, ReflexLang.ALERTS_ENABLED);
-        }
-        else {
+        } else {
             RLang.send(p, ReflexLang.ALERTS_DISABLED);
         }
 
@@ -78,8 +74,7 @@ public class CmdReflex implements RCommand {
             if (args.getArgs().length > 0) {
                 msg(sender, " ");
                 msg(sender, "&cWhoops, looks like the sub-command you tried doesn't exist.  Type /reflex for commands.");
-            }
-            else {
+            } else {
                 msg(sender, "&9Commands &7(click for details)");
                 msg(sender, new FancyMessage(ChatColor.translateAlternateColorCodes('&', "&7- /reflex &9status"))
                         .tooltip(ChatColor.GRAY + "Click for command details")
@@ -180,8 +175,7 @@ public class CmdReflex implements RCommand {
             msg(sender, "&7Permission: &e" + wrapper.getPermission());
             msg(sender, "&7Player only: &e" + wrapper.isPlayerOnly());
             RLang.send(sender, ReflexLang.HEADER_FOOTER);
-        }
-        else {
+        } else {
             msg(sender, ChatColor.RED + "No reflex-command registered with key '" + cmd + "'.");
         }
 
@@ -194,8 +188,7 @@ public class CmdReflex implements RCommand {
                 fm.then(color("&a" + check.getCheckType().getName() + "&7, "))
                         .tooltip(color("&eClick to toggle &9enabled &7[" + check.getCheckType().getName() + "]"))
                         .command("/reflex settings toggle enabled " + check.getCheckType().getName());
-            }
-            else {
+            } else {
                 fm.then(color("&c" + check.getCheckType().getName() + "&7, "))
                         .tooltip(color("&eClick to toggle &9enabled &7[" + check.getCheckType().getName() + "]"))
                         .command("/reflex settings toggle enabled " + check.getCheckType().getName());
@@ -209,8 +202,7 @@ public class CmdReflex implements RCommand {
         for (RTrigger check : Reflex.getInstance().getTriggerManager().getTriggers().values()) {
             if (check.isCancel()) {
                 s += "&a" + check.getCheckType().getName() + "&7, ";
-            }
-            else {
+            } else {
                 s += "&c" + check.getCheckType().getName() + "&7, ";
             }
         }
@@ -225,8 +217,7 @@ public class CmdReflex implements RCommand {
         for (RTrigger check : Reflex.getInstance().getTriggerManager().getTriggers().values()) {
             if (check.isAutoban()) {
                 s += "&a" + check.getCheckType().getName() + "&7, ";
-            }
-            else {
+            } else {
                 s += "&c" + check.getCheckType().getName() + "&7, ";
             }
         }
@@ -241,8 +232,7 @@ public class CmdReflex implements RCommand {
         for (RTrigger check : Reflex.getInstance().getTriggerManager().getTriggers().values()) {
             if (check.isAutobanFreeze()) {
                 s += "&a" + check.getCheckType().getName() + "&7, ";
-            }
-            else {
+            } else {
                 s += "&c" + check.getCheckType().getName() + "&7, ";
             }
         }

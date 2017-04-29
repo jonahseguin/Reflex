@@ -17,25 +17,25 @@ import com.jonahseguin.reflex.backend.configuration.ReflexLang;
 import com.jonahseguin.reflex.backend.database.DBManager;
 import com.jonahseguin.reflex.ban.AutobanManager;
 import com.jonahseguin.reflex.ban.ReflexBanManager;
+import com.jonahseguin.reflex.check.alert.AlertManager;
 import com.jonahseguin.reflex.commands.*;
+import com.jonahseguin.reflex.listener.BanListener;
+import com.jonahseguin.reflex.listener.BukkitListener;
+import com.jonahseguin.reflex.listener.PacketListener;
 import com.jonahseguin.reflex.oldchecks.base.RDataCache;
 import com.jonahseguin.reflex.oldchecks.base.ReflexTimer;
 import com.jonahseguin.reflex.oldchecks.data.DataCaptureManager;
 import com.jonahseguin.reflex.oldchecks.inspect.InspectManager;
 import com.jonahseguin.reflex.oldchecks.trigger.TriggerManager;
-import com.jonahseguin.reflex.listener.BanListener;
-import com.jonahseguin.reflex.listener.BukkitListener;
-import com.jonahseguin.reflex.listener.PacketListener;
 import com.jonahseguin.reflex.player.reflex.ReflexCache;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
 import com.jonahseguin.reflex.util.obj.Lag;
 import com.jonahseguin.reflex.util.utility.ReflexException;
 import ninja.amp.ampmenus.MenuListener;
-
-import java.util.Set;
-
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+
+import java.util.Set;
 
 /**
  * Reflex - AntiCheat for Minecraft Servers
@@ -61,6 +61,7 @@ public class Reflex extends AuthMe {
     private AutobanManager autobanManager;
     private ReflexBanManager banManager;
     private RCommandHandler commandHandler;
+    private AlertManager alertManager;
     private boolean en = false;
 
     public static String getPrefix() {
@@ -139,8 +140,7 @@ public class Reflex extends AuthMe {
                 ReflexPlayer cp = cache.loadReflexPlayer(pl.getName());
                 if (cp != null) {
                     cache.put(cp);
-                }
-                else {
+                } else {
                     cp = cache.create(pl.getName(), pl.getUniqueId().toString());
                     cache.put(cp);
                     cp.update();
@@ -150,6 +150,7 @@ public class Reflex extends AuthMe {
             violationCache = new RDataCache();
 
             autobanManager = new AutobanManager();
+            alertManager = new AlertManager(instance);
 
             reflexTimer = new ReflexTimer(instance);
 
@@ -236,5 +237,9 @@ public class Reflex extends AuthMe {
 
     public AutobanManager getAutobanManager() {
         return autobanManager;
+    }
+
+    public AlertManager getAlertManager() {
+        return alertManager;
     }
 }

@@ -6,7 +6,6 @@ package com.jonahseguin.reflex.event.api;
 
 import com.jonahseguin.reflex.player.cache.AbstractCache;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
-
 import org.bukkit.entity.Player;
 
 /**

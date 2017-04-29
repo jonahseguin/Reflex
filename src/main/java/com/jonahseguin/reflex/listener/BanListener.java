@@ -8,12 +8,11 @@ import com.jonahseguin.reflex.Reflex;
 import com.jonahseguin.reflex.backend.configuration.RLang;
 import com.jonahseguin.reflex.backend.configuration.ReflexLang;
 import com.jonahseguin.reflex.ban.ReflexBan;
-
-import java.util.Calendar;
-
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
+
+import java.util.Calendar;
 
 public class BanListener implements Listener {
 
@@ -41,8 +40,7 @@ public class BanListener implements Listener {
                     String expires = "" + month + "/" + day + " @ " + hour + ":" + minute + " " + (am ? "AM" : "PM") + "&7 (" + cal.getTimeZone().getDisplayName() + ")";
 
                     e.setKickMessage(RLang.format(ReflexLang.BANNED, ban.getViolation().getCheckType().getName(), expires));
-                }
-                else if (ban.isConfirmed() && ban.isBannedCorrectly()) {
+                } else if (ban.isConfirmed() && ban.isBannedCorrectly()) {
                     //Permanent
                     e.setKickMessage(RLang.format(ReflexLang.BANNED_CONFIRMED, ban.getViolation().getCheckType().getName()));
                 }

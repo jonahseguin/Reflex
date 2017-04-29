@@ -6,21 +6,20 @@ package com.jonahseguin.reflex.oldchecks.inspect;
 
 import com.jonahseguin.reflex.Reflex;
 import com.jonahseguin.reflex.check.CheckType;
+import com.jonahseguin.reflex.event.api.ReflexInspectEvent;
 import com.jonahseguin.reflex.oldchecks.base.RCheckType;
 import com.jonahseguin.reflex.oldchecks.base.RTimer;
 import com.jonahseguin.reflex.oldchecks.base.RViolation;
+import com.jonahseguin.reflex.oldchecks.data.CheckData;
 import com.jonahseguin.reflex.oldchecks.inspect.inspectors.*;
+import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
 import com.jonahseguin.reflex.util.obj.Alert;
 import com.jonahseguin.reflex.util.utility.ReflexException;
-import com.jonahseguin.reflex.oldchecks.data.CheckData;
-import com.jonahseguin.reflex.event.api.ReflexInspectEvent;
-import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
+import org.bukkit.Bukkit;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
-
-import org.bukkit.Bukkit;
-import org.bukkit.scheduler.BukkitRunnable;
 
 public class InspectManager {
 
@@ -76,18 +75,15 @@ public class InspectManager {
                 if (resultData.getDetail() != null) {
                     alert.setDetail(resultData.getDetail());
                 }
-            }
-            else {
+            } else {
                 alert = new Alert(player, checkType, Alert.Type.FAIL, violation, player.getVL(inspector.getCheckType()));
                 if (resultData.getDetail() != null) {
                     alert.setDetail(resultData.getDetail());
                 }
             }
-        }
-        else if (resultType == RInspectResultType.FAILED && instance.getAutobanManager().hasAutoban(player.getName())) {
+        } else if (resultType == RInspectResultType.FAILED && instance.getAutobanManager().hasAutoban(player.getName())) {
             throw new ReflexException("Should not fail oldchecks while having an autoban");
-        }
-        else if (resultType == RInspectResultType.PASSED) {
+        } else if (resultType == RInspectResultType.PASSED) {
             violation = new RViolation(player.getUniqueId(), data, checkType, RCheckType.INSPECT, player.getVL(inspector.getCheckType()));
             instance.getViolationCache().cacheViolation(violation);
 
@@ -97,8 +93,7 @@ public class InspectManager {
                     alert.setDetail(resultData.getDetail());
                 }
             }
-        }
-        else {
+        } else {
             throw new ReflexException("Unknown action (ResultType) for inspectInternal: " + resultType.toString());
         }
 

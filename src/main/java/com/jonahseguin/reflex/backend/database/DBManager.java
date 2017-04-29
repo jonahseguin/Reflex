@@ -5,18 +5,17 @@
 package com.jonahseguin.reflex.backend.database;
 
 import com.jonahseguin.reflex.Reflex;
+import com.jonahseguin.reflex.backend.configuration.Configuration;
+import com.jonahseguin.reflex.backend.configuration.annotations.ConfigData;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoCredential;
 import com.mongodb.MongoException;
 import com.mongodb.ServerAddress;
 import com.mongodb.client.MongoDatabase;
-import com.jonahseguin.reflex.backend.configuration.Configuration;
-import com.jonahseguin.reflex.backend.configuration.annotations.ConfigData;
-
-import java.util.Arrays;
-
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
+
+import java.util.Arrays;
 
 
 /**
@@ -89,14 +88,12 @@ public class DBManager extends Configuration {
         try {
             if (!useAuth) {
                 mongoClient = new MongoClient(new ServerAddress(host, port));
-            }
-            else {
+            } else {
                 MongoCredential credential = MongoCredential.createCredential(username, authDatabaseName, password.toCharArray());
                 mongoClient = new MongoClient(new ServerAddress(host, port), Arrays.asList(credential));
             }
             db = mongoClient.getDatabase(databaseName);
-        }
-        catch (MongoException ex) {
+        } catch (MongoException ex) {
             Bukkit.getLogger().info(" ");
             Bukkit.getLogger().info("-------------------------------------");
             Bukkit.getLogger().info("Reflex - v" + Reflex.getInstance().getDescription().getVersion() + " by Shawckz");

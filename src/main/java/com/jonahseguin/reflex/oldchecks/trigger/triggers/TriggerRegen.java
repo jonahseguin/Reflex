@@ -13,7 +13,6 @@ import com.jonahseguin.reflex.oldchecks.trigger.RTrigger;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
 import lombok.Getter;
 import lombok.Setter;
-
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
@@ -42,7 +41,7 @@ public class TriggerRegen extends RTrigger implements RTimer {
             if (e.getRegainReason() == EntityRegainHealthEvent.RegainReason.SATIATED) {
                 ReflexPlayer p = getPlayer(pl);
                 p.getData().setHealthPerSecond(p.getData().getHealthPerSecond() + e.getAmount());
-                if(p.getData().getHealthPerSecond() >= threshold) {
+                if (p.getData().getHealthPerSecond() >= threshold) {
                     if (this.isCancel()) {
                         e.setCancelled(true);
                     }

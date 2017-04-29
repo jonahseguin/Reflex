@@ -13,14 +13,13 @@ import com.jonahseguin.reflex.oldchecks.data.checkdata.DataReach;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.AbstractMap;
-
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_7_R4.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+
+import java.util.AbstractMap;
 
 @Getter
 @Setter

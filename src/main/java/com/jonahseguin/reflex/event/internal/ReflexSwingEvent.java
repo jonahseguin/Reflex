@@ -5,7 +5,6 @@
 package com.jonahseguin.reflex.event.internal;
 
 import lombok.Getter;
-
 import org.bukkit.entity.Player;
 
 @Getter

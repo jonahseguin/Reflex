@@ -6,25 +6,24 @@ package com.jonahseguin.reflex.ban;
 
 import com.jonahseguin.reflex.Reflex;
 import com.jonahseguin.reflex.backend.configuration.RLang;
+import com.jonahseguin.reflex.backend.configuration.ReflexLang;
 import com.jonahseguin.reflex.check.CheckType;
 import com.jonahseguin.reflex.event.api.ReflexBanEvent;
 import com.jonahseguin.reflex.oldchecks.base.RViolation;
+import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
 import com.jonahseguin.reflex.util.obj.Alert;
 import com.jonahseguin.reflex.util.obj.AutobanMethod;
 import com.jonahseguin.reflex.util.obj.Freeze;
 import com.jonahseguin.reflex.util.utility.ReflexException;
-import com.jonahseguin.reflex.backend.configuration.ReflexLang;
-import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
 import lombok.Getter;
 import lombok.Setter;
 import mkremins.fanciful.FancyMessage;
-
-import java.util.Calendar;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+
+import java.util.Calendar;
 
 @Getter
 @Setter
@@ -90,8 +89,7 @@ public class Autoban {
                                 .command("/reflex cancel " + player.getName());
                         Alert.staffMsg(fm);
                     }
-                }
-                else {
+                } else {
                     ban();
                     cancel();
                 }
@@ -122,8 +120,7 @@ public class Autoban {
             format = format.replace("{1}", check.getName());
 
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), format);
-        }
-        else if (Reflex.getInstance().getReflexConfig().getAutobanMethod() == AutobanMethod.REFLEX) {
+        } else if (Reflex.getInstance().getReflexConfig().getAutobanMethod() == AutobanMethod.REFLEX) {
             //Reflex ban internally
 
             int seconds = Reflex.getInstance().getReflexConfig().getAutobanTimeMinutes() * 60;
@@ -159,8 +156,7 @@ public class Autoban {
                     }
                 }
             }
-        }
-        else {
+        } else {
             throw new ReflexException("Unsupported ban method " + Reflex.getInstance().getReflexConfig().getAutobanMethod().toString());
         }
 
@@ -173,6 +169,7 @@ public class Autoban {
 
     /**
      * Cancel the autoban
+     *
      * @param cancelled whether or not to cancel it
      */
     public void setCancelled(boolean cancelled) {

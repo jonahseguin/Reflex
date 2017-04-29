@@ -6,7 +6,6 @@ package com.jonahseguin.reflex.event.api;
 
 import com.jonahseguin.reflex.ban.ReflexBan;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
-
 import org.bukkit.event.Cancellable;
 
 /**

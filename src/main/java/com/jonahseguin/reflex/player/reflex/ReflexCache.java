@@ -5,15 +5,14 @@
 package com.jonahseguin.reflex.player.reflex;
 
 import com.jonahseguin.reflex.Reflex;
-import com.jonahseguin.reflex.player.cache.AbstractCache;
 import com.jonahseguin.reflex.backend.configuration.RLang;
 import com.jonahseguin.reflex.backend.configuration.ReflexLang;
 import com.jonahseguin.reflex.backend.configuration.ReflexPerm;
+import com.jonahseguin.reflex.player.cache.AbstractCache;
+import org.bukkit.entity.Player;
 
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import org.bukkit.entity.Player;
 
 /**
  * Created by Jonah on 6/15/2015.

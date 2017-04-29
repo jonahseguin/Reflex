@@ -4,11 +4,11 @@
 
 package com.jonahseguin.reflex.ban;
 
+import com.jonahseguin.reflex.backend.database.mongo.AutoMongo;
+import com.jonahseguin.reflex.backend.database.mongo.annotations.CollectionName;
 import com.jonahseguin.reflex.backend.database.mongo.annotations.DatabaseSerializer;
 import com.jonahseguin.reflex.backend.database.mongo.annotations.MongoColumn;
 import com.jonahseguin.reflex.oldchecks.base.RViolation;
-import com.jonahseguin.reflex.backend.database.mongo.AutoMongo;
-import com.jonahseguin.reflex.backend.database.mongo.annotations.CollectionName;
 import com.jonahseguin.reflex.util.serial.RViolationSerializer;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

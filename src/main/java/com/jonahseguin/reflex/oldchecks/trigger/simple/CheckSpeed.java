@@ -5,24 +5,23 @@
 package com.jonahseguin.reflex.oldchecks.trigger.simple;
 
 import com.jonahseguin.reflex.Reflex;
+import com.jonahseguin.reflex.backend.configuration.annotations.ConfigData;
 import com.jonahseguin.reflex.check.CheckType;
 import com.jonahseguin.reflex.event.internal.ReflexAsyncMoveEvent;
 import com.jonahseguin.reflex.event.internal.ReflexVelocityEvent;
 import com.jonahseguin.reflex.oldchecks.base.RCheckType;
 import com.jonahseguin.reflex.oldchecks.trigger.RTrigger;
-import com.jonahseguin.reflex.backend.configuration.annotations.ConfigData;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.text.DecimalFormat;
-
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+
+import java.text.DecimalFormat;
 
 @Getter
 @Setter
@@ -125,8 +124,7 @@ public class CheckSpeed extends RTrigger {
         ReflexPlayer rp = e.getReflexPlayer();
         if (rp.getData().isOnGround(e.getTo())) {
             rp.getData().setBhopDelay(0);
-        }
-        else {
+        } else {
             rp.getData().setBhopDelay(rp.getData().getBhopDelay() + 1);
         }
         if (p.getVehicle() == null && !p.getAllowFlight()) {

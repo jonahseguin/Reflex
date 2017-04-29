@@ -4,8 +4,8 @@
 
 package com.jonahseguin.reflex.backend.database.mongo.serial;
 
-import com.mongodb.util.JSON;
 import com.jonahseguin.reflex.backend.configuration.AbstractSerializer;
+import com.mongodb.util.JSON;
 
 import java.util.HashMap;
 

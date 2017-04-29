@@ -10,7 +10,6 @@ import com.jonahseguin.reflex.util.obj.AutobanMethod;
 import com.jonahseguin.reflex.util.serial.AutobanMethodSerializer;
 import lombok.Getter;
 import lombok.Setter;
-
 import org.bukkit.plugin.Plugin;
 
 @Getter
@@ -28,8 +27,12 @@ public class ReflexConfig extends Configuration {
     private String autobanConsoleCommand = "ban {0} [Reflex] Hacking ({1})";
     @ConfigData("ban.tempban-time-minutes")
     private int autobanTimeMinutes = 1440;//1 day
-    @ConfigData("alerts.supress-on-autoban")
+    @ConfigData("alerts.suppress-on-autoban")
     private boolean suppressAlertsOnAutoban = true;
+    @ConfigData("alerts.grouping-interval-seconds")
+    private int alertGroupingIntervalSeconds = 5;
+    @ConfigData("alerts.max-alerts-per-player-per-second")
+    private int maxAlertsPPPS = 2;
     @ConfigData("violation.cache-expiry-minutes")
     private int violationCacheExpiryMinutes = 120; // 2 hours
 

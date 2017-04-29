@@ -8,11 +8,10 @@ import com.jonahseguin.reflex.Reflex;
 import com.jonahseguin.reflex.auth.listen.XListenAuth;
 import io.socket.client.IO;
 import io.socket.client.Socket;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class XSocketAuth {
 
@@ -30,8 +29,7 @@ public class XSocketAuth {
         if (x != null) {
             error("Attempted to create XSocketAuth externally");
             throw new AuthException("Attempted to create XSocketAuth externally!");
-        }
-        else {
+        } else {
             x = this;
         }
     }
@@ -52,8 +50,7 @@ public class XSocketAuth {
             }
             ShawXAuth.log("Connection successful, waiting for response");
 
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             r.auth(false);
             error("x0.1-2 Unable to connect to authentication service");
         }
@@ -93,8 +90,7 @@ public class XSocketAuth {
                 }
             });
 
-        }
-        catch (JSONException ex) {
+        } catch (JSONException ex) {
             error("x0.1-1 Exception while authenticating");
         }
     }

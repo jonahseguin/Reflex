@@ -5,11 +5,10 @@
 package com.jonahseguin.reflex.oldchecks.base;
 
 import com.jonahseguin.reflex.Reflex;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import org.bukkit.scheduler.BukkitRunnable;
 
 public class RDataCache {
 

@@ -4,8 +4,8 @@
 
 package com.jonahseguin.reflex.check;
 
-import com.jonahseguin.reflex.oldchecks.data.checkdata.*;
 import com.jonahseguin.reflex.oldchecks.data.CheckData;
+import com.jonahseguin.reflex.oldchecks.data.checkdata.*;
 import org.apache.commons.lang.StringUtils;
 
 /**

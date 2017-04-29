@@ -6,11 +6,11 @@ package com.jonahseguin.reflex.oldchecks.trigger;
 
 import com.google.common.collect.Maps;
 import com.jonahseguin.reflex.Reflex;
+import com.jonahseguin.reflex.check.CheckType;
 import com.jonahseguin.reflex.oldchecks.base.RTimer;
 import com.jonahseguin.reflex.oldchecks.trigger.simple.*;
 import com.jonahseguin.reflex.oldchecks.trigger.triggers.*;
 import com.jonahseguin.reflex.util.utility.ReflexException;
-import com.jonahseguin.reflex.check.CheckType;
 
 import java.util.concurrent.ConcurrentMap;
 

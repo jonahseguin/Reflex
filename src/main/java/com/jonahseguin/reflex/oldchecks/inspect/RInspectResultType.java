@@ -13,8 +13,7 @@ public enum RInspectResultType {
     public Alert.Type translateToAlertType() {
         if (this == PASSED) {
             return Alert.Type.INSPECT_PASS;
-        }
-        else {
+        } else {
             return Alert.Type.INSPECT_FAIL;
         }
     }

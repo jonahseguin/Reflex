@@ -8,12 +8,11 @@ import com.jonahseguin.reflex.Reflex;
 import com.jonahseguin.reflex.check.CheckType;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
 import com.jonahseguin.reflex.util.utility.ReflexException;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 
 public class RCapturePlayer {
 
@@ -38,8 +37,7 @@ public class RCapturePlayer {
             try {
                 CheckData data = checkType.getData().newInstance();
                 capturing.put(checkType, data);
-            }
-            catch (IllegalAccessException | InstantiationException ex) {
+            } catch (IllegalAccessException | InstantiationException ex) {
                 throw new ReflexException("Could not instantiate CheckData for capture", ex);
             }
         }

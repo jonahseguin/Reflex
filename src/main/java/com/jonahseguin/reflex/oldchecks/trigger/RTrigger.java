@@ -5,23 +5,22 @@
 package com.jonahseguin.reflex.oldchecks.trigger;
 
 import com.jonahseguin.reflex.Reflex;
-import com.jonahseguin.reflex.event.api.ReflexCancelEvent;
-import com.jonahseguin.reflex.event.api.ReflexTriggerEvent;
-import com.jonahseguin.reflex.oldchecks.base.Check;
-import com.jonahseguin.reflex.oldchecks.base.RViolation;
-import com.jonahseguin.reflex.oldchecks.inspect.RInspectResult;
-import com.jonahseguin.reflex.oldchecks.inspect.RInspectResultType;
 import com.jonahseguin.reflex.backend.configuration.annotations.ConfigData;
 import com.jonahseguin.reflex.ban.Autoban;
 import com.jonahseguin.reflex.check.CheckType;
+import com.jonahseguin.reflex.event.api.ReflexCancelEvent;
+import com.jonahseguin.reflex.event.api.ReflexTriggerEvent;
+import com.jonahseguin.reflex.oldchecks.base.Check;
 import com.jonahseguin.reflex.oldchecks.base.RCheckType;
+import com.jonahseguin.reflex.oldchecks.base.RViolation;
+import com.jonahseguin.reflex.oldchecks.inspect.RInspectResult;
+import com.jonahseguin.reflex.oldchecks.inspect.RInspectResultType;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
 import com.jonahseguin.reflex.util.obj.Alert;
 import com.jonahseguin.reflex.util.utility.ReflexCaller;
 import com.jonahseguin.reflex.util.utility.ReflexException;
 import lombok.Getter;
 import lombok.Setter;
-
 import org.bukkit.Bukkit;
 
 @Getter
@@ -70,13 +69,11 @@ public abstract class RTrigger extends Check {
                         });
                     }
                 }
-            }
-            else {
+            } else {
                 throw new ReflexException("This trigger must call trigger instead of triggerLater (" + getCheckType().getName() + ")");
             }
             return cancel;
-        }
-        else {
+        } else {
             return false;
         }
     }
@@ -90,16 +87,13 @@ public abstract class RTrigger extends Check {
                     RInspectResult inspectResult = getReflex().getInspectManager().inspect(player, getCheckType(), player.getData().copy(), 1);
                     handleInspect(player, inspectResult, false);
                     return new RTriggerResult(this.cancel && inspectResult.getData().getType() == RInspectResultType.FAILED, this.cancel);
-                }
-                else {
+                } else {
                     return new RTriggerResult(false, this.cancel);
                 }
-            }
-            else {
+            } else {
                 return new RTriggerResult(false, false);
             }
-        }
-        else {
+        } else {
             throw new ReflexException("This trigger must call triggerLater instead of trigger (" + getCheckType().getName() + ")");
         }
     }
@@ -117,8 +111,7 @@ public abstract class RTrigger extends Check {
                     autoban.run();
                 }
             }
-        }
-        else {
+        } else {
             int vl = getReflex().getInspectManager().getInspector(getCheckType()).getAutobanVL();
 
             if (player.getVL(getCheckType()) > vl) {

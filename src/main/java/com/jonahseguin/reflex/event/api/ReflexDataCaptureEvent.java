@@ -5,10 +5,9 @@
 package com.jonahseguin.reflex.event.api;
 
 import com.jonahseguin.reflex.check.CheckType;
-import com.jonahseguin.reflex.oldchecks.trigger.RTrigger;
 import com.jonahseguin.reflex.oldchecks.data.RDataCapture;
+import com.jonahseguin.reflex.oldchecks.trigger.RTrigger;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
-
 import org.bukkit.event.Cancellable;
 
 /**

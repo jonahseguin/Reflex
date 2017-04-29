@@ -8,16 +8,15 @@ import com.jonahseguin.reflex.Reflex;
 import com.jonahseguin.reflex.oldchecks.data.RDataCapture;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
 import com.jonahseguin.reflex.util.obj.Lag;
+import org.bukkit.craftbukkit.v1_7_R4.entity.CraftPlayer;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import org.bukkit.craftbukkit.v1_7_R4.entity.CraftPlayer;
-
 /**
  * The ReflexTimer automatically calls a method in any registered oldchecks that implements RTimer, once a second.
  * Async.
- *
+ * <p>
  * Also updates the Ping and Lag variables within all player's data
  */
 public class ReflexTimer implements Runnable {
@@ -49,7 +48,7 @@ public class ReflexTimer implements Runnable {
     /**
      * Handles Timer Checks
      * They run once every second, this runnable is started in the main Reflex.java class
-     *  ** ASYNC **
+     * ** ASYNC **
      */
     public void run() {
         //Update ping and lag before doing timer checks
@@ -66,8 +65,7 @@ public class ReflexTimer implements Runnable {
                 if (check.isEnabled()) {
                     timer.runTimer();
                 }
-            }
-            else {
+            } else {
                 timer.runTimer();
             }
         }

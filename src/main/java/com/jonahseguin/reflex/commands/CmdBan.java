@@ -7,16 +7,15 @@ package com.jonahseguin.reflex.commands;
 import com.jonahseguin.reflex.Reflex;
 import com.jonahseguin.reflex.backend.command.RCmd;
 import com.jonahseguin.reflex.backend.command.RCmdArgs;
-import com.jonahseguin.reflex.ban.ReflexBan;
-import com.jonahseguin.reflex.event.api.ReflexUnbanEvent;
 import com.jonahseguin.reflex.backend.command.RCommand;
 import com.jonahseguin.reflex.backend.configuration.RLang;
 import com.jonahseguin.reflex.backend.configuration.ReflexLang;
 import com.jonahseguin.reflex.backend.configuration.ReflexPerm;
+import com.jonahseguin.reflex.ban.ReflexBan;
 import com.jonahseguin.reflex.event.api.ReflexConfirmBanEvent;
+import com.jonahseguin.reflex.event.api.ReflexUnbanEvent;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
 import com.jonahseguin.reflex.util.obj.Alert;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -48,12 +47,10 @@ public class CmdBan implements RCommand {
                             Alert.staffMsg(RLang.format(ReflexLang.ALERT_PREFIX) + RLang.format(ReflexLang.UNBANNED, rp.getName(), sender.getName()));
                             sender.sendMessage(ChatColor.GRAY + "Unbanned " + rp.getName() + ".");
                         }
-                    }
-                    else {
+                    } else {
                         sender.sendMessage(ChatColor.RED + "Player '" + rp.getName() + "' has not been banned by Reflex.");
                     }
-                }
-                else {
+                } else {
                     RLang.send(sender, ReflexLang.PLAYER_NOT_FOUND_DATABASE, target);
                 }
             }
@@ -69,8 +66,7 @@ public class CmdBan implements RCommand {
         final boolean confirm;
         try {
             confirm = Boolean.parseBoolean(args.getArg(1));
-        }
-        catch (Exception expected) {
+        } catch (Exception expected) {
             sender.sendMessage(ChatColor.RED + "The confirmed result must be a boolean (true/false)");
             return;
         }
@@ -93,12 +89,10 @@ public class CmdBan implements RCommand {
                             Alert.staffMsg(RLang.format(ReflexLang.ALERT_PREFIX) + RLang.format(ReflexLang.CONFIRM_BAN, player.getName(), sender.getName(), (confirm ? "&2correct" : "&4false")));
                             sender.sendMessage(ChatColor.GRAY + "Confirmed ban on " + player.getName() + " as " + (confirm ? ChatColor.DARK_GREEN + "correct" : ChatColor.DARK_RED + "false") + ChatColor.GRAY + ".");
                         }
-                    }
-                    else {
+                    } else {
                         sender.sendMessage(ChatColor.RED + "Player '" + player.getName() + "' has not been banned by Reflex.");
                     }
-                }
-                else {
+                } else {
                     RLang.send(sender, ReflexLang.PLAYER_NOT_FOUND_DATABASE, target);
                 }
             }

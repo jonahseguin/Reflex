@@ -5,21 +5,23 @@
 package com.jonahseguin.reflex.player.reflex;
 
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import com.jonahseguin.reflex.backend.configuration.RLang;
 import com.jonahseguin.reflex.backend.configuration.ReflexLang;
 import com.jonahseguin.reflex.backend.configuration.ReflexPerm;
 import com.jonahseguin.reflex.backend.database.mongo.annotations.CollectionName;
 import com.jonahseguin.reflex.backend.database.mongo.annotations.MongoColumn;
 import com.jonahseguin.reflex.check.CheckType;
+import com.jonahseguin.reflex.check.alert.AlertGroup;
+import com.jonahseguin.reflex.oldchecks.data.PlayerData;
 import com.jonahseguin.reflex.oldchecks.data.RCapturePlayer;
 import com.jonahseguin.reflex.player.cache.CachePlayer;
-import com.jonahseguin.reflex.oldchecks.data.PlayerData;
 import lombok.*;
-
-import java.util.Map;
-
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+
+import java.util.Map;
+import java.util.Set;
 
 @RequiredArgsConstructor
 @AllArgsConstructor
@@ -38,11 +40,13 @@ public class ReflexPlayer extends CachePlayer {
     private String uniqueId;
     //Non-persistent...
     private int sessionVL = 0;
-    private Map<String, Integer> vl = Maps.newHashMap(); //Violation Level for each oldchecks, <CheckType#toString, VL>
-    private Map<String, Integer> alertVL = Maps.newHashMap();//Pre-Failure VLs for each oldchecks, <CheckType#toString, VL>
+    private final Map<String, Integer> vl = Maps.newHashMap(); //Violation Level for each oldchecks, <CheckType#toString, VL>
+    private final Map<String, Integer> alertVL = Maps.newHashMap();//Pre-Failure VLs for each oldchecks, <CheckType#toString, VL>
     private Player bukkitPlayer = null;
     private boolean alertsEnabled = true;
     private boolean online = false;
+    private long lastAlertTime = System.currentTimeMillis();
+    private final Set<AlertGroup> alerts = Sets.newHashSet();
 
     public ReflexPlayer() { //So that AutoMongo can instantiate without throwing an InstantiationException
 

@@ -5,14 +5,13 @@
 package com.jonahseguin.reflex.oldchecks.data;
 
 import com.jonahseguin.reflex.Reflex;
-import com.jonahseguin.reflex.event.internal.ReflexAsyncMoveEvent;
-import com.jonahseguin.reflex.util.obj.TrigUtils;
 import com.jonahseguin.reflex.backend.configuration.annotations.ConfigData;
 import com.jonahseguin.reflex.check.CheckType;
-import com.jonahseguin.reflex.oldchecks.base.RCheckType;
+import com.jonahseguin.reflex.event.internal.ReflexAsyncMoveEvent;
 import com.jonahseguin.reflex.event.internal.ReflexUseEntityEvent;
+import com.jonahseguin.reflex.oldchecks.base.RCheckType;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
-
+import com.jonahseguin.reflex.util.obj.TrigUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -20,7 +19,7 @@ import org.bukkit.event.EventPriority;
 /**
  * Not an actual RDataCapture;
  * Used to capture generic data for players than can be used for Triggers, etc.
- *
+ * <p>
  * Should never oldchecks if #isCapturing in this class
  */
 public class PlayerDataCapturer extends RDataCapture {

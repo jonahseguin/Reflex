@@ -70,8 +70,7 @@ public class InspectAutoClick extends RInspect {
                                 return new RInspectResultData(RInspectResultType.FAILED, "average " + Math.round(averageCps) + " cps");
                             }
                         }
-                    }
-                    else {
+                    } else {
                         if (averageCps >= maxClicksPerSecond) {
                             return new RInspectResultData(RInspectResultType.FAILED, "average " + Math.round(averageCps) + " cps");
                         }
@@ -81,8 +80,7 @@ public class InspectAutoClick extends RInspect {
 
             return new RInspectResultData(RInspectResultType.PASSED, "average " + Math.round(averageCps) + " cps");
 
-        }
-        else {
+        } else {
             throw new ReflexException("Cannot inspect data (CheckData type != inspect type)");
         }
     }

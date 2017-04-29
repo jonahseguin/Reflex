@@ -16,15 +16,14 @@ import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
 import com.jonahseguin.reflex.util.serial.XrayStatsMaxSerializer;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.Map;
-
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
+
+import java.util.Map;
 
 @Getter
 @Setter

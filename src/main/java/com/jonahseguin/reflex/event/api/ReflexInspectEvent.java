@@ -5,9 +5,9 @@
 package com.jonahseguin.reflex.event.api;
 
 import com.jonahseguin.reflex.check.CheckType;
+import com.jonahseguin.reflex.oldchecks.data.CheckData;
 import com.jonahseguin.reflex.oldchecks.inspect.InspectManager;
 import com.jonahseguin.reflex.oldchecks.inspect.RInspect;
-import com.jonahseguin.reflex.oldchecks.data.CheckData;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
 
 /**

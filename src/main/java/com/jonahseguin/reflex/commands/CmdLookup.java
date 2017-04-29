@@ -6,7 +6,6 @@ package com.jonahseguin.reflex.commands;
 
 import com.jonahseguin.reflex.Reflex;
 import com.jonahseguin.reflex.backend.command.RCmd;
-import com.jonahseguin.reflex.oldchecks.base.RViolation;
 import com.jonahseguin.reflex.backend.command.RCmdArgs;
 import com.jonahseguin.reflex.backend.command.RCommand;
 import com.jonahseguin.reflex.backend.configuration.RLang;
@@ -14,25 +13,25 @@ import com.jonahseguin.reflex.backend.configuration.ReflexLang;
 import com.jonahseguin.reflex.backend.configuration.ReflexPerm;
 import com.jonahseguin.reflex.backend.database.mongo.AutoMongo;
 import com.jonahseguin.reflex.ban.ReflexBan;
-import com.jonahseguin.reflex.oldchecks.inspect.RInspectResult;
 import com.jonahseguin.reflex.menu.LookupPlayerMenu;
 import com.jonahseguin.reflex.menu.LookupViolationMenu;
+import com.jonahseguin.reflex.oldchecks.base.RViolation;
+import com.jonahseguin.reflex.oldchecks.inspect.RInspectResult;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
 import com.jonahseguin.reflex.util.obj.TimeUtil;
 import mkremins.fanciful.FancyMessage;
 import net.md_5.bungee.api.ChatColor;
 import org.bson.Document;
+import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
-
-import org.bukkit.Bukkit;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 
 public class CmdLookup implements RCommand {
 
@@ -60,8 +59,7 @@ public class CmdLookup implements RCommand {
                     if (sender instanceof Player) {
                         LookupPlayerMenu lookupPlayerMenu = new LookupPlayerMenu(t);
                         lookupPlayerMenu.open(((Player) sender));
-                    }
-                    else {
+                    } else {
                         RLang.send(sender, ReflexLang.HEADER_FOOTER);
                         msg(sender, "&7Player Lookup - &a" + t.getName());
                         msg(sender, "&eSession VL&7: &9" + t.getSessionVL());
@@ -80,8 +78,7 @@ public class CmdLookup implements RCommand {
 
                         RLang.send(sender, ReflexLang.HEADER_FOOTER);
                     }
-                }
-                else {
+                } else {
                     RLang.send(sender, ReflexLang.PLAYER_NOT_FOUND, sTargetFinal);
                 }
             }
@@ -111,8 +108,7 @@ public class CmdLookup implements RCommand {
                         msg(sender, "&eDetail&7: &9" + result.getData().getDetail());
                     }
                     RLang.send(sender, ReflexLang.HEADER_FOOTER);
-                }
-                else {
+                } else {
                     msg(sender, "&cNo inspection result found with that id.");
                 }
             }
@@ -143,8 +139,7 @@ public class CmdLookup implements RCommand {
                         String expires;
                         if (ban.isConfirmed()) {
                             expires = "&cNever (confirmed)";
-                        }
-                        else {
+                        } else {
                             expires = "&e" + TimeUtil.format(ban.getExpiration());
                         }
 
@@ -186,8 +181,7 @@ public class CmdLookup implements RCommand {
                         msg(sender, "&cNo Reflex Bans on record for player '" + reflexPlayer.getName() + "'.");
                     }
                     RLang.send(sender, ReflexLang.HEADER_FOOTER);
-                }
-                else {
+                } else {
                     RLang.send(sender, ReflexLang.PLAYER_NOT_FOUND_DATABASE, target);
                 }
             }
@@ -232,12 +226,10 @@ public class CmdLookup implements RCommand {
                         if (reflexPlayer != null) {
                             LookupViolationMenu lookupViolationMenu = new LookupViolationMenu(reflexPlayer, vl);
                             lookupViolationMenu.open(((Player) sender));
-                        }
-                        else {
+                        } else {
                             msg(sender, "&cTarget player in violation could not be found (" + vl.getUniqueId() + ")");
                         }
-                    }
-                    else {
+                    } else {
                         RLang.send(sender, ReflexLang.HEADER_FOOTER);
                         RViolation vl = (RViolation) mongo;
 
@@ -247,8 +239,7 @@ public class CmdLookup implements RCommand {
 
                         if (reflexPlayer != null) {
                             msg(sender, "&ePlayer&7: &9" + reflexPlayer.getName());
-                        }
-                        else {
+                        } else {
                             msg(sender, "&ePlayer&7: &7Not found");
                         }
 
@@ -259,8 +250,7 @@ public class CmdLookup implements RCommand {
 
                         RLang.send(sender, ReflexLang.HEADER_FOOTER);
                     }
-                }
-                else {
+                } else {
                     RLang.send(sender, ReflexLang.VIOLATION_NOT_FOUND, id);
                 }
             }
@@ -275,8 +265,7 @@ public class CmdLookup implements RCommand {
         msg(sender, "&eBanned on&7: &9" + TimeUtil.format(ban.getTime()));
         if (ban.isConfirmed() && ban.isBannedCorrectly()) {
             msg(sender, "&eExpires&7: &9Never &7(Confirmed)");
-        }
-        else {
+        } else {
             msg(sender, "&eExpires&7: &9" + TimeUtil.format(ban.getExpiration()));
         }
         msg(sender, "&eConfirmed&7: &9" + ban.isConfirmed());
@@ -288,8 +277,7 @@ public class CmdLookup implements RCommand {
     private void msg(CommandSender sender, String msg) {
         if (sender instanceof Player) {
             sender.sendMessage(ChatColor.translateAlternateColorCodes('&', msg));
-        }
-        else {
+        } else {
             sender.sendMessage(ChatColor.stripColor(msg));
         }
     }

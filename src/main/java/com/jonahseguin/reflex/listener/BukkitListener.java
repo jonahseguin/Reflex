@@ -6,7 +6,6 @@ package com.jonahseguin.reflex.listener;
 
 import com.jonahseguin.reflex.Reflex;
 import com.jonahseguin.reflex.event.internal.ReflexVelocityEvent;
-
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerVelocityEvent;

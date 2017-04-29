@@ -20,7 +20,8 @@ public class CheckViolation {
     private final String id = UUID.randomUUID().toString();
     private final ReflexPlayer reflexPlayer;
     private final long time;
-    @NonNull private long expiryTime;
+    @NonNull
+    private long expiryTime;
     private final CheckType checkType;
     private final int vl;
 

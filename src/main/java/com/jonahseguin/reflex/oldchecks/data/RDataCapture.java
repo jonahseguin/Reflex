@@ -9,7 +9,6 @@ import com.jonahseguin.reflex.check.CheckType;
 import com.jonahseguin.reflex.oldchecks.base.Check;
 import com.jonahseguin.reflex.oldchecks.base.RCheckType;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
-
 import org.bukkit.entity.Player;
 
 public abstract class RDataCapture extends Check {

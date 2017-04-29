@@ -7,10 +7,9 @@ package com.jonahseguin.reflex.ban;
 import com.jonahseguin.reflex.Reflex;
 import com.jonahseguin.reflex.backend.database.mongo.AutoMongo;
 import org.bson.Document;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
-
-import org.bukkit.scheduler.BukkitRunnable;
 
 /**
  * Handles the Reflex BanCache and provides utility methods for ReflexBans

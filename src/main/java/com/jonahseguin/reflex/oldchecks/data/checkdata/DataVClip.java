@@ -8,7 +8,6 @@ import com.jonahseguin.reflex.backend.database.mongo.annotations.CollectionName;
 import com.jonahseguin.reflex.oldchecks.data.CheckData;
 import lombok.Getter;
 import lombok.Setter;
-
 import org.bukkit.Location;
 
 @Getter

@@ -15,13 +15,12 @@ import ninja.amp.ampmenus.items.BackItem;
 import ninja.amp.ampmenus.items.CloseItem;
 import ninja.amp.ampmenus.menus.ItemMenu;
 import org.bson.Document;
-
-import java.util.List;
-
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+
+import java.util.List;
 
 public class ShowViolationsMenu extends ItemMenu {
 

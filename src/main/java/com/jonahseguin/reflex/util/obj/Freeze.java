@@ -5,12 +5,6 @@
 package com.jonahseguin.reflex.util.obj;
 
 import com.jonahseguin.reflex.Reflex;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.bukkit.Bukkit;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
@@ -24,6 +18,11 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by 360 on 3/29/2015.
@@ -60,8 +59,7 @@ public class Freeze implements Listener {
         if (freezes.containsKey(p.getName())) {
             if (!freezes.get(p.getName()).isCancelled()) {
                 return true;
-            }
-            else {
+            } else {
                 freezes.remove(p.getName());
                 return false;
             }
@@ -74,8 +72,7 @@ public class Freeze implements Listener {
             if (hasFreeze(p)) {
                 freezes.get(p.getName()).setCancelled(true);
                 freezes.remove(p.getName());
-            }
-            else {
+            } else {
                 freezes.remove(p.getName());
             }
         }
@@ -176,8 +173,7 @@ public class Freeze implements Listener {
                     HandlerList.unregisterAll(this);
                 }
             }
-        }
-        else {
+        } else {
             if (Bukkit.getPlayer(name) != null) {
                 Player p = Bukkit.getPlayer(name);
                 if (e.getPlayer().getName().equals(p.getName())) {
@@ -194,8 +190,7 @@ public class Freeze implements Listener {
     public void onAttack(EntityDamageByEntityEvent e) {
         if (cancelled) {
             HandlerList.unregisterAll(this);
-        }
-        else {
+        } else {
             if (e.getDamager() instanceof Player) {
                 Player p = (Player) e.getDamager();
                 if (p.getName().equalsIgnoreCase(name)) {
@@ -209,8 +204,7 @@ public class Freeze implements Listener {
     public void onDamage(EntityDamageEvent e) {
         if (cancelled) {
             HandlerList.unregisterAll(this);
-        }
-        else {
+        } else {
             if (e.getEntity() instanceof Player) {
                 Player p = (Player) e.getEntity();
 

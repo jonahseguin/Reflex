@@ -13,7 +13,6 @@ import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
 import com.jonahseguin.reflex.util.obj.Distance;
 import lombok.Getter;
 import lombok.Setter;
-
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -70,8 +69,7 @@ public class TriggerVClip extends RTrigger {
                     break;
                 }
             }
-        }
-        else {
+        } else {
             //VClip up
             for (int i = 0; i < Math.round(distance.getYDifference()) + 1; i++) {
                 Block block = new Location(pl.getWorld(), pl.getLocation().getX(), to - i, pl.getLocation().getZ()).getBlock();
@@ -105,8 +103,7 @@ public class TriggerVClip extends RTrigger {
                     e.setTo(p.getData().getLastVClipLocation());
                 }
                 p.getData().setLastVClipLocation(null);
-            }
-            else {
+            } else {
                 p.getData().setTriedVClip(false);
                 p.getData().setVclipY(-1);
                 p.getData().setLastVClipLocation(null);
