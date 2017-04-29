@@ -1,10 +1,10 @@
 ###
-### Copyright (c) Jonah Seguin (Shawckz) 2016.  You may not copy, re-sell, distribute, modify, or use any code contained in this document or file, collection of documents or files, or project.  Thank you.
+### Copyright (c) Jonah Seguin (Shawckz) 2017.  You may not copy, re-sell, distribute, modify, or use any code contained in this document or file, collection of documents or files, or project.  Thank you.
 ###
 name: Reflex
-main: Reflex
-version: ${project.version} (MC1.7.10)
-authors: [Shawckz]
+main: com.jonahseguin.reflex.Reflex
+version: ${project.version} (Minecraft 1.7.10)
+author: Jonah Seguin (Shawckz)
 website: https://shawckz.com/product/Reflex
 depend: [ProtocolLib]
 description: Reflex Anti-Cheat by Shawckz | https://shawckz.com
