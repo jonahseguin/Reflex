@@ -12,7 +12,7 @@ import org.bukkit.entity.Player;
 
 @Getter
 @Setter
-public class ReflexAsyncMoveEvent extends ReflexInternalEvent {
+public class ReflexPacketMoveEvent extends ReflexInternalEvent {
 
     private final Player player;
     private final ReflexPlayer reflexPlayer;
@@ -20,7 +20,7 @@ public class ReflexAsyncMoveEvent extends ReflexInternalEvent {
     private final boolean ground;
     private Location to;
 
-    public ReflexAsyncMoveEvent(Player player, ReflexPlayer reflexPlayer, Location to, Location from, boolean ground) {
+    public ReflexPacketMoveEvent(Player player, ReflexPlayer reflexPlayer, Location to, Location from, boolean ground) {
         this.player = player;
         this.reflexPlayer = reflexPlayer;
         this.to = to;

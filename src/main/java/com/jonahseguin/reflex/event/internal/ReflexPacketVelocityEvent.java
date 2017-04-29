@@ -4,16 +4,21 @@
 
 package com.jonahseguin.reflex.event.internal;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.bukkit.entity.Player;
 
 @Getter
-@AllArgsConstructor
-public class ReflexUseEntityEvent extends ReflexInternalEvent {
+public class ReflexPacketVelocityEvent extends ReflexInternalEvent {
 
     private final Player player;
-    private final boolean cancelled;
+    private final double x;
+    private final double y;
+    private final double z;
 
-
+    public ReflexPacketVelocityEvent(Player player, double x, double y, double z) {
+        this.player = player;
+        this.x = x;
+        this.y = y;
+        this.z = z;
+    }
 }
