@@ -25,6 +25,8 @@ public class AlertManager implements RTimer {
         this.instance = instance;
         this.ALERT_BUILDUP_SECONDS = instance.getReflexConfig().getAlertGroupingIntervalSeconds();
         this.MAX_ALERTS = instance.getReflexConfig().getMaxAlertsPPPS();
+
+        this.instance.getReflexTimer().registerTimer(this);
     }
 
     @Override
