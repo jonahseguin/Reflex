@@ -7,9 +7,8 @@ The Reflex project was started in May of 2016, with the idea of a lagless soluti
 
 For some more details on the project, view https://shawckz.com/product/Reflex and https://shawckz.com/project/reflex
 
-# Checks
 
-** Finished or In progress **
+# Finished/In-Progress Checks
 
 - Accuracy (TriggerBot variation, Aura variation)
 - Head Roll (Aura variation)
@@ -30,7 +29,8 @@ For some more details on the project, view https://shawckz.com/product/Reflex an
 - Regen
 - VClip
 
-** Planned **
+# Planned Checks
+
 - TriggerBot (compare CPS on target vs CPS off target)
 - AutoSoup
 - AutoPot
