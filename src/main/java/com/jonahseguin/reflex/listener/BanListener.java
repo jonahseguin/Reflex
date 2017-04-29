@@ -39,10 +39,10 @@ public class BanListener implements Listener {
 
                     String expires = "" + month + "/" + day + " @ " + hour + ":" + minute + " " + (am ? "AM" : "PM") + "&7 (" + cal.getTimeZone().getDisplayName() + ")";
 
-                    e.setKickMessage(RLang.format(ReflexLang.BANNED, ban.getViolation().getCheckType().getName(), expires));
+                    e.setKickMessage(RLang.format(ReflexLang.BANNED, ban.getCheckType().getName(), expires));
                 } else if (ban.isConfirmed() && ban.isBannedCorrectly()) {
                     //Permanent
-                    e.setKickMessage(RLang.format(ReflexLang.BANNED_CONFIRMED, ban.getViolation().getCheckType().getName()));
+                    e.setKickMessage(RLang.format(ReflexLang.BANNED_CONFIRMED, ban.getCheckType().getName()));
                 }
 
                 e.setLoginResult(AsyncPlayerPreLoginEvent.Result.KICK_BANNED);

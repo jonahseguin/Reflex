@@ -7,7 +7,7 @@ package com.jonahseguin.reflex.oldchecks.trigger.triggers;
 import com.jonahseguin.reflex.Reflex;
 import com.jonahseguin.reflex.backend.configuration.annotations.ConfigData;
 import com.jonahseguin.reflex.check.CheckType;
-import com.jonahseguin.reflex.event.internal.ReflexUseEntityEvent;
+import com.jonahseguin.reflex.event.packet.ReflexPacketUseEntityEvent;
 import com.jonahseguin.reflex.oldchecks.base.RCheckType;
 import com.jonahseguin.reflex.oldchecks.trigger.RTrigger;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
@@ -41,7 +41,7 @@ public class TriggerAura extends RTrigger {
     }
 
     @EventHandler
-    public void onNotLookingAtTarget(final ReflexUseEntityEvent e) {
+    public void onNotLookingAtTarget(final ReflexPacketUseEntityEvent e) {
         new BukkitRunnable() {
             @Override
             public void run() {

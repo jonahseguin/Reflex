@@ -7,8 +7,8 @@ package com.jonahseguin.reflex.oldchecks.trigger.simple;
 import com.jonahseguin.reflex.Reflex;
 import com.jonahseguin.reflex.backend.configuration.annotations.ConfigData;
 import com.jonahseguin.reflex.check.CheckType;
-import com.jonahseguin.reflex.event.internal.ReflexAsyncMoveEvent;
-import com.jonahseguin.reflex.event.internal.ReflexVelocityEvent;
+import com.jonahseguin.reflex.event.packet.ReflexPacketMoveEvent;
+import com.jonahseguin.reflex.event.packet.ReflexPacketVelocityEvent;
 import com.jonahseguin.reflex.oldchecks.base.RCheckType;
 import com.jonahseguin.reflex.oldchecks.trigger.RTrigger;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
@@ -108,7 +108,7 @@ public class CheckSpeed extends RTrigger {
     }
 
     @EventHandler
-    public void onVelocity(ReflexVelocityEvent e) {
+    public void onVelocity(ReflexPacketVelocityEvent e) {
         Player p = e.getPlayer();
         ReflexPlayer rp = getPlayer(p);
         double x = Math.abs(e.getX()) * 5.0D;
@@ -119,7 +119,7 @@ public class CheckSpeed extends RTrigger {
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onMove(ReflexAsyncMoveEvent e) {
+    public void onMove(ReflexPacketMoveEvent e) {
         Player p = e.getPlayer();
         ReflexPlayer rp = e.getReflexPlayer();
         if (rp.getData().isOnGround(e.getTo())) {

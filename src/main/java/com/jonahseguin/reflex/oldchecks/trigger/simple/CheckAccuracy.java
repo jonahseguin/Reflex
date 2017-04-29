@@ -7,7 +7,7 @@ package com.jonahseguin.reflex.oldchecks.trigger.simple;
 import com.jonahseguin.reflex.Reflex;
 import com.jonahseguin.reflex.backend.configuration.annotations.ConfigData;
 import com.jonahseguin.reflex.check.CheckType;
-import com.jonahseguin.reflex.event.internal.ReflexUseEntityEvent;
+import com.jonahseguin.reflex.event.packet.ReflexPacketUseEntityEvent;
 import com.jonahseguin.reflex.oldchecks.base.RCheckType;
 import com.jonahseguin.reflex.oldchecks.trigger.RTrigger;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
@@ -48,7 +48,7 @@ public class CheckAccuracy extends RTrigger {
     }
 
     @EventHandler
-    public void onUseEntity(ReflexUseEntityEvent e) {
+    public void onUseEntity(ReflexPacketUseEntityEvent e) {
         Player p = e.getPlayer();
         ReflexPlayer rp = getPlayer(p);
 

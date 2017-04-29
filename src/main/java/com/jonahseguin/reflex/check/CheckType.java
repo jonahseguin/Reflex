@@ -13,38 +13,37 @@ import org.apache.commons.lang.WordUtils;
  */
 public enum CheckType {
 
-    VCLIP("VClip"),
-    AUTO_CLICK("AutoClick"),
-    REGEN("Regen"),
-    HEAD_ROLL("HeadRoll"),
-    TAB_COMPLETE("TabComplete"),
-    FAST_BOW("FastBow"),
-    SPEED("Speed"),
-    REACH("Reach"),
-    WRONG_TARGET("WrongTarget"),
-    XRAY("Xray"),
-    FLY("Fly"),
-    AURA_TWITCH("AuraTwitch"),
-    ACCURACY("Accuracy"),
-    MORE_PACKETS("MorePackets"),
-    PHASE("Phase"),
-    CRITICALS("Criticals"),
-    SMOOTH_AIM("SmoothAim"),
-    HEALTH_TAGS("HealthTags"),
-    TRIGGER_BOT("TriggerBot"),
-    ANTI_KNOCKBACK("AntiKnockback"),
-    NO_SLOW_DOWN("NoSlowDown"),
-    BAD_PACKETS("BadPackets"),
-    BED_FLY("BedFly"),
-    ANGLE("Angle"),
-    NO_SWING("NoSwing"),
-    HIGH_JUMP("HighJump"),
-    GLIDE("Glide"),
-    FAST_EAT("FastEat"),
-    SELF_HIT("SelfHit"),
-    AUTO_SOUP("AutoSoup"),
-    BLINK("Blink"),
-    ATTACK_SPEED("AttackSpeed");
+    VCLIP("VClip"), //
+    AUTO_CLICK("AutoClick"), //
+    REGEN("Regen"), //
+    HEAD_ROLL("HeadRoll"), //
+    TAB_COMPLETE("TabComplete"), //
+    FAST_BOW("FastBow"), //
+    SPEED("Speed"), //
+    REACH("Reach"), //
+    WRONG_TARGET("WrongTarget"), //
+    XRAY("Xray"), //
+    FLY("Fly"), //
+    AURA_TWITCH("AuraTwitch"), //
+    ACCURACY("Accuracy"), //
+    MORE_PACKETS("MorePackets"), //
+    PHASE("Phase"), //
+    CRITICALS("Criticals"), //
+    SMOOTH_AIM("SmoothAim"), //
+    HEALTH_TAGS("HealthTags"), //
+    TRIGGER_BOT("TriggerBot"), //
+    ANTI_KNOCKBACK("AntiKnockback"), //
+    NO_SLOW_DOWN("NoSlowDown"), //TODO
+    BAD_PACKETS("BadPackets"), //TODO
+    BED_FLY("BedFly"), //
+    NO_SWING("NoSwing"), //
+    HIGH_JUMP("HighJump"), //
+    GLIDE("Glide"), //TODO
+    FAST_EAT("FastEat"), //
+    SELF_HIT("SelfHit"), //
+    AUTO_SOUP("AutoSoup"), //
+    BLINK("Blink"), //
+    ATTACK_SPEED("AttackSpeed"); //
 
     private final String name;
 

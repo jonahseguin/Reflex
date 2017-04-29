@@ -9,7 +9,7 @@ import com.comphenix.protocol.events.ListenerPriority;
 import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketEvent;
 import com.jonahseguin.reflex.Reflex;
-import com.jonahseguin.reflex.event.internal.*;
+import com.jonahseguin.reflex.event.packet.*;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -43,7 +43,7 @@ public class PacketListener {
                             from = to;
                         }
 
-                        ReflexAsyncMoveEvent moveEvent = new ReflexAsyncMoveEvent(event.getPlayer(), reflexPlayer, to, from, ground);
+                        ReflexPacketMoveEvent moveEvent = new ReflexPacketMoveEvent(event, event.getPlayer(), reflexPlayer, to, from, ground);
                         instance.getServer().getPluginManager().callEvent(moveEvent);
 
                         x = moveEvent.getTo().getX();
@@ -71,7 +71,7 @@ public class PacketListener {
                             from = to;
                         }
 
-                        ReflexAsyncMoveEvent moveEvent = new ReflexAsyncMoveEvent(event.getPlayer(), reflexPlayer, to, from, ground);
+                        ReflexPacketMoveEvent moveEvent = new ReflexPacketMoveEvent(event, event.getPlayer(), reflexPlayer, to, from, ground);
                         instance.getServer().getPluginManager().callEvent(moveEvent);
 
                         x = moveEvent.getTo().getX();
@@ -94,7 +94,7 @@ public class PacketListener {
                             from = to;
                         }
 
-                        ReflexAsyncMoveEvent moveEvent = new ReflexAsyncMoveEvent(event.getPlayer(), reflexPlayer, to, from, ground);
+                        ReflexPacketMoveEvent moveEvent = new ReflexPacketMoveEvent(event, event.getPlayer(), reflexPlayer, to, from, ground);
                         instance.getServer().getPluginManager().callEvent(moveEvent);
 
                         yaw = moveEvent.getTo().getYaw();
@@ -112,7 +112,7 @@ public class PacketListener {
         instance.getProtocolManager().addPacketListener(new PacketAdapter(instance, ListenerPriority.NORMAL, PacketType.Play.Client.ARM_ANIMATION) {
             public void onPacketReceiving(PacketEvent event) {
                 if (event.getPacketType().equals(PacketType.Play.Client.ARM_ANIMATION)) {
-                    ReflexSwingEvent swingEvent = new ReflexSwingEvent(event.getPlayer());
+                    ReflexSwingEvent swingEvent = new ReflexSwingEvent(event, event.getPlayer());
                     instance.getServer().getPluginManager().callEvent(swingEvent);
                 }
             }
@@ -122,7 +122,7 @@ public class PacketListener {
             public void onPacketReceiving(PacketEvent event) {
                 if (event.getPacketType().equals(PacketType.Play.Client.USE_ENTITY)) {
                     if (!event.getPlayer().getItemInHand().getType().equals(Material.FISHING_ROD)) {
-                        ReflexUseEntityEvent useEntityEvent = new ReflexUseEntityEvent(event.getPlayer(), event.isCancelled());
+                        ReflexPacketUseEntityEvent useEntityEvent = new ReflexPacketUseEntityEvent(event, event.getPlayer());
                         instance.getServer().getPluginManager().callEvent(useEntityEvent);
                     }
                 }
@@ -133,7 +133,7 @@ public class PacketListener {
             public void onPacketReceiving(PacketEvent event) {
                 if (event.getPacketType().equals(PacketType.Play.Client.FLYING)) {
                     boolean ground = event.getPacket().getBooleans().getValues().get(0);
-                    ReflexFlyingEvent flyingEvent = new ReflexFlyingEvent(event.getPlayer(), event.isCancelled(), ground);
+                    ReflexFlyingEvent flyingEvent = new ReflexFlyingEvent(event, event.getPlayer(), ground);
                     instance.getServer().getPluginManager().callEvent(flyingEvent);
                 }
             }
@@ -146,7 +146,7 @@ public class PacketListener {
                     float y = event.getPacket().getFloat().getValues().get(2);
                     float z = event.getPacket().getFloat().getValues().get(3);
 
-                    ReflexVelocityEvent velocityEvent = new ReflexVelocityEvent(event.getPlayer(), x, y, z);
+                    ReflexPacketVelocityEvent velocityEvent = new ReflexPacketVelocityEvent(event, event.getPlayer(), x, y, z);
                     instance.getServer().getPluginManager().callEvent(velocityEvent);
                 }
             }
@@ -162,7 +162,7 @@ public class PacketListener {
                     float yaw = event.getPacket().getFloat().readSafely(0);
                     float pitch = event.getPacket().getFloat().readSafely(1);
 
-                    ReflexLookEvent lookEvent = new ReflexLookEvent(p, yaw, pitch);
+                    ReflexLookEvent lookEvent = new ReflexLookEvent(event, p, yaw, pitch);
                     instance.getServer().getPluginManager().callEvent(lookEvent);
                 }
             }

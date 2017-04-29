@@ -39,8 +39,8 @@ public class ReflexPlayer extends CachePlayer {
     private String uniqueId;
     //Non-persistent...
     private int sessionVL = 0;
-    private final Map<String, Integer> vl = Maps.newHashMap(); //Violation Level for each oldchecks, <CheckType#toString, VL>
-    private final Map<String, Integer> alertVL = Maps.newHashMap();//Pre-Failure VLs for each oldchecks, <CheckType#toString, VL>
+    private final Map<String, Integer> vl = Maps.newHashMap(); //Violation Level for each check, <CheckType#toString, VL>
+    private final Map<String, Integer> alertVL = Maps.newHashMap();//Pre-Failure VLs for each check, <CheckType#toString, VL>
     private Player bukkitPlayer = null;
     private boolean alertsEnabled = true;
     private boolean online = false;
@@ -71,7 +71,6 @@ public class ReflexPlayer extends CachePlayer {
     public void addVL(CheckType checkType) {
         int vl = getVL(checkType);
         this.vl.put(checkType.getName(), (vl + 1));
-        addAlertVL(checkType);
         sessionVL++;
     }
 
