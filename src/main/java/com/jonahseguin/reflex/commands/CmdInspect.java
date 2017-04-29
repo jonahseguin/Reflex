@@ -14,7 +14,6 @@ import com.jonahseguin.reflex.backend.configuration.ReflexPerm;
 import com.jonahseguin.reflex.check.CheckType;
 import com.jonahseguin.reflex.oldchecks.inspect.RInspectResult;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
-import com.jonahseguin.reflex.util.obj.Alert;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;

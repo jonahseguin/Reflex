@@ -16,7 +16,6 @@ import com.jonahseguin.reflex.oldchecks.base.RViolation;
 import com.jonahseguin.reflex.oldchecks.inspect.RInspectResult;
 import com.jonahseguin.reflex.oldchecks.inspect.RInspectResultType;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
-import com.jonahseguin.reflex.util.obj.Alert;
 import com.jonahseguin.reflex.util.utility.ReflexCaller;
 import com.jonahseguin.reflex.util.utility.ReflexException;
 import lombok.Getter;
@@ -145,7 +144,7 @@ public abstract class RTrigger extends Check {
         player.addVL(getCheckType());
 
         RViolation violation = new RViolation(player.getUniqueId(), player.getData().copy(), getCheckType(), RCheckType.TRIGGER, player.getVL(getCheckType()));
-        getReflex().getViolationCache().saveViolation(violation);
+        getReflex().getrDataCache().saveViolation(violation);
 
         if (!getReflex().getAutobanManager().hasAutoban(player.getName())) {
             Alert alert = new Alert(player, getCheckType(), Alert.Type.FAIL, violation, player.getVL(getCheckType()));

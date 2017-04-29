@@ -9,8 +9,8 @@ import org.bukkit.command.CommandSender;
 
 public class RLang {
 
-    public static String format(ReflexLang factionLang, String... args) {
-        return Reflex.getInstance().getLang().getFormattedLang(factionLang, args);
+    public static String format(ReflexLang lang, String... args) {
+        return Reflex.getInstance().getLang().getFormattedLang(lang, args);
     }
 
     public static void send(CommandSender player, ReflexLang lang, String... args) {

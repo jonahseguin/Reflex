@@ -12,7 +12,6 @@ import com.jonahseguin.reflex.backend.configuration.RLang;
 import com.jonahseguin.reflex.backend.configuration.ReflexLang;
 import com.jonahseguin.reflex.backend.configuration.ReflexPerm;
 import com.jonahseguin.reflex.ban.AutobanManager;
-import com.jonahseguin.reflex.util.obj.Alert;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;

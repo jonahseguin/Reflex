@@ -19,20 +19,20 @@ import java.util.Set;
  * Project: Reflex
  */
 @Getter
-public class AlertGroup {
+public class AlertSet {
 
     private final ReflexPlayer reflexPlayer;
     private final CheckType checkType;
     private final Set<CheckAlert> alerts;
     private Map.Entry<Long, CheckAlert> mostRecentAlert = null;
 
-    public AlertGroup(ReflexPlayer reflexPlayer, CheckType checkType) {
+    public AlertSet(ReflexPlayer reflexPlayer, CheckType checkType) {
         this.reflexPlayer = reflexPlayer;
         this.checkType = checkType;
         this.alerts = Sets.newHashSet();
     }
 
-    public AlertGroup(ReflexPlayer reflexPlayer, CheckType checkType, Set<CheckAlert> alerts, Map.Entry<Long, CheckAlert> mostRecentAlert) {
+    public AlertSet(ReflexPlayer reflexPlayer, CheckType checkType, Set<CheckAlert> alerts, Map.Entry<Long, CheckAlert> mostRecentAlert) {
         this.reflexPlayer = reflexPlayer;
         this.checkType = checkType;
         this.alerts = alerts;
@@ -40,7 +40,7 @@ public class AlertGroup {
     }
 
     public void addAlert(CheckAlert alert) {
-        Validate.isTrue(alert.getCheckType().equals(checkType), "AlertGroup alerts must all be of same CheckType");
+        Validate.isTrue(alert.getCheckType().equals(checkType), "AlertSet alerts must all be of same CheckType");
         this.mostRecentAlert = Maps.immutableEntry(System.currentTimeMillis(), alert);
         alerts.add(alert);
     }
@@ -53,8 +53,12 @@ public class AlertGroup {
         return alerts.size() > 1;
     }
 
-    public AlertGroup copy() {
-        return new AlertGroup(reflexPlayer, checkType, alerts, mostRecentAlert);
+    public AlertSet copy() {
+        return new AlertSet(reflexPlayer, checkType, alerts, mostRecentAlert);
+    }
+
+    public int count() {
+        return alerts.size();
     }
 
 }

@@ -11,7 +11,6 @@ import com.jonahseguin.reflex.backend.command.RCommand;
 import com.jonahseguin.reflex.backend.configuration.RLang;
 import com.jonahseguin.reflex.backend.configuration.ReflexLang;
 import com.jonahseguin.reflex.backend.configuration.ReflexPerm;
-import com.jonahseguin.reflex.util.obj.Alert;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 

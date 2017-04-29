@@ -4,6 +4,8 @@
 
 package com.jonahseguin.reflex.ban;
 
+import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
+
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -15,8 +17,16 @@ public class AutobanManager {
         return autobans.get(name.toLowerCase());
     }
 
+    public ConcurrentMap<String, Autoban> getAutobans() {
+        return autobans;
+    }
+
     public boolean hasAutoban(String name) {
         return autobans.containsKey(name.toLowerCase()) && !autobans.get(name.toLowerCase()).isCancelled();
+    }
+
+    public boolean hasAutoban(ReflexPlayer reflexPlayer) {
+        return hasAutoban(reflexPlayer.getName());
     }
 
     public void putAutoban(Autoban autoban) {

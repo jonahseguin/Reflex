@@ -5,6 +5,8 @@
 package com.jonahseguin.reflex.check.alert;
 
 import com.jonahseguin.reflex.Reflex;
+import com.jonahseguin.reflex.backend.configuration.RLang;
+import com.jonahseguin.reflex.backend.configuration.ReflexLang;
 import com.jonahseguin.reflex.backend.configuration.ReflexPerm;
 import com.jonahseguin.reflex.check.CheckType;
 import com.jonahseguin.reflex.check.CheckViolation;
@@ -62,7 +64,30 @@ public class CheckAlert implements Alert {
 
     @Override
     public void sendAlert() {
-        // TODO: Send Alert
+        // Send (single) alert
+        ReflexLang format = ReflexLang.ALERT_SINGLE; // player, check, ping, detail, vl
+        String detail = this.detail;
+        if (detail.equals("")) {
+            detail = "n/a";
+        }
+
+        FancyMessage msg = new FancyMessage(RLang.format(ReflexLang.ALERT_PREFIX));
+        String s = RLang.format(format, getReflexPlayer().getName(), getCheckType().getName(), getPing()+"", detail, getVl() + "");
+        msg.then(s)
+                .tooltip(
+                        ChatColor.GRAY + "Click to view alert",
+                        ChatColor.GRAY + "Player: " + ChatColor.RED + getReflexPlayer().getName(),
+                        ChatColor.GRAY + "Check: " + ChatColor.RED + getCheckType().getName(),
+                        ChatColor.GRAY + "Ping: " + ChatColor.RED + getPing() + ChatColor.GRAY + ", " +
+                                "TPS: " + ChatColor.RED + getTps()
+                )
+                .command("/reflex alert " + id);
+
+        staffMsg(msg);
+
+        getReflexPlayer().setLastAlertTime(System.currentTimeMillis());
+
+        Reflex.log("Alert: " + getReflexPlayer().getName() + " (" + getCheckType().getName() + ") [" + id + "]");
     }
 
     @Override

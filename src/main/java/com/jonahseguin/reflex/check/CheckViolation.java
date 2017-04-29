@@ -24,9 +24,10 @@ public class CheckViolation {
     private long expiryTime;
     private final CheckType checkType;
     private final int vl;
+    private final String detail;
 
     public static CheckViolation emptyViolation(ReflexPlayer player, CheckType checkType) {
-        return new CheckViolation(player, System.currentTimeMillis(), System.currentTimeMillis(), checkType, -1);
+        return new CheckViolation(player, System.currentTimeMillis(), System.currentTimeMillis(), checkType, -1, "n/a");
     }
 
 

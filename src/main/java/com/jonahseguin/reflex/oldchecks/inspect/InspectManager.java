@@ -13,7 +13,6 @@ import com.jonahseguin.reflex.oldchecks.base.RViolation;
 import com.jonahseguin.reflex.oldchecks.data.CheckData;
 import com.jonahseguin.reflex.oldchecks.inspect.inspectors.*;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
-import com.jonahseguin.reflex.util.obj.Alert;
 import com.jonahseguin.reflex.util.utility.ReflexException;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -68,7 +67,7 @@ public class InspectManager {
             //Only make a violation if they FAIL the inspection - also alert
             player.addVL(inspector.getCheckType());
             violation = new RViolation(player.getUniqueId(), data, checkType, RCheckType.INSPECT, player.getVL(inspector.getCheckType()));
-            Reflex.getInstance().getViolationCache().cacheViolation(violation);
+            Reflex.getInstance().getrDataCache().cacheViolation(violation);
 
             if (checkType.isCapture()) {
                 alert = new Alert(player, checkType, resultType.translateToAlertType(), violation, player.getVL(inspector.getCheckType()));
@@ -85,7 +84,7 @@ public class InspectManager {
             throw new ReflexException("Should not fail oldchecks while having an autoban");
         } else if (resultType == RInspectResultType.PASSED) {
             violation = new RViolation(player.getUniqueId(), data, checkType, RCheckType.INSPECT, player.getVL(inspector.getCheckType()));
-            instance.getViolationCache().cacheViolation(violation);
+            instance.getrDataCache().cacheViolation(violation);
 
             if (checkType.isCapture()) {
                 alert = new Alert(player, checkType, resultType.translateToAlertType(), violation, player.getVL(inspector.getCheckType()));
@@ -99,6 +98,7 @@ public class InspectManager {
 
         final RViolation finalViolation = violation;
 
+        final RInspectResult result = new RInspectResult(resultData, finalViolation, dataPeriod);
         final RInspectResult result = new RInspectResult(resultData, finalViolation, dataPeriod);
 
 

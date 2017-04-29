@@ -8,7 +8,10 @@ import com.jonahseguin.reflex.backend.database.mongo.AutoMongo;
 import com.jonahseguin.reflex.backend.database.mongo.annotations.CollectionName;
 import com.jonahseguin.reflex.backend.database.mongo.annotations.DatabaseSerializer;
 import com.jonahseguin.reflex.backend.database.mongo.annotations.MongoColumn;
+import com.jonahseguin.reflex.check.CheckType;
+import com.jonahseguin.reflex.check.CheckViolation;
 import com.jonahseguin.reflex.oldchecks.base.RViolation;
+import com.jonahseguin.reflex.util.serial.CheckTypeSerializer;
 import com.jonahseguin.reflex.util.serial.RViolationSerializer;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -34,9 +37,12 @@ public class ReflexBan extends AutoMongo {
     @MongoColumn(name = "uniqueId")
     private String uniqueId;
 
-    @MongoColumn(name = "violation")
-    @DatabaseSerializer(serializer = RViolationSerializer.class)
-    private RViolation violation;
+    @MongoColumn(name = "check")
+    @DatabaseSerializer(serializer = CheckTypeSerializer.class)
+    private CheckType checkType;
+
+    @MongoColumn(name = "vl")
+    private int vl;
 
     @MongoColumn(name = "banned")
     private boolean banned = true;
@@ -53,10 +59,11 @@ public class ReflexBan extends AutoMongo {
     @MongoColumn(name = "expiration")
     private long expiration;
 
-    public ReflexBan(String uniqueId, RViolation violation, long expiration) {
+    public ReflexBan(String uniqueId, CheckViolation violation, long expiration) {
         this.id = UUID.randomUUID().toString();
         this.uniqueId = uniqueId;
-        this.violation = violation;
+        this.checkType = violation.getCheckType();
+        this.vl = violation.getVl();
         this.time = System.currentTimeMillis();
         this.expiration = expiration;
     }

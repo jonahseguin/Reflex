@@ -17,22 +17,30 @@ import java.util.Map;
 public class PlayerAlerts {
 
     private final ReflexPlayer player;
-    private final Map<CheckType, AlertGroup> alertGroups = new HashMap<>();
+    private final Map<CheckType, AlertSet> alertGroups = new HashMap<>();
 
     public PlayerAlerts(ReflexPlayer player) {
         this.player = player;
     }
 
-    public AlertGroup getAlertGroup(CheckType checkType) {
+    public AlertSet getAlertGroup(CheckType checkType) {
         if (alertGroups.containsKey(checkType)) {
             return alertGroups.get(checkType);
         } else {
-            return alertGroups.put(checkType, new AlertGroup(player, checkType));
+            return alertGroups.put(checkType, new AlertSet(player, checkType));
         }
     }
 
-    public boolean shouldGroupAlert(CheckType checkType) {
-        return alertGroups.containsKey(checkType) && !alertGroups.get(checkType).getAlerts().isEmpty();
+    public ReflexPlayer getPlayer() {
+        return player;
+    }
+
+    public Map<CheckType, AlertSet> getAlertGroups() {
+        return alertGroups;
+    }
+
+    public boolean isEmpty() {
+        return alertGroups.isEmpty();
     }
 
 }

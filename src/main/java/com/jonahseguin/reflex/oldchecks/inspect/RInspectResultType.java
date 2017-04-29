@@ -4,8 +4,6 @@
 
 package com.jonahseguin.reflex.oldchecks.inspect;
 
-import com.jonahseguin.reflex.util.obj.Alert;
-
 public enum RInspectResultType {
 
     PASSED, FAILED;

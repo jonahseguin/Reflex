@@ -13,7 +13,6 @@ import com.jonahseguin.reflex.backend.configuration.ReflexLang;
 import com.jonahseguin.reflex.backend.configuration.ReflexPerm;
 import com.jonahseguin.reflex.check.CheckType;
 import com.jonahseguin.reflex.oldchecks.trigger.RTrigger;
-import com.jonahseguin.reflex.util.obj.Alert;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 

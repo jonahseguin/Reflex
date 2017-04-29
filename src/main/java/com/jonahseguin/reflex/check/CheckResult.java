@@ -23,4 +23,9 @@ public class CheckResult {
     @NonNull
     private boolean canCancel;
 
+    public CheckResult doCancel() {
+        this.cancelled = true;
+        return this;
+    }
+
 }

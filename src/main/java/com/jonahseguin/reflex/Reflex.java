@@ -14,6 +14,7 @@ import com.jonahseguin.reflex.backend.configuration.ReflexLang;
 import com.jonahseguin.reflex.backend.database.DBManager;
 import com.jonahseguin.reflex.ban.AutobanManager;
 import com.jonahseguin.reflex.ban.ReflexBanManager;
+import com.jonahseguin.reflex.check.ViolationCache;
 import com.jonahseguin.reflex.check.alert.AlertManager;
 import com.jonahseguin.reflex.commands.*;
 import com.jonahseguin.reflex.listener.BanListener;
@@ -53,11 +54,16 @@ public class Reflex extends JavaPlugin {
     private InspectManager inspectManager;
     private ReflexCache cache;
     private ReflexTimer reflexTimer;
-    private RDataCache violationCache;
+    private RDataCache rDataCache;
     private AutobanManager autobanManager;
     private ReflexBanManager banManager;
     private RCommandHandler commandHandler;
     private AlertManager alertManager;
+    private ViolationCache violationCache;
+
+    public static void log(String msg) {
+        getInstance().getLogger().info("[Reflex] " + msg);
+    }
 
     public static String getPrefix() {
         return RLang.format(ReflexLang.ALERT_PREFIX);
@@ -101,10 +107,11 @@ public class Reflex extends JavaPlugin {
             }
         }
 
-        violationCache = new RDataCache();
+        rDataCache = new RDataCache();
 
         autobanManager = new AutobanManager();
         alertManager = new AlertManager(instance);
+        violationCache = new ViolationCache(instance);
 
         reflexTimer = new ReflexTimer(instance);
 
@@ -208,8 +215,8 @@ public class Reflex extends JavaPlugin {
         return inspectManager;
     }
 
-    public RDataCache getViolationCache() {
-        return violationCache;
+    public RDataCache getrDataCache() {
+        return rDataCache;
     }
 
     public AutobanManager getAutobanManager() {
@@ -218,5 +225,9 @@ public class Reflex extends JavaPlugin {
 
     public AlertManager getAlertManager() {
         return alertManager;
+    }
+
+    public ViolationCache getViolationCache() {
+        return violationCache;
     }
 }

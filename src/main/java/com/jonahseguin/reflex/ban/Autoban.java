@@ -8,10 +8,11 @@ import com.jonahseguin.reflex.Reflex;
 import com.jonahseguin.reflex.backend.configuration.RLang;
 import com.jonahseguin.reflex.backend.configuration.ReflexLang;
 import com.jonahseguin.reflex.check.CheckType;
+import com.jonahseguin.reflex.check.CheckViolation;
+import com.jonahseguin.reflex.check.alert.CheckAlert;
 import com.jonahseguin.reflex.event.api.ReflexBanEvent;
 import com.jonahseguin.reflex.oldchecks.base.RViolation;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
-import com.jonahseguin.reflex.util.obj.Alert;
 import com.jonahseguin.reflex.util.obj.AutobanMethod;
 import com.jonahseguin.reflex.util.obj.Freeze;
 import com.jonahseguin.reflex.util.utility.ReflexException;
@@ -38,9 +39,9 @@ public class Autoban {
     private int cd;
     private boolean cancelled;
     private CheckType check;
-    private RViolation violation;
+    private CheckViolation violation;
 
-    public Autoban(ReflexPlayer player, int cd, CheckType check, RViolation violation) {
+    public Autoban(ReflexPlayer player, int cd, CheckType check, CheckViolation violation) {
         this.player = player;
         this.cd = cd;
         this.check = check;
@@ -67,7 +68,7 @@ public class Autoban {
         fm.then(RLang.format(ReflexLang.AUTOBAN, player.getName(), check.getName(), cd + ""))
                 .tooltip(ChatColor.YELLOW + "Click here to cancel ban on " + player.getName())
                 .command("/reflex cancel " + player.getName());
-        Alert.staffMsg(fm);
+        CheckAlert.staffMsg(fm);
 
 
         new BukkitRunnable() {
@@ -87,7 +88,7 @@ public class Autoban {
                         fm.then(RLang.format(ReflexLang.AUTOBAN, player.getName(), check.getName(), cd + ""))
                                 .tooltip(ChatColor.YELLOW + "Click here to cancel ban on " + player.getName())
                                 .command("/reflex cancel " + player.getName());
-                        Alert.staffMsg(fm);
+                        CheckAlert.staffMsg(fm);
                     }
                 } else {
                     ban();
@@ -151,7 +152,7 @@ public class Autoban {
                 if (player != null) {
                     if (player.getBukkitPlayer() != null) {
                         if (player.getBukkitPlayer().isOnline()) {
-                            player.getBukkitPlayer().kickPlayer(RLang.format(ReflexLang.BANNED, reflexBan.getViolation().getCheckType().getName(), expires));
+                            player.getBukkitPlayer().kickPlayer(RLang.format(ReflexLang.BANNED, reflexBan.getCheckType().getName(), expires));
                         }
                     }
                 }
@@ -164,7 +165,7 @@ public class Autoban {
         fm.then(RLang.format(ReflexLang.AUTOBAN_BANNED, player.getName(), check.getName()))
                 .tooltip(ChatColor.YELLOW + "Click here to unban " + player.getName())
                 .command("/reflex unban " + player.getName());
-        Alert.staffMsg(fm);
+        CheckAlert.staffMsg(fm);
     }
 
     /**
