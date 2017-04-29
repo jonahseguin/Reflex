@@ -11,7 +11,7 @@ The lead developer on the project is Jonah Seguin (username Shawckz).
 
 # Checks
 
-** Finished **
+## Finished
 
 - HeadRoll
 - VClip
@@ -20,7 +20,7 @@ The lead developer on the project is Jonah Seguin (username Shawckz).
 - TabComplete
 - MorePackets
 
-** Unfinished and/or Planned **
+## Unfinished and/or Planned
 
 - Reach
 - Accuracy
