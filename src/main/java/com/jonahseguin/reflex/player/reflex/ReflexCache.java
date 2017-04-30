@@ -8,6 +8,7 @@ import com.jonahseguin.reflex.Reflex;
 import com.jonahseguin.reflex.backend.configuration.RLang;
 import com.jonahseguin.reflex.backend.configuration.ReflexLang;
 import com.jonahseguin.reflex.backend.configuration.ReflexPerm;
+import com.jonahseguin.reflex.check.PlayerData;
 import com.jonahseguin.reflex.player.cache.AbstractCache;
 import org.bukkit.entity.Player;
 
@@ -60,6 +61,7 @@ public class ReflexCache extends AbstractCache {
     @Override
     public void init(Player p, ReflexPlayer reflexPlayer) {
         reflexPlayer.setBukkitPlayer(p);
+        reflexPlayer.setData(new PlayerData(p));
         if (ReflexPerm.ALERTS.hasPerm(p)) {
             reflexPlayer.setAlertsEnabled(true);
             RLang.send(p, ReflexLang.ALERTS_ENABLED);

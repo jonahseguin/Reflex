@@ -11,8 +11,8 @@ import com.jonahseguin.reflex.backend.configuration.ReflexPerm;
 import com.jonahseguin.reflex.backend.database.mongo.annotations.CollectionName;
 import com.jonahseguin.reflex.backend.database.mongo.annotations.MongoColumn;
 import com.jonahseguin.reflex.check.CheckType;
+import com.jonahseguin.reflex.check.PlayerData;
 import com.jonahseguin.reflex.check.alert.PlayerAlerts;
-import com.jonahseguin.reflex.oldchecks.data.PlayerData;
 import com.jonahseguin.reflex.oldchecks.data.RCapturePlayer;
 import com.jonahseguin.reflex.player.cache.CachePlayer;
 import lombok.*;
@@ -29,7 +29,6 @@ import java.util.Map;
 @Setter
 public class ReflexPlayer extends CachePlayer {
 
-    private final PlayerData data = new PlayerData();
     private final RCapturePlayer capturePlayer = new RCapturePlayer(this);
     @MongoColumn(name = "username")
     @NonNull
@@ -46,6 +45,7 @@ public class ReflexPlayer extends CachePlayer {
     private boolean online = false;
     private long lastAlertTime = System.currentTimeMillis();
     private final PlayerAlerts alerts = new PlayerAlerts(this);
+    private PlayerData data = null;
 
     public ReflexPlayer() { //So that AutoMongo can instantiate without throwing an InstantiationException
 

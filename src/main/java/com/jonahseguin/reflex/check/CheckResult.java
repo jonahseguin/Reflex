@@ -7,6 +7,7 @@ package com.jonahseguin.reflex.check;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
 import lombok.Data;
 import lombok.NonNull;
+import org.bukkit.event.Cancellable;
 
 /**
  * Created by Jonah Seguin on Mon 2017-04-24 at 20:34.
@@ -31,4 +32,13 @@ public class CheckResult {
     public boolean canCancel() {
         return canCancel;
     }
+
+    public CheckResult cancelIfAllowed(Cancellable cancellable) {
+        if (canCancel) {
+            cancellable.setCancelled(true);
+            cancelled = true;
+        }
+        return this;
+    }
+
 }

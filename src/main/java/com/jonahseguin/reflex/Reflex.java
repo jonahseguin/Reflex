@@ -14,6 +14,7 @@ import com.jonahseguin.reflex.backend.configuration.ReflexLang;
 import com.jonahseguin.reflex.backend.database.DBManager;
 import com.jonahseguin.reflex.ban.AutobanManager;
 import com.jonahseguin.reflex.ban.ReflexBanManager;
+import com.jonahseguin.reflex.check.CheckManager;
 import com.jonahseguin.reflex.check.ViolationCache;
 import com.jonahseguin.reflex.check.alert.AlertManager;
 import com.jonahseguin.reflex.commands.*;
@@ -22,9 +23,6 @@ import com.jonahseguin.reflex.listener.BukkitListener;
 import com.jonahseguin.reflex.listener.PacketListener;
 import com.jonahseguin.reflex.oldchecks.base.RDataCache;
 import com.jonahseguin.reflex.oldchecks.base.ReflexTimer;
-import com.jonahseguin.reflex.oldchecks.data.DataCaptureManager;
-import com.jonahseguin.reflex.oldchecks.inspect.InspectManager;
-import com.jonahseguin.reflex.oldchecks.trigger.TriggerManager;
 import com.jonahseguin.reflex.player.reflex.ReflexCache;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
 import com.jonahseguin.reflex.util.obj.Lag;
@@ -49,9 +47,6 @@ public class Reflex extends JavaPlugin {
     private ReflexConfig reflexConfig;
     private ProtocolManager protocolManager;
     private LanguageConfig lang;
-    private TriggerManager triggerManager;
-    private DataCaptureManager dataCaptureManager;
-    private InspectManager inspectManager;
     private ReflexCache cache;
     private ReflexTimer reflexTimer;
     private RDataCache rDataCache;
@@ -60,6 +55,7 @@ public class Reflex extends JavaPlugin {
     private RCommandHandler commandHandler;
     private AlertManager alertManager;
     private ViolationCache violationCache;
+    private CheckManager checkManager;
 
     public static void log(String msg) {
         getInstance().getLogger().info("[Reflex] " + msg);
@@ -115,17 +111,12 @@ public class Reflex extends JavaPlugin {
 
         reflexTimer = new ReflexTimer(instance);
 
-        //Setup triggers, data captures, inspectors
-        triggerManager = new TriggerManager(instance);
-        triggerManager.setup();
-        dataCaptureManager = new DataCaptureManager(instance);
-        dataCaptureManager.setup();
-        inspectManager = new InspectManager(instance);
-        inspectManager.setup();
+        // Check setup
+        checkManager = new CheckManager(this);
 
         banManager = new ReflexBanManager();
 
-        //Commands
+        // Commands
         commandHandler = new RCommandHandler(instance);
         commandHandler.registerCommands(new CmdReflex());
         commandHandler.registerCommands(new CmdCancel());
@@ -150,7 +141,7 @@ public class Reflex extends JavaPlugin {
     @Override
     public void onDisable() {
         getLogger().info("[Stop] Disabling Reflex v" + getDescription().getVersion());
-        //Make reload-friendly, save all online players
+        // Make reload-friendly, save all online players
         int saved = 0;
         for (Player pl : getOnlinePlayers()) {
             cache.saveSync(pl);
@@ -164,12 +155,11 @@ public class Reflex extends JavaPlugin {
         reflexConfig = null;
         commandHandler = null;
         banManager = null;
-        inspectManager = null;
-        dataCaptureManager = null;
-        triggerManager = null;
         reflexTimer = null;
         lang = null;
         cache = null;
+        checkManager.save();
+        checkManager = null;
         instance = null;
 
         getLogger().info("[Stop] [Finish] Disabled Reflex v" + getDescription().getVersion() + " by Jonah Seguin (Shawckz).");
@@ -195,24 +185,12 @@ public class Reflex extends JavaPlugin {
         return lang;
     }
 
-    public TriggerManager getTriggerManager() {
-        return triggerManager;
-    }
-
     public ReflexCache getCache() {
         return cache;
     }
 
-    public DataCaptureManager getDataCaptureManager() {
-        return dataCaptureManager;
-    }
-
     public ReflexTimer getReflexTimer() {
         return reflexTimer;
-    }
-
-    public InspectManager getInspectManager() {
-        return inspectManager;
     }
 
     public RDataCache getrDataCache() {
@@ -229,5 +207,9 @@ public class Reflex extends JavaPlugin {
 
     public ViolationCache getViolationCache() {
         return violationCache;
+    }
+
+    public CheckManager getCheckManager() {
+        return checkManager;
     }
 }

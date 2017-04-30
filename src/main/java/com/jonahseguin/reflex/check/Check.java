@@ -32,7 +32,7 @@ import java.util.Iterator;
  */
 public abstract class Check extends CheckConfig implements Listener {
 
-    private final Reflex instance;
+    private final Reflex reflex;
     private final CheckType checkType;
 
     @ConfigData("enabled")
@@ -50,10 +50,18 @@ public abstract class Check extends CheckConfig implements Listener {
     @ConfigData("vl.autoban-threshold")
     private int autobanVL = 5;
 
-    public Check(Reflex instance, CheckType checkType) {
+    public Check(Reflex reflex, CheckType checkType) {
         super(checkType);
-        this.instance = instance;
+        this.reflex = reflex;
         this.checkType = checkType;
+    }
+
+    /**
+     * Should be overridden by extending Check
+     * @return String - the description for this check
+     */
+    public String description() {
+        return "No description available";
     }
 
     public String getName() {
@@ -61,15 +69,15 @@ public abstract class Check extends CheckConfig implements Listener {
     }
 
     public final Reflex getReflex() {
-        return instance;
+        return reflex;
     }
 
     public final ReflexCache getCache() {
-        return instance.getCache();
+        return reflex.getCache();
     }
 
     public final ReflexConfig getReflexConfig() {
-        return instance.getReflexConfig();
+        return reflex.getReflexConfig();
     }
 
     public final ReflexPlayer getPlayer(Player player) {
@@ -94,7 +102,7 @@ public abstract class Check extends CheckConfig implements Listener {
 
     public final void setEnabled(final boolean enabled) {
         if (enabled) {
-                Bukkit.getServer().getPluginManager().registerEvents(this, instance);
+                Bukkit.getServer().getPluginManager().registerEvents(this, reflex);
         } else {
             HandlerList.unregisterAll(this);
         }
@@ -145,5 +153,29 @@ public abstract class Check extends CheckConfig implements Listener {
                 }
             }
         }
+    }
+
+    public int getAutobanVL() {
+        return autobanVL;
+    }
+
+    public boolean isAutoban() {
+        return autoban;
+    }
+
+    public boolean isCancel() {
+        return cancel;
+    }
+
+    public void setCancel(boolean cancel) {
+        this.cancel = cancel;
+    }
+
+    public boolean isAutobanFreeze() {
+        return autobanFreeze;
+    }
+
+    public void setAutobanFreeze(boolean autobanFreeze) {
+        this.autobanFreeze = autobanFreeze;
     }
 }

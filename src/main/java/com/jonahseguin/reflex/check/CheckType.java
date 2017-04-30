@@ -43,7 +43,8 @@ public enum CheckType {
     SELF_HIT("SelfHit"), //
     AUTO_SOUP("AutoSoup"), //
     BLINK("Blink"), //
-    ATTACK_SPEED("AttackSpeed"); //
+    ATTACK_SPEED("AttackSpeed"), //
+    NO_FALL("NoFall"); //
 
     private final String name;
 
