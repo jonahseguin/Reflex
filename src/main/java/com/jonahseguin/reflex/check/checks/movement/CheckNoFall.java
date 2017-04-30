@@ -64,4 +64,8 @@ public class CheckNoFall extends Check {
         return !p.getData().isInLiquid();
     }
 
+    @Override
+    public String description() {
+        return "Detects when a player does not take fall damage";
+    }
 }

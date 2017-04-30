@@ -18,9 +18,7 @@ import org.bukkit.entity.Player;
 /**
  * Created by Jonah Seguin on Mon 2017-04-24 at 20:32.
  * Project: Reflex
- * <p>
  * Check: HeadRoll
- * <p>
  * 'Headless' hacks; when a player's head turns 'further' than possible
  */
 public class CheckHeadRoll extends Check {
@@ -48,5 +46,10 @@ public class CheckHeadRoll extends Check {
             }
         });
 
+    }
+
+    @Override
+    public String description() {
+        return "Detects when a player's head moves to an impossible angle";
     }
 }
