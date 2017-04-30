@@ -6,6 +6,8 @@ package com.jonahseguin.reflex.check;
 
 import com.jonahseguin.reflex.oldchecks.data.XrayStats;
 import com.jonahseguin.reflex.util.obj.TrigUtils;
+import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -18,6 +20,8 @@ import java.util.*;
  * Created by Jonah Seguin on Sat 2017-04-29 at 17:10.
  * Project: Reflex
  */
+@Getter
+@Setter
 public class PlayerData {
 
     public final Player player;

@@ -4,9 +4,64 @@
 
 package com.jonahseguin.reflex.check.checks.other;
 
+import com.jonahseguin.reflex.Reflex;
+import com.jonahseguin.reflex.backend.configuration.annotations.ConfigData;
+import com.jonahseguin.reflex.check.Check;
+import com.jonahseguin.reflex.check.CheckType;
+import com.jonahseguin.reflex.oldchecks.base.RCheckType;
+import com.jonahseguin.reflex.oldchecks.base.RTimer;
+import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
+import com.jonahseguin.reflex.util.obj.Lag;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.player.PlayerMoveEvent;
+
 /**
  * Created by Jonah Seguin on Sat 2017-04-29 at 16:56.
  * Project: Reflex
+ *
+ * Movement packets --> max 1 per tick (20 per second)
+ * Checks if too many are being sent (can catch certain speeds, auras, etc.)
  */
-public class CheckMorePackets {
+public class CheckMorePackets extends Check implements RTimer {
+
+    @ConfigData("max-packets-per-second")
+    private double maxPPS = 30; //Maximum packets per-second per-player (1 packet per tick) + 10 (lag safety)
+
+    @ConfigData("minimum-attempts")
+    private int minAttempts = 3;
+
+    public CheckMorePackets(Reflex instance) {
+        super(instance, CheckType.MORE_PACKETS);
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onMove(PlayerMoveEvent e) {
+        Player p = e.getPlayer();
+        ReflexPlayer rp = getPlayer(p);
+        rp.getData().packets++;
+    }
+
+    @Override
+    public void runTimer() {
+        final double maxPPS = calcMaxPPS();
+        Reflex.getReflexPlayers().forEach(rp -> {
+            if (rp.getData().packets > maxPPS) {
+                rp.addAlertVL(getCheckType());
+                if (rp.getAlertVL(getCheckType()) >= minAttempts) {
+                    fail(rp, rp.getData().packets + " packets");
+                    rp.setAlertVL(getCheckType(), 0);
+                }
+            }
+            else{
+                rp.setAlertVL(getCheckType(), 0); // Reset if they don't violate 3 in a row
+            }
+            rp.getData().packets = 0;
+        });
+    }
+
+    private double calcMaxPPS() {
+        return maxPPS * 20 / Lag.getTPS();
+    }
+
 }

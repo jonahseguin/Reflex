@@ -62,6 +62,7 @@ public class ReflexCache extends AbstractCache {
     public void init(Player p, ReflexPlayer reflexPlayer) {
         reflexPlayer.setBukkitPlayer(p);
         reflexPlayer.setData(new PlayerData(p));
+        reflexPlayer.setJoinTimeout(System.currentTimeMillis() + (1000 * Reflex.getInstance().getReflexConfig().getJoinTimeoutSeconds()));
         if (ReflexPerm.ALERTS.hasPerm(p)) {
             reflexPlayer.setAlertsEnabled(true);
             RLang.send(p, ReflexLang.ALERTS_ENABLED);

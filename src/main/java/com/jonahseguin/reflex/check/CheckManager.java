@@ -5,10 +5,10 @@
 package com.jonahseguin.reflex.check;
 
 import com.jonahseguin.reflex.Reflex;
-import com.jonahseguin.reflex.check.checks.movement.CheckBedFly;
-import com.jonahseguin.reflex.check.checks.movement.CheckHeadRoll;
-import com.jonahseguin.reflex.check.checks.movement.CheckNoFall;
+import com.jonahseguin.reflex.check.checks.movement.*;
+import com.jonahseguin.reflex.check.checks.other.CheckRegen;
 import com.jonahseguin.reflex.check.checks.other.CheckTabComplete;
+import com.jonahseguin.reflex.oldchecks.base.RTimer;
 import com.jonahseguin.reflex.util.utility.ReflexException;
 
 import java.util.concurrent.ConcurrentHashMap;
@@ -30,9 +30,18 @@ public class CheckManager {
         registerCheck(new CheckNoFall(instance));
         registerCheck(new CheckTabComplete(instance));
         registerCheck(new CheckBedFly(instance));
+        registerCheck(new CheckPhase(instance));
+        registerCheck(new CheckVClip(instance));
+        registerCheck(new CheckRegen(instance));
+        registerCheck(new CheckAntiKnockback(instance));
 
 
         checks.values().forEach(check -> check.setEnabled(check.isEnabled())); // Register check listeners if enabled
+        checks.values().forEach(check -> { // Register check timers if applicable
+            if (check instanceof RTimer) {
+                instance.getReflexTimer().registerTimer(((RTimer)check));
+            }
+        });
     }
 
     public void save() {

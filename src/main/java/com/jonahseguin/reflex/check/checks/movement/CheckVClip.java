@@ -5,7 +5,6 @@
 package com.jonahseguin.reflex.check.checks.movement;
 
 import com.jonahseguin.reflex.Reflex;
-import com.jonahseguin.reflex.backend.configuration.annotations.ConfigData;
 import com.jonahseguin.reflex.check.Check;
 import com.jonahseguin.reflex.check.CheckType;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
@@ -24,9 +23,6 @@ import org.bukkit.event.player.PlayerMoveEvent;
  * Project: Reflex
  */
 public class CheckVClip extends Check {
-
-    @ConfigData("capture-time")
-    private int captureTime = 10;
 
     public CheckVClip(Reflex instance) {
         super(instance, CheckType.VCLIP);
@@ -109,4 +105,8 @@ public class CheckVClip extends Check {
         }
     }
 
+    @Override
+    public String description() {
+        return "Detect when a player attempts to vertically pass through a block";
+    }
 }

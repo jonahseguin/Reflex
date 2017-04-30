@@ -46,11 +46,15 @@ public class ReflexPlayer extends CachePlayer {
     private long lastAlertTime = System.currentTimeMillis();
     private final PlayerAlerts alerts = new PlayerAlerts(this);
     private PlayerData data = null;
+    private long joinTimeout = 0; // Cooldown period where all checks are ignored during login
 
     public ReflexPlayer() { //So that AutoMongo can instantiate without throwing an InstantiationException
 
     }
 
+    public boolean canCheck() {
+        return joinTimeout < System.currentTimeMillis();
+    }
 
     public void msg(String msg) {
         bukkitPlayer.sendMessage(ChatColor.translateAlternateColorCodes('&', msg));

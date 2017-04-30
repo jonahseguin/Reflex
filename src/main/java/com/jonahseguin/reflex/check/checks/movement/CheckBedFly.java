@@ -47,7 +47,6 @@ public class CheckBedFly extends Check {
                 player.teleport(player.getLocation());
             }
         }
-
     }
 
     @Override
