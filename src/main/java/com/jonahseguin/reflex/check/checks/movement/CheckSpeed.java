@@ -11,6 +11,7 @@ import com.jonahseguin.reflex.check.CheckType;
 import com.jonahseguin.reflex.event.packet.ReflexPacketMoveEvent;
 import com.jonahseguin.reflex.event.packet.ReflexPacketVelocityEvent;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
+import com.jonahseguin.reflex.util.obj.Lag;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -44,6 +45,12 @@ public class CheckSpeed extends Check {
 
     @ConfigData("max-movement-speed.speed-potion.multiplier")
     private double speedMultiplier = 2.5D;
+
+    @ConfigData("lag-thresholding-exceeded-attempts")
+    private int lagThresholdExceedAttempts = 5;
+
+    @ConfigData("minimum-tps-ignore-lag-threshold")
+    private double minTpsIgnoreLagThreshold = 18;
 
 
     public CheckSpeed(Reflex instance) {
@@ -138,6 +145,19 @@ public class CheckSpeed extends Check {
                     rp.addAlertVL(getCheckType());
                     if (rp.getAlertVL(getCheckType()) >= alertThreshold) {
                         if (fail(rp, (df.format(beforeSpeed)) + " m/s > " + df.format(maxSpeed) + " m/s").isCancelled()) {
+                            e.setTo(e.getFrom());
+                        }
+                        rp.setAlertVL(getCheckType(), 0);
+                    }
+                }
+            } else if (speed > maxSpeed && speed > lagThreshold) {
+                // Above lag threshold, need to account for this in case it is NOT lag and they are
+                // Just moving very fast
+                double tps = Lag.getTPS();
+                if (tps >= minTpsIgnoreLagThreshold) {
+                    rp.addAlertVL(getCheckType());
+                    if (rp.getAlertVL(getCheckType()) >= lagThresholdExceedAttempts) {
+                        if (fail(rp, df.format(rp.getData().getBlocksPerSecond()) + " m/s").canCancel()) {
                             e.setTo(e.getFrom());
                         }
                         rp.setAlertVL(getCheckType(), 0);
