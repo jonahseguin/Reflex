@@ -4,6 +4,8 @@
 
 package com.jonahseguin.reflex.check;
 
+import com.google.common.collect.Sets;
+import com.jonahseguin.reflex.check.checks.combat.CheckReach;
 import com.jonahseguin.reflex.oldchecks.data.XrayStats;
 import com.jonahseguin.reflex.util.obj.TrigUtils;
 import lombok.Getter;
@@ -44,6 +46,18 @@ public class PlayerData {
                 Material.REDSTONE_COMPARATOR_ON, Material.SKULL, Material.SKULL_ITEM, Material.LADDER, Material.WATER_LILY));
 
         SPECIAL_SOLID_MATERIAL_ID_WHITELIST.addAll(Arrays.asList(85, 188, 189, 190, 191, 192, 113, 107, 183, 184, 185, 186, 187, 139, 65));
+    }
+
+    /* Reach */
+    public Set<CheckReach.ReachLog> reaches = Sets.newHashSet();
+    public long lastReach = 0;
+
+    public Set<Double> getReachDistancesAsDoubles() {
+        Set<Double> doubles = new HashSet<>();
+        for (CheckReach.ReachLog log : reaches) {
+            doubles.add(log.getDistance());
+        }
+        return doubles;
     }
 
     /* NoSwing */
@@ -97,6 +111,7 @@ public class PlayerData {
 
     // General setBack --> Last safe location
     public Location setBack = null;
+    public Location from = null;
 
     public boolean isInLiquid() {
         Material m = player.getLocation().getBlock().getType();
