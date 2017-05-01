@@ -34,6 +34,8 @@ public class CheckManager {
         registerCheck(new CheckVClip(instance));
         registerCheck(new CheckRegen(instance));
         registerCheck(new CheckAntiKnockback(instance));
+        registerCheck(new CheckSpeed(instance));
+        registerCheck(new CheckBlockHit(instance));
 
 
         checks.values().forEach(check -> check.setEnabled(check.isEnabled())); // Register check listeners if enabled

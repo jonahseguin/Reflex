@@ -9,11 +9,11 @@ import lombok.Getter;
 import org.bukkit.entity.Player;
 
 @Getter
-public class ReflexSwingEvent extends ReflexPacketEvent {
+public class ReflexPacketSwingEvent extends ReflexPacketEvent {
 
     private final Player player;
 
-    public ReflexSwingEvent(PacketEvent packetEvent, Player player) {
+    public ReflexPacketSwingEvent(PacketEvent packetEvent, Player player) {
         super(packetEvent);
         this.player = player;
     }

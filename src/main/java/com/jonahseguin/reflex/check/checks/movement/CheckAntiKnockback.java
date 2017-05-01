@@ -56,6 +56,7 @@ public class CheckAntiKnockback extends Check {
                     rp.addAlertVL(getCheckType());
                     if (rp.getAlertVL(getCheckType()) >= minAttempts) {
                         fail(rp);
+                        rp.setAlertVL(getCheckType(), 0); // Reset on fail
                     }
                 } else {
                     rp.setAlertVL(getCheckType(), 0);

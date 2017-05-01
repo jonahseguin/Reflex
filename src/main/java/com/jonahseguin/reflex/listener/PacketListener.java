@@ -112,7 +112,7 @@ public class PacketListener {
         instance.getProtocolManager().addPacketListener(new PacketAdapter(instance, ListenerPriority.NORMAL, PacketType.Play.Client.ARM_ANIMATION) {
             public void onPacketReceiving(PacketEvent event) {
                 if (event.getPacketType().equals(PacketType.Play.Client.ARM_ANIMATION)) {
-                    ReflexSwingEvent swingEvent = new ReflexSwingEvent(event, event.getPlayer());
+                    ReflexPacketSwingEvent swingEvent = new ReflexPacketSwingEvent(event, event.getPlayer());
                     instance.getServer().getPluginManager().callEvent(swingEvent);
                 }
             }
@@ -154,6 +154,22 @@ public class PacketListener {
         //LookEvent
         instance.getProtocolManager().addPacketListener(new PacketAdapter(instance, ListenerPriority.NORMAL,
                 PacketType.Play.Client.LOOK) {
+            @Override
+            public void onPacketReceiving(PacketEvent event) {
+                if (event.getPacketType() == PacketType.Play.Client.LOOK) {
+                    Player p = event.getPlayer();
+                    // ReflexPlayer ap = Reflex.getInstance().getCache().getReflexPlayers(p);
+                    float yaw = event.getPacket().getFloat().readSafely(0);
+                    float pitch = event.getPacket().getFloat().readSafely(1);
+
+                    ReflexLookEvent lookEvent = new ReflexLookEvent(event, p, yaw, pitch);
+                    instance.getServer().getPluginManager().callEvent(lookEvent);
+                }
+            }
+        });
+        //KeepAlive
+        instance.getProtocolManager().addPacketListener(new PacketAdapter(instance, ListenerPriority.NORMAL,
+                PacketType.Play.Client.KEEP_ALIVE) {
             @Override
             public void onPacketReceiving(PacketEvent event) {
                 if (event.getPacketType() == PacketType.Play.Client.LOOK) {

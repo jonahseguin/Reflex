@@ -46,6 +46,10 @@ public class PlayerData {
         SPECIAL_SOLID_MATERIAL_ID_WHITELIST.addAll(Arrays.asList(85, 188, 189, 190, 191, 192, 113, 107, 183, 184, 185, 186, 187, 139, 65));
     }
 
+    /* NoSwing */
+    public boolean hasSwung = false;
+    public long lastSwing = 0;
+
     /* NoFall */
     public double fallDistance = 0;
 
