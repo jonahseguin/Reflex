@@ -5,8 +5,11 @@
 package com.jonahseguin.reflex.check;
 
 import com.jonahseguin.reflex.Reflex;
+import com.jonahseguin.reflex.check.checks.combat.CheckFastBow;
 import com.jonahseguin.reflex.check.checks.movement.*;
+import com.jonahseguin.reflex.check.checks.other.CheckFastEat;
 import com.jonahseguin.reflex.check.checks.other.CheckRegen;
+import com.jonahseguin.reflex.check.checks.other.CheckSelfHit;
 import com.jonahseguin.reflex.check.checks.other.CheckTabComplete;
 import com.jonahseguin.reflex.oldchecks.base.RTimer;
 import com.jonahseguin.reflex.util.utility.ReflexException;
@@ -36,7 +39,9 @@ public class CheckManager {
         registerCheck(new CheckAntiKnockback(instance));
         registerCheck(new CheckSpeed(instance));
         registerCheck(new CheckBlockHit(instance));
-
+        registerCheck(new CheckFastBow(instance));
+        registerCheck(new CheckFastEat(instance));
+        registerCheck(new CheckSelfHit(instance));
 
         checks.values().forEach(check -> check.setEnabled(check.isEnabled())); // Register check listeners if enabled
         checks.values().forEach(check -> { // Register check timers if applicable

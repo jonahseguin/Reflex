@@ -4,6 +4,7 @@
 
 package com.jonahseguin.reflex.check;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.jonahseguin.reflex.check.checks.combat.CheckReach;
 import com.jonahseguin.reflex.oldchecks.data.XrayStats;
@@ -13,6 +14,7 @@ import lombok.Setter;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import javax.persistence.Transient;
@@ -26,17 +28,8 @@ import java.util.*;
 @Setter
 public class PlayerData {
 
-    public final Player player;
-
-    public PlayerData(Player player) {
-        this.player = player;
-    }
-
-
-
     @Transient
     private static final Set<Material> SOLID_MATERIAL_WHITELIST = new HashSet<>();
-
     @Transient
     private static final Set<Integer> SPECIAL_SOLID_MATERIAL_ID_WHITELIST = new HashSet<>(); //Fences, etc
 
@@ -48,57 +41,44 @@ public class PlayerData {
         SPECIAL_SOLID_MATERIAL_ID_WHITELIST.addAll(Arrays.asList(85, 188, 189, 190, 191, 192, 113, 107, 183, 184, 185, 186, 187, 139, 65));
     }
 
+    public final Player player;
+    /* FastEat */
+    public boolean eatDidInteract = false;
+    public long eatInteract = 0;
+    public long eatConsume = 0;
+    public Material eatMaterial = null;
     /* Reach */
     public Set<CheckReach.ReachLog> reaches = Sets.newHashSet();
     public long lastReach = 0;
-
-    public Set<Double> getReachDistancesAsDoubles() {
-        Set<Double> doubles = new HashSet<>();
-        for (CheckReach.ReachLog log : reaches) {
-            doubles.add(log.getDistance());
-        }
-        return doubles;
-    }
-
     /* NoSwing */
     public boolean hasSwung = false;
     public long lastSwing = 0;
-
     /* NoFall */
     public double fallDistance = 0;
-
-
     /* Speed */
     public double blocksPerSecond = 0;
     public double hFreedom = 0;
     public int bhopDelay = 0;
-
     /* FastBow */
     public long bowPull = 0;
     public long bowShoot = 0;
     public double bowPower = 0;
-
     /* Regen */
     public double healthPerSecond = 0;
-
     /* VClip */
     public boolean triedVClip = false;
     public int vclipY = -1;
     public Location lastVClipLocation = null;
-
     /* Xray */
     public XrayStats xrayStats = new XrayStats();
-
     /* Phase */
     public boolean triedPhase = false;
     public int phaseY = -1;
     public Location lastPhaseLocation = null;
     public long lastPhaseTime = -1;
     public int linkedPhaseAttempts = 0;
-
     /* MorePackets */
     public int packets = 0;
-
     /* Player world variables */
     public boolean onGround = false;
     public boolean onLadder = false; //Also vines
@@ -108,10 +88,21 @@ public class PlayerData {
     public boolean underBlock = false;
     public boolean onPiston = false;
     public boolean inWeb = false;
-
     // General setBack --> Last safe location
     public Location setBack = null;
     public Location from = null;
+
+    public PlayerData(Player player) {
+        this.player = player;
+    }
+
+    public Set<Double> getReachDistancesAsDoubles() {
+        Set<Double> doubles = new HashSet<>();
+        for (CheckReach.ReachLog log : reaches) {
+            doubles.add(log.getDistance());
+        }
+        return doubles;
+    }
 
     public boolean isInLiquid() {
         Material m = player.getLocation().getBlock().getType();
@@ -255,6 +246,17 @@ public class PlayerData {
         blocks.add(location.getBlock());
 
         return blocks;
+    }
+
+    public List<Player> getNearby(int r1, int r2, int r3) {
+        List<Entity> entities = player.getNearbyEntities(r1, r2, r3);
+        List<Player> players = Lists.newArrayList();
+        entities.forEach(en -> {
+            if (en instanceof Player) {
+                players.add(((Player) en));
+            }
+        });
+        return players;
     }
 
 }

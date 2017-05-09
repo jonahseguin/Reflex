@@ -18,9 +18,9 @@ public enum CheckType {
     REGEN("Regen"), // DONE
     HEAD_ROLL("HeadRoll"), // DONE
     TAB_COMPLETE("TabComplete"), // DONE
-    FAST_BOW("FastBow"), //
+    FAST_BOW("FastBow"), // DONE
     SPEED("Speed"), // DONE
-    REACH("Reach"), //
+    REACH("Reach"), // DONE
     WRONG_TARGET("WrongTarget"), //
     XRAY("Xray"), //
     FLY("Fly"), //
@@ -36,16 +36,17 @@ public enum CheckType {
     NO_SLOW_DOWN("NoSlowDown"), //TODO
     BAD_PACKETS("BadPackets"), //TODO
     BED_FLY("BedFly"), // DONE
-    NO_SWING("NoSwing"), //
+    NO_SWING("NoSwing"), // DONE
     HIGH_JUMP("HighJump"), //
     GLIDE("Glide"), //TODO
-    FAST_EAT("FastEat"), //
+    FAST_EAT("FastEat"), // DONE
     SELF_HIT("SelfHit"), //
     AUTO_SOUP("AutoSoup"), //
     BLINK("Blink"), //
     ATTACK_SPEED("AttackSpeed"), //
-    BLOCK_HIT("BlockHit"), //
-    NO_FALL("NoFall"); //
+    GOD_MODE("GodMode"), //
+    BLOCK_HIT("BlockHit"), // DONE
+    NO_FALL("NoFall"); // DONE
 
     private final String name;
 
