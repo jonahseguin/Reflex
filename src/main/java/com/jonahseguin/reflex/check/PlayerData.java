@@ -42,6 +42,12 @@ public class PlayerData {
     }
 
     public final Player player;
+
+
+    /* GodMode */
+    public int keepAlivePackets = 0;
+    public long lastKeepAlivePacket = 0;
+
     /* FastEat */
     public boolean eatDidInteract = false;
     public long eatInteract = 0;
