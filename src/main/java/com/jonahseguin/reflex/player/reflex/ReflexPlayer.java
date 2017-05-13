@@ -30,6 +30,10 @@ import java.util.Map;
 public class ReflexPlayer extends CachePlayer {
 
     private final RCapturePlayer capturePlayer = new RCapturePlayer(this);
+    @MongoColumn(name = "vl")
+    private final Map<String, Integer> vl = Maps.newHashMap(); //Violation Level for each check, <CheckType#toString, VL>
+    private final Map<String, Integer> alertVL = Maps.newHashMap();//Pre-Failure VLs for each check, <CheckType#toString, VL>
+    private final PlayerAlerts alerts = new PlayerAlerts(this);
     @MongoColumn(name = "username")
     @NonNull
     private String name;
@@ -38,13 +42,10 @@ public class ReflexPlayer extends CachePlayer {
     private String uniqueId;
     //Non-persistent...
     private int sessionVL = 0;
-    private final Map<String, Integer> vl = Maps.newHashMap(); //Violation Level for each check, <CheckType#toString, VL>
-    private final Map<String, Integer> alertVL = Maps.newHashMap();//Pre-Failure VLs for each check, <CheckType#toString, VL>
     private Player bukkitPlayer = null;
     private boolean alertsEnabled = true;
     private boolean online = false;
     private long lastAlertTime = System.currentTimeMillis();
-    private final PlayerAlerts alerts = new PlayerAlerts(this);
     private PlayerData data = null;
     private long joinTimeout = 0; // Cooldown period where all checks are ignored during login
 
