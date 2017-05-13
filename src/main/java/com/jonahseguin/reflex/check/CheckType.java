@@ -40,13 +40,15 @@ public enum CheckType {
     HIGH_JUMP("HighJump"), //
     GLIDE("Glide"), //TODO
     FAST_EAT("FastEat"), // DONE
-    SELF_HIT("SelfHit"), //
+    SELF_HIT("SelfHit"), // DONE
     AUTO_SOUP("AutoSoup"), //
     BLINK("Blink"), //
     ATTACK_SPEED("AttackSpeed"), //
-    GOD_MODE("GodMode"), //
+    GOD_MODE("GodMode"), // DONE
     BLOCK_HIT("BlockHit"), // DONE
-    NO_FALL("NoFall"); // DONE
+    NO_FALL("NoFall"), // DONE
+    SNEAK("Sneak"), // DONE
+    JESUS("Jesus"); //
 
     private final String name;
 

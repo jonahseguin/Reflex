@@ -14,8 +14,12 @@ import lombok.Setter;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.util.NumberConversions;
+import org.bukkit.util.Vector;
 
 import javax.persistence.Transient;
 import java.util.*;
@@ -43,6 +47,8 @@ public class PlayerData {
 
     public final Player player;
 
+    /* Jesus */
+    public long jesusTime = 0;
 
     /* GodMode */
     public int keepAlivePackets = 0;
@@ -263,6 +269,84 @@ public class PlayerData {
             }
         });
         return players;
+    }
+
+    public double degreeTo180(double degree) {
+        if ((degree %= 360.0) >= 180.0) {
+            degree -= 360.0;
+        }
+        if (degree < -180.0) {
+            degree += 360.0;
+        }
+        return degree;
+    }
+
+    public Vector getRelativeRotation(Location axis, Location relative) {
+        double dx = relative.getX() - axis.getX();
+        double dy = relative.getY() - axis.getY();
+        double dz = relative.getZ() - axis.getZ();
+        double distanceXZ = Math.sqrt(dx * dx + dz * dz);
+        float yaw = (float) (Math.atan2(dz, dx) * 180.0 / 3.141592653589793) - 90.0f;
+        float pitch = (float) (-Math.atan2(dy, distanceXZ) * 180.0 / 3.141592653589793);
+        return new Vector(yaw, pitch, 0.0f);
+    }
+
+    // Yaw, Pitch
+    public Map.Entry<Double, Double> getTargetOffset(LivingEntity entity) {
+        Location entityLoc = entity.getLocation().add(0.0, entity.getEyeHeight(), 0.0);
+        Location playerLoc = player.getLocation().add(0.0, player.getEyeHeight(), 0.0);
+        Vector playerRotation = new Vector(playerLoc.getYaw(), playerLoc.getPitch(), 0.0f);
+        Vector expectedRotation = getRelativeRotation(playerLoc, entityLoc);
+        double deltaYaw = degreeTo180(playerRotation.getX() - expectedRotation.getX());
+        double deltaPitch = degreeTo180(playerRotation.getY() - expectedRotation.getY());
+        return new AbstractMap.SimpleEntry<>(deltaYaw, deltaPitch);
+    }
+
+    private double fixX(double x) {
+        double touchedX = x;
+        double rem = touchedX - (double) Math.round(touchedX) + 0.01;
+        if (rem < 0.3) {
+            touchedX = NumberConversions.floor(x) - 1;
+        }
+        return touchedX;
+    }
+
+    public boolean isFullyInWater(Location loc) {
+        double touchedX = fixX(loc.getX());
+        return new Location(loc.getWorld(), touchedX, loc.getY(), loc.getBlockZ()).getBlock().isLiquid()
+                && new Location(loc.getWorld(), touchedX, Math.round(loc.getY()), loc.getBlockZ()).getBlock().isLiquid();
+    }
+
+    public boolean isFullyInWater() {
+        return isFullyInWater(player.getLocation());
+    }
+
+    public boolean isAboveWater(int blocks, Location loc) {
+        for (int x = loc.getBlockY(); x > loc.getBlockX() - blocks; x--) {
+            Block newLoc = new Location(loc.getWorld(), loc.getBlockX(), x, loc.getBlockZ()).getBlock();
+            if (newLoc.getType() != Material.AIR) {
+                return newLoc.isLiquid();
+            }
+        }
+        return false;
+    }
+
+    public boolean isAboveWater() {
+        return isAboveWater(25, player.getLocation());
+    }
+
+    public boolean cannotStandWater(Block block) {
+        Block otherBlock = block.getRelative(BlockFace.DOWN);
+        boolean isHover = block.getType() == Material.AIR;
+        boolean n = otherBlock.getRelative(BlockFace.NORTH).getType() == Material.WATER || otherBlock.getRelative(BlockFace.NORTH).getType() == Material.STATIONARY_WATER;
+        boolean s = otherBlock.getRelative(BlockFace.SOUTH).getType() == Material.WATER || otherBlock.getRelative(BlockFace.SOUTH).getType() == Material.STATIONARY_WATER;
+        boolean e = otherBlock.getRelative(BlockFace.EAST).getType() == Material.WATER || otherBlock.getRelative(BlockFace.EAST).getType() == Material.STATIONARY_WATER;
+        boolean w = otherBlock.getRelative(BlockFace.WEST).getType() == Material.WATER || otherBlock.getRelative(BlockFace.WEST).getType() == Material.STATIONARY_WATER;
+        boolean ne = otherBlock.getRelative(BlockFace.NORTH_EAST).getType() == Material.WATER || otherBlock.getRelative(BlockFace.NORTH_EAST).getType() == Material.STATIONARY_WATER;
+        boolean nw = otherBlock.getRelative(BlockFace.NORTH_WEST).getType() == Material.WATER || otherBlock.getRelative(BlockFace.NORTH_WEST).getType() == Material.STATIONARY_WATER;
+        boolean se = otherBlock.getRelative(BlockFace.SOUTH_EAST).getType() == Material.WATER || otherBlock.getRelative(BlockFace.NORTH).getType() == Material.STATIONARY_WATER;
+        boolean sw = otherBlock.getRelative(BlockFace.SOUTH_WEST).getType() == Material.WATER || otherBlock.getRelative(BlockFace.SOUTH_WEST).getType() == Material.STATIONARY_WATER;
+        return n && s && e && w && ne && nw && se && sw && isHover;
     }
 
 }

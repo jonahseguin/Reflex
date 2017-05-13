@@ -40,6 +40,7 @@ public class CheckManager {
         registerCheck(new CheckFastEat(instance));
         registerCheck(new CheckSelfHit(instance));
         registerCheck(new CheckGodMode(instance));
+        registerCheck(new CheckSneak(instance));
 
         checks.values().forEach(check -> check.setEnabled(check.isEnabled())); // Register check listeners if enabled
         checks.values().forEach(check -> { // Register check timers if applicable

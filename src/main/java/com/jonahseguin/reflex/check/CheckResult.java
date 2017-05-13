@@ -8,6 +8,7 @@ import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
 import lombok.Data;
 import lombok.NonNull;
 import org.bukkit.event.Cancellable;
+import org.bukkit.event.player.PlayerMoveEvent;
 
 /**
  * Created by Jonah Seguin on Mon 2017-04-24 at 20:34.
@@ -36,6 +37,9 @@ public class CheckResult {
     public CheckResult cancelIfAllowed(Cancellable cancellable) {
         if (canCancel) {
             cancellable.setCancelled(true);
+            if (cancellable instanceof PlayerMoveEvent) {
+                ((PlayerMoveEvent) cancellable).setTo(((PlayerMoveEvent) cancellable).getFrom());
+            }
             cancelled = true;
         }
         return this;
