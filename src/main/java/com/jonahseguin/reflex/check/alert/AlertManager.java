@@ -37,9 +37,6 @@ public class AlertManager implements RTimer {
 
     @Override
     public void runTimer() {
-        //TODO CHANGE: WE ONLY WANT THIS TO RUN EVERY 3 SECONDS
-        // WE WANT ALERTS TO BUILD UP, GROUP THEM, AND THEN SEND AS A GROUP
-        // once per second
         for (ReflexPlayer p : instance.getCache().getOnlineReflexPlayers()) {
             if (!p.getAlerts().isEmpty()) {
                 if ((System.currentTimeMillis() - p.getLastAlertTime()) >= (1000 * ALERT_BUILDUP_SECONDS)) {

@@ -35,26 +35,79 @@ public class GroupedAlert implements Alert {
 
     @Override
     public void sendAlert() {
-        // Send (single) alert
-        ReflexLang format = ReflexLang.ALERT_SINGLE; // player, check, grouped count, vl
-
+        // &9PLAYER &7failed &cCHECK &7(COUNT&7) &7[VIOLATIONS&7VL]
         FancyMessage msg = new FancyMessage(RLang.format(ReflexLang.ALERT_PREFIX));
-        String s = RLang.format(format, getReflexPlayer().getName(), getCheckType().getName(), alertSet.count()+"", vl+"");
-        msg.then(s)
+
+        final String player = reflexPlayer.getName();
+        final String check = getCheckType().getName();
+        final String count = alertSet.count() + "";
+        final String violations = vl + "";
+        final String command = "/reflex alert " + id;
+
+        // Player
+        msg
+                .then(player)
+                .color(ChatColor.BLUE)
                 .tooltip(
-                        ChatColor.GRAY + "Click to view alert",
-                        ChatColor.GRAY + "[MULTIPLE VIOLATIONS] (" + alertSet.count() + "x)",
-                        ChatColor.GRAY + "Player: " + ChatColor.RED + getReflexPlayer().getName(),
-                        ChatColor.GRAY + "Check: " + ChatColor.RED + getCheckType().getName()
+                        ChatColor.GRAY + "[Player]",
+                        ChatColor.GRAY + "Username: " + ChatColor.RED + player,
+                        ChatColor.GRAY + "" + reflexPlayer.getSessionVL() + "sVL, "
+                                + reflexPlayer.getPing() + "ms",
+                        "  ",
+                        ChatColor.GRAY + "[" + ChatColor.GREEN + "CLICK TO VIEW" + ChatColor.GRAY + "]"
                 )
-                .command("/reflex alert " + id);
+                .command(command);
+
+
+        msg.then(" failed ").color(ChatColor.GRAY).command(command);
+
+        // Check
+        msg
+                .then(check)
+                .color(ChatColor.RED)
+                .tooltip(
+                        ChatColor.GRAY + "[Check]",
+                        ChatColor.GRAY + "Check: " + ChatColor.RED + check,
+                        ChatColor.GRAY + "Recent Detail: " + ChatColor.RED + getDetail(),
+                        "  ",
+                        ChatColor.GRAY + "[" + ChatColor.GREEN + "CLICK TO VIEW" + ChatColor.GRAY + "]"
+                )
+                .command(command);
+
+        msg.then(" "); // Space
+
+        msg
+                .then("(" + count + ")")
+                .color(ChatColor.GRAY)
+                .tooltip(
+                        ChatColor.GRAY + "[Count]",
+                        ChatColor.GRAY + "Amount of violations",
+                        ChatColor.GRAY + "Count: " + ChatColor.RED + count,
+                        "  ",
+                        ChatColor.GRAY + "[" + ChatColor.GREEN + "CLICK TO VIEW" + ChatColor.GRAY + "]"
+                )
+                .command(command);
+
+        msg.then(" "); // Space
+
+        // Violation
+        msg
+                .then("[" + violations + "]")
+                .color(ChatColor.GRAY)
+                .tooltip(
+                        ChatColor.GRAY + "[Violation] (" + alertSet.count() + "x)",
+                        ChatColor.GRAY + "Player: " + ChatColor.RED + getReflexPlayer().getName(),
+                        ChatColor.GRAY + "Check: " + ChatColor.RED + getCheckType().getName(),
+                        "  ",
+                        ChatColor.GRAY + "[" + ChatColor.GREEN + "CLICK TO VIEW" + ChatColor.GRAY + "]"
+                )
+                .command(command);
 
         CheckAlert.staffMsg(msg);
 
         getReflexPlayer().setLastAlertTime(System.currentTimeMillis());
 
         Reflex.log("Alert [MULTIPLE]: " + getReflexPlayer().getName() + " (" + getCheckType().getName() + ") [" + id + "]");
-
     }
 
     @Override
