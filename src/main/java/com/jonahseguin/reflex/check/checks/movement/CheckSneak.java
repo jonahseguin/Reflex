@@ -31,10 +31,10 @@ public class CheckSneak extends Check {
         final Player player = event.getPlayer();
         final ReflexPlayer rp = getPlayer(player);
         if (player.isSprinting() && player.isSneaking()) {
-            rp.addAlertVL(getCheckType());
-            if (rp.getAlertVL(getCheckType()) >= minAttempts) {
+            rp.addPreVL(getCheckType());
+            if (rp.getPreVL(getCheckType()) >= minAttempts) {
                 fail(rp).cancelIfAllowed(event);
-                rp.setAlertVL(getCheckType(), 0);
+                rp.setPreVL(getCheckType(), 0);
             }
         }
     }

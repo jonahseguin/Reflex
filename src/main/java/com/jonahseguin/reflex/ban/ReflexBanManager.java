@@ -30,6 +30,17 @@ public class ReflexBanManager {
         return ban != null;
     }
 
+    public boolean isBanned(String uniqueId) {
+        if (cache.containsKey(uniqueId)) {
+            if (cache.get(uniqueId).hasActiveBan()) {
+                return true;
+            }
+        }
+
+        ReflexBan ban = getBan(uniqueId);
+        return ban != null && ban.isActive();
+
+    }
     public ReflexBan getBan(String uniqueId) {
         if (cache.containsKey(uniqueId)) {
             if (cache.get(uniqueId).hasActiveBan()) {

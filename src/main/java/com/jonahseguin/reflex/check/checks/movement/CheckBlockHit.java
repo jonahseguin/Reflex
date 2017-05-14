@@ -31,12 +31,12 @@ public class CheckBlockHit extends Check {
         final Player player = event.getPlayer();
         final ReflexPlayer rp = getPlayer(player);
         if (rp.getData().isOnGround() && player.isSprinting() && player.isBlocking()) {
-            rp.addAlertVL(getCheckType());
-            if (rp.getAlertVL(getCheckType()) >= minAttempts) {
+            rp.addPreVL(getCheckType());
+            if (rp.getPreVL(getCheckType()) >= minAttempts) {
                 fail(rp).cancelIfAllowed(event);
             }
         } else if (player.isSprinting() && !player.isBlocking()) {
-            rp.setAlertVL(getCheckType(), 0);
+            rp.setPreVL(getCheckType(), 0);
         }
     }
 

@@ -8,8 +8,6 @@ import com.jonahseguin.reflex.Reflex;
 import com.jonahseguin.reflex.backend.configuration.annotations.ConfigData;
 import com.jonahseguin.reflex.check.Check;
 import com.jonahseguin.reflex.check.CheckType;
-import com.jonahseguin.reflex.oldchecks.base.RCheckType;
-import com.jonahseguin.reflex.oldchecks.base.RTimer;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
 import com.jonahseguin.reflex.util.obj.Lag;
 import org.bukkit.entity.Player;
@@ -47,14 +45,14 @@ public class CheckMorePackets extends Check implements RTimer {
         final double maxPPS = calcMaxPPS();
         Reflex.getReflexPlayers().forEach(rp -> {
             if (rp.getData().packets > maxPPS) {
-                rp.addAlertVL(getCheckType());
-                if (rp.getAlertVL(getCheckType()) >= minAttempts) {
+                rp.addPreVL(getCheckType());
+                if (rp.getPreVL(getCheckType()) >= minAttempts) {
                     fail(rp, rp.getData().packets + " packets");
-                    rp.setAlertVL(getCheckType(), 0);
+                    rp.setPreVL(getCheckType(), 0);
                 }
             }
             else{
-                rp.setAlertVL(getCheckType(), 0); // Reset if they don't violate 3 in a row
+                rp.setPreVL(getCheckType(), 0); // Reset if they don't violate 3 in a row
             }
             rp.getData().packets = 0;
         });

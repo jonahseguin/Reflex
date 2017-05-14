@@ -2,13 +2,11 @@
  * Copyright (c) Jonah Seguin (Shawckz) 2017.  You may not copy, re-sell, distribute, modify, or use any code contained in this document or file, collection of documents or files, or project.  Thank you.
  */
 
-package com.jonahseguin.reflex.oldchecks.base;
+package com.jonahseguin.reflex.menu;
 
 /**
- * Represents "Stage" or "Check Type" in the Trigger -> Capture (Data) -> Inspect process.
+ * Created by Jonah Seguin on Sat 2017-05-13 at 10:11.
+ * Project: Reflex
  */
-public enum RCheckType {
-
-    DATA, INSPECT, TRIGGER
-
+public class BanMenu {
 }

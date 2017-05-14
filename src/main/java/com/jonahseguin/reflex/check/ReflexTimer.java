@@ -2,13 +2,9 @@
  * Copyright (c) Jonah Seguin (Shawckz) 2017.  You may not copy, re-sell, distribute, modify, or use any code contained in this document or file, collection of documents or files, or project.  Thank you.
  */
 
-package com.jonahseguin.reflex.oldchecks.base;
+package com.jonahseguin.reflex.check;
 
 import com.jonahseguin.reflex.Reflex;
-import com.jonahseguin.reflex.oldchecks.data.RDataCapture;
-import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
-import com.jonahseguin.reflex.util.obj.Lag;
-import org.bukkit.craftbukkit.v1_7_R4.entity.CraftPlayer;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -52,13 +48,6 @@ public class ReflexTimer implements Runnable {
      */
     public void run() {
         //Update ping and lag before doing timer checks
-        Reflex.getReflexPlayers().forEach(reflexPlayer -> {
-            reflexPlayer.getData().setTps(Lag.getTPS());
-            reflexPlayer.getData().setPing(((CraftPlayer) reflexPlayer.getBukkitPlayer()).getHandle().ping);
-            for (RDataCapture check : instance.getDataCaptureManager().getDataCaptures().values()) {
-                updatePingAndLag(instance.getCache().getReflexPlayer(reflexPlayer.getBukkitPlayer()), check);
-            }
-        });
         for (RTimer timer : timers) {
             if (timer instanceof Check) {
                 Check check = (Check) timer;
@@ -70,14 +59,4 @@ public class ReflexTimer implements Runnable {
             }
         }
     }
-
-    private void updatePingAndLag(ReflexPlayer player, RDataCapture check) {
-        if (player != null && player.getBukkitPlayer() != null) {
-            if (check.isCapturing(player.getBukkitPlayer())) {
-                player.getCapturePlayer().getData(check.getCheckType()).setPing(((CraftPlayer) player.getBukkitPlayer()).getHandle().ping);
-                player.getCapturePlayer().getData(check.getCheckType()).setTps(Lag.getTPS());
-            }
-        }
-    }
-
 }

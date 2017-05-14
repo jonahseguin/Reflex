@@ -142,12 +142,12 @@ public class CheckSpeed extends Check {
                 speed = recalculateFail(rp, speed);
 
                 if (speed > 0.0D) {
-                    rp.addAlertVL(getCheckType());
-                    if (rp.getAlertVL(getCheckType()) >= alertThreshold) {
+                    rp.addPreVL(getCheckType());
+                    if (rp.getPreVL(getCheckType()) >= alertThreshold) {
                         if (fail(rp, (df.format(beforeSpeed)) + " m/s > " + df.format(maxSpeed) + " m/s").isCancelled()) {
                             e.setTo(e.getFrom());
                         }
-                        rp.setAlertVL(getCheckType(), 0);
+                        rp.setPreVL(getCheckType(), 0);
                     }
                 }
             } else if (speed > maxSpeed && speed > lagThreshold) {
@@ -155,12 +155,12 @@ public class CheckSpeed extends Check {
                 // Just moving very fast
                 double tps = Lag.getTPS();
                 if (tps >= minTpsIgnoreLagThreshold) {
-                    rp.addAlertVL(getCheckType());
-                    if (rp.getAlertVL(getCheckType()) >= lagThresholdExceedAttempts) {
+                    rp.addPreVL(getCheckType());
+                    if (rp.getPreVL(getCheckType()) >= lagThresholdExceedAttempts) {
                         if (fail(rp, df.format(rp.getData().getBlocksPerSecond()) + " m/s").canCancel()) {
                             e.setTo(e.getFrom());
                         }
-                        rp.setAlertVL(getCheckType(), 0);
+                        rp.setPreVL(getCheckType(), 0);
                     }
                 }
             }

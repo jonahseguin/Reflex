@@ -7,16 +7,13 @@ package com.jonahseguin.reflex.check.alert;
 import com.jonahseguin.reflex.Reflex;
 import com.jonahseguin.reflex.backend.configuration.RLang;
 import com.jonahseguin.reflex.backend.configuration.ReflexLang;
-import com.jonahseguin.reflex.backend.configuration.ReflexPerm;
 import com.jonahseguin.reflex.check.CheckType;
-import com.jonahseguin.reflex.check.CheckViolation;
+import com.jonahseguin.reflex.check.violation.CheckViolation;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
 import lombok.Getter;
 import lombok.Setter;
 import mkremins.fanciful.FancyMessage;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
@@ -31,35 +28,15 @@ public class CheckAlert implements Alert {
     private final CheckViolation violation;
     private final double tps;
     private final int ping;
+    private final AlertType ALERT_TYPE = AlertType.SINGLE;
     @Setter
     private String detail = "";
-    private final AlertType ALERT_TYPE = AlertType.SINGLE;
 
     public CheckAlert(CheckViolation violation, double tps, int ping) {
         this.id = UUID.randomUUID().toString().toLowerCase();
         this.violation = violation;
         this.tps = tps;
         this.ping = ping;
-    }
-
-    public static void staffMsg(String msg) {
-        for (Player pl : Reflex.getOnlinePlayers()) {
-            ReflexPlayer p = Reflex.getInstance().getCache().getReflexPlayer(pl);
-            if (p.isAlertsEnabled() && ReflexPerm.ALERTS.hasPerm(pl)) {
-                p.msg(msg);
-            }
-        }
-        Bukkit.getLogger().info(ChatColor.stripColor(msg));
-    }
-
-    public static void staffMsg(FancyMessage msg) {
-        for (Player pl : Reflex.getOnlinePlayers()) {
-            ReflexPlayer p = Reflex.getInstance().getCache().getReflexPlayer(pl);
-            if (p.isAlertsEnabled() && ReflexPerm.ALERTS.hasPerm(pl)) {
-                msg.send(pl);
-            }
-        }
-        msg.send(Bukkit.getConsoleSender());
     }
 
     @Override
@@ -83,7 +60,7 @@ public class CheckAlert implements Alert {
                 )
                 .command("/reflex alert " + id);
 
-        staffMsg(msg);
+        AlertManager.staffMsg(msg);
 
         getReflexPlayer().setLastAlertTime(System.currentTimeMillis());
 

@@ -51,10 +51,10 @@ public class CheckNoSwing extends Check {
                             @Override
                             public void run() {
                                 if (!hasSwung(rp)) {
-                                    rp.addAlertVL(getCheckType());
-                                    if (rp.getAlertVL(getCheckType()) > minAttempts) {
+                                    rp.addPreVL(getCheckType());
+                                    if (rp.getPreVL(getCheckType()) > minAttempts) {
                                         fail(rp);
-                                        rp.setAlertVL(getCheckType(), 0); // Reset on fail
+                                        rp.setPreVL(getCheckType(), 0); // Reset on fail
                                     }
                                 }
                             }

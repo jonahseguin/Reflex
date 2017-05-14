@@ -33,7 +33,7 @@ public class ReflexConfig extends Configuration {
     private int alertGroupingIntervalSeconds = 5;
     @ConfigData("alerts.max-alerts-per-player-per-second")
     private int maxAlertsPPPS = 2;
-    @ConfigData("violation.cache-expiry-minutes")
+    @ConfigData("infraction.cache-expiry-minutes")
     private int violationCacheExpiryMinutes = 120; // 2 hours
     @ConfigData("player.join-timeout-seconds")
     private int joinTimeoutSeconds = 3;

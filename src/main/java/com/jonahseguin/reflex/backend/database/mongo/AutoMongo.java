@@ -30,68 +30,33 @@ import java.util.logging.Level;
 
 public abstract class AutoMongo {
 
-    public void update() {
-        if (!this.getClass().isAnnotationPresent(CollectionName.class)) {
-            Bukkit.getLogger().log(Level.SEVERE, "Table Name Class Not Found While Using AutoMongo (" + this.getClass().getSimpleName() + ")");
-            return;
-        }
-        String tableName = this.getClass().getAnnotation(CollectionName.class).name();
-
-        MongoCollection<Document> col = DBManager.getDb().getCollection(tableName);
-
-        String identifier = null;
-        Object identifierValue = null;
-        HashMap<String, Object> values = new HashMap<>();
-
-        for (Field field : this.getClass().getDeclaredFields()) {
-            field.setAccessible(true);
-            MongoColumn column = field.getAnnotation(MongoColumn.class);
-            if (column != null) {
-                Class<?> type = field.getType();
-                if (type.isPrimitive()) {
-                    type = ClassUtils.primitiveToWrapper(type);
-                }
-                if (column.identifier()) {
-                    identifier = column.name();
-                    identifierValue = getValue(field);
-                } else {
-                    values.put(column.name(), getValue(field));
+    public static AutoMongo fromDocument(Class<? extends AutoMongo> type, Document document) {
+        try {
+            AutoMongo mongo = type.newInstance();
+            for (Field field : mongo.getClass().getDeclaredFields()) {
+                MongoColumn mongoColumn = field.getAnnotation(MongoColumn.class);
+                if (mongoColumn != null) {
+                    Object value = document.get(mongoColumn.name());
+                    if (value != null) {
+                        mongo.setValue(value, field.getType(), field, type);
+                    }
                 }
             }
-        }
 
-        //Superclass
-        for (Field field : this.getClass().getSuperclass().getDeclaredFields()) {
-            field.setAccessible(true);
-            MongoColumn column = field.getAnnotation(MongoColumn.class);
-            if (column != null) {
-                Class<?> type = field.getType();
-                if (type.isPrimitive()) {
-                    type = ClassUtils.primitiveToWrapper(type);
-                }
-                if (column.identifier()) {
-                    identifier = column.name();
-                    identifierValue = getValue(field);
-                } else {
-                    values.put(column.name(), getValue(field));
+            for (Field field : type.getSuperclass().getDeclaredFields()) {
+                MongoColumn mongoColumn = field.getAnnotation(MongoColumn.class);
+                if (mongoColumn != null) {
+                    Object value = document.get(mongoColumn.name());
+                    if (value != null) {
+                        mongo.setValue(value, field.getType(), field, type);
+                    }
                 }
             }
+            return mongo;
+        } catch (InstantiationException | IllegalAccessException e) {
+            e.printStackTrace();
         }
-
-        if (identifier == null) {
-            Bukkit.getLogger().log(Level.SEVERE, "Identifier Not Found While Using AutoMongo (" + this.getClass().getSimpleName() + ")");
-            return;
-        }
-        Document doc = new Document(identifier, identifierValue);
-        Document searchQuery = new Document().append(identifier, identifierValue);
-
-        doc.putAll(values);
-
-        if (documentExists(searchQuery, col)) {
-            col.updateOne(searchQuery, new Document("$set", doc));
-        } else {
-            col.insertOne(doc);
-        }
+        return null;
     }
 
     public static List<AutoMongo> select(Document search, Class<? extends AutoMongo> type) {
@@ -183,6 +148,90 @@ public abstract class AutoMongo {
         return null;
     }
 
+    public Document toDocument() {
+        HashMap<String, Object> values = new HashMap<>();
+
+        for (Field field : this.getClass().getDeclaredFields()) {
+            field.setAccessible(true);
+            MongoColumn column = field.getAnnotation(MongoColumn.class);
+            if (column != null) {
+                values.put(column.name(), getValue(field));
+            }
+        }
+        for (Field field : this.getClass().getSuperclass().getDeclaredFields()) {
+            field.setAccessible(true);
+            MongoColumn column = field.getAnnotation(MongoColumn.class);
+            if (column != null) {
+                values.put(column.name(), getValue(field));
+            }
+        }
+        return new Document(values);
+    }
+
+    public void update() {
+        if (!this.getClass().isAnnotationPresent(CollectionName.class)) {
+            Bukkit.getLogger().log(Level.SEVERE, "Table Name Class Not Found While Using AutoMongo (" + this.getClass().getSimpleName() + ")");
+            return;
+        }
+        String tableName = this.getClass().getAnnotation(CollectionName.class).name();
+
+        MongoCollection<Document> col = DBManager.getDb().getCollection(tableName);
+
+        String identifier = null;
+        Object identifierValue = null;
+        HashMap<String, Object> values = new HashMap<>();
+
+        for (Field field : this.getClass().getDeclaredFields()) {
+            field.setAccessible(true);
+            MongoColumn column = field.getAnnotation(MongoColumn.class);
+            if (column != null) {
+                Class<?> type = field.getType();
+                if (type.isPrimitive()) {
+                    type = ClassUtils.primitiveToWrapper(type);
+                }
+                if (column.identifier()) {
+                    identifier = column.name();
+                    identifierValue = getValue(field);
+                } else {
+                    values.put(column.name(), getValue(field));
+                }
+            }
+        }
+
+        //Superclass
+        for (Field field : this.getClass().getSuperclass().getDeclaredFields()) {
+            field.setAccessible(true);
+            MongoColumn column = field.getAnnotation(MongoColumn.class);
+            if (column != null) {
+                Class<?> type = field.getType();
+                if (type.isPrimitive()) {
+                    type = ClassUtils.primitiveToWrapper(type);
+                }
+                if (column.identifier()) {
+                    identifier = column.name();
+                    identifierValue = getValue(field);
+                } else {
+                    values.put(column.name(), getValue(field));
+                }
+            }
+        }
+
+        if (identifier == null) {
+            Bukkit.getLogger().log(Level.SEVERE, "Identifier Not Found While Using AutoMongo (" + this.getClass().getSimpleName() + ")");
+            return;
+        }
+        Document doc = new Document(identifier, identifierValue);
+        Document searchQuery = new Document().append(identifier, identifierValue);
+
+        doc.putAll(values);
+
+        if (documentExists(searchQuery, col)) {
+            col.updateOne(searchQuery, new Document("$set", doc));
+        } else {
+            col.insertOne(doc);
+        }
+    }
+
     public void delete() {
         if (!this.getClass().isAnnotationPresent(CollectionName.class)) {
             Bukkit.getLogger().log(Level.SEVERE, "Table Name Class Not Found While Using AutoMongo (" + this.getClass().getSimpleName() + ")");
@@ -230,7 +279,7 @@ public abstract class AutoMongo {
             String ret = o.toString();
             if (field.isAnnotationPresent(DatabaseSerializer.class)) {
                 DatabaseSerializer serializer = field.getAnnotation(DatabaseSerializer.class);
-                ret = ((AbstractSerializer) serializer.serializer().newInstance()).toString(o);
+                ret = serializer.serializer().newInstance().toString(o);
             } else if (field.isAnnotationPresent(RDatabaseSerializer.class)) {
                 ReflexSerializer serializer = ((RDatabaseSerializer) field.getAnnotation(RDatabaseSerializer.class)).serializer().newInstance();
                 ret = serializer.toString(o);

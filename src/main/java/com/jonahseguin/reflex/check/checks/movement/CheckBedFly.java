@@ -40,9 +40,9 @@ public class CheckBedFly extends Check {
             }
         }
 
-        rp.addAlertVL(getCheckType());
+        rp.addPreVL(getCheckType());
 
-        if (rp.getAlertVL(getCheckType()) >= this.minAttempts) {
+        if (rp.getPreVL(getCheckType()) >= this.minAttempts) {
             if (fail(rp).canCancel()) {
                 player.teleport(player.getLocation());
             }

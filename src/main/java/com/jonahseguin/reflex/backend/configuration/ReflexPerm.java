@@ -20,7 +20,7 @@ public enum ReflexPerm {
     USE("reflex.use"),
     LOOKUP_PLAYER("reflex.lookup.player"),
     LOOKUP_INSPECTION("reflex.lookup.inspection"),
-    LOOKUP_VIOLATION("refkex.lookup.violation"),
+    LOOKUP_VIOLATION("refkex.lookup.infraction"),
     LOOKUP_BAN("reflex.lookup.ban"),
     UNBAN("reflex.unban"),
     CONFIRM_BAN("reflex.confirmban"),

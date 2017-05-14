@@ -49,21 +49,21 @@ public class CheckFastEat extends Check {
             if (Lag.getTPS() >= minTps && rp.getPing() < maxPing) {
                 long difference = System.currentTimeMillis() - rp.getData().eatInteract;
                 if (difference <= maxInteractDifference) {
-                    rp.addAlertVL(getCheckType());
-                    if (rp.getAlertVL(getCheckType()) >= minAttempts) {
+                    rp.addPreVL(getCheckType());
+                    if (rp.getPreVL(getCheckType()) >= minAttempts) {
                         fail(rp, df.format(maxInteractDifference) + "ms diff.").cancelIfAllowed(event);
                     } else {
-                        rp.setAlertVL(getCheckType(), 0);
+                        rp.setPreVL(getCheckType(), 0);
                     }
                 }
             }
         } else {
-            rp.addAlertVL(getCheckType());
+            rp.addPreVL(getCheckType());
         }
 
-        if (rp.getAlertVL(getCheckType()) >= minAttempts) {
+        if (rp.getPreVL(getCheckType()) >= minAttempts) {
             fail(rp, "No interact ").cancelIfAllowed(event);
-            rp.setAlertVL(getCheckType(), 0);
+            rp.setPreVL(getCheckType(), 0);
         }
     }
 

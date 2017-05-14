@@ -11,8 +11,9 @@ import com.jonahseguin.reflex.backend.command.RCommand;
 import com.jonahseguin.reflex.backend.configuration.RLang;
 import com.jonahseguin.reflex.backend.configuration.ReflexLang;
 import com.jonahseguin.reflex.backend.configuration.ReflexPerm;
+import com.jonahseguin.reflex.check.Check;
 import com.jonahseguin.reflex.check.CheckType;
-import com.jonahseguin.reflex.oldchecks.trigger.RTrigger;
+import com.jonahseguin.reflex.check.alert.AlertManager;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
@@ -29,18 +30,18 @@ public class CmdSettings implements RCommand {
         if (args.getArgs().length == 2) {
             //All checks
             boolean msg = true;
-            for (RTrigger trigger : Reflex.getInstance().getTriggerManager().getTriggers().values()) {
-                if (!editSetting(sender, trigger.getCheckType(), setting, mode, false)) {
+            for (Check check : Reflex.getInstance().getCheckManager().getChecks()) {
+                if (!editSetting(sender, check.getCheckType(), setting, mode, false)) {
                     msg = false;
                     break;
                 }
             }
             if (msg) {
                 sender.sendMessage(ChatColor.GRAY + "Updating setting '" + setting + "' for all checks to: " + mode);
-                Alert.staffMsg(RLang.format(ReflexLang.ALERT_PREFIX) + RLang.format(ReflexLang.SETTINGS_ALL, setting, mode, sender.getName()));
+                AlertManager.staffMsg(RLang.format(ReflexLang.ALERT_PREFIX) + RLang.format(ReflexLang.SETTINGS_ALL, setting, mode, sender.getName()));
             }
         } else if (args.getArgs().length > 2) {
-            //One oldchecks
+            // One check
             CheckType checkType = CheckType.fromString(args.getArg(2));
             if (checkType != null) {
                 editSetting(sender, checkType, setting, mode, true);
@@ -57,40 +58,41 @@ public class CmdSettings implements RCommand {
         if (setting.equals("enabled") || setting.equals("cancel") || setting.equals("freeze") || setting.equals("autoban")) {
             if (mode.equals("toggle") || mode.equals("on") || mode.equals("off")) {
                 if (setting.equals("enabled")) {
-                    boolean setValue = (mode.equals("toggle") ? !Reflex.getInstance().getTriggerManager().getTrigger(check).isEnabled() : mode.equals("on"));
-                    Reflex.getInstance().getTriggerManager().getTrigger(check).setEnabled(setValue);
-                    Reflex.getInstance().getTriggerManager().getTrigger(check).save();
+                    boolean setValue = (mode.equals("toggle") ? !Reflex.getInstance().getCheckManager().getCheck(check).isEnabled() : mode.equals("on"));
+                    Reflex.getInstance().getCheckManager().getCheck(check).setEnabled(setValue);
+                    Reflex.getInstance().getCheckManager().getCheck(check).save();
                     if (msg) {
                         sender.sendMessage(ChatColor.GRAY + "Updated setting '" + setting + "' for oldchecks '" + check.getName() + "' to: " + mode);
-                        Alert.staffMsg(RLang.format(ReflexLang.ALERT_PREFIX) + RLang.format(ReflexLang.SETTINGS, setting, (setValue ? "on" : "off"), check.getName(), sender.getName()));
+                        AlertManager.staffMsg(RLang.format(ReflexLang.ALERT_PREFIX) + RLang.format(ReflexLang.SETTINGS, setting, (setValue ? "on" : "off"), check.getName(), sender.getName()));
                     }
                 } else if (setting.equals("cancel")) {
-                    boolean setValue = (mode.equals("toggle") ? !Reflex.getInstance().getTriggerManager().getTrigger(check).isCancel() : mode.equals("on"));
-                    Reflex.getInstance().getTriggerManager().getTrigger(check).setCancel(setValue);
-                    Reflex.getInstance().getTriggerManager().getTrigger(check).save();
+                    boolean setValue = (mode.equals("toggle") ? !Reflex.getInstance().getCheckManager().getCheck(check).isCancel() : mode.equals("on"));
+                    Reflex.getInstance().getCheckManager().getCheck(check).setCancel(setValue);
+                    Reflex.getInstance().getCheckManager().getCheck(check).save();
                     if (msg) {
                         sender.sendMessage(ChatColor.GRAY + "Updated setting '" + setting + "' for oldchecks '" + check.getName() + "' to: " + mode);
-                        Alert.staffMsg(RLang.format(ReflexLang.ALERT_PREFIX) + RLang.format(ReflexLang.SETTINGS, setting, (setValue ? "on" : "off"), check.getName(), sender.getName()));
+                        AlertManager.staffMsg(RLang.format(ReflexLang.ALERT_PREFIX) + RLang.format(ReflexLang.SETTINGS, setting, (setValue ? "on" : "off"), check.getName(), sender.getName()));
                     }
                 } else if (setting.equals("freeze")) {
-                    boolean setValue = (mode.equals("toggle") ? !Reflex.getInstance().getTriggerManager().getTrigger(check).isEnabled() : mode.equals("on"));
-                    Reflex.getInstance().getTriggerManager().getTrigger(check).setAutobanFreeze(setValue);
-                    Reflex.getInstance().getTriggerManager().getTrigger(check).save();
+                    boolean setValue = (mode.equals("toggle") ? !Reflex.getInstance().getCheckManager().getCheck(check).isEnabled() : mode.equals("on"));
+                    Reflex.getInstance().getCheckManager().getCheck(check).setAutobanFreeze(setValue);
+                    Reflex.getInstance().getCheckManager().getCheck(check).save();
                     if (msg) {
                         sender.sendMessage(ChatColor.GRAY + "Updated setting '" + setting + "' for oldchecks '" + check.getName() + "' to: " + mode);
-                        Alert.staffMsg(RLang.format(ReflexLang.ALERT_PREFIX) + RLang.format(ReflexLang.SETTINGS, setting, (setValue ? "on" : "off"), check.getName(), sender.getName()));
+                        AlertManager.staffMsg(RLang.format(ReflexLang.ALERT_PREFIX) + RLang.format(ReflexLang.SETTINGS, setting, (setValue ? "on" : "off"), check.getName(), sender.getName()));
                     }
                 } else if (setting.equals("autoban")) {
-                    boolean setValue = (mode.equals("toggle") ? !Reflex.getInstance().getTriggerManager().getTrigger(check).isEnabled() : mode.equals("on"));
-                    Reflex.getInstance().getTriggerManager().getTrigger(check).setAutoban(setValue);
-                    Reflex.getInstance().getTriggerManager().getTrigger(check).save();
+                    boolean setValue = (mode.equals("toggle") ? !Reflex.getInstance().getCheckManager().getCheck(check).isEnabled() : mode.equals("on"));
+                    Reflex.getInstance().getCheckManager().getCheck(check).setAutoban(setValue);
+                    Reflex.getInstance().getCheckManager().getCheck(check).save();
                     if (msg) {
                         sender.sendMessage(ChatColor.GRAY + "Updated setting '" + setting + "' for oldchecks '" + check.getName() + "' to: " + mode);
-                        Alert.staffMsg(RLang.format(ReflexLang.ALERT_PREFIX) + RLang.format(ReflexLang.SETTINGS, setting, (setValue ? "on" : "off"), check.getName(), sender.getName()));
+                        AlertManager.staffMsg(RLang.format(ReflexLang.ALERT_PREFIX) + RLang.format(ReflexLang.SETTINGS, setting, (setValue ? "on" : "off"), check.getName(), sender.getName()));
                     }
                 }
             } else {
                 sender.sendMessage(ChatColor.RED + "Mode (argument 1) must be: 'toggle', 'on', or 'off'.");
+                return false;
             }
         } else {
             sender.sendMessage(ChatColor.RED + "Setting (argument 2) must be: 'enabled', 'cancel', 'freeze', or 'autoban'.");

@@ -4,6 +4,7 @@
 
 package com.jonahseguin.reflex.check;
 
+import com.jonahseguin.reflex.check.violation.CheckViolation;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
 import lombok.Data;
 import lombok.NonNull;

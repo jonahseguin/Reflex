@@ -8,8 +8,6 @@ import com.jonahseguin.reflex.Reflex;
 import com.jonahseguin.reflex.backend.configuration.annotations.ConfigData;
 import com.jonahseguin.reflex.check.Check;
 import com.jonahseguin.reflex.check.CheckType;
-import com.jonahseguin.reflex.oldchecks.base.RCheckType;
-import com.jonahseguin.reflex.oldchecks.base.RTimer;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

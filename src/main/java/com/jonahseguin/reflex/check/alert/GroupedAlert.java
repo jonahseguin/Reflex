@@ -103,7 +103,7 @@ public class GroupedAlert implements Alert {
                 )
                 .command(command);
 
-        CheckAlert.staffMsg(msg);
+        AlertManager.staffMsg(msg);
 
         getReflexPlayer().setLastAlertTime(System.currentTimeMillis());
 

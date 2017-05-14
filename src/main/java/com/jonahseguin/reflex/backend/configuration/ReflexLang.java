@@ -6,6 +6,7 @@ package com.jonahseguin.reflex.backend.configuration;
 
 public enum ReflexLang {
 
+    PLAYER_ONLY_COMMAND("&cThis is a player-only command."),
     ALERTS_ENABLED("&7[&c!&7] &7Alerts have been &aenabled&7."),
     ALERTS_DISABLED("&7[&c!&7] &7Alerts have been &cdisabled&7."),
     ALERT_PREFIX("&7[&c!&7] "),
@@ -16,6 +17,7 @@ public enum ReflexLang {
     CANCEL("&9{0}&7 is no longer being banned."),
     PLAYER_NOT_FOUND("&cPlayer '{0}' not found."),
     PLAYER_NOT_FOUND_DATABASE("&cPlayer '{0} not found in database.  &7(case sensitive)"),
+    BAN_NOT_FOUND("&cBan with ID '{0} not found."),
     VIOLATION_NOT_FOUND("&cViolation '{0}' not found."),
     CHECK_NOT_FOUND("&cCheck '{0}' not found."),
     HEADER_FOOTER("&7&m------------------------"),

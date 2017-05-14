@@ -4,23 +4,22 @@
 
 package com.jonahseguin.reflex.player.reflex;
 
-import com.google.common.collect.Maps;
 import com.jonahseguin.reflex.backend.configuration.RLang;
 import com.jonahseguin.reflex.backend.configuration.ReflexLang;
 import com.jonahseguin.reflex.backend.configuration.ReflexPerm;
 import com.jonahseguin.reflex.backend.database.mongo.annotations.CollectionName;
+import com.jonahseguin.reflex.backend.database.mongo.annotations.DatabaseSerializer;
 import com.jonahseguin.reflex.backend.database.mongo.annotations.MongoColumn;
 import com.jonahseguin.reflex.check.CheckType;
 import com.jonahseguin.reflex.check.PlayerData;
 import com.jonahseguin.reflex.check.alert.PlayerAlerts;
-import com.jonahseguin.reflex.oldchecks.data.RCapturePlayer;
+import com.jonahseguin.reflex.check.violation.PlayerRecord;
 import com.jonahseguin.reflex.player.cache.CachePlayer;
+import com.jonahseguin.reflex.util.serial.PlayerRecordSerializer;
 import lombok.*;
 import org.bukkit.ChatColor;
 import org.bukkit.craftbukkit.v1_7_R4.entity.CraftPlayer;
 import org.bukkit.entity.Player;
-
-import java.util.Map;
 
 @RequiredArgsConstructor
 @AllArgsConstructor
@@ -29,10 +28,7 @@ import java.util.Map;
 @Setter
 public class ReflexPlayer extends CachePlayer {
 
-    private final RCapturePlayer capturePlayer = new RCapturePlayer(this);
-    @MongoColumn(name = "vl")
-    private final Map<String, Integer> vl = Maps.newHashMap(); //Violation Level for each check, <CheckType#toString, VL>
-    private final Map<String, Integer> alertVL = Maps.newHashMap();//Pre-Failure VLs for each check, <CheckType#toString, VL>
+    //Non-persistent...
     private final PlayerAlerts alerts = new PlayerAlerts(this);
     @MongoColumn(name = "username")
     @NonNull
@@ -40,7 +36,9 @@ public class ReflexPlayer extends CachePlayer {
     @MongoColumn(name = "uuid", identifier = true)
     @NonNull
     private String uniqueId;
-    //Non-persistent...
+    @MongoColumn(name = "record")
+    @DatabaseSerializer(serializer = PlayerRecordSerializer.class)
+    private PlayerRecord record = new PlayerRecord(this);
     private int sessionVL = 0;
     private Player bukkitPlayer = null;
     private boolean alertsEnabled = true;
@@ -73,59 +71,30 @@ public class ReflexPlayer extends CachePlayer {
         return data;
     }
 
-    public void addVL(CheckType checkType) {
-        int vl = getVL(checkType);
-        this.vl.put(checkType.getName(), (vl + 1));
-        sessionVL++;
+
+    public void addPreVL(CheckType checkType) {
+        int vl = getPreVL(checkType);
+        this.record.getPreVL().put(checkType, (vl + 1));
     }
 
-    public int getVL(CheckType checkType) {
-        if (!vl.containsKey(checkType.getName())) {
-            vl.put(checkType.getName(), 0);
-        }
-        return vl.get(checkType.getName());
-    }
-
-    public boolean hasVL(CheckType checkType) {
-        return vl.containsKey(checkType.getName()) && getVL(checkType) > 0;
-    }
-
-    public void modifyVL(CheckType checkType, int change) {
-        int vl = getVL(checkType);
+    public void modifyPreVL(CheckType checkType, int change) {
+        int vl = getPreVL(checkType);
         vl += change;
         if (vl < 0) {
             vl = 0;
         }
-        this.vl.put(checkType.getName(), vl);
+        this.record.getPreVL().put(checkType, vl);
     }
 
-    public void setVL(CheckType checkType, int val) {
-        this.vl.put(checkType.getName(), val);
+    public void setPreVL(CheckType checkType, int val) {
+        this.record.getPreVL().put(checkType, val);
     }
 
-    public void addAlertVL(CheckType checkType) {
-        int vl = getAlertVL(checkType);
-        this.alertVL.put(checkType.getName(), (vl + 1));
-    }
-
-    public void modifyAlertVL(CheckType checkType, int change) {
-        int vl = getAlertVL(checkType);
-        vl += change;
-        if (vl < 0) {
-            vl = 0;
+    public int getPreVL(CheckType checkType) {
+        if (!record.getPreVL().containsKey(checkType)) {
+            record.getPreVL().put(checkType, 0);
         }
-        this.alertVL.put(checkType.getName(), vl);
-    }
-
-    public void setAlertVL(CheckType checkType, int val) {
-        this.alertVL.put(checkType.getName(), val);
-    }
-
-    public int getAlertVL(CheckType checkType) {
-        if (!alertVL.containsKey(checkType.getName())) {
-            alertVL.put(checkType.getName(), 0);
-        }
-        return alertVL.get(checkType.getName());
+        return record.getPreVL().get(checkType);
     }
 
     public int getPing() {

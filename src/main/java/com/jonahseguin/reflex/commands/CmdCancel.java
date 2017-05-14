@@ -12,6 +12,7 @@ import com.jonahseguin.reflex.backend.configuration.RLang;
 import com.jonahseguin.reflex.backend.configuration.ReflexLang;
 import com.jonahseguin.reflex.backend.configuration.ReflexPerm;
 import com.jonahseguin.reflex.ban.AutobanManager;
+import com.jonahseguin.reflex.check.alert.AlertManager;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -34,7 +35,7 @@ public class CmdCancel implements RCommand {
 
         if (autobanManager.hasAutoban(target)) {
             autobanManager.removeAutoban(target);
-            Alert.staffMsg(RLang.format(ReflexLang.ALERT_PREFIX) + RLang.format(ReflexLang.CANCEL, target));
+            AlertManager.staffMsg(RLang.format(ReflexLang.ALERT_PREFIX) + RLang.format(ReflexLang.CANCEL, target));
         } else {
             RLang.send(sender, ReflexLang.CANCEL_NOT_BEING_BANNED);
         }

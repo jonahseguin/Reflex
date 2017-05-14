@@ -6,11 +6,16 @@ package com.jonahseguin.reflex.check.alert;
 
 import com.google.common.collect.Sets;
 import com.jonahseguin.reflex.Reflex;
+import com.jonahseguin.reflex.backend.configuration.ReflexPerm;
 import com.jonahseguin.reflex.check.CheckType;
-import com.jonahseguin.reflex.check.CheckViolation;
-import com.jonahseguin.reflex.oldchecks.base.RTimer;
+import com.jonahseguin.reflex.check.RTimer;
+import com.jonahseguin.reflex.check.violation.CheckViolation;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
 import com.jonahseguin.reflex.util.obj.Lag;
+import mkremins.fanciful.FancyMessage;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 
 import java.util.Iterator;
 import java.util.Set;
@@ -33,6 +38,26 @@ public class AlertManager implements RTimer {
         this.MAX_ALERTS = instance.getReflexConfig().getMaxAlertsPPPS();
 
         this.instance.getReflexTimer().registerTimer(this);
+    }
+
+    public static void staffMsg(String msg) {
+        for (Player pl : Reflex.getOnlinePlayers()) {
+            ReflexPlayer p = Reflex.getInstance().getCache().getReflexPlayer(pl);
+            if (p.isAlertsEnabled() && ReflexPerm.ALERTS.hasPerm(pl)) {
+                p.msg(msg);
+            }
+        }
+        Bukkit.getLogger().info(ChatColor.stripColor(msg));
+    }
+
+    public static void staffMsg(FancyMessage msg) {
+        for (Player pl : Reflex.getOnlinePlayers()) {
+            ReflexPlayer p = Reflex.getInstance().getCache().getReflexPlayer(pl);
+            if (p.isAlertsEnabled() && ReflexPerm.ALERTS.hasPerm(pl)) {
+                msg.send(pl);
+            }
+        }
+        msg.send(Bukkit.getConsoleSender());
     }
 
     @Override
@@ -80,7 +105,7 @@ public class AlertManager implements RTimer {
     /**
      * Will send an alert for the player for the provided check with provided detail
      * This method will not update VL, so the caller of this method is responsible for VL
-     * @param violation CheckViolation, violation to alert for
+     * @param violation CheckViolation, infraction to alert for
      * @return Alert --> created alert, is also cached and handled by this method
      */
     public Alert alert(CheckViolation violation) {
@@ -96,6 +121,5 @@ public class AlertManager implements RTimer {
     public GroupedAlert createGroupedAlert(AlertSet alertSet) {
         return new GroupedAlert(alertSet.copy()); // Make sure we use the .copy() to preserve data
     }
-
 
 }

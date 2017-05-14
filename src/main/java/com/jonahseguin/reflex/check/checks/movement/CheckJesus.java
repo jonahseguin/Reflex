@@ -45,10 +45,10 @@ public class CheckJesus extends Check {
             } else {
                 long millis = System.currentTimeMillis() - rp.getData().jesusTime;
                 if (millis >= minHoverMs) {
-                    rp.addAlertVL(getCheckType());
-                    if (rp.getAlertVL(getCheckType()) >= minAttempts) {
+                    rp.addPreVL(getCheckType());
+                    if (rp.getPreVL(getCheckType()) >= minAttempts) {
                         fail(rp, Math.round(millis) + "ms hovering").cancelIfAllowed(event);
-                        rp.setAlertVL(getCheckType(), 0);
+                        rp.setPreVL(getCheckType(), 0);
                     }
                 }
             }

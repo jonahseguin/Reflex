@@ -8,10 +8,9 @@ import com.jonahseguin.reflex.Reflex;
 import com.jonahseguin.reflex.backend.configuration.RLang;
 import com.jonahseguin.reflex.backend.configuration.ReflexLang;
 import com.jonahseguin.reflex.check.CheckType;
-import com.jonahseguin.reflex.check.CheckViolation;
 import com.jonahseguin.reflex.check.alert.CheckAlert;
+import com.jonahseguin.reflex.check.violation.Infraction;
 import com.jonahseguin.reflex.event.api.ReflexBanEvent;
-import com.jonahseguin.reflex.oldchecks.base.RViolation;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
 import com.jonahseguin.reflex.util.obj.AutobanMethod;
 import com.jonahseguin.reflex.util.obj.Freeze;
@@ -39,14 +38,14 @@ public class Autoban {
     private int cd;
     private boolean cancelled;
     private CheckType check;
-    private CheckViolation violation;
+    private Infraction infraction;
 
-    public Autoban(ReflexPlayer player, int cd, CheckType check, CheckViolation violation) {
+    public Autoban(ReflexPlayer player, int cd, CheckType check, Infraction infraction) {
         this.player = player;
         this.cd = cd;
         this.check = check;
         this.cancelled = false;
-        this.violation = violation;
+        this.infraction = infraction;
     }
 
     /**
@@ -129,7 +128,7 @@ public class Autoban {
 
             long expiry = System.currentTimeMillis() + mills;
 
-            ReflexBan reflexBan = new ReflexBan(player.getUniqueId(), violation, expiry);
+            ReflexBan reflexBan = new ReflexBan(player.getUniqueId(), infraction, expiry);
 
             ReflexBanEvent event = new ReflexBanEvent(reflexBan);
             Bukkit.getServer().getPluginManager().callEvent(event);

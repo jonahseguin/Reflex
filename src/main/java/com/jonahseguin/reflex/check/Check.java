@@ -8,7 +8,7 @@ import com.jonahseguin.reflex.Reflex;
 import com.jonahseguin.reflex.backend.configuration.ReflexConfig;
 import com.jonahseguin.reflex.backend.configuration.annotations.ConfigData;
 import com.jonahseguin.reflex.ban.Autoban;
-import com.jonahseguin.reflex.oldchecks.base.CheckConfig;
+import com.jonahseguin.reflex.check.violation.CheckViolation;
 import com.jonahseguin.reflex.player.reflex.ReflexCache;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
 import org.bukkit.Bukkit;
@@ -16,7 +16,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 /**
  * Created by Jonah Seguin on Mon 2017-04-24 at 19:53.
@@ -47,8 +49,10 @@ public abstract class Check extends CheckConfig implements Listener {
     @ConfigData("autoban")
     private boolean autoban = true;
 
-    @ConfigData("vl.autoban-threshold")
-    private int autobanVL = 5;
+    @ConfigData("infraction-violations")
+    private int infractionVL = 5; // Amount of violations before receiving an infraction
+
+    private Set<CheckFail> fails = new HashSet<>();
 
     public Check(Reflex reflex, CheckType checkType) {
         super(checkType);
@@ -114,28 +118,28 @@ public abstract class Check extends CheckConfig implements Listener {
             return new CheckResult(getCheckType(), player, null, false, cancel);
         }
 
-        String d = "n/a";
+        String d = "";
         if (detail != null && detail.length > 0) {
             d = detail[0];
         }
 
-        player.addVL(getCheckType());
+        fails.add(new CheckFail(System.currentTimeMillis(), player));
 
-        long violationExpiry = System.currentTimeMillis() + (getReflexConfig().getViolationCacheExpiryMinutes() * 60 * 1000);
-        CheckViolation violation = new CheckViolation(player, System.currentTimeMillis(), violationExpiry, getCheckType(), player.getVL(getCheckType()), d);
-        getReflex().getViolationCache().cacheViolation(violation);
-
-        if (!getReflex().getAutobanManager().hasAutoban(player)) {
-            getReflex().getAlertManager().alert(violation);
-        }
-
-        if (player.getVL(getCheckType()) >= autobanVL && autoban) {
-            Autoban autoban = new Autoban(player, getReflexConfig().getAutobanTime(), getCheckType(), violation);
-            getReflex().getAutobanManager().putAutoban(autoban);
-            autoban.run();
-        }
+        CheckViolation violation = player.getRecord().addViolation(getCheckType(), d);
 
         return new CheckResult(checkType, player, violation, false, this.cancel);
+    }
+
+    public Set<CheckFail> getFails() {
+        return fails;
+    }
+
+    public int getInfractionVL() {
+        return infractionVL;
+    }
+
+    public boolean isAutoban() {
+        return autoban;
     }
 
     public void setAutoban(boolean autoban) {
@@ -153,14 +157,6 @@ public abstract class Check extends CheckConfig implements Listener {
                 }
             }
         }
-    }
-
-    public int getAutobanVL() {
-        return autobanVL;
-    }
-
-    public boolean isAutoban() {
-        return autoban;
     }
 
     public boolean isCancel() {

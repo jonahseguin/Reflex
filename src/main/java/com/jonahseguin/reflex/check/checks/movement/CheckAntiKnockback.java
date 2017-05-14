@@ -53,13 +53,13 @@ public class CheckAntiKnockback extends Check {
             public void run() {
                 if (!player.isValid() || !player.isOnline()) return;
                 if (player.getLocation().distanceSquared(damageLocation) <= maxDistanceOffset) {
-                    rp.addAlertVL(getCheckType());
-                    if (rp.getAlertVL(getCheckType()) >= minAttempts) {
+                    rp.addPreVL(getCheckType());
+                    if (rp.getPreVL(getCheckType()) >= minAttempts) {
                         fail(rp);
-                        rp.setAlertVL(getCheckType(), 0); // Reset on fail
+                        rp.setPreVL(getCheckType(), 0); // Reset on fail
                     }
                 } else {
-                    rp.setAlertVL(getCheckType(), 0);
+                    rp.setPreVL(getCheckType(), 0);
                 }
             }
         }.runTaskLater(getReflex(), 10L);

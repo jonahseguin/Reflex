@@ -12,7 +12,7 @@ import com.jonahseguin.reflex.backend.command.RCommand;
 import com.jonahseguin.reflex.backend.configuration.RLang;
 import com.jonahseguin.reflex.backend.configuration.ReflexLang;
 import com.jonahseguin.reflex.backend.configuration.ReflexPerm;
-import com.jonahseguin.reflex.oldchecks.trigger.RTrigger;
+import com.jonahseguin.reflex.check.Check;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
 import com.jonahseguin.reflex.util.obj.Lag;
 import mkremins.fanciful.FancyMessage;
@@ -98,7 +98,7 @@ public class CmdReflex implements RCommand {
 
                 msg(sender, new FancyMessage(ChatColor.translateAlternateColorCodes('&', "&7- /reflex &9lookup &eviolation&7 <id>"))
                         .tooltip(ChatColor.GRAY + "Click for command details")
-                        .command("/reflex cmdhelp lookup violation"));//Done
+                        .command("/reflex cmdhelp lookup infraction"));//Done
 
                 msg(sender, new FancyMessage(ChatColor.translateAlternateColorCodes('&', "&7- /reflex &9lookup &eban&7 <player>"))
                         .tooltip(ChatColor.GRAY + "Click for command details")
@@ -118,11 +118,11 @@ public class CmdReflex implements RCommand {
 
                 msg(sender, new FancyMessage(ChatColor.translateAlternateColorCodes('&', "&7- /reflex &9config &eload"))
                         .tooltip(ChatColor.GRAY + "Click for command details")
-                        .command("/reflex cmdhelp config load"));//TODO
+                        .command("/reflex cmdhelp config load"));
 
                 msg(sender, new FancyMessage(ChatColor.translateAlternateColorCodes('&', "&7- /reflex &9config set &7<key> <value>"))
                         .tooltip(ChatColor.GRAY + "Click for command details")
-                        .command("/reflex cmdhelp config set"));//TODO
+                        .command("/reflex cmdhelp config set"));
             }
         }
         RLang.send(sender, ReflexLang.HEADER_FOOTER);
@@ -183,7 +183,7 @@ public class CmdReflex implements RCommand {
 
     private void sendChecksEnabled(CommandSender sender) {
         FancyMessage fm = new FancyMessage(color("&7Checks: "));
-        for (RTrigger check : Reflex.getInstance().getTriggerManager().getTriggers().values()) {
+        for (Check check : Reflex.getInstance().getCheckManager().getChecks()) {
             if (check.isEnabled()) {
                 fm.then(color("&a" + check.getCheckType().getName() + "&7, "))
                         .tooltip(color("&eClick to toggle &9enabled &7[" + check.getCheckType().getName() + "]"))
@@ -199,7 +199,7 @@ public class CmdReflex implements RCommand {
 
     private void sendChecksCancel(CommandSender sender) {
         String s = "&7Cancel: ";
-        for (RTrigger check : Reflex.getInstance().getTriggerManager().getTriggers().values()) {
+        for (Check check : Reflex.getInstance().getCheckManager().getChecks()) {
             if (check.isCancel()) {
                 s += "&a" + check.getCheckType().getName() + "&7, ";
             } else {
@@ -214,7 +214,7 @@ public class CmdReflex implements RCommand {
 
     private void sendChecksAutoban(CommandSender sender) {
         String s = "&7Autoban: ";
-        for (RTrigger check : Reflex.getInstance().getTriggerManager().getTriggers().values()) {
+        for (Check check : Reflex.getInstance().getCheckManager().getChecks()) {
             if (check.isAutoban()) {
                 s += "&a" + check.getCheckType().getName() + "&7, ";
             } else {
@@ -229,7 +229,7 @@ public class CmdReflex implements RCommand {
 
     private void sendChecksFreeze(CommandSender sender) {
         String s = "&7Autoban Freeze: ";
-        for (RTrigger check : Reflex.getInstance().getTriggerManager().getTriggers().values()) {
+        for (Check check : Reflex.getInstance().getCheckManager().getChecks()) {
             if (check.isAutobanFreeze()) {
                 s += "&a" + check.getCheckType().getName() + "&7, ";
             } else {

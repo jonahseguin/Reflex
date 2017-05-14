@@ -6,7 +6,6 @@ package com.jonahseguin.reflex.util.serial;
 
 import com.jonahseguin.reflex.backend.configuration.AbstractSerializer;
 import com.jonahseguin.reflex.backend.database.mongo.AutoMongo;
-import com.jonahseguin.reflex.oldchecks.base.RViolation;
 import com.jonahseguin.reflex.util.utility.ReflexException;
 import org.bson.Document;
 
@@ -25,7 +24,7 @@ public class RViolationSerializer extends AbstractSerializer<RViolation> {
             if (mongo != null && mongo instanceof RViolation) {
                 return (RViolation) mongo;
             } else {
-                throw new ReflexException("RViolation serializer could not find (or is not same type) violation with ID " + s);
+                throw new ReflexException("RViolation serializer could not find (or is not same type) infraction with ID " + s);
             }
         }
         throw new ReflexException("RViolation serializer fromString data is not String");

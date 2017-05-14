@@ -6,7 +6,7 @@ package com.jonahseguin.reflex.menu;
 
 import com.jonahseguin.reflex.Reflex;
 import com.jonahseguin.reflex.backend.database.mongo.AutoMongo;
-import com.jonahseguin.reflex.oldchecks.base.RViolation;
+import com.jonahseguin.reflex.check.violation.CheckViolation;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
 import com.jonahseguin.reflex.util.obj.ItemBuilder;
 import com.jonahseguin.reflex.util.obj.TimeUtil;
@@ -21,10 +21,15 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class ShowViolationsMenu extends ItemMenu {
 
     private final ReflexPlayer player;
+    private Map<Integer, Set<CheckViolation>> pages = new ConcurrentHashMap<>();
+
 
     public ShowViolationsMenu(ReflexPlayer player) {
         super("Reflex - " + player.getName(), Size.SIX_LINE, Reflex.getInstance());
@@ -36,6 +41,11 @@ public class ShowViolationsMenu extends ItemMenu {
 
         final ShowViolationsMenu thisMenu = this;
 
+
+        setItem(53, new CloseItem());
+    }
+
+    public void load() {
         for (AutoMongo mongo : mongos) {
             if (mongo instanceof RViolation) {
                 RViolation vl = (RViolation) mongo;
@@ -56,7 +66,7 @@ public class ShowViolationsMenu extends ItemMenu {
                 }.action(new RMenuHandler() {
                     @Override
                     public void onClick(ItemClickEvent event) {
-                        LookupViolationMenu lookupViolationMenu = new LookupViolationMenu(player, vl);
+                        ViolationMenu lookupViolationMenu = new ViolationMenu(player, vl);
                         lookupViolationMenu.setParent(thisMenu);
                         lookupViolationMenu.open(event.getPlayer());
                     }
@@ -67,9 +77,6 @@ public class ShowViolationsMenu extends ItemMenu {
                 }
             }
         }
-
-
-        setItem(53, new CloseItem());
     }
 
     @Override

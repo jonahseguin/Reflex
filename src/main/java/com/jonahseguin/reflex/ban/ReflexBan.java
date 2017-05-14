@@ -9,10 +9,8 @@ import com.jonahseguin.reflex.backend.database.mongo.annotations.CollectionName;
 import com.jonahseguin.reflex.backend.database.mongo.annotations.DatabaseSerializer;
 import com.jonahseguin.reflex.backend.database.mongo.annotations.MongoColumn;
 import com.jonahseguin.reflex.check.CheckType;
-import com.jonahseguin.reflex.check.CheckViolation;
-import com.jonahseguin.reflex.oldchecks.base.RViolation;
+import com.jonahseguin.reflex.check.violation.CheckViolation;
 import com.jonahseguin.reflex.util.serial.CheckTypeSerializer;
-import com.jonahseguin.reflex.util.serial.RViolationSerializer;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -53,7 +51,7 @@ public class ReflexBan extends AutoMongo {
     @MongoColumn(name = "confirmed")
     private boolean confirmed = false;
 
-    @MongoColumn(name = "bannecCorrectly")
+    @MongoColumn(name = "bannedCorrectly")
     private boolean bannedCorrectly = true;
 
     @MongoColumn(name = "expiration")

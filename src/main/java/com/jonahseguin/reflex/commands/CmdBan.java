@@ -12,6 +12,7 @@ import com.jonahseguin.reflex.backend.configuration.RLang;
 import com.jonahseguin.reflex.backend.configuration.ReflexLang;
 import com.jonahseguin.reflex.backend.configuration.ReflexPerm;
 import com.jonahseguin.reflex.ban.ReflexBan;
+import com.jonahseguin.reflex.check.alert.AlertManager;
 import com.jonahseguin.reflex.event.api.ReflexConfirmBanEvent;
 import com.jonahseguin.reflex.event.api.ReflexUnbanEvent;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
@@ -43,7 +44,7 @@ public class CmdBan implements RCommand {
                             ban.setExpiration(0);
                             ban.setBanned(false);
                             ban.update();
-                            Alert.staffMsg(RLang.format(ReflexLang.ALERT_PREFIX) + RLang.format(ReflexLang.UNBANNED, rp.getName(), sender.getName()));
+                            AlertManager.staffMsg(RLang.format(ReflexLang.ALERT_PREFIX) + RLang.format(ReflexLang.UNBANNED, rp.getName(), sender.getName()));
                             sender.sendMessage(ChatColor.GRAY + "Unbanned " + rp.getName() + ".");
                         }
                     } else {
@@ -85,7 +86,7 @@ public class CmdBan implements RCommand {
                             ban.setConfirmed(true);
                             ban.setBannedCorrectly(confirm);
                             ban.update();
-                            Alert.staffMsg(RLang.format(ReflexLang.ALERT_PREFIX) + RLang.format(ReflexLang.CONFIRM_BAN, player.getName(), sender.getName(), (confirm ? "&2correct" : "&4false")));
+                            AlertManager.staffMsg(RLang.format(ReflexLang.ALERT_PREFIX) + RLang.format(ReflexLang.CONFIRM_BAN, player.getName(), sender.getName(), (confirm ? "&2correct" : "&4false")));
                             sender.sendMessage(ChatColor.GRAY + "Confirmed ban on " + player.getName() + " as " + (confirm ? ChatColor.DARK_GREEN + "correct" : ChatColor.DARK_RED + "false") + ChatColor.GRAY + ".");
                         }
                     } else {

@@ -15,14 +15,13 @@ import com.jonahseguin.reflex.backend.database.DBManager;
 import com.jonahseguin.reflex.ban.AutobanManager;
 import com.jonahseguin.reflex.ban.ReflexBanManager;
 import com.jonahseguin.reflex.check.CheckManager;
-import com.jonahseguin.reflex.check.ViolationCache;
+import com.jonahseguin.reflex.check.ReflexTimer;
 import com.jonahseguin.reflex.check.alert.AlertManager;
+import com.jonahseguin.reflex.check.violation.ViolationCache;
 import com.jonahseguin.reflex.commands.*;
 import com.jonahseguin.reflex.listener.BanListener;
 import com.jonahseguin.reflex.listener.BukkitListener;
 import com.jonahseguin.reflex.listener.PacketListener;
-import com.jonahseguin.reflex.oldchecks.base.RDataCache;
-import com.jonahseguin.reflex.oldchecks.base.ReflexTimer;
 import com.jonahseguin.reflex.player.reflex.ReflexCache;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
 import com.jonahseguin.reflex.util.obj.Lag;
@@ -49,7 +48,6 @@ public class Reflex extends JavaPlugin {
     private LanguageConfig lang;
     private ReflexCache cache;
     private ReflexTimer reflexTimer;
-    private RDataCache rDataCache;
     private AutobanManager autobanManager;
     private ReflexBanManager banManager;
     private RCommandHandler commandHandler;
@@ -103,8 +101,6 @@ public class Reflex extends JavaPlugin {
             }
         }
 
-        rDataCache = new RDataCache();
-
         autobanManager = new AutobanManager();
         alertManager = new AlertManager(instance);
         violationCache = new ViolationCache(instance);
@@ -120,7 +116,6 @@ public class Reflex extends JavaPlugin {
         commandHandler = new RCommandHandler(instance);
         commandHandler.registerCommands(new CmdReflex());
         commandHandler.registerCommands(new CmdCancel());
-        commandHandler.registerCommands(new CmdInspect());
         commandHandler.registerCommands(new CmdLookup());
         commandHandler.registerCommands(new CmdBan());
         commandHandler.registerCommands(new CmdSettings());
@@ -191,10 +186,6 @@ public class Reflex extends JavaPlugin {
 
     public ReflexTimer getReflexTimer() {
         return reflexTimer;
-    }
-
-    public RDataCache getrDataCache() {
-        return rDataCache;
     }
 
     public AutobanManager getAutobanManager() {

@@ -9,7 +9,6 @@ import com.jonahseguin.reflex.backend.configuration.annotations.ConfigData;
 import com.jonahseguin.reflex.check.Check;
 import com.jonahseguin.reflex.check.CheckType;
 import com.jonahseguin.reflex.event.packet.ReflexPacketKeepAliveEvent;
-import com.jonahseguin.reflex.oldchecks.base.RTimer;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
 import com.jonahseguin.reflex.util.obj.Lag;
 import org.bukkit.event.EventHandler;
@@ -36,8 +35,8 @@ public class CheckGodMode extends Check implements RTimer {
     public void runTimer() {
         Reflex.getReflexPlayers().forEach(rp -> {
             if (rp.getData().keepAlivePackets > calculateMaxPackets()) {
-                rp.addAlertVL(getCheckType());
-                if (rp.getAlertVL(getCheckType()) >= minAttempts) {
+                rp.addPreVL(getCheckType());
+                if (rp.getPreVL(getCheckType()) >= minAttempts) {
                     fail(rp, rp.getData().keepAlivePackets + " > " + df.format(calculateMaxPackets() + "pps"));
                 }
             }

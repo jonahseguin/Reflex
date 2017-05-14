@@ -5,7 +5,6 @@
 package com.jonahseguin.reflex.util.serial;
 
 import com.jonahseguin.reflex.backend.configuration.AbstractSerializer;
-import com.jonahseguin.reflex.oldchecks.base.RCheckType;
 
 public class RCheckTypeSerializer extends AbstractSerializer<RCheckType> {
 

@@ -5,9 +5,11 @@
 package com.jonahseguin.reflex.menu;
 
 import com.jonahseguin.reflex.Reflex;
+import com.jonahseguin.reflex.ban.ReflexBan;
 import com.jonahseguin.reflex.check.CheckType;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
 import com.jonahseguin.reflex.util.obj.ItemBuilder;
+import com.jonahseguin.reflex.util.obj.TimeUtil;
 import ninja.amp.ampmenus.events.ItemClickEvent;
 import ninja.amp.ampmenus.items.BackItem;
 import ninja.amp.ampmenus.items.CloseItem;
@@ -20,15 +22,15 @@ import org.bukkit.SkullType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-public class LookupPlayerMenu extends ItemMenu {
+public class PlayerMenu extends ItemMenu {
 
     private final ReflexPlayer player;
 
-    public LookupPlayerMenu(ReflexPlayer player) {
+    public PlayerMenu(ReflexPlayer player) {
         super("Reflex - " + player.getName(), Size.ONE_LINE, Reflex.getInstance());
         this.player = player;
 
-        final LookupPlayerMenu thisMenu = this;
+        final PlayerMenu thisMenu = this;
 
         setItem(0, new StaticMenuItem(ChatColor.BLUE + player.getName(), new ItemBuilder(new ItemStack(Material.SKULL_ITEM, 1, (short) SkullType.PLAYER.ordinal())).setSkullOwner(player.getName()).toItemStack(),
                 " ", ChatColor.DARK_GRAY + (Bukkit.getPlayer(player.getName()) != null ? ChatColor.GREEN + "Online" : ChatColor.RED + "Offline")));
@@ -59,7 +61,7 @@ public class LookupPlayerMenu extends ItemMenu {
                     }
                 }
                 if (i == 0) {
-                    ib.addLoreLine(ChatColor.DARK_GRAY + "No violation levels.");
+                    ib.addLoreLine(ChatColor.DARK_GRAY + "No infraction levels.");
                 }
                 return ib.toItemStack();
             }
@@ -82,7 +84,20 @@ public class LookupPlayerMenu extends ItemMenu {
                 ItemBuilder ib = new ItemBuilder(Material.PAPER);
                 ib.setName(ChatColor.BLUE + "Is Banned");
                 ib.addLoreLine(" ");
-                ib.addLoreLine(ChatColor.DARK_GRAY + "Not yet implemented...");
+                if (Reflex.getInstance().getBanManager().isBanned(player.getUniqueId())) {
+                    ReflexBan ban = Reflex.getInstance().getBanManager().getBan(player.getUniqueId());
+                    ib.addLoreLine(ChatColor.RED + "Player has active ban");
+                    ib.addLoreLine(ChatColor.DARK_GRAY + "Check: " + ban.getCheckType());
+                    ib.addLoreLine(ChatColor.DARK_GRAY + "VL: " + ban.getVl());
+                    ib.addLoreLine(ChatColor.DARK_GRAY + "Time: " + TimeUtil.format(ban.getTime()));
+                    ib.addLoreLine(ChatColor.DARK_GRAY + "Expires: " + TimeUtil.format(ban.getExpiration()));
+                    ib.addLoreLine(ChatColor.GOLD + "Confirmed: " + (ban.isConfirmed() ? ChatColor.GREEN + "YES" : ChatColor.RED + "NO"));
+                    if (ban.isConfirmed()) {
+                        ib.addLoreLine(ChatColor.DARK_GRAY + "Banned Correctly: " + ban.isBannedCorrectly());
+                    }
+                } else {
+                    ib.addLoreLine(ChatColor.DARK_GRAY + "Not banned.");
+                }
 
                 return ib.toItemStack();
             }
@@ -107,22 +122,6 @@ public class LookupPlayerMenu extends ItemMenu {
             }
         }));
 
-        setItem(6, new RDynMenuItem() {
-            @Override
-            public ItemStack getFinalIcon(Player viewer) {
-                return new ItemBuilder(Material.BOOK_AND_QUILL)
-                        .setName(ChatColor.BLUE + "Issue Inspection")
-                        .addLoreLine(" ")
-                        .addLoreLine(ChatColor.DARK_GRAY + "Issue a manual inspection on a given oldchecks")
-                        .addLoreLine(ChatColor.DARK_GRAY + "for a given amount of time")
-                        .toItemStack();
-            }
-        }.action(new RMenuHandler() {
-            @Override
-            public void onClick(ItemClickEvent event) {
-                event.getPlayer().sendMessage(ChatColor.RED + "This feature is not yet implemented.  Yell at Shawckz.");
-            }
-        }));
 
         setItem(8, new CloseItem());
     }

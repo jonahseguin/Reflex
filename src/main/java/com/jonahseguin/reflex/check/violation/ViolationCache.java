@@ -2,10 +2,10 @@
  * Copyright (c) Jonah Seguin (Shawckz) 2017.  You may not copy, re-sell, distribute, modify, or use any code contained in this document or file, collection of documents or files, or project.  Thank you.
  */
 
-package com.jonahseguin.reflex.check;
+package com.jonahseguin.reflex.check.violation;
 
 import com.jonahseguin.reflex.Reflex;
-import com.jonahseguin.reflex.oldchecks.base.RTimer;
+import com.jonahseguin.reflex.check.RTimer;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -15,12 +15,12 @@ public class ViolationCache implements RTimer {
 
     private final Map<String, CheckViolation> violations = new HashMap<>();
 
-    public CheckViolation getViolation(String id) {
-        return violations.get(id.toLowerCase());
-    }
-
     public ViolationCache(Reflex instance) {
         instance.getReflexTimer().registerTimer(this);
+    }
+
+    public CheckViolation getViolation(String id) {
+        return violations.get(id.toLowerCase());
     }
 
     @Override
@@ -42,11 +42,13 @@ public class ViolationCache implements RTimer {
     }
 
     public void cacheViolation(CheckViolation violation) {
-        violations.put(violation.getId(), renewCache(violation)); // renews the violation
+        violations.put(violation.getId(), renewCache(violation)); // renews the infraction
+        violation.getReflexPlayer().getRecord().getViolationIDs().add(violation.getId());
     }
 
     public void uncacheViolation(CheckViolation violation) {
         violations.remove(violation.getId());
+        violation.getReflexPlayer().getRecord().getViolationIDs().remove(violation.getId());
     }
 
 }

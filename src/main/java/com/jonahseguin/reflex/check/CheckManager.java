@@ -8,9 +8,10 @@ import com.jonahseguin.reflex.Reflex;
 import com.jonahseguin.reflex.check.checks.combat.CheckFastBow;
 import com.jonahseguin.reflex.check.checks.movement.*;
 import com.jonahseguin.reflex.check.checks.other.*;
-import com.jonahseguin.reflex.oldchecks.base.RTimer;
 import com.jonahseguin.reflex.util.utility.ReflexException;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -41,6 +42,7 @@ public class CheckManager {
         registerCheck(new CheckSelfHit(instance));
         registerCheck(new CheckGodMode(instance));
         registerCheck(new CheckSneak(instance));
+        registerCheck(new CheckJesus(instance));
 
         checks.values().forEach(check -> check.setEnabled(check.isEnabled())); // Register check listeners if enabled
         checks.values().forEach(check -> { // Register check timers if applicable
@@ -60,6 +62,10 @@ public class CheckManager {
 
     public void unregisterCheck(Check check) {
         checks.remove(check.getCheckType());
+    }
+
+    public Set<Check> getChecks() {
+        return new HashSet<>(checks.values());
     }
 
     public Check getCheck(CheckType checkType) {

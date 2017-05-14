@@ -5,7 +5,6 @@
 package com.jonahseguin.reflex.menu;
 
 import com.jonahseguin.reflex.Reflex;
-import com.jonahseguin.reflex.oldchecks.base.RViolation;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
 import com.jonahseguin.reflex.util.obj.ItemBuilder;
 import com.jonahseguin.reflex.util.obj.TimeUtil;
@@ -19,12 +18,12 @@ import org.bukkit.SkullType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-public class LookupViolationMenu extends ItemMenu {
+public class ViolationMenu extends ItemMenu {
 
-    public LookupViolationMenu(ReflexPlayer player, RViolation vl) {
+    public ViolationMenu(ReflexPlayer player, RViolation vl) {
         super("Reflex - " + player.getName(), Size.ONE_LINE, Reflex.getInstance());
 
-        final LookupViolationMenu thisMenu = this;
+        final ViolationMenu thisMenu = this;
 
         setItem(0, new RDynMenuItem() {
             @Override
@@ -44,7 +43,7 @@ public class LookupViolationMenu extends ItemMenu {
             @Override
             public void onClick(ItemClickEvent event) {
                 Player p = event.getPlayer();
-                LookupPlayerMenu lookupPlayerMenu = new LookupPlayerMenu(player);
+                PlayerMenu lookupPlayerMenu = new PlayerMenu(player);
                 lookupPlayerMenu.setParent(thisMenu);
                 lookupPlayerMenu.open(p);
             }
