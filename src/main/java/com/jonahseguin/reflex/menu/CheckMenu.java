@@ -8,14 +8,15 @@ import com.jonahseguin.reflex.Reflex;
 import com.jonahseguin.reflex.check.Check;
 import com.jonahseguin.reflex.check.CheckType;
 import com.jonahseguin.reflex.commands.CmdSettings;
+import com.jonahseguin.reflex.util.menu.events.ItemClickEvent;
+import com.jonahseguin.reflex.util.menu.items.BackItem;
+import com.jonahseguin.reflex.util.menu.items.CloseItem;
+import com.jonahseguin.reflex.util.menu.menus.ItemMenu;
 import com.jonahseguin.reflex.util.obj.ItemBuilder;
-import ninja.amp.ampmenus.events.ItemClickEvent;
-import ninja.amp.ampmenus.items.BackItem;
-import ninja.amp.ampmenus.items.CloseItem;
-import ninja.amp.ampmenus.menus.ItemMenu;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 
 /**
@@ -161,13 +162,18 @@ public class CheckMenu extends ItemMenu {
         }.action(new RMenuHandler() {
             @Override
             public void onClick(ItemClickEvent event) {
-                //event.setWillUpdate(true);
-
-                //TODO: Need to re-implement AmpMenus and rewrite the click event to allow for different clicks other than LEFT
-
+                event.setAcceptedClickTypes(ClickType.LEFT, ClickType.RIGHT);
+                event.setWillUpdate(true);
+                if (event.getClickType().equals(ClickType.LEFT)) {
+                    check.setInfractionVL(check.getInfractionVL() + 1);
+                } else if (event.getClickType().equals(ClickType.RIGHT)) {
+                    check.setInfractionVL(check.getInfractionVL() - 1);
+                    if (check.getInfractionVL() <= 0) {
+                        check.setInfractionVL(1);
+                    }
+                }
             }
         }));
-
 
         setItem(53, new CloseItem());
     }

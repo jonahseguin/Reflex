@@ -8,13 +8,12 @@ import com.jonahseguin.reflex.Reflex;
 import com.jonahseguin.reflex.ban.ReflexBan;
 import com.jonahseguin.reflex.check.CheckType;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
+import com.jonahseguin.reflex.util.menu.items.BackItem;
+import com.jonahseguin.reflex.util.menu.items.CloseItem;
+import com.jonahseguin.reflex.util.menu.items.StaticMenuItem;
+import com.jonahseguin.reflex.util.menu.menus.ItemMenu;
 import com.jonahseguin.reflex.util.obj.ItemBuilder;
 import com.jonahseguin.reflex.util.obj.TimeUtil;
-import ninja.amp.ampmenus.events.ItemClickEvent;
-import ninja.amp.ampmenus.items.BackItem;
-import ninja.amp.ampmenus.items.CloseItem;
-import ninja.amp.ampmenus.items.StaticMenuItem;
-import ninja.amp.ampmenus.menus.ItemMenu;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -102,25 +101,6 @@ public class PlayerMenu extends ItemMenu {
                 return ib.toItemStack();
             }
         });
-
-        setItem(5, new RDynMenuItem() {
-            @Override
-            public ItemStack getFinalIcon(Player viewer) {
-                ItemBuilder ib = new ItemBuilder(Material.PORTAL);
-                ib.setName(ChatColor.BLUE + "All Violations");
-                ib.addLoreLine(" ");
-                ib.addLoreLine(ChatColor.DARK_GRAY + "Click to view all violations");
-                return ib.toItemStack();
-            }
-        }.action(new RMenuHandler() {
-            @Override
-            public void onClick(ItemClickEvent event) {
-                Player p = event.getPlayer();
-                ShowViolationsMenu showViolationsMenu = new ShowViolationsMenu(player);
-                showViolationsMenu.setParent(thisMenu);
-                showViolationsMenu.open(p);
-            }
-        }));
 
 
         setItem(8, new CloseItem());

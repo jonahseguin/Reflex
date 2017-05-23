@@ -4,6 +4,7 @@
 
 package com.jonahseguin.reflex.player.reflex;
 
+import com.jonahseguin.reflex.Reflex;
 import com.jonahseguin.reflex.backend.configuration.RLang;
 import com.jonahseguin.reflex.backend.configuration.ReflexLang;
 import com.jonahseguin.reflex.backend.configuration.ReflexPerm;
@@ -49,6 +50,14 @@ public class ReflexPlayer extends CachePlayer {
 
     public ReflexPlayer() { //So that AutoMongo can instantiate without throwing an InstantiationException
 
+    }
+
+    public boolean isBanned() {
+        return Reflex.getInstance().getBanManager().isBanned(uniqueId);
+    }
+
+    public boolean isBeingAutobanned() {
+        return Reflex.getInstance().getAutobanManager().hasAutoban(this);
     }
 
     public boolean canCheck() {

@@ -19,6 +19,7 @@ public enum ReflexLang {
     PLAYER_NOT_FOUND_DATABASE("&cPlayer '{0} not found in database.  &7(case sensitive)"),
     BAN_NOT_FOUND("&cBan with ID '{0} not found."),
     VIOLATION_NOT_FOUND("&cViolation '{0}' not found."),
+    ALERT_NOT_FOUND("&cAlert by ID '{0}' not found."),
     CHECK_NOT_FOUND("&cCheck '{0}' not found."),
     HEADER_FOOTER("&7&m------------------------"),
     BANNED("&7[Reflex] \n&9You have been banned for &7[&e{0}&7]\n&7Expires &e{1}"),

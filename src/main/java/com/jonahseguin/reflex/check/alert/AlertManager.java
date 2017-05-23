@@ -92,6 +92,15 @@ public class AlertManager implements RTimer {
         }
     }
 
+    public Alert getAlert(String id) {
+        for (Alert alert : cache) {
+            if (alert.getId().equalsIgnoreCase(id)) {
+                return alert;
+            }
+        }
+        return null;
+    }
+
     public Alert cacheAlert(Alert alert) {
         cache.add(alert);
         return alert;

@@ -19,8 +19,6 @@ public enum ReflexPerm {
     BYPASS("reflex.bypass"),
     USE("reflex.use"),
     LOOKUP_PLAYER("reflex.lookup.player"),
-    LOOKUP_INSPECTION("reflex.lookup.inspection"),
-    LOOKUP_VIOLATION("refkex.lookup.infraction"),
     LOOKUP_BAN("reflex.lookup.ban"),
     UNBAN("reflex.unban"),
     CONFIRM_BAN("reflex.confirmban"),
@@ -28,7 +26,9 @@ public enum ReflexPerm {
     CONFIG_LOAD("reflex.config.load"),
     CONFIG_SET("reflex.config.set"),
     CANCEL("reflex.cancel"),
-    INSPECT("reflex.inspect");
+    CHECKS("reflex.checks"),
+    LOOKUP_ALERT("reflex.lookup.alert"),
+    CHECK("reflex.check");
 
     private final String perm;
 

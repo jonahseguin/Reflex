@@ -138,6 +138,10 @@ public abstract class Check extends CheckConfig implements Listener {
         return infractionVL;
     }
 
+    public void setInfractionVL(int infractionVL) {
+        this.infractionVL = infractionVL;
+    }
+
     public boolean isAutoban() {
         return autoban;
     }

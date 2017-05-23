@@ -11,14 +11,11 @@ import com.jonahseguin.reflex.backend.command.RCommand;
 import com.jonahseguin.reflex.backend.configuration.RLang;
 import com.jonahseguin.reflex.backend.configuration.ReflexLang;
 import com.jonahseguin.reflex.backend.configuration.ReflexPerm;
-import com.jonahseguin.reflex.backend.database.mongo.AutoMongo;
 import com.jonahseguin.reflex.ban.ReflexBan;
 import com.jonahseguin.reflex.menu.PlayerMenu;
-import com.jonahseguin.reflex.menu.ViolationMenu;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
 import com.jonahseguin.reflex.util.obj.TimeUtil;
 import net.md_5.bungee.api.ChatColor;
-import org.bson.Document;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -54,6 +51,7 @@ public class CmdLookup implements RCommand {
                 if (t != null) {
                     if (sender instanceof Player) {
                         PlayerMenu lookupPlayerMenu = new PlayerMenu(t);
+
                         lookupPlayerMenu.open(((Player) sender));
                     } else {
                         RLang.send(sender, ReflexLang.PLAYER_ONLY_COMMAND);
@@ -132,37 +130,6 @@ public class CmdLookup implements RCommand {
                     // TODO: Open Ban GUI (individual)
                 } else {
                     RLang.send(sender, ReflexLang.BAN_NOT_FOUND, id);
-                }
-            }
-        }.runTaskAsynchronously(Reflex.getInstance());
-    }
-
-    @RCmd(name = "reflex lookup infraction", usage = "/reflex lookup infraction <id>", minArgs = 1, permission = ReflexPerm.LOOKUP_VIOLATION,
-            aliases = {"! lookup infraction", "rx lookup infraction", "rflex lookup infraction", "reflex lookup violationCount", "reflex l violationCount"}, description = "Lookup details on a infraction")
-    public void onCmdLookupViolation(RCmdArgs args) {
-        final CommandSender sender = args.getSender().getCommandSender();
-        final String id = args.getArg(0);
-
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                AutoMongo mongo = RViolation.selectOne(new Document("_id", id), RViolation.class);
-
-                if (mongo != null) {
-                    if (sender instanceof Player) {
-                        RViolation vl = (RViolation) mongo;
-                        ReflexPlayer reflexPlayer = Reflex.getInstance().getCache().getReflexPlayerByUniqueId(vl.getUniqueId());
-                        if (reflexPlayer != null) {
-                            ViolationMenu lookupViolationMenu = new ViolationMenu(reflexPlayer, vl);
-                            lookupViolationMenu.open(((Player) sender));
-                        } else {
-                            msg(sender, "&cTarget player in infraction could not be found (" + vl.getUniqueId() + ")");
-                        }
-                    } else {
-                        RLang.send(sender, ReflexLang.PLAYER_ONLY_COMMAND);
-                    }
-                } else {
-                    RLang.send(sender, ReflexLang.VIOLATION_NOT_FOUND, id);
                 }
             }
         }.runTaskAsynchronously(Reflex.getInstance());

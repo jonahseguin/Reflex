@@ -37,6 +37,7 @@ public class Autoban {
     private ReflexPlayer player;
     private int cd;
     private boolean cancelled;
+    private boolean executed = false;
     private CheckType check;
     private Infraction infraction;
 
@@ -75,7 +76,7 @@ public class Autoban {
             @Override
             public void run() {
 
-                if (cancelled) {
+                if (cancelled || executed) {
                     cancel();
                     return;
                 }
@@ -106,6 +107,7 @@ public class Autoban {
      * Also calls a ReflexBanEvent that can be cancelled - ReflexBanEvent is ONLY called when the AutobanMethod is set to REFLEX
      */
     public void ban() {
+        executed = true;
         if (player.getBukkitPlayer() != null && player.getBukkitPlayer().isOnline()) {
             Freeze.removeFreeze(player.getBukkitPlayer());
         }
@@ -188,5 +190,8 @@ public class Autoban {
         }
     }
 
+    public boolean isExecuted() {
+        return executed;
+    }
 
 }

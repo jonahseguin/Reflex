@@ -4,7 +4,7 @@
 
 package com.jonahseguin.reflex.menu;
 
-import ninja.amp.ampmenus.events.ItemClickEvent;
+import com.jonahseguin.reflex.util.menu.events.ItemClickEvent;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 

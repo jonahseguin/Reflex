@@ -7,12 +7,12 @@ package com.jonahseguin.reflex.menu;
 import com.jonahseguin.reflex.Reflex;
 import com.jonahseguin.reflex.check.violation.Violation;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
+import com.jonahseguin.reflex.util.menu.events.ItemClickEvent;
+import com.jonahseguin.reflex.util.menu.items.BackItem;
+import com.jonahseguin.reflex.util.menu.items.CloseItem;
+import com.jonahseguin.reflex.util.menu.menus.ItemMenu;
 import com.jonahseguin.reflex.util.obj.ItemBuilder;
 import com.jonahseguin.reflex.util.obj.TimeUtil;
-import ninja.amp.ampmenus.events.ItemClickEvent;
-import ninja.amp.ampmenus.items.BackItem;
-import ninja.amp.ampmenus.items.CloseItem;
-import ninja.amp.ampmenus.menus.ItemMenu;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.SkullType;
@@ -97,7 +97,7 @@ public class ViolationMenu extends ItemMenu {
     public void setParent(ItemMenu parent) {
         super.setParent(parent);
         if (parent != null) {
-            setItem(8, new BackItem());
+            setItem(7, new BackItem());
         }
     }
 

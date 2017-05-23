@@ -139,4 +139,8 @@ public class GroupedAlert implements Alert {
     public AlertType getAlertType() {
         return ALERT_TYPE;
     }
+
+    public AlertSet getAlertSet() {
+        return alertSet;
+    }
 }

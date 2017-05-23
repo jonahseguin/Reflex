@@ -24,8 +24,8 @@ import com.jonahseguin.reflex.listener.BukkitListener;
 import com.jonahseguin.reflex.listener.PacketListener;
 import com.jonahseguin.reflex.player.reflex.ReflexCache;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
+import com.jonahseguin.reflex.util.menu.MenuListener;
 import com.jonahseguin.reflex.util.obj.Lag;
-import ninja.amp.ampmenus.MenuListener;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -120,6 +120,8 @@ public class Reflex extends JavaPlugin {
         commandHandler.registerCommands(new CmdBan());
         commandHandler.registerCommands(new CmdSettings());
         commandHandler.registerCommands(new CmdConfig());
+        commandHandler.registerCommands(new CmdCheck());
+        commandHandler.registerCommands(new CmdAlert());
 
         getServer().getPluginManager().registerEvents(new BanListener(), instance);
         getServer().getPluginManager().registerEvents(new BukkitListener(instance), instance);
