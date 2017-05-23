@@ -7,7 +7,6 @@ package com.jonahseguin.reflex.check;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.jonahseguin.reflex.check.checks.combat.CheckReach;
-import com.jonahseguin.reflex.oldchecks.data.XrayStats;
 import com.jonahseguin.reflex.util.obj.TrigUtils;
 import lombok.Getter;
 import lombok.Setter;
@@ -81,8 +80,6 @@ public class PlayerData {
     public boolean triedVClip = false;
     public int vclipY = -1;
     public Location lastVClipLocation = null;
-    /* Xray */
-    public XrayStats xrayStats = new XrayStats();
     /* Phase */
     public boolean triedPhase = false;
     public int phaseY = -1;

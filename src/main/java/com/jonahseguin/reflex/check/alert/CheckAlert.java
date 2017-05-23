@@ -42,7 +42,7 @@ public class CheckAlert implements Alert {
     @Override
     public void sendAlert() {
         // Send (single) alert
-        ReflexLang format = ReflexLang.ALERT_SINGLE; // player, check, ping, detail, vl
+        ReflexLang format = ReflexLang.ALERT_SINGLE; // player, check, ping, detail, violationCount
         String detail = this.detail;
         if (detail.equals("")) {
             detail = "n/a";

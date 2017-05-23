@@ -5,28 +5,21 @@
 package com.jonahseguin.reflex.event.api;
 
 import com.jonahseguin.reflex.check.CheckType;
-import com.jonahseguin.reflex.oldchecks.trigger.RTrigger;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
 import org.bukkit.event.Cancellable;
 
 /**
- * Called when a Trigger is called via {@link RTrigger}, can be cancelled
+ * Called when a player fails a check
  */
-public class ReflexTriggerEvent extends ReflexAPIEvent implements Cancellable {
+public class ReflexFailEvent extends ReflexAPIEvent implements Cancellable {
 
-    private final RTrigger trigger;
     private final ReflexPlayer player;
     private final CheckType checkType;
     private boolean cancelled = false;
 
-    public ReflexTriggerEvent(RTrigger trigger, ReflexPlayer player, CheckType checkType) {
-        this.trigger = trigger;
+    public ReflexFailEvent(ReflexPlayer player, CheckType checkType) {
         this.player = player;
         this.checkType = checkType;
-    }
-
-    public RTrigger getTrigger() {
-        return trigger;
     }
 
     public ReflexPlayer getPlayer() {

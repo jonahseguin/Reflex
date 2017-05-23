@@ -138,7 +138,7 @@ public class CmdLookup implements RCommand {
     }
 
     @RCmd(name = "reflex lookup infraction", usage = "/reflex lookup infraction <id>", minArgs = 1, permission = ReflexPerm.LOOKUP_VIOLATION,
-            aliases = {"! lookup infraction", "rx lookup infraction", "rflex lookup infraction", "reflex lookup vl", "reflex l vl"}, description = "Lookup details on a infraction")
+            aliases = {"! lookup infraction", "rx lookup infraction", "rflex lookup infraction", "reflex lookup violationCount", "reflex l violationCount"}, description = "Lookup details on a infraction")
     public void onCmdLookupViolation(RCmdArgs args) {
         final CommandSender sender = args.getSender().getCommandSender();
         final String id = args.getArg(0);

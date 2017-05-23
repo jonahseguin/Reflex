@@ -54,14 +54,14 @@ public class PlayerMenu extends ItemMenu {
                 int i = 0;
                 ib.addLoreLine(" ");
                 for (CheckType checkType : CheckType.values()) {
-                    if (player.hasVL(checkType)) {
-                        int vl = player.getVL(checkType);
+                    if (player.getRecord().hasVL(checkType)) {
+                        int vl = player.getRecord().getViolationCount(checkType);
                         ib.addLoreLine(ChatColor.DARK_GRAY + checkType.getName() + ": " + ChatColor.GRAY + vl);
                         i++;
                     }
                 }
                 if (i == 0) {
-                    ib.addLoreLine(ChatColor.DARK_GRAY + "No infraction levels.");
+                    ib.addLoreLine(ChatColor.DARK_GRAY + "No violation levels.");
                 }
                 return ib.toItemStack();
             }
@@ -88,7 +88,7 @@ public class PlayerMenu extends ItemMenu {
                     ReflexBan ban = Reflex.getInstance().getBanManager().getBan(player.getUniqueId());
                     ib.addLoreLine(ChatColor.RED + "Player has active ban");
                     ib.addLoreLine(ChatColor.DARK_GRAY + "Check: " + ban.getCheckType());
-                    ib.addLoreLine(ChatColor.DARK_GRAY + "VL: " + ban.getVl());
+                    ib.addLoreLine(ChatColor.DARK_GRAY + "VL: " + ban.getViolationCount());
                     ib.addLoreLine(ChatColor.DARK_GRAY + "Time: " + TimeUtil.format(ban.getTime()));
                     ib.addLoreLine(ChatColor.DARK_GRAY + "Expires: " + TimeUtil.format(ban.getExpiration()));
                     ib.addLoreLine(ChatColor.GOLD + "Confirmed: " + (ban.isConfirmed() ? ChatColor.GREEN + "YES" : ChatColor.RED + "NO"));

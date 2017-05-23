@@ -16,7 +16,7 @@ import java.util.UUID;
  * Project: Reflex
  */
 @Data
-public class CheckViolation {
+public class CheckViolation implements Violation {
 
     private final String id = UUID.randomUUID().toString();
     private final ReflexPlayer reflexPlayer;
@@ -29,8 +29,11 @@ public class CheckViolation {
     private long expiryTime;
 
     public static CheckViolation emptyViolation(ReflexPlayer player, CheckType checkType) {
-        return new CheckViolation(player, System.currentTimeMillis(), System.currentTimeMillis(), checkType, -1, "n/a", false);
+        return new CheckViolation(player, System.currentTimeMillis(), checkType, -1, "n/a", false, 0);
     }
 
-
+    @Override
+    public ViolationType getViolationType() {
+        return ViolationType.TEMPORARY;
+    }
 }

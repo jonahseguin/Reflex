@@ -9,7 +9,7 @@ import com.jonahseguin.reflex.backend.database.mongo.annotations.CollectionName;
 import com.jonahseguin.reflex.backend.database.mongo.annotations.DatabaseSerializer;
 import com.jonahseguin.reflex.backend.database.mongo.annotations.MongoColumn;
 import com.jonahseguin.reflex.check.CheckType;
-import com.jonahseguin.reflex.check.violation.CheckViolation;
+import com.jonahseguin.reflex.check.violation.Infraction;
 import com.jonahseguin.reflex.util.serial.CheckTypeSerializer;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -39,8 +39,8 @@ public class ReflexBan extends AutoMongo {
     @DatabaseSerializer(serializer = CheckTypeSerializer.class)
     private CheckType checkType;
 
-    @MongoColumn(name = "vl")
-    private int vl;
+    @MongoColumn(name = "violationCount")
+    private int violationCount;
 
     @MongoColumn(name = "banned")
     private boolean banned = true;
@@ -57,11 +57,11 @@ public class ReflexBan extends AutoMongo {
     @MongoColumn(name = "expiration")
     private long expiration;
 
-    public ReflexBan(String uniqueId, CheckViolation violation, long expiration) {
+    public ReflexBan(String uniqueId, Infraction violation, long expiration) {
         this.id = UUID.randomUUID().toString();
         this.uniqueId = uniqueId;
         this.checkType = violation.getCheckType();
-        this.vl = violation.getVl();
+        this.violationCount = violation.getViolationCount();
         this.time = System.currentTimeMillis();
         this.expiration = expiration;
     }

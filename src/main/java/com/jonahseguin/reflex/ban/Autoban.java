@@ -8,7 +8,7 @@ import com.jonahseguin.reflex.Reflex;
 import com.jonahseguin.reflex.backend.configuration.RLang;
 import com.jonahseguin.reflex.backend.configuration.ReflexLang;
 import com.jonahseguin.reflex.check.CheckType;
-import com.jonahseguin.reflex.check.alert.CheckAlert;
+import com.jonahseguin.reflex.check.alert.AlertManager;
 import com.jonahseguin.reflex.check.violation.Infraction;
 import com.jonahseguin.reflex.event.api.ReflexBanEvent;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
@@ -56,7 +56,7 @@ public class Autoban {
         if (player.getBukkitPlayer() == null) return;
 
         if (player.getBukkitPlayer() != null) {
-            if (Reflex.getInstance().getTriggerManager().getTrigger(check).isAutobanFreeze()) {
+            if (Reflex.getInstance().getCheckManager().getCheck(check).isAutobanFreeze()) {
                 Freeze freeze = new Freeze(player.getBukkitPlayer());
                 freeze.run();
                 player.msg(ReflexLang.AUTOBAN_CHEATER, check.getName());
@@ -67,7 +67,7 @@ public class Autoban {
         fm.then(RLang.format(ReflexLang.AUTOBAN, player.getName(), check.getName(), cd + ""))
                 .tooltip(ChatColor.YELLOW + "Click here to cancel ban on " + player.getName())
                 .command("/reflex cancel " + player.getName());
-        CheckAlert.staffMsg(fm);
+        AlertManager.staffMsg(fm);
 
 
         new BukkitRunnable() {
@@ -87,7 +87,7 @@ public class Autoban {
                         fm.then(RLang.format(ReflexLang.AUTOBAN, player.getName(), check.getName(), cd + ""))
                                 .tooltip(ChatColor.YELLOW + "Click here to cancel ban on " + player.getName())
                                 .command("/reflex cancel " + player.getName());
-                        CheckAlert.staffMsg(fm);
+                        AlertManager.staffMsg(fm);
                     }
                 } else {
                     ban();
@@ -110,7 +110,7 @@ public class Autoban {
             Freeze.removeFreeze(player.getBukkitPlayer());
         }
         Reflex.getInstance().getAutobanManager().removeAutoban(player.getName());
-        player.getVl().put(check.getName(), 0);//Reset VL
+        player.getRecord().getVl().put(check, 0);
 
         if (Reflex.getInstance().getReflexConfig().getAutobanMethod() == AutobanMethod.CONSOLE) {
             //Dispatch console command
@@ -164,7 +164,7 @@ public class Autoban {
         fm.then(RLang.format(ReflexLang.AUTOBAN_BANNED, player.getName(), check.getName()))
                 .tooltip(ChatColor.YELLOW + "Click here to unban " + player.getName())
                 .command("/reflex unban " + player.getName());
-        CheckAlert.staffMsg(fm);
+        AlertManager.staffMsg(fm);
     }
 
     /**
@@ -176,9 +176,9 @@ public class Autoban {
         this.cancelled = cancelled;
         if (cancelled) {
             Reflex.getInstance().getAutobanManager().removeAutoban(player.getName());
-            player.getVl().put(check.getName(), 0);//Reset VL
+            player.getRecord().getVl().put(check, 0);//Reset VL
             if (player.getBukkitPlayer() != null && player.getBukkitPlayer().isOnline()) {
-                if (Reflex.getInstance().getTriggerManager().getTrigger(check).isAutobanFreeze()) {
+                if (Reflex.getInstance().getCheckManager().getCheck(check).isAutobanFreeze()) {
                     Player p = player.getBukkitPlayer();
                     Freeze.removeFreeze(p);
                     p.setAllowFlight(false);

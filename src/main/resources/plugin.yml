@@ -20,7 +20,7 @@ permissions:
       reflex.use: true
       reflex.lookup.player: true
       reflex.lookup.inspection: true
-      reflex.lookup.violation: true
+      reflex.lookup.infraction: true
       reflex.lookup.ban: true
       reflex.unban: true
       reflex.confirmban: true
@@ -40,8 +40,8 @@ permissions:
   reflex.lookup.inspection:
       description: Lookup an inspection
       default: op
-  reflex.lookup.violation:
-      description: Lookup a violation
+  reflex.lookup.infraction:
+      description: Lookup a infraction
       default: op
   reflex.lookup.ban:
       description: Lookup a ban

@@ -22,7 +22,7 @@ import java.util.UUID;
  */
 @Getter
 @Setter
-public class Infraction extends AutoMongo {
+public class Infraction extends AutoMongo implements Violation {
 
     /*
     Permanent Violation
@@ -59,6 +59,9 @@ public class Infraction extends AutoMongo {
     @MongoColumn(name = "violationCount")
     private int violationCount;
 
+    @MongoColumn(name = "expiry")
+    private long expiryTime = 0;
+
     public Infraction(ReflexPlayer reflexPlayer, CheckType checkType, int violationCount, String detail) {
         this.id = UUID.randomUUID().toString();
         this.reflexPlayer = reflexPlayer;
@@ -70,5 +73,15 @@ public class Infraction extends AutoMongo {
 
     public Infraction() {
         // AutoMongo
+    }
+
+    @Override
+    public ViolationType getViolationType() {
+        return ViolationType.INFRACTION;
+    }
+
+    @Override
+    public int getVl() {
+        return violationCount;
     }
 }

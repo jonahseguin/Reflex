@@ -79,13 +79,18 @@ public class PlayerRecord extends AutoMongo {
         return filtered;
     }
 
+    public boolean hasVL(CheckType checkType) {
+        return vl.containsKey(checkType);
+    }
+
     public int getViolationCount(CheckType checkType) {
         return getViolations(checkType).size();
     }
 
     private CheckViolation addCheckViolation(CheckType checkType, String detail, boolean infraction) {
+        long expiryTime = System.currentTimeMillis() + getReflex().getViolationCache().getViolationCacheExpiryTimeMS();
         CheckViolation violation =
-                new CheckViolation(reflexPlayer, System.currentTimeMillis(), -1, checkType, getViolationCount(checkType), detail, infraction);
+                new CheckViolation(reflexPlayer, System.currentTimeMillis(), checkType, getViolationCount(checkType), detail, infraction, expiryTime);
         getReflex().getViolationCache().cacheViolation(violation);
         return violation;
     }

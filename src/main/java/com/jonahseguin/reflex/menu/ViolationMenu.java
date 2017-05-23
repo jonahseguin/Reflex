@@ -5,6 +5,7 @@
 package com.jonahseguin.reflex.menu;
 
 import com.jonahseguin.reflex.Reflex;
+import com.jonahseguin.reflex.check.violation.Violation;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
 import com.jonahseguin.reflex.util.obj.ItemBuilder;
 import com.jonahseguin.reflex.util.obj.TimeUtil;
@@ -20,7 +21,7 @@ import org.bukkit.inventory.ItemStack;
 
 public class ViolationMenu extends ItemMenu {
 
-    public ViolationMenu(ReflexPlayer player, RViolation vl) {
+    public ViolationMenu(ReflexPlayer player, Violation vl) {
         super("Reflex - " + player.getName(), Size.ONE_LINE, Reflex.getInstance());
 
         final ViolationMenu thisMenu = this;
@@ -33,7 +34,7 @@ public class ViolationMenu extends ItemMenu {
                 ib.setName(ChatColor.translateAlternateColorCodes('&', "&9Violation &7#" + vl.getId()));
 
                 ib.addLoreLine(" ");
-                ib.addLoreLine(ChatColor.DARK_GRAY + "Unique ID: " + vl.getUniqueId());
+                ib.addLoreLine(ChatColor.DARK_GRAY + "ID: " + vl.getReflexPlayer().getUniqueId());
                 ib.addLoreLine(ChatColor.DARK_GRAY + "Player: " + player.getName());
                 ib.addLoreLine(" ");
                 ib.addLoreLine(ChatColor.YELLOW + "Click to lookup this player");
@@ -57,7 +58,7 @@ public class ViolationMenu extends ItemMenu {
 
                 ib.setName(ChatColor.BLUE + "Check");
                 ib.addLoreLine(" ");
-                ib.addLoreLine(ChatColor.DARK_GRAY + "" + vl.getCheckType().getName() + " [" + vl.getSource().toString() + "]");
+                ib.addLoreLine(ChatColor.DARK_GRAY + "" + vl.getCheckType().getName());
 
                 return ib.toItemStack();
             }

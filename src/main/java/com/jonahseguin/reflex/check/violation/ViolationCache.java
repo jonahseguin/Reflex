@@ -51,4 +51,8 @@ public class ViolationCache implements RTimer {
         violation.getReflexPlayer().getRecord().getViolationIDs().remove(violation.getId());
     }
 
+    public long getViolationCacheExpiryTimeMS() {
+        return (Reflex.getInstance().getReflexConfig().getViolationCacheExpiryMinutes() * 60 * 1000);
+    }
+
 }

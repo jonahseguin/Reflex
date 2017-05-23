@@ -19,40 +19,7 @@ import org.bukkit.command.CommandSender;
 
 public class CmdSettings implements RCommand {
 
-    @RCmd(name = "reflex settings", usage = "/reflex settings <toggle|on|off> <enabled|cancel|freeze|autoban> [oldchecks(blank for all)]", permission = ReflexPerm.SETTINGS, description = "Manage settings of checks",
-            aliases = {"! settings", "reflex settings", "rx settings", "rflex settings", "reflex setting", "rx setting"}, minArgs = 2)
-    public void onCmdSettings(final RCmdArgs args) {
-        final CommandSender sender = args.getSender().getCommandSender();
-
-        String mode = args.getArg(0).toLowerCase();
-        String setting = args.getArg(1).toLowerCase();
-
-        if (args.getArgs().length == 2) {
-            //All checks
-            boolean msg = true;
-            for (Check check : Reflex.getInstance().getCheckManager().getChecks()) {
-                if (!editSetting(sender, check.getCheckType(), setting, mode, false)) {
-                    msg = false;
-                    break;
-                }
-            }
-            if (msg) {
-                sender.sendMessage(ChatColor.GRAY + "Updating setting '" + setting + "' for all checks to: " + mode);
-                AlertManager.staffMsg(RLang.format(ReflexLang.ALERT_PREFIX) + RLang.format(ReflexLang.SETTINGS_ALL, setting, mode, sender.getName()));
-            }
-        } else if (args.getArgs().length > 2) {
-            // One check
-            CheckType checkType = CheckType.fromString(args.getArg(2));
-            if (checkType != null) {
-                editSetting(sender, checkType, setting, mode, true);
-            } else {
-                sender.sendMessage(ChatColor.RED + "Invalid oldchecks '" + args.getArg(2) + "'.");
-            }
-        }
-
-    }
-
-    private boolean editSetting(CommandSender sender, CheckType check, String setting, String mode, boolean msg) {
+    public static boolean editSetting(CommandSender sender, CheckType check, String setting, String mode, boolean msg) {
         setting = setting.toLowerCase();
         mode = mode.toLowerCase();
         if (setting.equals("enabled") || setting.equals("cancel") || setting.equals("freeze") || setting.equals("autoban")) {
@@ -99,6 +66,39 @@ public class CmdSettings implements RCommand {
             return false;
         }
         return true;
+    }
+
+    @RCmd(name = "reflex settings", usage = "/reflex settings <toggle|on|off> <enabled|cancel|freeze|autoban> [oldchecks(blank for all)]", permission = ReflexPerm.SETTINGS, description = "Manage settings of checks",
+            aliases = {"! settings", "reflex settings", "rx settings", "rflex settings", "reflex setting", "rx setting"}, minArgs = 2)
+    public void onCmdSettings(final RCmdArgs args) {
+        final CommandSender sender = args.getSender().getCommandSender();
+
+        String mode = args.getArg(0).toLowerCase();
+        String setting = args.getArg(1).toLowerCase();
+
+        if (args.getArgs().length == 2) {
+            //All checks
+            boolean msg = true;
+            for (Check check : Reflex.getInstance().getCheckManager().getChecks()) {
+                if (!editSetting(sender, check.getCheckType(), setting, mode, false)) {
+                    msg = false;
+                    break;
+                }
+            }
+            if (msg) {
+                sender.sendMessage(ChatColor.GRAY + "Updating setting '" + setting + "' for all checks to: " + mode);
+                AlertManager.staffMsg(RLang.format(ReflexLang.ALERT_PREFIX) + RLang.format(ReflexLang.SETTINGS_ALL, setting, mode, sender.getName()));
+            }
+        } else if (args.getArgs().length > 2) {
+            // One check
+            CheckType checkType = CheckType.fromString(args.getArg(2));
+            if (checkType != null) {
+                editSetting(sender, checkType, setting, mode, true);
+            } else {
+                sender.sendMessage(ChatColor.RED + "Invalid oldchecks '" + args.getArg(2) + "'.");
+            }
+        }
+
     }
 
 }

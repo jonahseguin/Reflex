@@ -4,6 +4,7 @@
 
 package com.jonahseguin.reflex.event.api;
 
+import com.jonahseguin.reflex.check.Check;
 import com.jonahseguin.reflex.check.CheckType;
 
 /**
@@ -16,13 +17,11 @@ public class ReflexCancelEvent extends ReflexAPIEvent {
 
     private final Check check;
     private final CheckType checkType;
-    private final RCheckType checkSource;
     private boolean shouldCancel;
 
-    public ReflexCancelEvent(Check check, CheckType checkType, RCheckType checkSource, boolean shouldCancel) {
+    public ReflexCancelEvent(Check check, CheckType checkType, boolean shouldCancel) {
         this.check = check;
         this.checkType = checkType;
-        this.checkSource = checkSource;
         this.shouldCancel = shouldCancel;
     }
 
@@ -32,10 +31,6 @@ public class ReflexCancelEvent extends ReflexAPIEvent {
 
     public CheckType getCheckType() {
         return checkType;
-    }
-
-    public RCheckType getCheckSource() {
-        return checkSource;
     }
 
     public boolean isShouldCancel() {
