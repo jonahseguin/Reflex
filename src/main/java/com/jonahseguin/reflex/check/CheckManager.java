@@ -6,6 +6,7 @@ package com.jonahseguin.reflex.check;
 
 import com.jonahseguin.reflex.Reflex;
 import com.jonahseguin.reflex.check.checks.combat.CheckFastBow;
+import com.jonahseguin.reflex.check.checks.combat.CheckNoSwing;
 import com.jonahseguin.reflex.check.checks.movement.*;
 import com.jonahseguin.reflex.check.checks.other.*;
 import com.jonahseguin.reflex.util.utility.ReflexException;
@@ -43,6 +44,8 @@ public class CheckManager {
         registerCheck(new CheckGodMode(instance));
         registerCheck(new CheckSneak(instance));
         registerCheck(new CheckJesus(instance));
+        registerCheck(new CheckMorePackets(instance));
+        registerCheck(new CheckNoSwing(instance));
 
         checks.values().forEach(check -> check.setEnabled(check.isEnabled())); // Register check listeners if enabled
         checks.values().forEach(check -> { // Register check timers if applicable
