@@ -5,10 +5,7 @@
 package com.jonahseguin.reflex.listener;
 
 import com.jonahseguin.reflex.Reflex;
-import com.jonahseguin.reflex.event.packet.ReflexPacketVelocityEvent;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerVelocityEvent;
 
 public class BukkitListener implements Listener {
 
@@ -18,14 +15,5 @@ public class BukkitListener implements Listener {
         this.instance = instance;
     }
 
-    @EventHandler
-    public void onVelocity(PlayerVelocityEvent e) {
-        ReflexPacketVelocityEvent reflexVelocityEvent = new ReflexPacketVelocityEvent(
-                e.getPlayer(),
-                e.getVelocity().getX(),
-                e.getVelocity().getY(),
-                e.getVelocity().getZ());
-        instance.getServer().getPluginManager().callEvent(reflexVelocityEvent);
-    }
 
 }

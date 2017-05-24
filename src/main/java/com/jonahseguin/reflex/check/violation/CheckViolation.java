@@ -27,6 +27,7 @@ public class CheckViolation implements Violation {
     private final boolean infraction;
     @NonNull
     private long expiryTime;
+    private boolean valid = true;
 
     public static CheckViolation emptyViolation(ReflexPlayer player, CheckType checkType) {
         return new CheckViolation(player, System.currentTimeMillis(), checkType, -1, "n/a", false, 0);

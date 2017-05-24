@@ -2,10 +2,12 @@
  * Copyright (c) Jonah Seguin (Shawckz) 2017.  You may not copy, re-sell, distribute, modify, or use any code contained in this document or file, collection of documents or files, or project.  Thank you.
  */
 
-package com.jonahseguin.reflex.menu;
+package com.jonahseguin.reflex.menu.check;
 
 import com.jonahseguin.reflex.Reflex;
 import com.jonahseguin.reflex.check.Check;
+import com.jonahseguin.reflex.menu.backend.RDynMenuItem;
+import com.jonahseguin.reflex.menu.backend.RMenuHandler;
 import com.jonahseguin.reflex.util.menu.events.ItemClickEvent;
 import com.jonahseguin.reflex.util.menu.items.BackItem;
 import com.jonahseguin.reflex.util.menu.items.CloseItem;

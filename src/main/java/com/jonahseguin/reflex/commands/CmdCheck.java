@@ -11,8 +11,8 @@ import com.jonahseguin.reflex.backend.configuration.RLang;
 import com.jonahseguin.reflex.backend.configuration.ReflexLang;
 import com.jonahseguin.reflex.backend.configuration.ReflexPerm;
 import com.jonahseguin.reflex.check.CheckType;
-import com.jonahseguin.reflex.menu.CheckMenu;
-import com.jonahseguin.reflex.menu.ChecksMenu;
+import com.jonahseguin.reflex.menu.check.CheckMenu;
+import com.jonahseguin.reflex.menu.check.ChecksMenu;
 import org.bukkit.entity.Player;
 
 /**

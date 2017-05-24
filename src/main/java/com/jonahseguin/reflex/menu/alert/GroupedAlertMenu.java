@@ -2,10 +2,14 @@
  * Copyright (c) Jonah Seguin (Shawckz) 2017.  You may not copy, re-sell, distribute, modify, or use any code contained in this document or file, collection of documents or files, or project.  Thank you.
  */
 
-package com.jonahseguin.reflex.menu;
+package com.jonahseguin.reflex.menu.alert;
 
 import com.jonahseguin.reflex.Reflex;
 import com.jonahseguin.reflex.check.alert.GroupedAlert;
+import com.jonahseguin.reflex.menu.backend.RDynMenuItem;
+import com.jonahseguin.reflex.menu.backend.RMenuHandler;
+import com.jonahseguin.reflex.menu.other.PlayerMenu;
+import com.jonahseguin.reflex.menu.violation.ViolationsMenu;
 import com.jonahseguin.reflex.util.menu.events.ItemClickEvent;
 import com.jonahseguin.reflex.util.menu.items.BackItem;
 import com.jonahseguin.reflex.util.menu.items.CloseItem;
@@ -64,10 +68,9 @@ public class GroupedAlertMenu extends ItemMenu {
                 event.setWillClose(true);
                 Bukkit.getScheduler().scheduleSyncDelayedTask(Reflex.getInstance(), () -> {
                     if (event.getPlayer() != null && event.getPlayer().isOnline()) {
-                        // TODO: Open violations menu
-                        // Make sure to set this menu as the parent
-
-                        event.getPlayer().sendMessage(ChatColor.RED + "Not yet implemented.");
+                        ViolationsMenu violationsMenu = new ViolationsMenu(alert);
+                        violationsMenu.setParent(GroupedAlertMenu.this);
+                        violationsMenu.open(event.getPlayer());
                     }
                 }, 3);
             }

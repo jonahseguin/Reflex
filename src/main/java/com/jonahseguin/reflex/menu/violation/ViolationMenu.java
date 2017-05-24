@@ -2,10 +2,13 @@
  * Copyright (c) Jonah Seguin (Shawckz) 2017.  You may not copy, re-sell, distribute, modify, or use any code contained in this document or file, collection of documents or files, or project.  Thank you.
  */
 
-package com.jonahseguin.reflex.menu;
+package com.jonahseguin.reflex.menu.violation;
 
 import com.jonahseguin.reflex.Reflex;
 import com.jonahseguin.reflex.check.violation.Violation;
+import com.jonahseguin.reflex.menu.backend.RDynMenuItem;
+import com.jonahseguin.reflex.menu.backend.RMenuHandler;
+import com.jonahseguin.reflex.menu.other.PlayerMenu;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
 import com.jonahseguin.reflex.util.menu.events.ItemClickEvent;
 import com.jonahseguin.reflex.util.menu.items.BackItem;
@@ -32,7 +35,7 @@ public class ViolationMenu extends ItemMenu {
                 ItemBuilder ib = new ItemBuilder(new ItemStack(Material.SKULL_ITEM, 1, (short) SkullType.PLAYER.ordinal())).setSkullOwner(player.getName());
 
                 ib.setName(ChatColor.translateAlternateColorCodes('&', "&9Violation &7#" + vl.getId()));
-
+                ib.addLoreLine(ChatColor.DARK_GRAY + "Violations are deleted (expire) after a configured amount of time.");
                 ib.addLoreLine(" ");
                 ib.addLoreLine(ChatColor.DARK_GRAY + "ID: " + vl.getReflexPlayer().getUniqueId());
                 ib.addLoreLine(ChatColor.DARK_GRAY + "Player: " + player.getName());

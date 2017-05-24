@@ -112,7 +112,6 @@ public class Autoban {
             Freeze.removeFreeze(player.getBukkitPlayer());
         }
         Reflex.getInstance().getAutobanManager().removeAutoban(player.getName());
-        player.getRecord().getVl().put(check, 0);
 
         if (Reflex.getInstance().getReflexConfig().getAutobanMethod() == AutobanMethod.CONSOLE) {
             //Dispatch console command
@@ -178,7 +177,7 @@ public class Autoban {
         this.cancelled = cancelled;
         if (cancelled) {
             Reflex.getInstance().getAutobanManager().removeAutoban(player.getName());
-            player.getRecord().getVl().put(check, 0);//Reset VL
+            player.getRecord().resetViolations(check);
             if (player.getBukkitPlayer() != null && player.getBukkitPlayer().isOnline()) {
                 if (Reflex.getInstance().getCheckManager().getCheck(check).isAutobanFreeze()) {
                     Player p = player.getBukkitPlayer();

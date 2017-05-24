@@ -37,7 +37,7 @@ import java.util.Set;
  * https://shawckz.com/product/reflex
  *
  * @author Jonah Seguin
- * @version 2.0.0 (${project.version})
+ * @version 2.0.1BETA1 (${project.version})
  * @since 1.0.0
  */
 public class Reflex extends JavaPlugin {

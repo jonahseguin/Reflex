@@ -72,7 +72,7 @@ public class DBManager extends Configuration {
         if (host.equals("xxx")) {
             Bukkit.getLogger().info(" ");
             Bukkit.getLogger().info("-------------------------------------");
-            Bukkit.getLogger().info("Reflex - v" + Reflex.getInstance().getDescription().getVersion() + " by Shawckz");
+            Bukkit.getLogger().info("Reflex - v" + Reflex.getInstance().getDescription().getVersion() + " by Jonah Seguin (Shawckz)");
             Bukkit.getLogger().info("https://shawckz.com/product/Reflex");
             Bukkit.getLogger().info(" ");
             Bukkit.getLogger().info("Reflex was unable to start because your MongoDB database.yml has not been configured.");
@@ -82,7 +82,6 @@ public class DBManager extends Configuration {
             Bukkit.getLogger().info("-------------------------------------");
             Bukkit.getLogger().info(" ");
             Bukkit.getServer().getPluginManager().disablePlugin(Reflex.getInstance());
-            Reflex.couldStart = false;
             return;
         }
         try {
@@ -96,7 +95,7 @@ public class DBManager extends Configuration {
         } catch (MongoException ex) {
             Bukkit.getLogger().info(" ");
             Bukkit.getLogger().info("-------------------------------------");
-            Bukkit.getLogger().info("Reflex - v" + Reflex.getInstance().getDescription().getVersion() + " by Shawckz");
+            Bukkit.getLogger().info("Reflex - v" + Reflex.getInstance().getDescription().getVersion() + " by Jonah Seguin (Shawckz)");
             Bukkit.getLogger().info("https://shawckz.com/product/Reflex");
             Bukkit.getLogger().info(" ");
             Bukkit.getLogger().info("Reflex was unable to start because MongoDB was unable to connect.");
@@ -107,7 +106,6 @@ public class DBManager extends Configuration {
             Bukkit.getLogger().info("-------------------------------------");
             Bukkit.getLogger().info(" ");
             Bukkit.getServer().getPluginManager().disablePlugin(Reflex.getInstance());
-            Reflex.couldStart = false;
         }
     }
 }

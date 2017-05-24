@@ -40,7 +40,6 @@ public class PlayerRecord extends AutoMongo {
     // TODO: DatabaseSerializer
     private Set<Infraction> infractions = new HashSet<>();
     private Set<String> violations = new HashSet<>(); // <CheckViolation ID> (Non persistent)
-    private Map<CheckType, Integer> vl = new HashMap<>();
     private Map<CheckType, Integer> preVL = new HashMap<>(); // Non persistent
 
     public PlayerRecord() {
@@ -57,7 +56,10 @@ public class PlayerRecord extends AutoMongo {
         return violations;
     }
 
-    public Set<CheckViolation> getViolations() {
+    /**
+     * Includes INVALID violations (ones that have been reset)
+     */
+    public Set<CheckViolation> getAllViolations() {
         Set<CheckViolation> v = new HashSet<>();
         violations.forEach(violation -> {
             CheckViolation cv = getReflex().getViolationCache().getViolation(violation);
@@ -68,6 +70,37 @@ public class PlayerRecord extends AutoMongo {
         return v;
     }
 
+    /**
+     * Include INVALID violations (ones that have been reset)
+     */
+    public Set<CheckViolation> getAllViolations(CheckType checkType) {
+        Set<CheckViolation> v = getAllViolations();
+        Set<CheckViolation> filtered = new HashSet<>();
+        for (CheckViolation violation : v) {
+            if (violation.getCheckType().equals(checkType)) {
+                filtered.add(violation);
+            }
+        }
+        return filtered;
+    }
+
+    /**
+     * Does not include INVALID violations
+     */
+    public Set<CheckViolation> getViolations() {
+        Set<CheckViolation> v = new HashSet<>();
+        violations.forEach(violation -> {
+            CheckViolation cv = getReflex().getViolationCache().getViolation(violation);
+            if (cv != null && cv.isValid()) {
+                v.add(cv);
+            }
+        });
+        return v;
+    }
+
+    /**
+     * Does not include INVALID violations
+     */
     public Set<CheckViolation> getViolations(CheckType checkType) {
         Set<CheckViolation> v = getViolations();
         Set<CheckViolation> filtered = new HashSet<>();
@@ -79,10 +112,7 @@ public class PlayerRecord extends AutoMongo {
         return filtered;
     }
 
-    public boolean hasVL(CheckType checkType) {
-        return vl.containsKey(checkType);
-    }
-
+    // Valid violations only
     public int getViolationCount(CheckType checkType) {
         return getViolations(checkType).size();
     }
@@ -135,8 +165,11 @@ public class PlayerRecord extends AutoMongo {
         return violation;
     }
 
-    public void resetViolations(CheckType checkType, CheckViolation violation) {
-
+    public void resetViolations(CheckType checkType) {
+        Set<CheckViolation> allV = getViolations(checkType);
+        for (CheckViolation violation : allV) {
+            violation.setValid(false);
+        }
     }
 
     public int getRecentFails(Check check, long timeFrame) {

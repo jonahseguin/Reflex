@@ -2,11 +2,12 @@
  * Copyright (c) Jonah Seguin (Shawckz) 2017.  You may not copy, re-sell, distribute, modify, or use any code contained in this document or file, collection of documents or files, or project.  Thank you.
  */
 
-package com.jonahseguin.reflex.menu;
+package com.jonahseguin.reflex.menu.other;
 
 import com.jonahseguin.reflex.Reflex;
 import com.jonahseguin.reflex.ban.ReflexBan;
 import com.jonahseguin.reflex.check.CheckType;
+import com.jonahseguin.reflex.menu.backend.RDynMenuItem;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
 import com.jonahseguin.reflex.util.menu.items.BackItem;
 import com.jonahseguin.reflex.util.menu.items.CloseItem;
@@ -50,17 +51,9 @@ public class PlayerMenu extends ItemMenu {
             public ItemStack getFinalIcon(Player viewer) {
                 ItemBuilder ib = new ItemBuilder(Material.PAPER);
                 ib.setName(ChatColor.BLUE + "Violation Levels");
-                int i = 0;
                 ib.addLoreLine(" ");
                 for (CheckType checkType : CheckType.values()) {
-                    if (player.getRecord().hasVL(checkType)) {
-                        int vl = player.getRecord().getViolationCount(checkType);
-                        ib.addLoreLine(ChatColor.DARK_GRAY + checkType.getName() + ": " + ChatColor.GRAY + vl);
-                        i++;
-                    }
-                }
-                if (i == 0) {
-                    ib.addLoreLine(ChatColor.DARK_GRAY + "No violation levels.");
+                    ib.addLoreLine(ChatColor.DARK_GRAY + checkType.getName() + ": " + ChatColor.GRAY + player.getRecord().getViolationCount(checkType));
                 }
                 return ib.toItemStack();
             }

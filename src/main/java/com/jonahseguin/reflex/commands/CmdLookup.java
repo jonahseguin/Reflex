@@ -12,7 +12,7 @@ import com.jonahseguin.reflex.backend.configuration.RLang;
 import com.jonahseguin.reflex.backend.configuration.ReflexLang;
 import com.jonahseguin.reflex.backend.configuration.ReflexPerm;
 import com.jonahseguin.reflex.ban.ReflexBan;
-import com.jonahseguin.reflex.menu.PlayerMenu;
+import com.jonahseguin.reflex.menu.other.PlayerMenu;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
 import com.jonahseguin.reflex.util.obj.TimeUtil;
 import net.md_5.bungee.api.ChatColor;

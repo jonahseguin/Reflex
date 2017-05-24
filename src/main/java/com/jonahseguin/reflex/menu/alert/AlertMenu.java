@@ -2,7 +2,7 @@
  * Copyright (c) Jonah Seguin (Shawckz) 2017.  You may not copy, re-sell, distribute, modify, or use any code contained in this document or file, collection of documents or files, or project.  Thank you.
  */
 
-package com.jonahseguin.reflex.menu;
+package com.jonahseguin.reflex.menu.alert;
 
 import com.jonahseguin.reflex.Reflex;
 import com.jonahseguin.reflex.backend.configuration.RLang;
@@ -10,6 +10,10 @@ import com.jonahseguin.reflex.backend.configuration.ReflexLang;
 import com.jonahseguin.reflex.ban.Autoban;
 import com.jonahseguin.reflex.check.alert.AlertManager;
 import com.jonahseguin.reflex.check.alert.CheckAlert;
+import com.jonahseguin.reflex.menu.backend.RDynMenuItem;
+import com.jonahseguin.reflex.menu.backend.RMenuHandler;
+import com.jonahseguin.reflex.menu.other.PlayerMenu;
+import com.jonahseguin.reflex.menu.violation.ViolationsMenu;
 import com.jonahseguin.reflex.util.menu.events.ItemClickEvent;
 import com.jonahseguin.reflex.util.menu.items.BackItem;
 import com.jonahseguin.reflex.util.menu.items.CloseItem;
@@ -87,7 +91,7 @@ public class AlertMenu extends ItemMenu {
                 ItemBuilder ib = new ItemBuilder(Material.PAPER);
                 ib.setName(ChatColor.GOLD + "Player Notes");
                 ib.addLoreLine(" ");
-                ib.addLoreLine(ChatColor.RED + "(TODO)"); // TODO: implement notes
+                ib.addLoreLine(ChatColor.RED + "Coming soon"); // TODO: implement notes
 
                 return ib.toItemStack();
             }
@@ -113,8 +117,9 @@ public class AlertMenu extends ItemMenu {
                 event.setWillClose(true);
                 Bukkit.getScheduler().scheduleSyncDelayedTask(Reflex.getInstance(), () -> {
                     if (event.getPlayer() != null && event.getPlayer().isOnline()) {
-                        // TODO: Open violations menu (for THIS check only!)
-                        event.getPlayer().sendMessage(ChatColor.RED + "Not yet implemented");
+                        ViolationsMenu violationsMenu = new ViolationsMenu(alert.getReflexPlayer(), alert.getCheckType());
+                        violationsMenu.setParent(AlertMenu.this);
+                        violationsMenu.open(event.getPlayer());
                     }
                 }, 3);
             }

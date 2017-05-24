@@ -23,6 +23,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public class CmdBan implements RCommand {
 
+
     @RCmd(name = "reflex unban", usage = "/reflex unban <player>", permission = ReflexPerm.UNBAN, description = "Unban a player that was banned by Reflex",
             aliases = {"! unban", "reflex unban", "rx unban", "rflex unban"}, minArgs = 1)
     public void onCmdUnban(final RCmdArgs args) {
