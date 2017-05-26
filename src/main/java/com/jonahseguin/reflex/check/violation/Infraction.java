@@ -5,6 +5,7 @@
 package com.jonahseguin.reflex.check.violation;
 
 import com.jonahseguin.reflex.backend.database.mongo.AutoMongo;
+import com.jonahseguin.reflex.backend.database.mongo.annotations.CollectionName;
 import com.jonahseguin.reflex.backend.database.mongo.annotations.DatabaseSerializer;
 import com.jonahseguin.reflex.backend.database.mongo.annotations.MongoColumn;
 import com.jonahseguin.reflex.check.CheckType;
@@ -22,6 +23,7 @@ import java.util.UUID;
  */
 @Getter
 @Setter
+@CollectionName(name = "reflex_infractions")
 public class Infraction extends AutoMongo implements Violation {
 
     /*

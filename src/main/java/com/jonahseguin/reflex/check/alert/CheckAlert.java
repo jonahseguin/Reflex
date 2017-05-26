@@ -42,23 +42,44 @@ public class CheckAlert implements Alert {
     @Override
     public void sendAlert() {
         // Send (single) alert
-        ReflexLang format = ReflexLang.ALERT_SINGLE; // player, check, ping, detail, violationCount
+        // &9{0} &7failed &c{1} &7({2}ms&7) &7({3}&7) &7[{4}&7VL]
+        // player, check, ping, detail, violationCount
         String detail = this.detail;
-        if (detail.equals("")) {
-            detail = "n/a";
-        }
 
         FancyMessage msg = new FancyMessage(RLang.format(ReflexLang.ALERT_PREFIX));
-        String s = RLang.format(format, getReflexPlayer().getName(), getCheckType().getName(), getPing()+"", detail, getVl() + "");
-        msg.then(s)
+        //String s = RLang.format(format, getReflexPlayer().getName(), getCheckType().getName(), getPing()+"", detail, getVl() + "");
+        msg.then(ChatColor.BLUE + getReflexPlayer().getName()
+                + " " + ChatColor.GRAY + "failed"
+                + " " + ChatColor.RED + getCheckType().getName()
+                + " " + ChatColor.GRAY + "(" + getPing() + "ms)"
+        )
                 .tooltip(
                         ChatColor.GRAY + "Click to view alert",
                         ChatColor.GRAY + "Player: " + ChatColor.RED + getReflexPlayer().getName(),
                         ChatColor.GRAY + "Check: " + ChatColor.RED + getCheckType().getName(),
                         ChatColor.GRAY + "Ping: " + ChatColor.RED + getPing() + ChatColor.GRAY + ", " +
                                 "TPS: " + ChatColor.RED + getTps()
-                )
-                .command("/reflex alert " + id);
+                ).command("/reflex alert " + id);
+
+        if (!detail.equals("") && !detail.equalsIgnoreCase("n/a")) {
+            msg.then(ChatColor.GRAY + "(" + detail + ") ")
+                    .tooltip(
+                            ChatColor.GRAY + "Click to view alert",
+                            ChatColor.GRAY + "Player: " + ChatColor.RED + getReflexPlayer().getName(),
+                            ChatColor.GRAY + "Check: " + ChatColor.RED + getCheckType().getName(),
+                            ChatColor.GRAY + "Ping: " + ChatColor.RED + getPing() + ChatColor.GRAY + ", " +
+                                    "TPS: " + ChatColor.RED + getTps()
+                    ).command("/reflex alert " + id);
+        }
+
+        msg.then(ChatColor.GRAY + " [" + getVl() + "VL]")
+                .tooltip(
+                        ChatColor.GRAY + "Click to view alert",
+                        ChatColor.GRAY + "Player: " + ChatColor.RED + getReflexPlayer().getName(),
+                        ChatColor.GRAY + "Check: " + ChatColor.RED + getCheckType().getName(),
+                        ChatColor.GRAY + "Ping: " + ChatColor.RED + getPing() + ChatColor.GRAY + ", " +
+                                "TPS: " + ChatColor.RED + getTps()
+                ).command("/reflex alert " + id);
 
         AlertManager.staffMsg(msg);
 

@@ -52,6 +52,7 @@ public class ChecksMenu extends ItemMenu {
                     Bukkit.getScheduler().scheduleSyncDelayedTask(Reflex.getInstance(), () -> {
                         if (event.getPlayer() != null && event.getPlayer().isOnline()) {
                             CheckMenu checkMenu = new CheckMenu(check.getCheckType());
+                            checkMenu.setParent(ChecksMenu.this);
                             checkMenu.open(event.getPlayer());
                         }
                     }, 3);

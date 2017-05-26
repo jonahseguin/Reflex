@@ -46,6 +46,9 @@ public class PlayerData {
 
     public final Player player;
 
+    /* Fly */
+    public long flyHoverTime = 0;
+
     /* Jesus */
     public long jesusTime = 0;
 
@@ -344,6 +347,73 @@ public class PlayerData {
         boolean se = otherBlock.getRelative(BlockFace.SOUTH_EAST).getType() == Material.WATER || otherBlock.getRelative(BlockFace.NORTH).getType() == Material.STATIONARY_WATER;
         boolean sw = otherBlock.getRelative(BlockFace.SOUTH_WEST).getType() == Material.WATER || otherBlock.getRelative(BlockFace.SOUTH_WEST).getType() == Material.STATIONARY_WATER;
         return n && s && e && w && ne && nw && se && sw && isHover;
+    }
+
+    public Set<Block> getSurrounding(Block block, boolean diagonals) {
+        Set<Block> blocks = new HashSet<>();
+        if (diagonals) {
+            int x = -1;
+            while (x <= 1) {
+                int y = -1;
+                while (y <= 1) {
+                    int z = -1;
+                    while (z <= 1) {
+                        if (x != 0 || y != 0 || z != 0) {
+                            blocks.add(block.getRelative(x, y, z));
+                        }
+                        ++z;
+                    }
+                    ++y;
+                }
+                ++x;
+            }
+        } else {
+            blocks.add(block.getRelative(BlockFace.UP));
+            blocks.add(block.getRelative(BlockFace.DOWN));
+            blocks.add(block.getRelative(BlockFace.NORTH));
+            blocks.add(block.getRelative(BlockFace.SOUTH));
+            blocks.add(block.getRelative(BlockFace.EAST));
+            blocks.add(block.getRelative(BlockFace.WEST));
+        }
+        return blocks;
+    }
+
+    public boolean blocksNear(Location loc) {
+        boolean nearBlocks = false;
+        for (Block block2 : getSurrounding(loc.getBlock(), true)) {
+            if (block2.getType() == Material.AIR) continue;
+            nearBlocks = true;
+            break;
+        }
+        for (Block block2 : getSurrounding(loc.getBlock(), false)) {
+            if (block2.getType() == Material.AIR) continue;
+            nearBlocks = true;
+            break;
+        }
+        Location a = loc;
+        a.setY(a.getY() - 0.5);
+        if (a.getBlock().getType() != Material.AIR) {
+            nearBlocks = true;
+        }
+        if (isBlock(loc.getBlock().getRelative(BlockFace.DOWN), new Material[]{Material.FENCE, Material.FENCE_GATE, Material.COBBLE_WALL, Material.LADDER})) {
+            nearBlocks = true;
+        }
+        return nearBlocks;
+    }
+
+    public boolean isBlock(Block block, Material[] materials) {
+        Material type = block.getType();
+        Material[] arrmaterial = materials;
+        int n = arrmaterial.length;
+        int n2 = 0;
+        while (n2 < n) {
+            Material m = arrmaterial[n2];
+            if (m == type) {
+                return true;
+            }
+            ++n2;
+        }
+        return false;
     }
 
 }

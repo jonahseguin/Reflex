@@ -53,7 +53,7 @@ public class CheckNoSwing extends Check {
                                 if (!hasSwung(rp)) {
                                     rp.addPreVL(getCheckType());
                                     if (rp.getPreVL(getCheckType()) > minAttempts) {
-                                        fail(rp);
+                                        fail(rp, minAttempts + " attempts");
                                         rp.setPreVL(getCheckType(), 0); // Reset on fail
                                     }
                                 }

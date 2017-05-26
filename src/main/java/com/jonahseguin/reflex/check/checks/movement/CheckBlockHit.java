@@ -33,7 +33,7 @@ public class CheckBlockHit extends Check {
         if (rp.getData().isOnGround() && player.isSprinting() && player.isBlocking()) {
             rp.addPreVL(getCheckType());
             if (rp.getPreVL(getCheckType()) >= minAttempts) {
-                fail(rp).cancelIfAllowed(event);
+                fail(rp, "n/a").cancelIfAllowed(event);
             }
         } else if (player.isSprinting() && !player.isBlocking()) {
             rp.setPreVL(getCheckType(), 0);

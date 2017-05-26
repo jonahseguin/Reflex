@@ -26,7 +26,7 @@ public class CmdReflex implements RCommand {
 
     public static void sendHeader(CommandSender sender) {
         msg(sender, "&7*** &cReflex &7v" + Reflex.getInstance().getDescription().getVersion() + " &7***");
-        msg(sender, "&8Developed by Shawckz - https://shawckz.com/product/reflex");
+        msg(sender, "&8Developed by Jonah Seguin (Shawckz) - https://shawckz.com/product/reflex");
     }
 
     private static void msg(CommandSender sender, String msg) {
@@ -80,10 +80,6 @@ public class CmdReflex implements RCommand {
                         .tooltip(ChatColor.GRAY + "Click for command details")
                         .command("/reflex cmdhelp status"));//Done
 
-                msg(sender, new FancyMessage(ChatColor.translateAlternateColorCodes('&', "&7- /reflex &9inspect &7<player> <oldchecks> <seconds>"))
-                        .tooltip(ChatColor.GRAY + "Click for command details")
-                        .command("/reflex cmdhelp inspect"));//Done
-
                 msg(sender, new FancyMessage(ChatColor.translateAlternateColorCodes('&', "&7- /reflex &9cancel &7<player>"))
                         .tooltip(ChatColor.GRAY + "Click for command details")
                         .command("/reflex cmdhelp cancel"));//Done
@@ -92,17 +88,21 @@ public class CmdReflex implements RCommand {
                         .tooltip(ChatColor.GRAY + "Click for command details")
                         .command("/reflex cmdhelp lookup player"));//Done
 
-                msg(sender, new FancyMessage(ChatColor.translateAlternateColorCodes('&', "&7- /reflex &9lookup &einspection &7<id>"))
-                        .tooltip(ChatColor.GRAY + "Click for command details")
-                        .command("/reflex cmdhelp lookup inspection"));//Done
-
-                msg(sender, new FancyMessage(ChatColor.translateAlternateColorCodes('&', "&7- /reflex &9lookup &eviolation&7 <id>"))
-                        .tooltip(ChatColor.GRAY + "Click for command details")
-                        .command("/reflex cmdhelp lookup infraction"));//Done
-
                 msg(sender, new FancyMessage(ChatColor.translateAlternateColorCodes('&', "&7- /reflex &9lookup &eban&7 <player>"))
                         .tooltip(ChatColor.GRAY + "Click for command details")
                         .command("/reflex cmdhelp lookup ban"));//Done
+
+                msg(sender, new FancyMessage(ChatColor.translateAlternateColorCodes('&', "&7- /reflex &9lookup &ebaninfo &7<id>"))
+                        .tooltip(ChatColor.GRAY + "Click for command details")
+                        .command("/reflex cmdhelp lookup baninfo"));//Done
+
+                msg(sender, new FancyMessage(ChatColor.translateAlternateColorCodes('&', "&7- /reflex &9checks"))
+                        .tooltip(ChatColor.GRAY + "Click for command details")
+                        .command("/reflex cmdhelp checks"));//Done
+
+                msg(sender, new FancyMessage(ChatColor.translateAlternateColorCodes('&', "&7- /reflex &9check &7<check>"))
+                        .tooltip(ChatColor.GRAY + "Click for command details")
+                        .command("/reflex cmdhelp check"));//Done
 
                 msg(sender, new FancyMessage(ChatColor.translateAlternateColorCodes('&', "&7- /reflex &9unban &7<player>"))
                         .tooltip(ChatColor.GRAY + "Click for command details")

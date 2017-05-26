@@ -58,7 +58,7 @@ public class CheckNoFall extends Check {
     private boolean canCheck(ReflexPlayer p) {
         Player player = p.getBukkitPlayer();
         if (player.getAllowFlight()) return false;
-        if (player.getGameMode() == GameMode.SPECTATOR || player.getGameMode() == GameMode.CREATIVE) return false;
+        if (player.getGameMode() == GameMode.CREATIVE) return false;
         if (player.isInsideVehicle()) return false;
         if (player.getHealth() <= 0) return false;
         return !p.getData().isInLiquid();

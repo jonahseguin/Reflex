@@ -55,7 +55,7 @@ public class CheckAntiKnockback extends Check {
                 if (player.getLocation().distanceSquared(damageLocation) <= maxDistanceOffset) {
                     rp.addPreVL(getCheckType());
                     if (rp.getPreVL(getCheckType()) >= minAttempts) {
-                        fail(rp);
+                        fail(rp, "n/a");
                         rp.setPreVL(getCheckType(), 0); // Reset on fail
                     }
                 } else {

@@ -6,13 +6,18 @@ package com.jonahseguin.reflex.check.violation;
 
 import com.jonahseguin.reflex.Reflex;
 import com.jonahseguin.reflex.backend.database.mongo.AutoMongo;
+import com.jonahseguin.reflex.backend.database.mongo.annotations.CollectionName;
+import com.jonahseguin.reflex.backend.database.mongo.annotations.DatabaseSerializer;
 import com.jonahseguin.reflex.backend.database.mongo.annotations.MongoColumn;
 import com.jonahseguin.reflex.ban.Autoban;
 import com.jonahseguin.reflex.check.Check;
 import com.jonahseguin.reflex.check.CheckFail;
 import com.jonahseguin.reflex.check.CheckType;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
+import com.jonahseguin.reflex.util.serial.InfractionSetSerializer;
 import lombok.Getter;
+import lombok.Setter;
+import org.bukkit.ChatColor;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
@@ -25,6 +30,7 @@ import java.util.Set;
  * Project: Reflex
  */
 @Getter
+@CollectionName(name = "reflex_playerrecords")
 public class PlayerRecord extends AutoMongo {
 
     private final Reflex reflex;
@@ -35,21 +41,23 @@ public class PlayerRecord extends AutoMongo {
     Easily access amounts of violations, violations for a specific check, most recent violations (within x time), etc.
 
      */
+    @Setter
     private ReflexPlayer reflexPlayer;
     @MongoColumn(name = "infractions")
-    // TODO: DatabaseSerializer
+    @DatabaseSerializer(serializer = InfractionSetSerializer.class)
     private Set<Infraction> infractions = new HashSet<>();
+
     private Set<String> violations = new HashSet<>(); // <CheckViolation ID> (Non persistent)
     private Map<CheckType, Integer> preVL = new HashMap<>(); // Non persistent
 
     public PlayerRecord() {
         // AutoMongo
-        this.reflex = getReflex();
+        this.reflex = Reflex.getInstance();
     }
 
     public PlayerRecord(ReflexPlayer reflexPlayer) {
         this.reflexPlayer = reflexPlayer;
-        this.reflex = getReflex();
+        this.reflex = Reflex.getInstance();
     }
 
     public Set<String> getViolationIDs() {
@@ -119,8 +127,7 @@ public class PlayerRecord extends AutoMongo {
 
     private CheckViolation addCheckViolation(CheckType checkType, String detail, boolean infraction) {
         long expiryTime = System.currentTimeMillis() + getReflex().getViolationCache().getViolationCacheExpiryTimeMS();
-        CheckViolation violation =
-                new CheckViolation(reflexPlayer, System.currentTimeMillis(), checkType, getViolationCount(checkType), detail, infraction, expiryTime);
+        CheckViolation violation = new CheckViolation(reflexPlayer, System.currentTimeMillis(), checkType, getViolationCount(checkType) + 1, detail, infraction, expiryTime);
         getReflex().getViolationCache().cacheViolation(violation);
         return violation;
     }
@@ -132,6 +139,7 @@ public class PlayerRecord extends AutoMongo {
         CheckViolation violation;
 
         if (violationCount >= check.getInfractionVL()) {
+            detail += ChatColor.RED + " [INF]";
             // Infraction; permanent infraction
             // Auto-ban if allowed
             violation = addCheckViolation(checkType, detail, true);

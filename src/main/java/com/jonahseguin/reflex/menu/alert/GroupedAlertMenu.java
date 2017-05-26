@@ -51,7 +51,7 @@ public class GroupedAlertMenu extends ItemMenu {
         });
 
         // Violations in this alert
-        setItem(2, new RDynMenuItem() {
+        setItem(1, new RDynMenuItem() {
             @Override
             public ItemStack getFinalIcon(Player viewer) {
                 ItemBuilder ib = new ItemBuilder(Material.PAPER);

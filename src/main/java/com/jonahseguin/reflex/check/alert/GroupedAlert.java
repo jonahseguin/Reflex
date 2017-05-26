@@ -77,11 +77,10 @@ public class GroupedAlert implements Alert {
         msg.then(" "); // Space
 
         msg
-                .then("(" + count + ")")
+                .then("(" + count + "x)")
                 .color(ChatColor.GRAY)
                 .tooltip(
                         ChatColor.GRAY + "[Count]",
-                        ChatColor.GRAY + "Amount of violations",
                         ChatColor.GRAY + "Count: " + ChatColor.RED + count,
                         "  ",
                         ChatColor.GRAY + "[" + ChatColor.GREEN + "CLICK TO VIEW" + ChatColor.GRAY + "]"
@@ -92,7 +91,7 @@ public class GroupedAlert implements Alert {
 
         // Violation
         msg
-                .then("[" + violations + "]")
+                .then("[" + violations + "VL]")
                 .color(ChatColor.GRAY)
                 .tooltip(
                         ChatColor.GRAY + "[Violation] (" + alertSet.count() + "x)",

@@ -92,7 +92,7 @@ public class CheckVClip extends Check {
             if (p.getData().getVclipY() == e.getTo().getBlockY()) {
                 p.getData().setTriedVClip(false);
                 p.getData().setVclipY(-1);
-                if (fail(p).canCancel()) {
+                if (fail(p, "same Y move").canCancel()) {
                     //Can cancel
                     e.setTo(p.getData().getLastVClipLocation());
                 }

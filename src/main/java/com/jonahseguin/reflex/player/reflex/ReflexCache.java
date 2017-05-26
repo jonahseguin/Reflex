@@ -67,5 +67,6 @@ public class ReflexCache extends AbstractCache {
             reflexPlayer.setAlertsEnabled(true);
             RLang.send(p, ReflexLang.ALERTS_ENABLED);
         }
+        reflexPlayer.getRecord().setReflexPlayer(reflexPlayer);
     }
 }

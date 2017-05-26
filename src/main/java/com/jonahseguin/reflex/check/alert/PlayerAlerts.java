@@ -27,7 +27,8 @@ public class PlayerAlerts {
         if (alertGroups.containsKey(checkType)) {
             return alertGroups.get(checkType);
         } else {
-            return alertGroups.put(checkType, new AlertSet(player, checkType));
+            alertGroups.put(checkType, new AlertSet(player, checkType));
+            return alertGroups.get(checkType);
         }
     }
 

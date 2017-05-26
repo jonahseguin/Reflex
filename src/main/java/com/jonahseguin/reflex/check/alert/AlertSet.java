@@ -4,13 +4,13 @@
 
 package com.jonahseguin.reflex.check.alert;
 
-import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.jonahseguin.reflex.check.CheckType;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
 import lombok.Getter;
 import org.apache.commons.lang.Validate;
 
+import java.util.AbstractMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -41,12 +41,13 @@ public class AlertSet {
 
     public void addAlert(CheckAlert alert) {
         Validate.isTrue(alert.getCheckType().equals(checkType), "AlertSet alerts must all be of same CheckType");
-        this.mostRecentAlert = Maps.immutableEntry(System.currentTimeMillis(), alert);
+        this.mostRecentAlert = new AbstractMap.SimpleEntry<>(System.currentTimeMillis(), alert);
         alerts.add(alert);
     }
 
     public void clearAlerts() {
         alerts.clear();
+        mostRecentAlert = null;
     }
 
     public boolean shouldSendAsGrouped() {

@@ -59,7 +59,7 @@ public class CheckMenu extends ItemMenu {
         setItem(20, new RDynMenuItem() {
             @Override
             public ItemStack getFinalIcon(Player viewer) {
-                final Material material = (check.isEnabled() ? Material.REDSTONE_TORCH_ON : Material.REDSTONE_TORCH_OFF);
+                final Material material = (check.isEnabled() ? Material.SLIME_BALL : Material.SNOW_BALL);
                 ItemBuilder ib = new ItemBuilder(material);
                 ib.setName(ChatColor.GRAY + "Enabled: " + enabled(check.isEnabled()));
                 ib.addLoreLine(" ");
@@ -83,7 +83,8 @@ public class CheckMenu extends ItemMenu {
                 ItemBuilder ib = new ItemBuilder(material);
                 ib.setName(ChatColor.GRAY + "Cancel: " + enabled(check.isCancel()));
                 ib.addLoreLine(" ");
-                ib.addLoreLine(ChatColor.DARK_GRAY + "When cancelling is enabled, (if supported) actions will be set-back on failure.");
+                ib.addLoreLine(ChatColor.DARK_GRAY + "When cancelling is enabled, ")
+                        .addLoreLine(ChatColor.DARK_GRAY + "actions will be set-back on failure.");
                 ib.addLoreLine(ChatColor.GOLD + "Click to " + (check.isCancel() ? "disable" : "enable") + " cancelling");
                 return ib.toItemStack();
             }
@@ -101,9 +102,10 @@ public class CheckMenu extends ItemMenu {
             public ItemStack getFinalIcon(Player viewer) {
                 final Material material = (check.isAutoban() ? Material.EMERALD : Material.REDSTONE);
                 ItemBuilder ib = new ItemBuilder(material);
-                ib.setName(ChatColor.GRAY + "Enabled: " + enabled(check.isAutoban()));
+                ib.setName(ChatColor.GRAY + "Auto-Ban: " + enabled(check.isAutoban()));
                 ib.addLoreLine(" ");
-                ib.addLoreLine(ChatColor.DARK_GRAY + "When auto-ban is enabled, a player will be banned upon receiving an infraction.");
+                ib.addLoreLine(ChatColor.DARK_GRAY + "When auto-ban is enabled, a player ")
+                        .addLoreLine(ChatColor.DARK_GRAY + "will be banned upon receiving an infraction.");
                 ib.addLoreLine(ChatColor.GOLD + "Click to " + (check.isAutoban() ? "disable" : "enable") + " auto-ban");
                 return ib.toItemStack();
             }
@@ -124,7 +126,8 @@ public class CheckMenu extends ItemMenu {
                 ItemBuilder ib = new ItemBuilder(Material.FIREBALL);
                 ib.setName(ChatColor.GRAY + "Total Fails: " + ChatColor.AQUA + check.getFails().size());
                 ib.addLoreLine(" ");
-                ib.addLoreLine(ChatColor.DARK_GRAY + "Total amount of fails for this check since last startup.");
+                ib.addLoreLine(ChatColor.DARK_GRAY + "Total amount of fails for this check")
+                        .addLoreLine(ChatColor.DARK_GRAY + "since last startup.");
                 return ib.toItemStack();
             }
         });
@@ -137,7 +140,8 @@ public class CheckMenu extends ItemMenu {
                 ItemBuilder ib = new ItemBuilder(material);
                 ib.setName(ChatColor.GRAY + "Freeze: " + enabled(check.isAutobanFreeze()));
                 ib.addLoreLine(" ");
-                ib.addLoreLine(ChatColor.DARK_GRAY + "When auto-ban is enabled, a player will be banned upon receiving an infraction.");
+                ib.addLoreLine(ChatColor.DARK_GRAY + "When auto-ban is enabled, a player will ")
+                        .addLoreLine(ChatColor.DARK_GRAY + "be banned upon receiving an infraction.");
                 ib.addLoreLine(ChatColor.GOLD + "Click to " + (check.isAutobanFreeze() ? "disable" : "enable"));
                 return ib.toItemStack();
             }
@@ -156,7 +160,8 @@ public class CheckMenu extends ItemMenu {
                 ItemBuilder ib = new ItemBuilder(Material.GOLDEN_APPLE);
                 ib.setName(ChatColor.GRAY + "Infraction VL: " + ChatColor.AQUA + check.getInfractionVL());
                 ib.addLoreLine(" ");
-                ib.addLoreLine(ChatColor.DARK_GRAY + "The amount of violations required to create an infraction.");
+                ib.addLoreLine(ChatColor.DARK_GRAY + "The amount of violations required ")
+                        .addLoreLine(ChatColor.DARK_GRAY + "to create an infraction.");
                 ib.addLoreLine(ChatColor.GOLD + "LEFT Click to increase (+1)");
                 ib.addLoreLine(ChatColor.GOLD + "RIGHT Click to decrease (-1)");
                 return ib.toItemStack();

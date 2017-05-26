@@ -36,7 +36,7 @@ public class CheckHeadRoll extends Check {
                 if (event.getPacketType() == PacketType.Play.Client.LOOK) {
                     float pitch = event.getPacket().getFloat().readSafely(1);
                     if (pitch > 90.1F || pitch < -90.1F) { //.1 because sometimes head can glitch when spinning fast
-                        CheckResult result = fail(ap);
+                        CheckResult result = fail(ap, "n/a");
                         if (result.canCancel()) {
                             event.setCancelled(true);
                             result.doCancel();

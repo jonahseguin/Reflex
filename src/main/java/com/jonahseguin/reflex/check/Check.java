@@ -38,7 +38,7 @@ public abstract class Check extends CheckConfig implements Listener {
     private final CheckType checkType;
 
     @ConfigData("enabled")
-    private boolean enabled = false;
+    private boolean enabled = true;
 
     @ConfigData("cancel")
     private boolean cancel = true;
@@ -113,19 +113,14 @@ public abstract class Check extends CheckConfig implements Listener {
         this.enabled = enabled;
     }
 
-    public CheckResult fail(ReflexPlayer player, String... detail) {
+    public CheckResult fail(ReflexPlayer player, String detail) {
         if (getReflexConfig().isSuppressAlertsOnAutoban() && getReflex().getAutobanManager().hasAutoban(player.getName())) {
             return new CheckResult(getCheckType(), player, null, false, cancel);
         }
 
-        String d = "";
-        if (detail != null && detail.length > 0) {
-            d = detail[0];
-        }
-
         fails.add(new CheckFail(System.currentTimeMillis(), player));
 
-        CheckViolation violation = player.getRecord().addViolation(getCheckType(), d);
+        CheckViolation violation = player.getRecord().addViolation(getCheckType(), detail);
 
         return new CheckResult(checkType, player, violation, false, this.cancel);
     }

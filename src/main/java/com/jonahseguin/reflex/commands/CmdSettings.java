@@ -29,7 +29,6 @@ public class CmdSettings implements RCommand {
                     Reflex.getInstance().getCheckManager().getCheck(check).setEnabled(setValue);
                     Reflex.getInstance().getCheckManager().getCheck(check).save();
                     if (msg) {
-                        sender.sendMessage(ChatColor.GRAY + "Updated setting '" + setting + "' for oldchecks '" + check.getName() + "' to: " + mode);
                         AlertManager.staffMsg(RLang.format(ReflexLang.ALERT_PREFIX) + RLang.format(ReflexLang.SETTINGS, setting, (setValue ? "on" : "off"), check.getName(), sender.getName()));
                     }
                 } else if (setting.equals("cancel")) {
@@ -37,23 +36,20 @@ public class CmdSettings implements RCommand {
                     Reflex.getInstance().getCheckManager().getCheck(check).setCancel(setValue);
                     Reflex.getInstance().getCheckManager().getCheck(check).save();
                     if (msg) {
-                        sender.sendMessage(ChatColor.GRAY + "Updated setting '" + setting + "' for oldchecks '" + check.getName() + "' to: " + mode);
                         AlertManager.staffMsg(RLang.format(ReflexLang.ALERT_PREFIX) + RLang.format(ReflexLang.SETTINGS, setting, (setValue ? "on" : "off"), check.getName(), sender.getName()));
                     }
                 } else if (setting.equals("freeze")) {
-                    boolean setValue = (mode.equals("toggle") ? !Reflex.getInstance().getCheckManager().getCheck(check).isEnabled() : mode.equals("on"));
+                    boolean setValue = (mode.equals("toggle") ? !Reflex.getInstance().getCheckManager().getCheck(check).isAutobanFreeze() : mode.equals("on"));
                     Reflex.getInstance().getCheckManager().getCheck(check).setAutobanFreeze(setValue);
                     Reflex.getInstance().getCheckManager().getCheck(check).save();
                     if (msg) {
-                        sender.sendMessage(ChatColor.GRAY + "Updated setting '" + setting + "' for oldchecks '" + check.getName() + "' to: " + mode);
                         AlertManager.staffMsg(RLang.format(ReflexLang.ALERT_PREFIX) + RLang.format(ReflexLang.SETTINGS, setting, (setValue ? "on" : "off"), check.getName(), sender.getName()));
                     }
                 } else if (setting.equals("autoban")) {
-                    boolean setValue = (mode.equals("toggle") ? !Reflex.getInstance().getCheckManager().getCheck(check).isEnabled() : mode.equals("on"));
+                    boolean setValue = (mode.equals("toggle") ? !Reflex.getInstance().getCheckManager().getCheck(check).isAutoban() : mode.equals("on"));
                     Reflex.getInstance().getCheckManager().getCheck(check).setAutoban(setValue);
                     Reflex.getInstance().getCheckManager().getCheck(check).save();
                     if (msg) {
-                        sender.sendMessage(ChatColor.GRAY + "Updated setting '" + setting + "' for oldchecks '" + check.getName() + "' to: " + mode);
                         AlertManager.staffMsg(RLang.format(ReflexLang.ALERT_PREFIX) + RLang.format(ReflexLang.SETTINGS, setting, (setValue ? "on" : "off"), check.getName(), sender.getName()));
                     }
                 }
@@ -68,7 +64,7 @@ public class CmdSettings implements RCommand {
         return true;
     }
 
-    @RCmd(name = "reflex settings", usage = "/reflex settings <toggle|on|off> <enabled|cancel|freeze|autoban> [oldchecks(blank for all)]", permission = ReflexPerm.SETTINGS, description = "Manage settings of checks",
+    @RCmd(name = "reflex settings", usage = "/reflex settings <toggle|on|off> <enabled|cancel|freeze|autoban> [check(blank for all)]", permission = ReflexPerm.SETTINGS, description = "Manage settings of checks",
             aliases = {"! settings", "reflex settings", "rx settings", "rflex settings", "reflex setting", "rx setting"}, minArgs = 2)
     public void onCmdSettings(final RCmdArgs args) {
         final CommandSender sender = args.getSender().getCommandSender();

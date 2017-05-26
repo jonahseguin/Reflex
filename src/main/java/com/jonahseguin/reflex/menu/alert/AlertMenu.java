@@ -101,7 +101,7 @@ public class AlertMenu extends ItemMenu {
         setItem(3, new RDynMenuItem() {
             @Override
             public ItemStack getFinalIcon(Player viewer) {
-                ItemBuilder ib = new ItemBuilder(Material.COMPASS);
+                ItemBuilder ib = new ItemBuilder(Material.ENCHANTED_BOOK);
                 ib.setName(ChatColor.GOLD + "View Violations for this Check");
                 ib.addLoreLine(ChatColor.GRAY + "Check: " + ChatColor.AQUA + alert.getCheckType().getName());
                 ib.addLoreLine(" ");
@@ -126,10 +126,10 @@ public class AlertMenu extends ItemMenu {
         }));
 
         // Auto-ban
-        setItem(3, new RDynMenuItem() {
+        setItem(4, new RDynMenuItem() {
             @Override
             public ItemStack getFinalIcon(Player viewer) {
-                ItemBuilder ib = new ItemBuilder(Material.COMPASS);
+                ItemBuilder ib = new ItemBuilder(Material.GOLDEN_APPLE);
                 ib.setName(ChatColor.GOLD + "Auto-Ban Status");
                 ib.addLoreLine(ChatColor.GRAY + "Is banned: " + (alert.getReflexPlayer().isBanned() ? ChatColor.GREEN + "YES" : ChatColor.RED + " NO"));
                 ib.addLoreLine(" ");

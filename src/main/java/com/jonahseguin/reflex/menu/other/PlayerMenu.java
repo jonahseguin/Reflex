@@ -52,8 +52,15 @@ public class PlayerMenu extends ItemMenu {
                 ItemBuilder ib = new ItemBuilder(Material.PAPER);
                 ib.setName(ChatColor.BLUE + "Violation Levels");
                 ib.addLoreLine(" ");
+                int i = 0;
                 for (CheckType checkType : CheckType.values()) {
-                    ib.addLoreLine(ChatColor.DARK_GRAY + checkType.getName() + ": " + ChatColor.GRAY + player.getRecord().getViolationCount(checkType));
+                    if (player.getRecord().getViolationCount(checkType) > 0) {
+                        ib.addLoreLine(ChatColor.DARK_GRAY + checkType.getName() + ": " + ChatColor.GRAY + player.getRecord().getViolationCount(checkType));
+                        i++;
+                    }
+                }
+                if (i == 0) {
+                    ib.addLoreLine(ChatColor.DARK_GRAY + "No violation levels.");
                 }
                 return ib.toItemStack();
             }

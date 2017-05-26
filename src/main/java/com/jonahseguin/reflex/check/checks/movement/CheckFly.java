@@ -4,9 +4,61 @@
 
 package com.jonahseguin.reflex.check.checks.movement;
 
+import com.jonahseguin.reflex.Reflex;
+import com.jonahseguin.reflex.backend.configuration.annotations.ConfigData;
+import com.jonahseguin.reflex.check.Check;
+import com.jonahseguin.reflex.check.CheckType;
+import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
+import com.jonahseguin.reflex.util.obj.Lag;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.player.PlayerMoveEvent;
+
 /**
  * Created by Jonah Seguin on Sat 2017-04-29 at 16:55.
  * Project: Reflex
  */
-public class CheckFly {
+public class CheckFly extends Check {
+
+    @ConfigData("minimum-hover-milliseconds")
+    private long minHoverMS = 3000;
+
+    @ConfigData("minimum-tps")
+    private int minTps = 17;
+
+    public CheckFly(Reflex reflex) {
+        super(reflex, CheckType.FLY);
+    }
+
+    @EventHandler
+    public void onMoveFlyHover(final PlayerMoveEvent event) {
+        final Player player = event.getPlayer();
+        final ReflexPlayer reflexPlayer = getPlayer(player);
+        if (player.getAllowFlight()) return;
+        if (reflexPlayer.getData().isInWater()) return;
+        if (reflexPlayer.getData().isInWeb()) return;
+        if (reflexPlayer.getData().blocksNear(player.getLocation())) {
+            reflexPlayer.getData().flyHoverTime = 0;
+            return;
+        }
+        if (event.getTo().getX() == event.getFrom().getX() && event.getTo().getZ() == event.getFrom().getZ()) return;
+        if (event.getTo().getY() != event.getFrom().getY()) {
+            reflexPlayer.getData().flyHoverTime = 0;
+            return;
+        }
+
+        if (reflexPlayer.getData().flyHoverTime == 0) {
+            reflexPlayer.getData().flyHoverTime = System.currentTimeMillis();
+        } else {
+            if ((System.currentTimeMillis() - reflexPlayer.getData().flyHoverTime) >= minHoverMS) {
+                if (Lag.getTPS() >= minTps) {
+                    int seconds = Math.round((System.currentTimeMillis() - reflexPlayer.getData().flyHoverTime) / 1000);
+                    fail(reflexPlayer, "Hover (" + seconds + "s)").cancelIfAllowed(event);
+                }
+            }
+        }
+    }
+
+
+
 }

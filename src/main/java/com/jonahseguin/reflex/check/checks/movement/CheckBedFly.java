@@ -43,7 +43,7 @@ public class CheckBedFly extends Check {
         rp.addPreVL(getCheckType());
 
         if (rp.getPreVL(getCheckType()) >= this.minAttempts) {
-            if (fail(rp).canCancel()) {
+            if (fail(rp, "n/a").canCancel()) {
                 player.teleport(player.getLocation());
             }
         }

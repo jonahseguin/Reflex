@@ -79,9 +79,11 @@ public class AlertManager implements RTimer {
                                 GroupedAlert groupedAlert = createGroupedAlert(alertSet);
                                 groupedAlert.sendAlert();
 
-                           } else {
-                                CheckAlert checkAlert = alertSet.getMostRecentAlert().getValue();
-                                checkAlert.sendAlert();
+                            } else {
+                                if (alertSet.getMostRecentAlert() != null) {
+                                    CheckAlert checkAlert = alertSet.getMostRecentAlert().getValue();
+                                    checkAlert.sendAlert();
+                                }
                             }
                             alertSet.clearAlerts();
                         }
@@ -114,10 +116,24 @@ public class AlertManager implements RTimer {
     /**
      * Will send an alert for the player for the provided check with provided detail
      * This method will not update VL, so the caller of this method is responsible for VL
+     *
      * @param violation CheckViolation, infraction to alert for
      * @return Alert --> created alert, is also cached and handled by this method
      */
     public Alert alert(CheckViolation violation) {
+        if (violation == null) {
+            Bukkit.broadcastMessage("NULL 1");
+        }
+        if (violation.getReflexPlayer() == null) {
+            Bukkit.broadcastMessage("NULL 2");
+        }
+        if (violation.getReflexPlayer().getAlerts() == null) {
+            Bukkit.broadcastMessage("NULL 3");
+        }
+        if (violation.getReflexPlayer().getAlerts().getAlertGroup(violation.getCheckType()) == null) {
+            Bukkit.broadcastMessage("NULL 4");
+        }
+
         CheckAlert alert = new CheckAlert(violation, Lag.getTPS(), violation.getReflexPlayer().getPing());
 
         cacheAlert(alert);
@@ -128,7 +144,9 @@ public class AlertManager implements RTimer {
     }
 
     public GroupedAlert createGroupedAlert(AlertSet alertSet) {
-        return new GroupedAlert(alertSet.copy()); // Make sure we use the .copy() to preserve data
+        GroupedAlert groupedAlert = new GroupedAlert(alertSet.copy()); // Make sure we use the .copy() to preserve data
+        cacheAlert(groupedAlert);
+        return groupedAlert;
     }
 
 }

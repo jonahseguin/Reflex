@@ -195,8 +195,8 @@ public class ItemMenu {
         if (slot >= 0 && slot < size.getSize() && items[slot] != null) {
             Player player = (Player) event.getWhoClicked();
             ItemClickEvent itemClickEvent = new ItemClickEvent(player, event.getClick());
-            if (!itemClickEvent.getAcceptedClickTypes().contains(event.getClick())) return;
             items[slot].onItemClick(itemClickEvent);
+            if (!itemClickEvent.getAcceptedClickTypes().contains(event.getClick())) return;
             if (itemClickEvent.willUpdate()) {
                 update(player);
             } else {

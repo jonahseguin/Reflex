@@ -31,7 +31,7 @@ public class CheckSelfHit extends Check {
             final Player damager = (Player) event.getDamager();
             if (player.getName().equals(damager.getName())) {
                 final ReflexPlayer rp = getPlayer(player);
-                fail(rp).cancelIfAllowed(event);
+                fail(rp, "n/a").cancelIfAllowed(event);
             }
         }
     }

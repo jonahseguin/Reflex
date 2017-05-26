@@ -33,7 +33,7 @@ public class CheckSneak extends Check {
         if (player.isSprinting() && player.isSneaking()) {
             rp.addPreVL(getCheckType());
             if (rp.getPreVL(getCheckType()) >= minAttempts) {
-                fail(rp).cancelIfAllowed(event);
+                fail(rp, "n/a").cancelIfAllowed(event);
                 rp.setPreVL(getCheckType(), 0);
             }
         }

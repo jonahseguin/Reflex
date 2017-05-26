@@ -101,11 +101,10 @@ public class Reflex extends JavaPlugin {
             }
         }
 
+        reflexTimer = new ReflexTimer(instance);
         autobanManager = new AutobanManager();
         alertManager = new AlertManager(instance);
         violationCache = new ViolationCache(instance);
-
-        reflexTimer = new ReflexTimer(instance);
 
         // Check setup
         checkManager = new CheckManager(this);

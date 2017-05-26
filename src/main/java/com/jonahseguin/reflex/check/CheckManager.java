@@ -46,6 +46,7 @@ public class CheckManager {
         registerCheck(new CheckJesus(instance));
         registerCheck(new CheckMorePackets(instance));
         registerCheck(new CheckNoSwing(instance));
+        registerCheck(new CheckFly(instance));
 
         checks.values().forEach(check -> check.setEnabled(check.isEnabled())); // Register check listeners if enabled
         checks.values().forEach(check -> { // Register check timers if applicable

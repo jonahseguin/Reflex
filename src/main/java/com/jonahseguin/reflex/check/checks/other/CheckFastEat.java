@@ -30,7 +30,7 @@ public class CheckFastEat extends Check {
     @ConfigData("min-attempts")
     private int minAttempts = 2;
     @ConfigData("minimum-pass-interact-ms")
-    private long maxInteractDifference = 100L; // 1/10th of a second
+    private long maxInteractDifference = 50L; // 1/20th of a second
     @ConfigData("minimum-tps")
     private double minTps = 15;
     @ConfigData("max-ping")
