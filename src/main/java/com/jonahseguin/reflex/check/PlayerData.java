@@ -57,7 +57,6 @@ public class PlayerData {
     public long lastKeepAlivePacket = 0;
 
     /* FastEat */
-    public boolean eatDidInteract = false;
     public long eatInteract = 0;
     public long eatConsume = 0;
     public Material eatMaterial = null;
@@ -103,9 +102,12 @@ public class PlayerData {
     // General setBack --> Last safe location
     public Location setBack = null;
     public Location from = null;
-
     public PlayerData(Player player) {
         this.player = player;
+    }
+
+    public boolean eatDidInteract() {
+        return (System.currentTimeMillis() - eatInteract) <= (1000 * 7); // interacted within 7 seconds
     }
 
     public Set<Double> getReachDistancesAsDoubles() {

@@ -123,6 +123,10 @@ public class CmdReflex implements RCommand {
                 msg(sender, new FancyMessage(ChatColor.translateAlternateColorCodes('&', "&7- /reflex &9config set &7<key> <value>"))
                         .tooltip(ChatColor.GRAY + "Click for command details")
                         .command("/reflex cmdhelp config set"));
+
+                msg(sender, new FancyMessage(ChatColor.translateAlternateColorCodes('&', "&7- /reflex &9config reset &7[checks?]"))
+                        .tooltip(ChatColor.GRAY + "Click for command details")
+                        .command("/reflex cmdhelp config reset"));
             }
         }
         RLang.send(sender, ReflexLang.HEADER_FOOTER);

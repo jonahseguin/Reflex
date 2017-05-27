@@ -30,8 +30,6 @@ public class PlayerMenu extends ItemMenu {
         super("Reflex - " + player.getName(), Size.ONE_LINE, Reflex.getInstance());
         this.player = player;
 
-        final PlayerMenu thisMenu = this;
-
         setItem(0, new StaticMenuItem(ChatColor.BLUE + player.getName(), new ItemBuilder(new ItemStack(Material.SKULL_ITEM, 1, (short) SkullType.PLAYER.ordinal())).setSkullOwner(player.getName()).toItemStack(),
                 " ", ChatColor.DARK_GRAY + (Bukkit.getPlayer(player.getName()) != null ? ChatColor.GREEN + "Online" : ChatColor.RED + "Offline")));
 
@@ -47,6 +45,26 @@ public class PlayerMenu extends ItemMenu {
         });
 
         setItem(2, new RDynMenuItem() {
+            @Override
+            public ItemStack getFinalIcon(Player viewer) {
+                ItemBuilder ib = new ItemBuilder(Material.BLAZE_POWDER);
+                ib.setName(ChatColor.BLUE + "Pre-Violation Levels");
+                ib.addLoreLine(" ");
+                int i = 0;
+                for (CheckType checkType : CheckType.values()) {
+                    if (player.getPreVL(checkType) > 0) {
+                        ib.addLoreLine(ChatColor.DARK_GRAY + checkType.getName() + ": " + ChatColor.GRAY + player.getPreVL(checkType));
+                        i++;
+                    }
+                }
+                if (i == 0) {
+                    ib.addLoreLine(ChatColor.DARK_GRAY + "No pre-violation levels.");
+                }
+                return ib.toItemStack();
+            }
+        });
+
+        setItem(3, new RDynMenuItem() {
             @Override
             public ItemStack getFinalIcon(Player viewer) {
                 ItemBuilder ib = new ItemBuilder(Material.PAPER);
@@ -66,7 +84,7 @@ public class PlayerMenu extends ItemMenu {
             }
         });
 
-        setItem(3, new RDynMenuItem() {
+        setItem(4, new RDynMenuItem() {
             @Override
             public ItemStack getFinalIcon(Player viewer) {
                 return new ItemBuilder(Material.FIREBALL)
@@ -77,7 +95,7 @@ public class PlayerMenu extends ItemMenu {
             }
         });
 
-        setItem(4, new RDynMenuItem() {
+        setItem(5, new RDynMenuItem() {
             @Override
             public ItemStack getFinalIcon(Player viewer) {
                 ItemBuilder ib = new ItemBuilder(Material.PAPER);

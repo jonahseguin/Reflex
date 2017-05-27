@@ -62,7 +62,7 @@ public class CheckAlert implements Alert {
                 ).command("/reflex alert " + id);
 
         if (!detail.equals("") && !detail.equalsIgnoreCase("n/a")) {
-            msg.then(ChatColor.GRAY + "(" + detail + ") ")
+            msg.then(" " + ChatColor.GRAY + "(" + detail.trim() + ") ")
                     .tooltip(
                             ChatColor.GRAY + "Click to view alert",
                             ChatColor.GRAY + "Player: " + ChatColor.RED + getReflexPlayer().getName(),

@@ -5,6 +5,7 @@
 package com.jonahseguin.reflex.backend.configuration;
 
 
+import com.jonahseguin.reflex.Reflex;
 import com.jonahseguin.reflex.backend.configuration.annotations.ConfigData;
 import com.jonahseguin.reflex.backend.configuration.annotations.ConfigSerializer;
 import com.jonahseguin.reflex.util.obj.RReflecUtil;
@@ -22,6 +23,7 @@ import java.lang.reflect.Field;
 public class Configuration {
 
     private final YamlConfiguration config;
+    private final String fileName;
     private final File file;
     private final File directory;
 
@@ -34,6 +36,7 @@ public class Configuration {
     }
 
     public Configuration(String filename, String directory) {
+        this.fileName = filename;
         this.directory = new File(directory);
         this.file = new File(directory, filename);
         config = new YamlConfiguration();
@@ -58,7 +61,46 @@ public class Configuration {
         }
     }
 
+    public void resetToDefaults() {
+        loadDefaults();
+        save();
+    }
+
+    public void saveDefaults() {
+        File dir = new File(Reflex.getInstance().getDataFolder().getPath() + File.separator + "defaults");
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+        File file = new File(Reflex.getInstance().getDataFolder().getPath() + File.separator + "defaults" + File.separator + fileName);
+        if (!file.exists()) {
+            try {
+                file.createNewFile();
+                YamlConfiguration config = new YamlConfiguration();
+                config.load(file);
+                save(file, config);
+            } catch (IOException | InvalidConfigurationException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
+    public void loadDefaults() {
+        File file = new File(Reflex.getInstance().getDataFolder().getPath() + File.separator + "defaults" + File.separator + fileName);
+        if (file.exists()) {
+            YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
+            load(config);
+        } else {
+            Reflex.log("Config file default does not exist, creating and trying again");
+            saveDefaults();
+            loadDefaults();
+        }
+    }
+
     public void save() {
+        save(file, config);
+    }
+
+    public void save(File file, YamlConfiguration config) {
         Field[] toSave = this.getClass().getDeclaredFields();
         for (Field f : toSave) {
             if (f.isAnnotationPresent(ConfigData.class)) {
@@ -119,7 +161,7 @@ public class Configuration {
         return true;
     }
 
-    public void load() {
+    public void load(YamlConfiguration config) {
         Field[] toLoad = this.getClass().getDeclaredFields();
         for (Field f : toLoad) {
             f.setAccessible(true);
@@ -146,5 +188,9 @@ public class Configuration {
                 }
             }
         }
+    }
+
+    public void load() {
+        load(config);
     }
 }

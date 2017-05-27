@@ -32,6 +32,10 @@ public class PlayerAlerts {
         }
     }
 
+    public void removeAlertGroup(CheckType checkType) {
+        alertGroups.remove(checkType);
+    }
+
     public ReflexPlayer getPlayer() {
         return player;
     }

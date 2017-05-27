@@ -38,7 +38,10 @@ public class CheckConfig {
         this.file = new File(this.directory, checkType.getName() + ".yml");
         this.config = new YamlConfiguration();
         createFile();
+        setupConfig();
+        saveDefaults();
     }
+
 
     public void createFile() {
         if (!directory.exists()) {
@@ -69,6 +72,10 @@ public class CheckConfig {
     }
 
     public void save() {
+        save(file, config);
+    }
+
+    public void save(File file, YamlConfiguration config) {
         Class c = this.getClass();
 
         List<Field> fields = new ArrayList<>();
@@ -122,10 +129,14 @@ public class CheckConfig {
                 }
             }
         }
-        saveConfig();
+        saveConfig(config, file);
     }
 
     public void saveConfig() {
+        saveConfig(config, file);
+    }
+
+    public void saveConfig(YamlConfiguration config, File file) {
         try {
             config.save(file);
         } catch (IOException ex) {
@@ -134,6 +145,10 @@ public class CheckConfig {
     }
 
     public void load() {
+        load(config);
+    }
+
+    public void load(YamlConfiguration config) {
         Class c = this.getClass();
 
         List<Field> fields = new ArrayList<>();
@@ -190,6 +205,41 @@ public class CheckConfig {
                     }
                 }
             }
+        }
+    }
+
+    public void resetToDefaults() {
+        loadDefaults();
+        save();
+    }
+
+    public void saveDefaults() {
+        File dir = new File(Reflex.getInstance().getDataFolder().getPath() + File.separator + "defaults");
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+        File file = new File(Reflex.getInstance().getDataFolder().getPath() + File.separator + "defaults" + File.separator + checkType.getName() + ".yml");
+        if (!file.exists()) {
+            try {
+                file.createNewFile();
+                YamlConfiguration config = new YamlConfiguration();
+                config.load(file);
+                save(file, config);
+            } catch (IOException | InvalidConfigurationException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
+    public void loadDefaults() {
+        File file = new File(Reflex.getInstance().getDataFolder().getPath() + File.separator + "defaults" + File.separator + checkType.getName() + ".yml");
+        if (file.exists()) {
+            YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
+            load(config);
+        } else {
+            Reflex.log("Config file default does not exist, creating and trying again");
+            saveDefaults();
+            loadDefaults();
         }
     }
 

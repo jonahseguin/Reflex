@@ -11,6 +11,7 @@ import com.jonahseguin.reflex.backend.command.RCommand;
 import com.jonahseguin.reflex.backend.configuration.RLang;
 import com.jonahseguin.reflex.backend.configuration.ReflexLang;
 import com.jonahseguin.reflex.backend.configuration.ReflexPerm;
+import com.jonahseguin.reflex.check.CheckConfig;
 import com.jonahseguin.reflex.check.alert.AlertManager;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -47,6 +48,23 @@ public class CmdConfig implements RCommand {
             sender.sendMessage(ChatColor.RED + "Failed to set config value '" + key + "' to '" + value + "'.  (type is not string?  path not in config?)");
         }
 
+    }
+
+    @RCmd(name = "reflex config reset", usage = "/reflex config reset [checks?]", permission = ReflexPerm.CONFIG_RESET,
+            aliases = {"! config reset", "rx config reset", "rflex config reset",}, description = "Reset configs to default values")
+    public void onCmdConfigReset(RCmdArgs args) {
+        final CommandSender sender = args.getSender().getCommandSender();
+
+        boolean checks = args.getArgs().length > 0;
+
+        Reflex.getInstance().getReflexConfig().resetToDefaults();
+        if (checks) {
+            Reflex.getInstance().getCheckManager().getChecks().forEach(CheckConfig::resetToDefaults);
+            AlertManager.staffMsg(RLang.format(ReflexLang.ALERT_PREFIX) + RLang.format(ReflexLang.CONFIG_RESET_CHECKS));
+        } else {
+            AlertManager.staffMsg(RLang.format(ReflexLang.ALERT_PREFIX) + RLang.format(ReflexLang.CONFIG_RESET));
+        }
+        sender.sendMessage(ChatColor.GREEN + "Reset.  " + (checks ? "(including check configs)" : "(only reflex config)"));
     }
 
 }

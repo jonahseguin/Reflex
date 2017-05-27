@@ -40,7 +40,7 @@ public class CheckNoFall extends Check {
                 rp.getData().fallDistance += (event.getFrom().getY() - event.getTo().getY());
             }
             if (rp.getData().fallDistance >= minFallDistance) {
-                if (rp.getData().isOnGround() || player.getFallDistance() == 0.0f) {
+                if (player.getFallDistance() == 0.0f) {
                     rp.addPreVL(getCheckType());
                     if (rp.getPreVL(getCheckType()) >= minAttempts) {
                         // Fail & reset
@@ -49,8 +49,11 @@ public class CheckNoFall extends Check {
                         rp.getData().fallDistance = 0;
                     }
                 } else {
-                    rp.setPreVL(getCheckType(), 0);
+                    rp.modifyPreVL(getCheckType(), -1);
                 }
+            }
+            if (rp.getData().isOnGround()) {
+                rp.getData().fallDistance = 0;
             }
         }
     }

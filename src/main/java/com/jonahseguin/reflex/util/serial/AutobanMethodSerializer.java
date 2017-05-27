@@ -11,7 +11,11 @@ public class AutobanMethodSerializer extends AbstractSerializer<AutobanMethod> {
 
     @Override
     public String toString(AutobanMethod data) {
-        return data.toString();
+        if (data != null) {
+            return data.toString();
+        } else {
+            return "";
+        }
     }
 
     @Override

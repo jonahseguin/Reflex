@@ -55,7 +55,7 @@ public class AlertSet {
     }
 
     public AlertSet copy() {
-        return new AlertSet(reflexPlayer, checkType, alerts, mostRecentAlert);
+        return new AlertSet(this.reflexPlayer, this.checkType, this.alerts, this.mostRecentAlert);
     }
 
     public int count() {

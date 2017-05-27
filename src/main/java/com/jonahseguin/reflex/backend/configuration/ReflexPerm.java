@@ -25,6 +25,7 @@ public enum ReflexPerm {
     SETTINGS("reflex.settings"),
     CONFIG_LOAD("reflex.config.load"),
     CONFIG_SET("reflex.config.set"),
+    CONFIG_RESET("reflex.config.reset"),
     CANCEL("reflex.cancel"),
     CHECKS("reflex.checks"),
     LOOKUP_ALERT("reflex.lookup.alert"),

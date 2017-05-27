@@ -76,8 +76,10 @@ public class AlertManager implements RTimer {
                         AlertSet alertSet = p.getAlerts().getAlertGroup(checkType);
                         if (alertSet != null) {
                             if (alertSet.shouldSendAsGrouped()) {
+                                Bukkit.broadcastMessage("(ALPHA) " + alertSet.getAlerts().size());
                                 GroupedAlert groupedAlert = createGroupedAlert(alertSet);
                                 groupedAlert.sendAlert();
+                                Bukkit.broadcastMessage("(BETA) " + groupedAlert.getAlertSet().getAlerts().size());
 
                             } else {
                                 if (alertSet.getMostRecentAlert() != null) {
@@ -85,9 +87,10 @@ public class AlertManager implements RTimer {
                                     checkAlert.sendAlert();
                                 }
                             }
-                            alertSet.clearAlerts();
+                            //alertSet.clearAlerts();
+                            p.getAlerts().removeAlertGroup(checkType);
+                            x++;
                         }
-                        x++;
                     }
                 }
             }
@@ -121,30 +124,18 @@ public class AlertManager implements RTimer {
      * @return Alert --> created alert, is also cached and handled by this method
      */
     public Alert alert(CheckViolation violation) {
-        if (violation == null) {
-            Bukkit.broadcastMessage("NULL 1");
-        }
-        if (violation.getReflexPlayer() == null) {
-            Bukkit.broadcastMessage("NULL 2");
-        }
-        if (violation.getReflexPlayer().getAlerts() == null) {
-            Bukkit.broadcastMessage("NULL 3");
-        }
-        if (violation.getReflexPlayer().getAlerts().getAlertGroup(violation.getCheckType()) == null) {
-            Bukkit.broadcastMessage("NULL 4");
-        }
-
         CheckAlert alert = new CheckAlert(violation, Lag.getTPS(), violation.getReflexPlayer().getPing());
-
+        alert.setDetail(violation.getDetail());
         cacheAlert(alert);
-
         violation.getReflexPlayer().getAlerts().getAlertGroup(violation.getCheckType()).addAlert(alert);
-
         return alert;
     }
 
     public GroupedAlert createGroupedAlert(AlertSet alertSet) {
-        GroupedAlert groupedAlert = new GroupedAlert(alertSet.copy()); // Make sure we use the .copy() to preserve data
+        alertSet = alertSet.copy();
+        GroupedAlert groupedAlert = new GroupedAlert(alertSet); // Make sure we use the .copy() to preserve data
+        Bukkit.broadcastMessage("Created GroupedAlert: " + alertSet.getAlerts().size() + " : " +
+                groupedAlert.getAlertSet().getAlerts().size());
         cacheAlert(groupedAlert);
         return groupedAlert;
     }

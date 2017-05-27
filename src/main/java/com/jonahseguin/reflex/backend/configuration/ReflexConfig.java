@@ -42,6 +42,7 @@ public class ReflexConfig extends Configuration {
         super(plugin);
         load();
         save();
+        saveDefaults();
     }
 
 }

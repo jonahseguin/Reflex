@@ -56,7 +56,7 @@ public class GroupedAlertMenu extends ItemMenu {
             public ItemStack getFinalIcon(Player viewer) {
                 ItemBuilder ib = new ItemBuilder(Material.PAPER);
                 ib.setName(ChatColor.GOLD + "Violations in this Alert");
-                ib.addLoreLine(ChatColor.DARK_GRAY + "Alert Count: " + alert.getAlertSet().count());
+                ib.addLoreLine(ChatColor.DARK_GRAY + "Alert Count: " + alert.getAlertSet().getAlerts().size());
                 ib.addLoreLine(" ");
                 ib.addLoreLine(ChatColor.GREEN + "Click to view all violations/alerts in this alert");
 

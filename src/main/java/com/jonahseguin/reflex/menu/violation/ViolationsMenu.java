@@ -39,7 +39,7 @@ public class ViolationsMenu extends ItemMenu {
         // All violations for player
 
         int posn = 0;
-        for (CheckViolation violation : player.getRecord().getViolations()) {
+        for (CheckViolation violation : player.getRecord().getAllViolations()) {
             addViolationItem(posn, violation, player);
             posn++;
         }
@@ -52,7 +52,7 @@ public class ViolationsMenu extends ItemMenu {
         // Violations for checkType for player
 
         int posn = 0;
-        for (CheckViolation violation : player.getRecord().getViolations(checkType)) {
+        for (CheckViolation violation : player.getRecord().getAllViolations(checkType)) {
             addViolationItem(posn, violation, player);
             posn++;
         }
@@ -99,6 +99,7 @@ public class ViolationsMenu extends ItemMenu {
         ItemBuilder ib = new ItemBuilder(Material.PAPER);
         ib.setName(ChatColor.GOLD + violation.getCheckType().getName());
         ib.addLoreLine(ChatColor.DARK_GRAY + "ID: " + violation.getId());
+        ib.addLoreLine((violation.isValid() ? ChatColor.GREEN + "VALID" : ChatColor.RED + "INVALID"));
         ib.addLoreLine(" ");
         ib.addLoreLine(ChatColor.GRAY + "Time: " + ChatColor.AQUA + TimeUtil.format(violation.getTime()));
         ib.addLoreLine(ChatColor.GRAY + "Expires: " + ChatColor.AQUA + TimeUtil.format(violation.getExpiryTime()));

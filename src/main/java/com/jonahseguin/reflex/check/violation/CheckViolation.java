@@ -24,7 +24,8 @@ public class CheckViolation implements Violation {
     private final CheckType checkType;
     private final int vl;
     private final String detail;
-    private final boolean infraction;
+    @NonNull
+    private boolean infraction;
     @NonNull
     private long expiryTime;
     private boolean valid = true;

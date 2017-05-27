@@ -45,7 +45,7 @@ public class CheckFastEat extends Check {
         final Player player = event.getPlayer();
         final ReflexPlayer rp = getPlayer(player);
         rp.getData().eatConsume = System.currentTimeMillis();
-        if (rp.getData().eatDidInteract) {
+        if (!rp.getData().eatDidInteract()) {
             if (Lag.getTPS() >= minTps && rp.getPing() < maxPing) {
                 long difference = System.currentTimeMillis() - rp.getData().eatInteract;
                 if (difference <= maxInteractDifference) {
@@ -76,7 +76,6 @@ public class CheckFastEat extends Check {
                 if (event.getItem().getType().isEdible()) {
                     rp.getData().eatMaterial = event.getItem().getType();
                     rp.getData().eatInteract = System.currentTimeMillis();
-                    rp.getData().eatDidInteract = true;
                 }
             }
         }
@@ -87,7 +86,7 @@ public class CheckFastEat extends Check {
     public void onDrop(final PlayerDropItemEvent event) {
         final Player player = event.getPlayer();
         final ReflexPlayer rp = getPlayer(player);
-        rp.getData().eatDidInteract = false;
+        rp.getData().eatInteract = 0;
     }
 
     // on switch item
@@ -95,7 +94,7 @@ public class CheckFastEat extends Check {
     public void onFastEatSwapItem(final PlayerItemHeldEvent event) {
         final Player player = event.getPlayer();
         final ReflexPlayer rp = getPlayer(player);
-        rp.getData().eatDidInteract = false;
+        rp.getData().eatInteract = 0;
     }
 
 }

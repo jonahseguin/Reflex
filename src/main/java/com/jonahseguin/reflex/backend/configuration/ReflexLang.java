@@ -28,6 +28,8 @@ public enum ReflexLang {
     CONFIRM_BAN("&7The ban on &9{0}&7 has been confirmed by &e{1}&7 as &a{2}&7."),
     CONFIG_LOAD("&7The configuration was reloaded by &e{0}&7."),
     CONFIG_SET("&7Config value '{0}' set to '{1}' by &e{2}&7."),
+    CONFIG_RESET("&7Reflex config has been reset to defaults."),
+    CONFIG_RESET_CHECKS("&7Reflex config and check configs have been reset to defaults."),
     SETTINGS_ALL("&7Setting &e{0}&7 updated to &9{1}&7 for &aall checks &7by &e{2}&7."),
     SETTINGS("&7Setting &e{0}&7 updated to &9{1}&7 for &a{2}&7 by &e{3}&7."),
     AUTOBAN_CHEATER("&7[Reflex] &4&lYou will be automatically banned for &r{0}&4&l shortly."),

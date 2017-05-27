@@ -140,6 +140,6 @@ public class GroupedAlert implements Alert {
     }
 
     public AlertSet getAlertSet() {
-        return alertSet;
+        return this.alertSet;
     }
 }

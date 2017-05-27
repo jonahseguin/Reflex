@@ -40,6 +40,8 @@ public class PlayerRecord extends AutoMongo {
 
     Easily access amounts of violations, violations for a specific check, most recent violations (within x time), etc.
 
+    TODO: Autoban count (per check), top VLs (per check),
+
      */
     @Setter
     private ReflexPlayer reflexPlayer;
@@ -134,15 +136,17 @@ public class PlayerRecord extends AutoMongo {
 
     public CheckViolation addViolation(CheckType checkType, String detail) {
         Check check = getReflex().getCheckManager().getCheck(checkType);
+
+        CheckViolation violation = addCheckViolation(checkType, detail, false);
+
+        reflexPlayer.setSessionVL(reflexPlayer.getSessionVL() + 1);
+
         int violationCount = getViolationCount(checkType);
-
-        CheckViolation violation;
-
         if (violationCount >= check.getInfractionVL()) {
             detail += ChatColor.RED + " [INF]";
             // Infraction; permanent infraction
             // Auto-ban if allowed
-            violation = addCheckViolation(checkType, detail, true);
+            violation.setInfraction(true);
 
             final Infraction infraction = new Infraction(reflexPlayer, checkType, violationCount, detail);
 
@@ -152,9 +156,6 @@ public class PlayerRecord extends AutoMongo {
                 getReflex().getAutobanManager().putAutoban(autoban);
             }
 
-            // Reset violations (except for the violation we just added)
-
-
             new BukkitRunnable() {
                 @Override
                 public void run() {
@@ -163,7 +164,7 @@ public class PlayerRecord extends AutoMongo {
             }.runTaskAsynchronously(getReflex());
 
         } else {
-            violation = addCheckViolation(checkType, detail, false);
+            violation.setInfraction(false);
         }
 
         if (!getReflex().getAutobanManager().hasAutoban(reflexPlayer)) {
