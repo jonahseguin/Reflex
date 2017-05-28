@@ -3,8 +3,8 @@
  */
 package com.jonahseguin.reflex.util.menu;
 
+import com.jonahseguin.reflex.Reflex;
 import com.jonahseguin.reflex.util.menu.menus.MenuHolder;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -40,7 +40,7 @@ public class MenuListener implements Listener {
      * Closes all {@link com.jonahseguin.reflex.util.menu.menus.ItemMenu}s currently open.
      */
     public static void closeOpenMenus() {
-        for (Player player : Bukkit.getOnlinePlayers()) {
+        for (Player player : Reflex.getOnlinePlayers()) {
             if (player.getOpenInventory() != null) {
                 Inventory inventory = player.getOpenInventory().getTopInventory();
                 if (inventory.getHolder() instanceof MenuHolder) {

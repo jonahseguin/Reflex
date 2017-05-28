@@ -15,6 +15,7 @@ import com.jonahseguin.reflex.check.CheckType;
 import com.jonahseguin.reflex.check.PlayerData;
 import com.jonahseguin.reflex.check.alert.PlayerAlerts;
 import com.jonahseguin.reflex.check.violation.PlayerRecord;
+import com.jonahseguin.reflex.data.ping.PlayerPing;
 import com.jonahseguin.reflex.player.cache.CachePlayer;
 import com.jonahseguin.reflex.util.serial.PlayerRecordSerializer;
 import lombok.*;
@@ -31,6 +32,7 @@ public class ReflexPlayer extends CachePlayer {
 
     //Non-persistent...
     private final PlayerAlerts alerts = new PlayerAlerts(this);
+    private final PlayerPing playerPing = new PlayerPing();
     @MongoColumn(name = "username")
     @NonNull
     private String name;

@@ -19,6 +19,8 @@ import com.jonahseguin.reflex.check.ReflexTimer;
 import com.jonahseguin.reflex.check.alert.AlertManager;
 import com.jonahseguin.reflex.check.violation.ViolationCache;
 import com.jonahseguin.reflex.commands.*;
+import com.jonahseguin.reflex.data.ping.PingHandler;
+import com.jonahseguin.reflex.data.tps.TpsHandler;
 import com.jonahseguin.reflex.listener.BanListener;
 import com.jonahseguin.reflex.listener.BukkitListener;
 import com.jonahseguin.reflex.listener.PacketListener;
@@ -54,6 +56,8 @@ public class Reflex extends JavaPlugin {
     private AlertManager alertManager;
     private ViolationCache violationCache;
     private CheckManager checkManager;
+    private PingHandler pingHandler;
+    private TpsHandler tpsHandler;
 
     public static void log(String msg) {
         getInstance().getLogger().info("[Reflex] " + msg);
@@ -110,6 +114,9 @@ public class Reflex extends JavaPlugin {
         checkManager = new CheckManager(this);
 
         banManager = new ReflexBanManager();
+        pingHandler = new PingHandler(this);
+        tpsHandler = new TpsHandler(this);
+
 
         // Commands
         commandHandler = new RCommandHandler(instance);
@@ -203,5 +210,13 @@ public class Reflex extends JavaPlugin {
 
     public CheckManager getCheckManager() {
         return checkManager;
+    }
+
+    public PingHandler getPingHandler() {
+        return pingHandler;
+    }
+
+    public TpsHandler getTpsHandler() {
+        return tpsHandler;
     }
 }
