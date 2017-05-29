@@ -7,7 +7,7 @@ package com.jonahseguin.reflex.util.serial;
 import com.jonahseguin.reflex.backend.configuration.AbstractSerializer;
 import com.jonahseguin.reflex.backend.database.mongo.AutoMongo;
 import com.jonahseguin.reflex.check.violation.Infraction;
-import com.jonahseguin.reflex.util.utility.ReflexException;
+import com.jonahseguin.reflex.util.exception.AbstractSerializerException;
 import org.bson.Document;
 
 /**
@@ -23,7 +23,7 @@ public class InfractionSerializer extends AbstractSerializer<Infraction> {
     }
 
     @Override
-    public Infraction fromString(Object data) {
+    public Infraction fromString(Object data) throws AbstractSerializerException {
         if (data instanceof String) {
             String s = (String) data;
             AutoMongo mongo = Infraction.selectOne(new Document("id", s), Infraction.class);
@@ -31,13 +31,13 @@ public class InfractionSerializer extends AbstractSerializer<Infraction> {
                 if (mongo instanceof Infraction) {
                     return (Infraction) mongo;
                 } else {
-                    throw new ReflexException("Could not deserialize Infraction; mongo not Infraction");
+                    throw new AbstractSerializerException("Could not deserialize Infraction; mongo not Infraction");
                 }
             } else {
                 return null;
             }
         } else {
-            throw new ReflexException("Could not deserialize Infraction: data not string");
+            throw new AbstractSerializerException("Could not deserialize Infraction: data not string");
         }
     }
 }

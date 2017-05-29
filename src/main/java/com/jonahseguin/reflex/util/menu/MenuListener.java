@@ -53,7 +53,6 @@ public class MenuListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onInventoryClick(InventoryClickEvent event) {
         if (event.getWhoClicked() instanceof Player && event.getInventory().getHolder() instanceof MenuHolder) {
-            event.setCancelled(true);
             ((MenuHolder) event.getInventory().getHolder()).getMenu().onInventoryClick(event);
         }
     }

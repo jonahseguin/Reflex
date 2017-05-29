@@ -7,7 +7,7 @@ package com.jonahseguin.reflex.util.serial;
 import com.jonahseguin.reflex.Reflex;
 import com.jonahseguin.reflex.backend.configuration.AbstractSerializer;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
-import com.jonahseguin.reflex.util.utility.ReflexException;
+import com.jonahseguin.reflex.util.exception.AbstractSerializerException;
 
 public class ReflexPlayerSerializer extends AbstractSerializer<ReflexPlayer> {
 
@@ -17,11 +17,11 @@ public class ReflexPlayerSerializer extends AbstractSerializer<ReflexPlayer> {
     }
 
     @Override
-    public ReflexPlayer fromString(Object data) {
+    public ReflexPlayer fromString(Object data) throws AbstractSerializerException {
         if (data instanceof String) {
             String s = (String) data;
             return Reflex.getInstance().getCache().getReflexPlayerByUniqueId(s);
         }
-        throw new ReflexException("Could not deserialize ReflexPlayer (data is not String)");
+        throw new AbstractSerializerException("Could not deserialize ReflexPlayer (data is not String)");
     }
 }

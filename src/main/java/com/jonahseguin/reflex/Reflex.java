@@ -28,8 +28,11 @@ import com.jonahseguin.reflex.player.reflex.ReflexCache;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
 import com.jonahseguin.reflex.util.menu.MenuListener;
 import com.jonahseguin.reflex.util.obj.Lag;
+import com.jonahseguin.reflex.util.pluginManager.ReflexPluginManager;
+import com.jonahseguin.reflex.util.pluginManager.ReflexScheduler;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Set;
@@ -45,6 +48,8 @@ import java.util.Set;
 public class Reflex extends JavaPlugin {
 
     private static Reflex instance;
+    private ReflexPluginManager reflexPluginManager;
+    private ReflexScheduler reflexScheduler;
     private ReflexConfig reflexConfig;
     private ProtocolManager protocolManager;
     private LanguageConfig lang;
@@ -79,6 +84,18 @@ public class Reflex extends JavaPlugin {
         return getInstance().getCache().getOnlinePlayers();
     }
 
+    public static ReflexPlayer getPlayer(String name) {
+        return getInstance().getCache().getReflexPlayer(name);
+    }
+
+    public static ReflexPlayer getPlayer(Player player) {
+        return getInstance().getCache().getReflexPlayer(player);
+    }
+
+    public static ReflexScheduler getScheduler() {
+        return getInstance().getReflexScheduler();
+    }
+
     @Override
     public void onLoad() {
         protocolManager = ProtocolLibrary.getProtocolManager();
@@ -104,6 +121,17 @@ public class Reflex extends JavaPlugin {
                 cp.update();
             }
         }
+
+        this.reflexPluginManager = new ReflexPluginManager(this) {
+            @Override
+            protected void customHandler(Event event, Throwable e) {
+                if (e instanceof NullPointerException) {
+
+                } else {
+                    // Log
+                }
+            }
+        };
 
         reflexTimer = new ReflexTimer(instance);
         autobanManager = new AutobanManager();
@@ -219,4 +247,14 @@ public class Reflex extends JavaPlugin {
     public TpsHandler getTpsHandler() {
         return tpsHandler;
     }
+
+    public ReflexPluginManager getReflexPluginManager() {
+        return reflexPluginManager;
+    }
+
+    public ReflexScheduler getReflexScheduler() {
+        return reflexScheduler;
+    }
+
+
 }

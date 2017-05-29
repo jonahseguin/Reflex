@@ -11,7 +11,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -196,6 +195,7 @@ public class ItemMenu {
             Player player = (Player) event.getWhoClicked();
             ItemClickEvent itemClickEvent = new ItemClickEvent(player, event.getClick());
             items[slot].onItemClick(itemClickEvent);
+            event.setCancelled(itemClickEvent.isCancel());
             if (!itemClickEvent.getAcceptedClickTypes().contains(event.getClick())) return;
             if (itemClickEvent.willUpdate()) {
                 update(player);
@@ -219,10 +219,6 @@ public class ItemMenu {
                         }
                     }, 3);
                 }
-            }
-            event.setCancelled(itemClickEvent.isCancel());
-            if (itemClickEvent.isCancel()) {
-                event.setResult(Event.Result.DENY);
             }
         }
     }

@@ -45,6 +45,7 @@ public class ReflexPlayer extends CachePlayer {
     private int sessionVL = 0;
     private Player bukkitPlayer = null;
     private boolean alertsEnabled = true;
+    private boolean debug = false;
     private boolean online = false;
     private long lastAlertTime = System.currentTimeMillis();
     private PlayerData data = null;

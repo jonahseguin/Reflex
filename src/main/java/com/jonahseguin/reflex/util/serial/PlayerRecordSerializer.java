@@ -7,7 +7,7 @@ package com.jonahseguin.reflex.util.serial;
 import com.jonahseguin.reflex.backend.configuration.AbstractSerializer;
 import com.jonahseguin.reflex.backend.database.mongo.AutoMongo;
 import com.jonahseguin.reflex.check.violation.PlayerRecord;
-import com.jonahseguin.reflex.util.utility.ReflexException;
+import com.jonahseguin.reflex.util.exception.AbstractSerializerException;
 import org.bson.Document;
 
 /**
@@ -22,7 +22,7 @@ public class PlayerRecordSerializer extends AbstractSerializer<PlayerRecord> {
     }
 
     @Override
-    public PlayerRecord fromString(Object data) {
+    public PlayerRecord fromString(Object data) throws AbstractSerializerException {
         if (data instanceof String) {
             String s = (String) data;
             Document document = Document.parse(s);
@@ -30,10 +30,10 @@ public class PlayerRecordSerializer extends AbstractSerializer<PlayerRecord> {
             if (mongo instanceof PlayerRecord) {
                 return ((PlayerRecord) mongo);
             } else {
-                throw new ReflexException("Could not deserialize PlayerRecord: mongo not PlayerRecord");
+                throw new AbstractSerializerException("Could not deserialize PlayerRecord: mongo not PlayerRecord");
             }
         } else {
-            throw new ReflexException("Could not deserialize PlayerRecord: data not string");
+            throw new AbstractSerializerException("Could not deserialize PlayerRecord: data not string");
         }
     }
 }

@@ -9,7 +9,7 @@ import com.jonahseguin.reflex.check.checks.combat.CheckFastBow;
 import com.jonahseguin.reflex.check.checks.combat.CheckNoSwing;
 import com.jonahseguin.reflex.check.checks.movement.*;
 import com.jonahseguin.reflex.check.checks.other.*;
-import com.jonahseguin.reflex.util.utility.ReflexException;
+import com.jonahseguin.reflex.util.exception.ReflexException;
 
 import java.util.HashSet;
 import java.util.Set;

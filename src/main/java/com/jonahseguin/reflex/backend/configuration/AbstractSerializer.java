@@ -5,6 +5,8 @@
 package com.jonahseguin.reflex.backend.configuration;
 
 
+import com.jonahseguin.reflex.util.exception.AbstractSerializerException;
+
 public abstract class AbstractSerializer<T> {
 
     public AbstractSerializer() {
@@ -12,6 +14,6 @@ public abstract class AbstractSerializer<T> {
 
     public abstract String toString(T data);
 
-    public abstract T fromString(Object data);
+    public abstract T fromString(Object data) throws AbstractSerializerException;
 
 }

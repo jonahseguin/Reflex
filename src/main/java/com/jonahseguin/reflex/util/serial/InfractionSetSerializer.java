@@ -7,7 +7,7 @@ package com.jonahseguin.reflex.util.serial;
 import com.google.common.collect.Sets;
 import com.jonahseguin.reflex.backend.configuration.AbstractSerializer;
 import com.jonahseguin.reflex.check.violation.Infraction;
-import com.jonahseguin.reflex.util.utility.ReflexException;
+import com.jonahseguin.reflex.util.exception.AbstractSerializerException;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -34,7 +34,7 @@ public class InfractionSetSerializer extends AbstractSerializer<Set<Infraction>>
     }
 
     @Override
-    public Set<Infraction> fromString(Object data) {
+    public Set<Infraction> fromString(Object data) throws AbstractSerializerException {
         if (data instanceof String) {
             String s = (String) data;
             Set<String> d = Sets.newHashSet(s.split(","));
@@ -47,7 +47,7 @@ public class InfractionSetSerializer extends AbstractSerializer<Set<Infraction>>
             }
             return infractions;
         } else {
-            throw new ReflexException("Could not deserialize infraction; data is not String");
+            throw new AbstractSerializerException("Could not deserialize infraction; data is not String");
         }
     }
 }

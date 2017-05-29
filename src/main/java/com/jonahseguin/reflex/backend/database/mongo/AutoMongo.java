@@ -10,27 +10,23 @@ import com.jonahseguin.reflex.backend.database.DBManager;
 import com.jonahseguin.reflex.backend.database.mongo.annotations.CollectionName;
 import com.jonahseguin.reflex.backend.database.mongo.annotations.DatabaseSerializer;
 import com.jonahseguin.reflex.backend.database.mongo.annotations.MongoColumn;
+import com.jonahseguin.reflex.util.exception.AbstractSerializerException;
+import com.jonahseguin.reflex.util.exception.AutoMongoError;
+import com.jonahseguin.reflex.util.exception.AutoMongoException;
 import com.jonahseguin.reflex.util.serial.RDatabaseSerializer;
 import com.jonahseguin.reflex.util.serial.ReflexSerializer;
-import com.jonahseguin.reflex.util.utility.ReflexException;
-import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import org.apache.commons.lang.ClassUtils;
 import org.bson.Document;
-import org.bukkit.Bukkit;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
-import java.util.logging.Level;
+import java.util.*;
 
 public abstract class AutoMongo {
 
-    public static AutoMongo fromDocument(Class<? extends AutoMongo> type, Document document) {
+    public static AutoMongo fromDocument(Class<? extends AutoMongo> type, Document document) throws AutoMongoError {
         try {
             AutoMongo mongo = type.newInstance();
             for (Field field : mongo.getClass().getDeclaredFields()) {
@@ -38,7 +34,13 @@ public abstract class AutoMongo {
                 if (mongoColumn != null) {
                     Object value = document.get(mongoColumn.name());
                     if (value != null) {
-                        mongo.setValue(value, field.getType(), field, type);
+                        try {
+                            mongo.setValue(value, field.getType(), field, type);
+                        } catch (AutoMongoException ex) {
+                            // TODO: ReflexLogger (use #getCause)
+                            ex.printStackTrace(); // todo delete
+                            throw new AutoMongoError("Could not set value '" + value.toString() + "' for field '" + field.getName() + "'");
+                        }
                     }
                 }
             }
@@ -48,7 +50,13 @@ public abstract class AutoMongo {
                 if (mongoColumn != null) {
                     Object value = document.get(mongoColumn.name());
                     if (value != null) {
-                        mongo.setValue(value, field.getType(), field, type);
+                        try {
+                            mongo.setValue(value, field.getType(), field, type);
+                        } catch (AutoMongoException ex) {
+                            // TODO: ReflexLogger (use #getCause)
+                            ex.printStackTrace(); // todo delete
+                            throw new AutoMongoError("Could not set value '" + value.toString() + "' for field '" + field.getName() + "'");
+                        }
                     }
                 }
             }
@@ -59,56 +67,33 @@ public abstract class AutoMongo {
         return null;
     }
 
-    public static List<AutoMongo> select(Document search, Class<? extends AutoMongo> type) {
+    public static List<AutoMongo> select(Document search, Class<? extends AutoMongo> type) throws AutoMongoError {
         List<AutoMongo> vals = new ArrayList<>();
         CollectionName collectionName = type.getAnnotation(CollectionName.class);
         if (collectionName == null) {
-            Bukkit.getLogger().log(Level.SEVERE, "Table Name Class Not Found While Using AutoMongo (" + type.getSimpleName() + ")");
-            return vals;
+            throw new AutoMongoError("Collection Name annotation has not been added for AutoMongo class: " + type.getSimpleName());
         }
 
         MongoCollection<Document> col = DBManager.getDb().getCollection(collectionName.name());
 
-        MongoCursor<Document> cursor = col.find(search).iterator();
-
-        while (cursor.hasNext()) {
-            Document doc = cursor.next();
-
+        for (Document doc : col.find(search)) {
             try {
-                AutoMongo mongo = type.newInstance();
-                for (Field field : type.getDeclaredFields()) {
-                    MongoColumn mongoColumn = field.getAnnotation(MongoColumn.class);
-                    if (mongoColumn != null) {
-                        Object value = doc.get(mongoColumn.name());
-                        if (value != null) {
-                            mongo.setValue(value, field.getType(), field, type);
-                        }
-                    }
-                }
-
-                for (Field field : type.getSuperclass().getDeclaredFields()) {
-                    MongoColumn mongoColumn = field.getAnnotation(MongoColumn.class);
-                    if (mongoColumn != null) {
-                        Object value = doc.get(mongoColumn.name());
-                        if (value != null) {
-                            mongo.setValue(value, field.getType(), field, type);
-                        }
-                    }
-                }
+                AutoMongo mongo = fromDocument(type, doc);
                 vals.add(mongo);
-            } catch (InstantiationException | IllegalAccessException e) {
-                e.printStackTrace();
+            } catch (AutoMongoError error) {
+                // TODO: ReflexLogger
+                error.printStackTrace(); // todo delete
+                throw error;
             }
 
         }
         return vals;
     }
 
-    public static AutoMongo selectOne(Document search, Class<? extends AutoMongo> type) {
+    public static AutoMongo selectOne(Document search, Class<? extends AutoMongo> type) throws AutoMongoError {
         CollectionName collectionName = type.getAnnotation(CollectionName.class);
         if (collectionName == null) {
-            Bukkit.getLogger().log(Level.SEVERE, "Table Name Class Not Found While Using AutoMongo (" + type.getSimpleName() + ")");
-            return null;
+            throw new AutoMongoError("Collection Name annotation has not been added for AutoMongo class: " + type.getSimpleName());
         }
 
         MongoCollection<Document> col = DBManager.getDb().getCollection(collectionName.name());
@@ -117,33 +102,13 @@ public abstract class AutoMongo {
 
         if (cursor.hasNext()) {
             Document doc = cursor.next();
-
             try {
-                AutoMongo mongo = type.newInstance();
-                for (Field field : type.getDeclaredFields()) {
-                    MongoColumn mongoColumn = field.getAnnotation(MongoColumn.class);
-                    if (mongoColumn != null) {
-                        Object value = doc.get(mongoColumn.name());
-                        if (value != null) {
-                            mongo.setValue(value, field.getType(), field, type);
-                        }
-                    }
-                }
-
-                for (Field field : type.getSuperclass().getDeclaredFields()) {
-                    MongoColumn mongoColumn = field.getAnnotation(MongoColumn.class);
-                    if (mongoColumn != null) {
-                        Object value = doc.get(mongoColumn.name());
-                        if (value != null) {
-                            mongo.setValue(value, field.getType(), field, type);
-                        }
-                    }
-                }
-                return mongo;
-            } catch (InstantiationException | IllegalAccessException e) {
-                throw new ReflexException("AutoMongo error selecting", e);
+                return fromDocument(type, doc);
+            } catch (AutoMongoError error) {
+                // TODO: ReflexLogger
+                error.printStackTrace(); // todo delete
+                throw error;
             }
-
         }
         return null;
     }
@@ -151,27 +116,30 @@ public abstract class AutoMongo {
     public Document toDocument() {
         HashMap<String, Object> values = new HashMap<>();
 
-        for (Field field : this.getClass().getDeclaredFields()) {
-            field.setAccessible(true);
-            MongoColumn column = field.getAnnotation(MongoColumn.class);
-            if (column != null) {
-                values.put(column.name(), getValue(field));
-            }
-        }
-        for (Field field : this.getClass().getSuperclass().getDeclaredFields()) {
-            field.setAccessible(true);
-            MongoColumn column = field.getAnnotation(MongoColumn.class);
-            if (column != null) {
-                values.put(column.name(), getValue(field));
-            }
-        }
+        putValues(values, this.getClass());
+        putValues(values, this.getClass().getSuperclass());
         return new Document(values);
     }
 
-    public void update() {
+    private void putValues(Map<String, Object> values, Class type) {
+        for (Field field : type.getDeclaredFields()) {
+            field.setAccessible(true);
+            MongoColumn column = field.getAnnotation(MongoColumn.class);
+            if (column != null) {
+                try {
+                    values.put(column.name(), getValue(field));
+                } catch (AutoMongoException ex) {
+                    // TODO: ReflexLogger
+                    ex.printStackTrace();
+                    throw new AutoMongoError("Could not get value for field '" + field.getName() + "': " + ex.getMessage(), ex);
+                }
+            }
+        }
+    }
+
+    public void update() throws AutoMongoError {
         if (!this.getClass().isAnnotationPresent(CollectionName.class)) {
-            Bukkit.getLogger().log(Level.SEVERE, "Table Name Class Not Found While Using AutoMongo (" + this.getClass().getSimpleName() + ")");
-            return;
+            throw new AutoMongoError("Collection Name annotation has not been added for AutoMongo class: " + this.getClass().getSimpleName());
         }
         String tableName = this.getClass().getAnnotation(CollectionName.class).name();
 
@@ -185,15 +153,23 @@ public abstract class AutoMongo {
             field.setAccessible(true);
             MongoColumn column = field.getAnnotation(MongoColumn.class);
             if (column != null) {
-                Class<?> type = field.getType();
-                if (type.isPrimitive()) {
-                    type = ClassUtils.primitiveToWrapper(type);
-                }
                 if (column.identifier()) {
                     identifier = column.name();
-                    identifierValue = getValue(field);
+                    try {
+                        identifierValue = getValue(field);
+                    } catch (AutoMongoException ex) {
+                        // TODO: ReflexLogger
+                        ex.printStackTrace(); // todo delete
+                        throw new AutoMongoError("Could not get identifier value: " + ex.getMessage(), ex);
+                    }
                 } else {
-                    values.put(column.name(), getValue(field));
+                    try {
+                        values.put(column.name(), getValue(field));
+                    } catch (AutoMongoException ex) {
+                        // TODO: ReflexLogger
+                        ex.printStackTrace();
+                        throw new AutoMongoError("Could not get value for field '" + field.getName() + "': " + ex.getMessage(), ex);
+                    }
                 }
             }
         }
@@ -203,22 +179,29 @@ public abstract class AutoMongo {
             field.setAccessible(true);
             MongoColumn column = field.getAnnotation(MongoColumn.class);
             if (column != null) {
-                Class<?> type = field.getType();
-                if (type.isPrimitive()) {
-                    type = ClassUtils.primitiveToWrapper(type);
-                }
                 if (column.identifier()) {
                     identifier = column.name();
-                    identifierValue = getValue(field);
+                    try {
+                        identifierValue = getValue(field);
+                    } catch (AutoMongoException ex) {
+                        // TODO: ReflexLogger
+                        ex.printStackTrace(); // todo delete
+                        throw new AutoMongoError("Could not get identifier value: " + ex.getMessage(), ex);
+                    }
                 } else {
-                    values.put(column.name(), getValue(field));
+                    try {
+                        values.put(column.name(), getValue(field));
+                    } catch (AutoMongoException ex) {
+                        // TODO: ReflexLogger
+                        ex.printStackTrace();
+                        throw new AutoMongoError("Could not get value for field '" + field.getName() + "': " + ex.getMessage(), ex);
+                    }
                 }
             }
         }
 
         if (identifier == null) {
-            Bukkit.getLogger().log(Level.SEVERE, "Identifier Not Found While Using AutoMongo (" + this.getClass().getSimpleName() + ")");
-            return;
+            throw new AutoMongoError("Identifier not found for AutoMongo class: " + this.getClass().getSimpleName());
         }
         Document doc = new Document(identifier, identifierValue);
         Document searchQuery = new Document().append(identifier, identifierValue);
@@ -232,10 +215,9 @@ public abstract class AutoMongo {
         }
     }
 
-    public void delete() {
+    public void delete() throws AutoMongoError {
         if (!this.getClass().isAnnotationPresent(CollectionName.class)) {
-            Bukkit.getLogger().log(Level.SEVERE, "Table Name Class Not Found While Using AutoMongo (" + this.getClass().getSimpleName() + ")");
-            return;
+            throw new AutoMongoError("Collection Name annotation has not been added for AutoMongo class: " + this.getClass().getSimpleName());
         }
         String tableName = this.getClass().getAnnotation(CollectionName.class).name();
 
@@ -248,13 +230,15 @@ public abstract class AutoMongo {
             field.setAccessible(true);
             MongoColumn column = field.getAnnotation(MongoColumn.class);
             if (column != null) {
-                Class<?> type = field.getType();
-                if (type.isPrimitive()) {
-                    type = ClassUtils.primitiveToWrapper(type);
-                }
                 if (column.identifier()) {
                     identifier = column.name();
-                    identifierValue = getValue(field);
+                    try {
+                        identifierValue = getValue(field);
+                    } catch (AutoMongoException ex) {
+                        // TODO: ReflexLogger
+                        ex.printStackTrace(); // todo delete
+                        throw new AutoMongoError("Could not get identifier value: " + ex.getMessage(), ex);
+                    }
                 }
             }
         }
@@ -263,14 +247,10 @@ public abstract class AutoMongo {
     }
 
     private boolean documentExists(Document search, MongoCollection col) {
-        FindIterable<Document> ret = col.find(search).limit(1);
-        for (Document found : ret) {
-            return true;
-        }
-        return false;
+        return col.find(search).limit(1).iterator().hasNext();
     }
 
-    public String getValue(Field field) {
+    public String getValue(Field field) throws AutoMongoException {
         try {
             Object o = field.get(this);
             if (o == null) {
@@ -285,13 +265,14 @@ public abstract class AutoMongo {
                 ret = serializer.toString(o);
             }
             return ret;
-        } catch (IllegalAccessException | InstantiationException e) {
-            e.printStackTrace();
+        } catch (IllegalAccessException ex) {
+            throw new AutoMongoException("Could not access field/type when getting value", ex);
+        } catch (InstantiationException ex) {
+            throw new AutoMongoException("Could not instantiate serializer", ex);
         }
-        return null;
     }
 
-    private void setValue(Object value, Class<?> type, Field field, Class<? extends AutoMongo> mongoType) {
+    private void setValue(Object value, Class<?> type, Field field, Class<? extends AutoMongo> mongoType) throws AutoMongoException {
         try {
             if (type.isPrimitive()) {
                 type = ClassUtils.primitiveToWrapper(type);
@@ -301,7 +282,11 @@ public abstract class AutoMongo {
                 field.set(this, value);
             } else if (field.isAnnotationPresent(DatabaseSerializer.class)) {
                 AbstractSerializer serializer = field.getAnnotation(DatabaseSerializer.class).serializer().newInstance();
-                field.set(this, serializer.fromString(value));
+                try {
+                    field.set(this, serializer.fromString(value));
+                } catch (AbstractSerializerException ex) {
+                    throw new AutoMongoException("Could not set field using DatabaseSerializer", ex);
+                }
             } else if (field.isAnnotationPresent(RDatabaseSerializer.class)) {
                 ReflexSerializer serializer = ((RDatabaseSerializer) field.getAnnotation(RDatabaseSerializer.class)).serializer().newInstance();
                 field.set(this, serializer.fromString(value, mongoType));
@@ -312,8 +297,14 @@ public abstract class AutoMongo {
             } else {
                 field.set(this, type.getDeclaredMethod("valueOf", value.getClass()).invoke(null, value.toString()));
             }
-        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
-            e.printStackTrace();
+        } catch (NoSuchMethodException ex) {
+            throw new AutoMongoException("Could not find method", ex);
+        } catch (InstantiationException ex) {
+            throw new AutoMongoException("Could not instantiate serializer", ex);
+        } catch (IllegalAccessException ex) {
+            throw new AutoMongoException("Could not access field/type", ex);
+        } catch (InvocationTargetException ex) {
+            throw new AutoMongoException("Invocation of target exception", ex);
         }
     }
 }

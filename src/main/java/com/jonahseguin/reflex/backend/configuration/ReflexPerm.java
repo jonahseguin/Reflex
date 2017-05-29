@@ -27,8 +27,11 @@ public enum ReflexPerm {
     CONFIG_SET("reflex.config.set"),
     CONFIG_RESET("reflex.config.reset"),
     CANCEL("reflex.cancel"),
+    CANCEL_ALL("reflex.cancel.all"),
     CHECKS("reflex.checks"),
     LOOKUP_ALERT("reflex.lookup.alert"),
+    NOTE_ADD("reflex.note.add"),
+    NOTE_VIEW("reflex.note.view"),
     CHECK("reflex.check");
 
     private final String perm;
