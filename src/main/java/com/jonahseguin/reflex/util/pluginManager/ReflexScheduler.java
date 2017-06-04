@@ -5,6 +5,7 @@
 package com.jonahseguin.reflex.util.pluginManager;
 
 import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.scheduler.BukkitWorker;
@@ -134,14 +135,125 @@ public abstract class ReflexScheduler implements BukkitScheduler {
         return bukkitTask;
     }
 
-    public BukkitTask asyncTask(Runnable task) {
-        return this.runTaskAsynchronously(plugin, task);
+    @Override
+    public int scheduleSyncDelayedTask(Plugin plugin, BukkitRunnable bukkitRunnable, long l) {
+        TaskedRunnable wrapped = new TaskedRunnable(bukkitRunnable);
+        int taskID = delegate.scheduleSyncDelayedTask(plugin, bukkitRunnable, l);
+        wrapped.setTaskID(taskID);
+        return taskID;
     }
 
+    @Override
+    public int scheduleSyncDelayedTask(Plugin plugin, BukkitRunnable bukkitRunnable) {
+        TaskedRunnable wrapped = new TaskedRunnable(bukkitRunnable);
+        int taskID = delegate.scheduleSyncDelayedTask(plugin, bukkitRunnable);
+        wrapped.setTaskID(taskID);
+        return taskID;
+    }
+
+    @Override
+    public int scheduleSyncRepeatingTask(Plugin plugin, BukkitRunnable bukkitRunnable, long l, long l1) {
+        TaskedRunnable wrapped = new TaskedRunnable(bukkitRunnable);
+        int taskID = delegate.scheduleSyncRepeatingTask(plugin, bukkitRunnable, l, l1);
+        wrapped.setTaskID(taskID);
+        return taskID;
+    }
+
+    @Override
+    public BukkitTask runTask(Plugin plugin, Runnable runnable) throws IllegalArgumentException {
+        TaskedRunnable wrapped = new TaskedRunnable(runnable);
+        BukkitTask bukkitTask = delegate.runTask(plugin, runnable);
+        wrapped.setTaskID(bukkitTask.getTaskId());
+        return bukkitTask;
+    }
+
+    @Override
+    public BukkitTask runTask(Plugin plugin, BukkitRunnable bukkitRunnable) throws IllegalArgumentException {
+        TaskedRunnable wrapped = new TaskedRunnable(bukkitRunnable);
+        BukkitTask bukkitTask = delegate.runTask(plugin, bukkitRunnable);
+        wrapped.setTaskID(bukkitTask.getTaskId());
+        return bukkitTask;
+    }
+
+    @Override
+    public BukkitTask runTaskAsynchronously(Plugin plugin, BukkitRunnable bukkitRunnable) throws IllegalArgumentException {
+        TaskedRunnable wrapped = new TaskedRunnable(bukkitRunnable);
+        BukkitTask bukkitTask = delegate.runTaskAsynchronously(plugin, bukkitRunnable);
+        wrapped.setTaskID(bukkitTask.getTaskId());
+        return bukkitTask;
+    }
+
+    @Override
+    public BukkitTask runTaskLater(Plugin plugin, Runnable runnable, long l) throws IllegalArgumentException {
+        TaskedRunnable wrapped = new TaskedRunnable(runnable);
+        BukkitTask bukkitTask = delegate.runTaskLater(plugin, runnable, l);
+        wrapped.setTaskID(bukkitTask.getTaskId());
+        return bukkitTask;
+    }
+
+    @Override
+    public BukkitTask runTaskLater(Plugin plugin, BukkitRunnable bukkitRunnable, long l) throws IllegalArgumentException {
+        TaskedRunnable wrapped = new TaskedRunnable(bukkitRunnable);
+        BukkitTask bukkitTask = delegate.runTaskLater(plugin, bukkitRunnable, l);
+        wrapped.setTaskID(bukkitTask.getTaskId());
+        return bukkitTask;
+    }
+
+    @Override
+    public BukkitTask runTaskLaterAsynchronously(Plugin plugin, Runnable runnable, long l) throws IllegalArgumentException {
+        TaskedRunnable wrapped = new TaskedRunnable(runnable);
+        BukkitTask bukkitTask = delegate.runTaskLaterAsynchronously(plugin, runnable, l);
+        wrapped.setTaskID(bukkitTask.getTaskId());
+        return bukkitTask;
+    }
+
+    @Override
+    public BukkitTask runTaskLaterAsynchronously(Plugin plugin, BukkitRunnable bukkitRunnable, long l) throws IllegalArgumentException {
+        TaskedRunnable wrapped = new TaskedRunnable(bukkitRunnable);
+        BukkitTask bukkitTask = delegate.runTaskLaterAsynchronously(plugin, bukkitRunnable, l);
+        wrapped.setTaskID(bukkitTask.getTaskId());
+        return bukkitTask;
+    }
+
+    @Override
+    public BukkitTask runTaskTimer(Plugin plugin, Runnable runnable, long l, long l1) throws IllegalArgumentException {
+        TaskedRunnable wrapped = new TaskedRunnable(runnable);
+        BukkitTask bukkitTask = delegate.runTaskTimer(plugin, runnable, l, l1);
+        wrapped.setTaskID(bukkitTask.getTaskId());
+        return bukkitTask;
+    }
+
+    @Override
+    public BukkitTask runTaskTimer(Plugin plugin, BukkitRunnable bukkitRunnable, long l, long l1) throws IllegalArgumentException {
+        TaskedRunnable wrapped = new TaskedRunnable(bukkitRunnable);
+        BukkitTask bukkitTask = delegate.runTaskTimer(plugin, bukkitRunnable, l, l1);
+        wrapped.setTaskID(bukkitTask.getTaskId());
+        return bukkitTask;
+    }
+
+    @Override
+    public BukkitTask runTaskTimerAsynchronously(Plugin plugin, Runnable runnable, long l, long l1) throws IllegalArgumentException {
+        TaskedRunnable wrapped = new TaskedRunnable(runnable);
+        BukkitTask bukkitTask = delegate.runTaskTimerAsynchronously(plugin, runnable, l, l1);
+        wrapped.setTaskID(bukkitTask.getTaskId());
+        return bukkitTask;
+    }
+
+    @Override
+    public BukkitTask runTaskTimerAsynchronously(Plugin plugin, BukkitRunnable bukkitRunnable, long l, long l1) throws IllegalArgumentException {
+        TaskedRunnable wrapped = new TaskedRunnable(bukkitRunnable);
+        BukkitTask bukkitTask = delegate.runTaskTimerAsynchronously(plugin, bukkitRunnable, l, l1);
+        wrapped.setTaskID(bukkitTask.getTaskId());
+        return bukkitTask;
+    }
 
     /*
      * Shortened Reflex scheduling methods
      */
+
+    public BukkitTask asyncTask(Runnable task) {
+        return this.runTaskAsynchronously(plugin, task);
+    }
 
     public int asyncRepeatingTask(Runnable task, long delay, long period) {
         return this.scheduleAsyncRepeatingTask(plugin, task, delay, period);

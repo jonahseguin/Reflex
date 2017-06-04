@@ -38,6 +38,9 @@ public class Note extends AutoMongo {
     @MongoColumn(name = "note")
     private String note;
 
+    @MongoColumn(name = "time")
+    private long time;
+
     public Note() {
         // For AutoMongo
     }
@@ -47,5 +50,6 @@ public class Note extends AutoMongo {
         this.player = player;
         this.author = author;
         this.note = note;
+        this.time = System.currentTimeMillis();
     }
 }

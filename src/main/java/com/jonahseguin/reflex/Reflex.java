@@ -24,6 +24,7 @@ import com.jonahseguin.reflex.data.tps.TpsHandler;
 import com.jonahseguin.reflex.listener.BanListener;
 import com.jonahseguin.reflex.listener.BukkitListener;
 import com.jonahseguin.reflex.listener.PacketListener;
+import com.jonahseguin.reflex.logger.ReflexLogger;
 import com.jonahseguin.reflex.player.reflex.ReflexCache;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
 import com.jonahseguin.reflex.util.menu.MenuListener;
@@ -50,6 +51,7 @@ public class Reflex extends JavaPlugin {
     private static Reflex instance;
     private ReflexPluginManager reflexPluginManager;
     private ReflexScheduler reflexScheduler;
+    private ReflexLogger reflexLogger;
     private ReflexConfig reflexConfig;
     private ProtocolManager protocolManager;
     private LanguageConfig lang;
@@ -108,6 +110,7 @@ public class Reflex extends JavaPlugin {
         reflexConfig = new ReflexConfig(instance);
         lang = new LanguageConfig(instance);
         new DBManager(instance);
+        reflexLogger = new ReflexLogger(this);
         cache = new ReflexCache(instance);
 
         //Make reload-friendly, load all online players
@@ -122,14 +125,17 @@ public class Reflex extends JavaPlugin {
             }
         }
 
+        this.reflexScheduler = new ReflexScheduler(this) {
+            @Override
+            protected void customHandler(int taskID, Throwable e) {
+                reflexLogger.exception(e);
+            }
+        };
+
         this.reflexPluginManager = new ReflexPluginManager(this) {
             @Override
             protected void customHandler(Event event, Throwable e) {
-                if (e instanceof NullPointerException) {
-
-                } else {
-                    // Log
-                }
+                reflexLogger.exception(e);
             }
         };
 
@@ -156,6 +162,7 @@ public class Reflex extends JavaPlugin {
         commandHandler.registerCommands(new CmdConfig());
         commandHandler.registerCommands(new CmdCheck());
         commandHandler.registerCommands(new CmdAlert());
+        commandHandler.registerCommands(new CmdNote());
 
         getServer().getPluginManager().registerEvents(new BanListener(), instance);
         getServer().getPluginManager().registerEvents(new BukkitListener(instance), instance);

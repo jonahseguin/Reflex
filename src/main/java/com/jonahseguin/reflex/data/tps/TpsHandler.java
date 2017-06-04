@@ -61,7 +61,16 @@ public class TpsHandler {
         }
     }
 
-    public double getTps(int secondsAgo) {
+    public double getTps(int totalTick) {
+        for (TickRange tickRange : tpsRange.keySet()) {
+            if (tickRange.inRange(totalTick)) {
+                return tpsRange.get(tickRange);
+            }
+        }
+        return -1;
+    }
+
+    public double getTpsAgo(int secondsAgo) {
         int agoTotalTick = (totalTick - (secondsAgo * 20));
         for (TickRange tickRange : tpsRange.keySet()) {
             if (tickRange.inRange(agoTotalTick)) {

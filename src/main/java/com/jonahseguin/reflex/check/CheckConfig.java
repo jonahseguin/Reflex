@@ -8,6 +8,7 @@ import com.jonahseguin.reflex.Reflex;
 import com.jonahseguin.reflex.backend.configuration.AbstractSerializer;
 import com.jonahseguin.reflex.backend.configuration.annotations.ConfigData;
 import com.jonahseguin.reflex.backend.configuration.annotations.ConfigSerializer;
+import com.jonahseguin.reflex.util.exception.AbstractSerializerException;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -199,8 +200,12 @@ public class CheckConfig {
                         try {
                             AbstractSerializer serializer = (AbstractSerializer) f.getAnnotation(ConfigSerializer.class).serializer().newInstance();
                             f.set(this, serializer.fromString(config.get(path)));
-                        } catch (InstantiationException | IllegalAccessException e) {
-                            e.printStackTrace();
+                        } catch (InstantiationException ex) {
+                            // TODO: ReflexLogger
+                        } catch (IllegalAccessException ex) {
+                            // TODO: ReflexLogger
+                        } catch (AbstractSerializerException ex) {
+                            // TODO: ReflexLogger
                         }
                     }
                 }

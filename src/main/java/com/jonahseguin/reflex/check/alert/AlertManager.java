@@ -76,10 +76,8 @@ public class AlertManager implements RTimer {
                         AlertSet alertSet = p.getAlerts().getAlertGroup(checkType);
                         if (alertSet != null) {
                             if (alertSet.shouldSendAsGrouped()) {
-                                Bukkit.broadcastMessage("(ALPHA) " + alertSet.getAlerts().size());
                                 GroupedAlert groupedAlert = createGroupedAlert(alertSet);
                                 groupedAlert.sendAlert();
-                                Bukkit.broadcastMessage("(BETA) " + groupedAlert.getAlertSet().getAlerts().size());
 
                             } else {
                                 if (alertSet.getMostRecentAlert() != null) {
@@ -134,8 +132,6 @@ public class AlertManager implements RTimer {
     public GroupedAlert createGroupedAlert(AlertSet alertSet) {
         alertSet = alertSet.copy();
         GroupedAlert groupedAlert = new GroupedAlert(alertSet); // Make sure we use the .copy() to preserve data
-        Bukkit.broadcastMessage("Created GroupedAlert: " + alertSet.getAlerts().size() + " : " +
-                groupedAlert.getAlertSet().getAlerts().size());
         cacheAlert(groupedAlert);
         return groupedAlert;
     }

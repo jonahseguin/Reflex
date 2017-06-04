@@ -19,19 +19,21 @@ import java.util.logging.Logger;
  * Created by Jonah Seguin on Sun 2017-05-28 at 19:17.
  * Project: Reflex
  */
-public class ReflexLogger {
+public class RSpecialLogger {
 
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy_mm_dd");
     private final Reflex reflex;
     private final File directory;
-    private final Logger logger = Logger.getLogger(ReflexLogger.class
+    private final Logger logger = Logger.getLogger(RSpecialLogger.class
             .getName());
     private String currentDate = "";
+    private String name;
     private FileHandler fh = null;
 
-    public ReflexLogger(Reflex reflex) {
+    public RSpecialLogger(Reflex reflex, String name) {
         this.reflex = reflex;
-        this.directory = new File(reflex.getDataFolder().getPath() + File.separator + "logs");
+        this.name = name;
+        this.directory = new File(reflex.getDataFolder().getPath() + File.separator + "special_logs");
         if (!directory.exists()) {
             directory.mkdirs();
         }
@@ -48,12 +50,6 @@ public class ReflexLogger {
     public void log(String msg) {
         preLog();
         logger.info(msg);
-    }
-
-    public void exception(Throwable throwable) {
-        preLog();
-        logger.severe("[ERROR] " + throwable.getMessage());
-
     }
 
     private void preLog() {
@@ -76,7 +72,7 @@ public class ReflexLogger {
     private void updateFormatter() {
         try {
             fh = new FileHandler(directory.getPath() + File.separator
-                    + currentDate + ".log");
+                    + currentDate + "_" + name + ".log");
         } catch (Exception e) {
             e.printStackTrace();
         }

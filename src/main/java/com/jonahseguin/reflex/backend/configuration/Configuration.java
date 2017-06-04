@@ -8,6 +8,7 @@ package com.jonahseguin.reflex.backend.configuration;
 import com.jonahseguin.reflex.Reflex;
 import com.jonahseguin.reflex.backend.configuration.annotations.ConfigData;
 import com.jonahseguin.reflex.backend.configuration.annotations.ConfigSerializer;
+import com.jonahseguin.reflex.util.exception.AbstractSerializerException;
 import com.jonahseguin.reflex.util.obj.RReflecUtil;
 import lombok.Getter;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -146,12 +147,11 @@ public class Configuration {
                         try {
                             AbstractSerializer serializer = (AbstractSerializer) f.getAnnotation(ConfigSerializer.class).serializer().newInstance();
                             f.set(this, serializer.fromString(value));
-                        } catch (InstantiationException expected) {
+                        } catch (InstantiationException | IllegalAccessException expected) {
                             return false;
-                        } catch (IllegalAccessException expected) {
-                            return false;
-                        } catch (Exception expected) {
-                            return false;
+                        } catch (AbstractSerializerException ex) {
+                            // TODO: ReflexLogger
+                            ex.printStackTrace();
                         }
                     }
                 }
@@ -179,10 +179,13 @@ public class Configuration {
                         try {
                             AbstractSerializer serializer = (AbstractSerializer) f.getAnnotation(ConfigSerializer.class).serializer().newInstance();
                             f.set(this, serializer.fromString(config.get(configData.value())));
-                        } catch (InstantiationException e) {
-                            e.printStackTrace();
-                        } catch (IllegalAccessException e) {
-                            e.printStackTrace();
+                        } catch (InstantiationException ex) {
+                            ex.printStackTrace();
+                        } catch (IllegalAccessException ex) {
+                            ex.printStackTrace();
+                        } catch (AbstractSerializerException ex) {
+                            ex.printStackTrace();
+                            // TODO: ReflexLogger
                         }
                     }
                 }

@@ -13,11 +13,11 @@ import com.jonahseguin.reflex.backend.configuration.ReflexLang;
 import com.jonahseguin.reflex.backend.configuration.ReflexPerm;
 import com.jonahseguin.reflex.backend.database.mongo.AutoMongo;
 import com.jonahseguin.reflex.check.alert.AlertManager;
+import com.jonahseguin.reflex.menu.note.NotesMenu;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
 import com.jonahseguin.reflex.util.obj.Note;
 import org.bson.Document;
 import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.List;
@@ -54,9 +54,9 @@ public class CmdNote implements RCommand {
     }
 
     @RCmd(name = "reflex notes", aliases = {"! notes", "rx notes"}, usage = "/reflex notes <player>",
-            description = "View notes for a player", permission = ReflexPerm.NOTE_VIEW, minArgs = 1)
+            description = "View notes for a player", permission = ReflexPerm.NOTE_VIEW, minArgs = 1, playerOnly = true)
     public void onCmdNotes(final RCmdArgs args) {
-        final CommandSender sender = args.getSender().getCommandSender();
+        final Player sender = args.getSender().getPlayer();
         final String targetName = args.getArg(0);
 
         Reflex.getScheduler().asyncTask(() -> {
@@ -65,7 +65,8 @@ public class CmdNote implements RCommand {
                 List<AutoMongo> mongos = Note.select(new Document("player", target.getUniqueId()), Note.class);
                 Set<Note> notes = mongos.stream().filter(mongo -> mongo instanceof Note).map(mongo -> (Note) mongo).collect(Collectors.toSet());
                 if (!notes.isEmpty()) {
-
+                    NotesMenu notesMenu = new NotesMenu(notes);
+                    notesMenu.open(sender);
                 } else {
                     sender.sendMessage(ChatColor.RED + "No notes to display for this player.");
                 }

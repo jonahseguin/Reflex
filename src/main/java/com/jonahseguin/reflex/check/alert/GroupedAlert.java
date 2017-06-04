@@ -49,12 +49,11 @@ public class GroupedAlert implements Alert {
                 .then(player)
                 .color(ChatColor.BLUE)
                 .tooltip(
-                        ChatColor.GRAY + "[Player]",
                         ChatColor.GRAY + "Username: " + ChatColor.RED + player,
                         ChatColor.GRAY + "" + reflexPlayer.getSessionVL() + "sVL, "
                                 + reflexPlayer.getPing() + "ms",
                         "  ",
-                        ChatColor.GRAY + "[" + ChatColor.GREEN + "CLICK TO VIEW" + ChatColor.GRAY + "]"
+                        ChatColor.GREEN + "CLICK TO VIEW"
                 )
                 .command(command);
 
@@ -66,11 +65,10 @@ public class GroupedAlert implements Alert {
                 .then(check)
                 .color(ChatColor.RED)
                 .tooltip(
-                        ChatColor.GRAY + "[Check]",
                         ChatColor.GRAY + "Check: " + ChatColor.RED + check,
                         ChatColor.GRAY + "Recent Detail: " + ChatColor.RED + getDetail(),
                         "  ",
-                        ChatColor.GRAY + "[" + ChatColor.GREEN + "CLICK TO VIEW" + ChatColor.GRAY + "]"
+                        ChatColor.GREEN + "CLICK TO VIEW"
                 )
                 .command(command);
 
@@ -80,10 +78,9 @@ public class GroupedAlert implements Alert {
                 .then("(" + count + "x)")
                 .color(ChatColor.GRAY)
                 .tooltip(
-                        ChatColor.GRAY + "[Count]",
                         ChatColor.GRAY + "Count: " + ChatColor.RED + count,
                         "  ",
-                        ChatColor.GRAY + "[" + ChatColor.GREEN + "CLICK TO VIEW" + ChatColor.GRAY + "]"
+                        ChatColor.GREEN + "CLICK TO VIEW"
                 )
                 .command(command);
 
@@ -94,11 +91,11 @@ public class GroupedAlert implements Alert {
                 .then("[" + violations + "VL]")
                 .color(ChatColor.GRAY)
                 .tooltip(
-                        ChatColor.GRAY + "[Violation] (" + alertSet.count() + "x)",
+                        ChatColor.GRAY + "Alert Count: " + alertSet.count() + "x",
                         ChatColor.GRAY + "Player: " + ChatColor.RED + getReflexPlayer().getName(),
                         ChatColor.GRAY + "Check: " + ChatColor.RED + getCheckType().getName(),
                         "  ",
-                        ChatColor.GRAY + "[" + ChatColor.GREEN + "CLICK TO VIEW" + ChatColor.GRAY + "]"
+                        ChatColor.GREEN + "CLICK TO VIEW"
                 )
                 .command(command);
 
