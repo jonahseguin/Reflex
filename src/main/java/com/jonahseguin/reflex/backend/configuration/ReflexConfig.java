@@ -38,6 +38,34 @@ public class ReflexConfig extends Configuration {
     @ConfigData("player.join-timeout-seconds")
     private int joinTimeoutSeconds = 3;
 
+    // Hack Chance
+    @ConfigData("hackchance.infractions.minimum")
+    private int hackChanceInfractionsMinimum = 1;
+
+    @ConfigData("hackchance.validReflexBans.minimum")
+    private int hackChanceValidReflexBansMinimum = 1;
+
+    @ConfigData("hackchance.violations.minimum")
+    private int hackChanceViolationsMinimum = 4;
+
+    @ConfigData("hackchance.sessionvl.minimum")
+    private int hackChanceSessionVLMinimum = 7;
+
+    @ConfigData("hackchance.totalvl.minimum")
+    private int hackChanceTotalVLMinimum = 5;
+
+    @ConfigData("hackchance.failurefrequency.minimum")
+    private int hackChanceFailureFrequencyMinimum = 3; // 3 per hour
+
+    @ConfigData("hackchance.globalrecentfails.maximum")
+    private int hackChanceGlobalRecentFailsMaximum = 5;
+
+    @ConfigData("hackchance.pingspike.maximum")
+    private int hackChancePingSpikeMaximum = 35;
+
+    @ConfigData("hackchance.tpsspike.maxiumum")
+    private double hackChanceTpsSpikeMaximum = 2.5;
+
     public ReflexConfig(Plugin plugin) {
         super(plugin);
         load();

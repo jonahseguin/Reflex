@@ -10,6 +10,7 @@ import com.jonahseguin.reflex.backend.database.mongo.annotations.CollectionName;
 import com.jonahseguin.reflex.backend.database.mongo.annotations.DatabaseSerializer;
 import com.jonahseguin.reflex.backend.database.mongo.annotations.MongoColumn;
 import com.jonahseguin.reflex.ban.Autoban;
+import com.jonahseguin.reflex.ban.ReflexBan;
 import com.jonahseguin.reflex.check.Check;
 import com.jonahseguin.reflex.check.CheckFail;
 import com.jonahseguin.reflex.check.CheckType;
@@ -24,6 +25,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Created by Jonah Seguin on Sat 2017-05-13 at 10:14.
@@ -185,18 +187,7 @@ public class PlayerRecord extends AutoMongo {
         int count = 0;
         long timeMin = (System.currentTimeMillis() - timeFrame);
         for (CheckFail fail : check.getFails()) {
-            if (fail.getTime() >= timeMin) {
-                count++;
-            }
-        }
-        return count;
-    }
-
-    public int getRecentFails(ReflexPlayer player, Check check, long timeFrame) {
-        int count = 0;
-        long timeMin = (System.currentTimeMillis() - timeFrame);
-        for (CheckFail fail : check.getFails()) {
-            if (fail.getReflexPlayer().getUniqueId().equalsIgnoreCase(player.getUniqueId())) {
+            if (fail.getReflexPlayer().getUniqueId().equalsIgnoreCase(reflexPlayer.getUniqueId())) {
                 if (fail.getTime() >= timeMin) {
                     count++;
                 }
@@ -204,5 +195,25 @@ public class PlayerRecord extends AutoMongo {
         }
         return count;
     }
+
+    public int getValidReflexBans(CheckType checkType) {
+        return reflex.getBanManager().getBans(reflexPlayer.getUniqueId())
+                .stream()
+                .filter(reflexBan -> reflexBan.getCheckType().equals(checkType) && bannedCorrectly(reflexBan))
+                .collect(Collectors.toSet())
+                .size();
+    }
+
+    private boolean bannedCorrectly(ReflexBan reflexBan) {
+        return reflexBan.isBanned() || (reflexBan.isBannedCorrectly() && reflexBan.isConfirmed());
+    }
+
+    /**
+     * How often (fails per hour) that this check is failed by this player
+     */
+    public int getFailureFrequency(CheckType checkType) {
+        return getRecentFails(reflex.getCheckManager().getCheck(checkType), (1000 * 60 * 60));
+    }
+
 
 }

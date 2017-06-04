@@ -173,4 +173,16 @@ public abstract class Check extends CheckConfig implements Listener {
     public void setAutobanFreeze(boolean autobanFreeze) {
         this.autobanFreeze = autobanFreeze;
     }
+
+    public int getTotalRecentFails(int seconds) {
+        long period = System.currentTimeMillis() - (seconds * 1000);
+        int x = 0;
+        for (CheckFail checkFail : fails) {
+            if (checkFail.getTime() >= period) {
+                x++;
+            }
+        }
+        return x;
+    }
+
 }
