@@ -4,7 +4,6 @@
 
 package com.jonahseguin.reflex.check;
 
-import com.jonahseguin.reflex.check.violation.CheckViolation;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
 import lombok.Data;
 import lombok.NonNull;
@@ -20,7 +19,6 @@ public class CheckResult {
 
     private final CheckType checkType;
     private final ReflexPlayer player;
-    private final CheckViolation violation;
     @NonNull
     private boolean cancelled;
     @NonNull

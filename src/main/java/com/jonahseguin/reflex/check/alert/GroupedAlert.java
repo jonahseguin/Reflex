@@ -7,6 +7,7 @@ package com.jonahseguin.reflex.check.alert;
 import com.jonahseguin.reflex.Reflex;
 import com.jonahseguin.reflex.backend.configuration.RLang;
 import com.jonahseguin.reflex.backend.configuration.ReflexLang;
+import com.jonahseguin.reflex.check.Check;
 import com.jonahseguin.reflex.check.CheckType;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
 import mkremins.fanciful.FancyMessage;
@@ -43,6 +44,9 @@ public class GroupedAlert implements Alert {
         final String count = alertSet.count() + "";
         final String violations = vl + "";
         final String command = "/reflex alert " + id;
+        final Check checkk = Reflex.getInstance().getCheckManager().getCheck(alertSet.getCheckType());
+        final double averageHackChance = getAverageHackChance(alertSet);
+
 
         // Player
         msg
@@ -64,6 +68,19 @@ public class GroupedAlert implements Alert {
         msg
                 .then(check)
                 .color(ChatColor.RED)
+                .tooltip(
+                        ChatColor.GRAY + "Check: " + ChatColor.RED + check,
+                        ChatColor.GRAY + "Recent Detail: " + ChatColor.RED + getDetail(),
+                        "  ",
+                        ChatColor.GREEN + "CLICK TO VIEW"
+                )
+                .command(command);
+
+        msg.then(" "); // Space
+
+        msg
+                .then(ChatColor.GRAY + "(" + (averageHackChance >= checkk.getMinimumHackChanceAlert() ? ChatColor.GREEN : ChatColor.RED)
+                        + averageHackChance + "%" + ChatColor.GRAY + ")")
                 .tooltip(
                         ChatColor.GRAY + "Check: " + ChatColor.RED + check,
                         ChatColor.GRAY + "Recent Detail: " + ChatColor.RED + getDetail(),
@@ -104,6 +121,16 @@ public class GroupedAlert implements Alert {
         getReflexPlayer().setLastAlertTime(System.currentTimeMillis());
 
         Reflex.log("Alert [MULTIPLE]: " + getReflexPlayer().getName() + " (" + getCheckType().getName() + ") [" + id + "]");
+    }
+
+    private double getAverageHackChance(AlertSet alertSet) {
+        double total = 0;
+        int count = 0;
+        for (CheckAlert alert : alertSet.getAlerts()) {
+            total += alert.getViolation().getHackChance().getHackChance();
+            count++;
+        }
+        return (total / count);
     }
 
     @Override

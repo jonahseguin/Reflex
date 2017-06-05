@@ -12,7 +12,7 @@ import com.jonahseguin.reflex.check.alert.AlertManager;
 import com.jonahseguin.reflex.check.violation.Infraction;
 import com.jonahseguin.reflex.event.api.ReflexBanEvent;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
-import com.jonahseguin.reflex.util.exception.ReflexException;
+import com.jonahseguin.reflex.util.exception.ReflexRuntimeException;
 import com.jonahseguin.reflex.util.obj.AutobanMethod;
 import com.jonahseguin.reflex.util.obj.Freeze;
 import lombok.Getter;
@@ -158,7 +158,7 @@ public class Autoban {
                 }
             }
         } else {
-            throw new ReflexException("Unsupported ban method " + Reflex.getInstance().getReflexConfig().getAutobanMethod().toString());
+            throw new ReflexRuntimeException("Unsupported ban method " + Reflex.getInstance().getReflexConfig().getAutobanMethod().toString());
         }
 
         FancyMessage fm = new FancyMessage(RLang.format(ReflexLang.ALERT_PREFIX));

@@ -8,7 +8,6 @@ import com.jonahseguin.reflex.Reflex;
 import com.jonahseguin.reflex.backend.configuration.ReflexConfig;
 import com.jonahseguin.reflex.backend.configuration.annotations.ConfigData;
 import com.jonahseguin.reflex.ban.Autoban;
-import com.jonahseguin.reflex.check.violation.CheckViolation;
 import com.jonahseguin.reflex.player.reflex.ReflexCache;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
 import org.bukkit.Bukkit;
@@ -51,6 +50,9 @@ public abstract class Check extends CheckConfig implements Listener {
 
     @ConfigData("infraction-violations")
     private int infractionVL = 5; // Amount of violations before receiving an infraction
+
+    @ConfigData("minimum-hackchance-alert")
+    private double minimumHackChanceAlert = 30.0D; // Minimum Hack Chance % required to send an alert
 
     private Set<CheckFail> fails = new HashSet<>();
 
@@ -115,14 +117,15 @@ public abstract class Check extends CheckConfig implements Listener {
 
     public CheckResult fail(ReflexPlayer player, String detail) {
         if (getReflexConfig().isSuppressAlertsOnAutoban() && getReflex().getAutobanManager().hasAutoban(player.getName())) {
-            return new CheckResult(getCheckType(), player, null, false, cancel);
+            return new CheckResult(getCheckType(), player, false, cancel);
         }
 
         fails.add(new CheckFail(System.currentTimeMillis(), player));
 
-        CheckViolation violation = player.getRecord().addViolation(getCheckType(), detail);
+        player.getRecord().addViolation(getCheckType(), detail, violation -> {
+        });
 
-        return new CheckResult(checkType, player, violation, false, this.cancel);
+        return new CheckResult(checkType, player, false, this.cancel);
     }
 
     public Set<CheckFail> getFails() {
@@ -185,4 +188,7 @@ public abstract class Check extends CheckConfig implements Listener {
         return x;
     }
 
+    public double getMinimumHackChanceAlert() {
+        return minimumHackChanceAlert;
+    }
 }

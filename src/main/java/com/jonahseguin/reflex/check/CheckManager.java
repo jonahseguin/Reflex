@@ -9,7 +9,7 @@ import com.jonahseguin.reflex.check.checks.combat.CheckFastBow;
 import com.jonahseguin.reflex.check.checks.combat.CheckNoSwing;
 import com.jonahseguin.reflex.check.checks.movement.*;
 import com.jonahseguin.reflex.check.checks.other.*;
-import com.jonahseguin.reflex.util.exception.ReflexException;
+import com.jonahseguin.reflex.util.exception.ReflexRuntimeException;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -74,7 +74,7 @@ public class CheckManager {
 
     public Check getCheck(CheckType checkType) {
         if (!checks.containsKey(checkType)) {
-            throw new ReflexException("CheckType for " + checkType.getName() + " is not registered");
+            throw new ReflexRuntimeException("CheckType for " + checkType.getName() + " is not registered");
         }
         return checks.get(checkType);
     }

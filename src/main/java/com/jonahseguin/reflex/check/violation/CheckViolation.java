@@ -24,15 +24,13 @@ public class CheckViolation implements Violation {
     private final CheckType checkType;
     private final int vl;
     private final String detail;
+    private final HackChance hackChance;
     @NonNull
     private boolean infraction;
     @NonNull
     private long expiryTime;
     private boolean valid = true;
-
-    public static CheckViolation emptyViolation(ReflexPlayer player, CheckType checkType) {
-        return new CheckViolation(player, System.currentTimeMillis(), checkType, -1, "n/a", false, 0);
-    }
+    private boolean hackChancePassed = false;
 
     @Override
     public ViolationType getViolationType() {

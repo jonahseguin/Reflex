@@ -7,6 +7,7 @@ package com.jonahseguin.reflex.check.alert;
 import com.jonahseguin.reflex.Reflex;
 import com.jonahseguin.reflex.backend.configuration.RLang;
 import com.jonahseguin.reflex.backend.configuration.ReflexLang;
+import com.jonahseguin.reflex.check.Check;
 import com.jonahseguin.reflex.check.CheckType;
 import com.jonahseguin.reflex.check.violation.CheckViolation;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
@@ -46,12 +47,16 @@ public class CheckAlert implements Alert {
         // player, check, ping, detail, violationCount
         String detail = this.detail;
 
+        Check check = Reflex.getInstance().getCheckManager().getCheck(violation.getCheckType());
+
         FancyMessage msg = new FancyMessage(RLang.format(ReflexLang.ALERT_PREFIX));
         //String s = RLang.format(format, getReflexPlayer().getName(), getCheckType().getName(), getPing()+"", detail, getVl() + "");
         msg.then(ChatColor.BLUE + getReflexPlayer().getName()
                 + " " + ChatColor.GRAY + "failed"
                 + " " + ChatColor.RED + getCheckType().getName()
                 + " " + ChatColor.GRAY + "(" + getPing() + "ms)"
+                + " " + ChatColor.GRAY + "(" + (violation.getHackChance().getHackChance() >= check.getMinimumHackChanceAlert() ? ChatColor.GREEN : ChatColor.RED)
+                + violation.getHackChance() + "%" + ChatColor.GRAY + ")"
         )
                 .tooltip(
                         ChatColor.GRAY + "Click to view alert",

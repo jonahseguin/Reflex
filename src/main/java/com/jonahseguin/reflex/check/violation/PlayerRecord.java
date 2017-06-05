@@ -16,10 +16,10 @@ import com.jonahseguin.reflex.check.CheckFail;
 import com.jonahseguin.reflex.check.CheckType;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
 import com.jonahseguin.reflex.util.serial.InfractionSetSerializer;
+import com.jonahseguin.reflex.util.utility.ReflexCaller;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.ChatColor;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -129,51 +129,63 @@ public class PlayerRecord extends AutoMongo {
         return getViolations(checkType).size();
     }
 
-    private CheckViolation addCheckViolation(CheckType checkType, String detail, boolean infraction) {
+    private CheckViolation addCheckViolation(CheckType checkType, String detail) {
         long expiryTime = System.currentTimeMillis() + getReflex().getViolationCache().getViolationCacheExpiryTimeMS();
-        CheckViolation violation = new CheckViolation(reflexPlayer, System.currentTimeMillis(), checkType, getViolationCount(checkType) + 1, detail, infraction, expiryTime);
+        HackChance hackChance = new HackChance(reflexPlayer, checkType, reflex.getTpsHandler().currentMillisecond(), reflex.getTpsHandler().getTotalTick());
+        CheckViolation violation = new CheckViolation(reflexPlayer, System.currentTimeMillis(), checkType, getViolationCount(checkType) + 1, detail, hackChance, false, expiryTime);
         getReflex().getViolationCache().cacheViolation(violation);
         return violation;
     }
 
-    public CheckViolation addViolation(CheckType checkType, String detail) {
-        Check check = getReflex().getCheckManager().getCheck(checkType);
+    public void addViolation(CheckType checkType, final String detail, ReflexCaller<CheckViolation> caller) {
+        final Check check = getReflex().getCheckManager().getCheck(checkType);
 
-        CheckViolation violation = addCheckViolation(checkType, detail, false);
+        final CheckViolation violation = addCheckViolation(checkType, detail);
 
         reflexPlayer.setSessionVL(reflexPlayer.getSessionVL() + 1);
 
-        int violationCount = getViolationCount(checkType);
-        if (violationCount >= check.getInfractionVL()) {
-            detail += ChatColor.RED + " [INF]";
-            // Infraction; permanent infraction
-            // Auto-ban if allowed
-            violation.setInfraction(true);
+        final HackChance hackChance = violation.getHackChance();
+        hackChance.update();
 
-            final Infraction infraction = new Infraction(reflexPlayer, checkType, violationCount, detail);
+        reflex.getReflexScheduler().asyncDelayedTask(() -> {
+            String newDetail = detail;
+            hackChance.updatePingAndTps(); // Update ping and tps (2-3s) later to allow for calculation of after values
+            hackChance.calculate(); // Calculate hack chance % using data
 
-            if (check.isAutoban() && !getReflex().getAutobanManager().hasAutoban(reflexPlayer)) {
-                Autoban autoban = new Autoban(reflexPlayer, getReflex().getReflexConfig().getAutobanTime(), checkType, infraction);
-                autoban.run();
-                getReflex().getAutobanManager().putAutoban(autoban);
+            violation.setHackChancePassed(hackChance.getHackChance() >= check.getMinimumHackChanceAlert());
+
+            int violationCount = getViolationCount(checkType);
+
+            if (violationCount >= check.getInfractionVL()) { // It is now an infraction
+                newDetail += ChatColor.RED + " [INF]";
+                // Infraction; permanent infraction
+                // Auto-ban if allowed
+                violation.setInfraction(true);
+
+                final Infraction infraction = new Infraction(reflexPlayer, checkType, violationCount, newDetail);
+
+                if (check.isAutoban() && !getReflex().getAutobanManager().hasAutoban(reflexPlayer)) {
+                    // Auto-ban the player (infraction --> auto-ban)
+                    Autoban autoban = new Autoban(reflexPlayer, getReflex().getReflexConfig().getAutobanTime(), checkType, infraction);
+                    autoban.run();
+                    getReflex().getAutobanManager().putAutoban(autoban);
+                }
+                reflex.getReflexScheduler().asyncTask(infraction::update); // Update the infraction async
+
+            } else {
+                violation.setInfraction(false); // Not an infraction
             }
 
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    infraction.update();
+            if (hackChance.getHackChance() >= check.getMinimumHackChanceAlert()) {
+                if (!getReflex().getAutobanManager().hasAutoban(reflexPlayer)) {
+                    // If not auto-banning, create an alert
+                    getReflex().getAlertManager().alert(violation);
                 }
-            }.runTaskAsynchronously(getReflex());
+            }
 
-        } else {
-            violation.setInfraction(false);
-        }
+            caller.call(violation);
+        }, 60L); // 3 second delay to allow for Lag calculations
 
-        if (!getReflex().getAutobanManager().hasAutoban(reflexPlayer)) {
-            getReflex().getAlertManager().alert(violation);
-        }
-
-        return violation;
     }
 
     public void resetViolations(CheckType checkType) {
