@@ -67,7 +67,7 @@ public class Reflex extends JavaPlugin {
     private TpsHandler tpsHandler;
 
     public static void log(String msg) {
-        getInstance().getLogger().info("[Reflex] " + msg);
+        getReflexLogger().log(msg);
     }
 
     public static String getPrefix() {
@@ -98,6 +98,10 @@ public class Reflex extends JavaPlugin {
         return getInstance().getReflexScheduler();
     }
 
+    public static ReflexLogger getReflexLogger() {
+        return getInstance().reflexLogger;
+    }
+
     @Override
     public void onLoad() {
         protocolManager = ProtocolLibrary.getProtocolManager();
@@ -105,102 +109,110 @@ public class Reflex extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        getLogger().info("[Start] Starting Reflex v" + getDescription().getVersion() + " by Jonah Seguin (Shawckz).");
-        instance = this;
-        reflexConfig = new ReflexConfig(instance);
-        lang = new LanguageConfig(instance);
-        new DBManager(instance);
-        reflexLogger = new ReflexLogger(this);
-        cache = new ReflexCache(instance);
+        try {
+            getReflexLogger().log("[Start] Starting Reflex v" + getDescription().getVersion() + " by Jonah Seguin (Shawckz).");
+            instance = this;
+            reflexConfig = new ReflexConfig(instance);
+            lang = new LanguageConfig(instance);
+            new DBManager(instance);
+            reflexLogger = new ReflexLogger(this);
+            cache = new ReflexCache(instance);
 
-        //Make reload-friendly, load all online players
-        for (Player pl : getOnlinePlayers()) {
-            ReflexPlayer cp = cache.loadReflexPlayer(pl.getName());
-            if (cp != null) {
-                cache.put(cp);
-            } else {
-                cp = cache.create(pl.getName(), pl.getUniqueId().toString());
-                cache.put(cp);
-                cp.update();
+            //Make reload-friendly, load all online players
+            for (Player pl : getOnlinePlayers()) {
+                ReflexPlayer cp = cache.loadReflexPlayer(pl.getName());
+                if (cp != null) {
+                    cache.put(cp);
+                } else {
+                    cp = cache.create(pl.getName(), pl.getUniqueId().toString());
+                    cache.put(cp);
+                    cp.update();
+                }
             }
+
+            this.reflexScheduler = new ReflexScheduler(this) {
+                @Override
+                protected void customHandler(int taskID, Throwable e) {
+                    reflexLogger.error(e);
+                }
+            };
+
+            this.reflexPluginManager = new ReflexPluginManager(this) {
+                @Override
+                protected void customHandler(Event event, Throwable e) {
+                    reflexLogger.error(e);
+                }
+            };
+
+            reflexTimer = new ReflexTimer(instance);
+            autobanManager = new AutobanManager();
+            alertManager = new AlertManager(instance);
+            violationCache = new ViolationCache(instance);
+
+            // Check setup
+            checkManager = new CheckManager(this);
+
+            banManager = new ReflexBanManager();
+            pingHandler = new PingHandler(this);
+            tpsHandler = new TpsHandler(this);
+
+
+            // Commands
+            commandHandler = new RCommandHandler(instance);
+            commandHandler.registerCommands(new CmdReflex());
+            commandHandler.registerCommands(new CmdCancel());
+            commandHandler.registerCommands(new CmdLookup());
+            commandHandler.registerCommands(new CmdBan());
+            commandHandler.registerCommands(new CmdSettings());
+            commandHandler.registerCommands(new CmdConfig());
+            commandHandler.registerCommands(new CmdCheck());
+            commandHandler.registerCommands(new CmdAlert());
+            commandHandler.registerCommands(new CmdNote());
+
+            reflexPluginManager.registerEvents(new BanListener(), instance);
+            reflexPluginManager.registerEvents(new BukkitListener(instance), instance);
+
+            MenuListener.getInstance().register(instance);
+
+            new PacketListener(instance);
+
+            Bukkit.getScheduler().runTaskTimer(instance, new Lag(), 1L, 1L);
+            getReflexLogger().info("[Start] [Finish] Enabled Reflex v" + getDescription().getVersion() + " by Jonah Seguin (Shawckz).");
+        } catch (Exception exception) {
+            reflexLogger.error(exception);
         }
-
-        this.reflexScheduler = new ReflexScheduler(this) {
-            @Override
-            protected void customHandler(int taskID, Throwable e) {
-                reflexLogger.exception(e);
-            }
-        };
-
-        this.reflexPluginManager = new ReflexPluginManager(this) {
-            @Override
-            protected void customHandler(Event event, Throwable e) {
-                reflexLogger.exception(e);
-            }
-        };
-
-        reflexTimer = new ReflexTimer(instance);
-        autobanManager = new AutobanManager();
-        alertManager = new AlertManager(instance);
-        violationCache = new ViolationCache(instance);
-
-        // Check setup
-        checkManager = new CheckManager(this);
-
-        banManager = new ReflexBanManager();
-        pingHandler = new PingHandler(this);
-        tpsHandler = new TpsHandler(this);
-
-
-        // Commands
-        commandHandler = new RCommandHandler(instance);
-        commandHandler.registerCommands(new CmdReflex());
-        commandHandler.registerCommands(new CmdCancel());
-        commandHandler.registerCommands(new CmdLookup());
-        commandHandler.registerCommands(new CmdBan());
-        commandHandler.registerCommands(new CmdSettings());
-        commandHandler.registerCommands(new CmdConfig());
-        commandHandler.registerCommands(new CmdCheck());
-        commandHandler.registerCommands(new CmdAlert());
-        commandHandler.registerCommands(new CmdNote());
-
-        getServer().getPluginManager().registerEvents(new BanListener(), instance);
-        getServer().getPluginManager().registerEvents(new BukkitListener(instance), instance);
-
-        MenuListener.getInstance().register(instance);
-
-        new PacketListener(instance);
-
-        Bukkit.getScheduler().runTaskTimer(instance, new Lag(), 1L, 1L);
-        getLogger().info("[Start] [Finish] Enabled Reflex v" + getDescription().getVersion() + " by Jonah Seguin (Shawckz).");
-
     }
 
     @Override
     public void onDisable() {
-        getLogger().info("[Stop] Disabling Reflex v" + getDescription().getVersion());
-        // Make reload-friendly, save all online players
-        int saved = 0;
-        for (Player pl : getOnlinePlayers()) {
-            cache.saveSync(pl);
-            saved++;
+        try {
+            getReflexLogger().info("[Stop] Disabling Reflex v" + getDescription().getVersion());
+            // Make reload-friendly, save all online players
+            int saved = 0;
+            getReflexLogger().info("[Stop] Saving online players...");
+            for (Player pl : getOnlinePlayers()) {
+                cache.saveSync(pl);
+                saved++;
+            }
+            cache.clear();
+            getReflexLogger().info("[Stop] Saved " + saved + " players.");
+
+            reflexTimer.clear();
+            reflexConfig.save();
+            reflexConfig = null;
+            commandHandler = null;
+            banManager = null;
+            reflexTimer = null;
+            lang = null;
+            cache = null;
+            checkManager.save();
+            checkManager = null;
+            instance = null;
+
+            getReflexLogger().info("[Stop] [Finish] Disabled Reflex v" + getDescription().getVersion() + " by Jonah Seguin (Shawckz).");
+        } catch (Exception exception) {
+            reflexLogger.error(exception);
         }
-        cache.clear();
-        getLogger().info("[Stop] Saved " + saved + " players.");
-
-        reflexTimer.clear();
-        reflexConfig.save();
-        reflexConfig = null;
-        commandHandler = null;
-        banManager = null;
-        reflexTimer = null;
-        lang = null;
-        cache = null;
-        checkManager.save();
-        checkManager = null;
-        instance = null;
-
-        getLogger().info("[Stop] [Finish] Disabled Reflex v" + getDescription().getVersion() + " by Jonah Seguin (Shawckz).");
     }
 
     public RCommandHandler getCommandHandler() {
@@ -262,6 +274,5 @@ public class Reflex extends JavaPlugin {
     public ReflexScheduler getReflexScheduler() {
         return reflexScheduler;
     }
-
 
 }

@@ -10,7 +10,6 @@ import com.jonahseguin.reflex.backend.configuration.annotations.ConfigData;
 import com.jonahseguin.reflex.ban.Autoban;
 import com.jonahseguin.reflex.player.reflex.ReflexCache;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
@@ -108,7 +107,7 @@ public abstract class Check extends CheckConfig implements Listener {
 
     public final void setEnabled(final boolean enabled) {
         if (enabled) {
-                Bukkit.getServer().getPluginManager().registerEvents(this, reflex);
+            reflex.getReflexPluginManager().registerEvents(this, reflex);
         } else {
             HandlerList.unregisterAll(this);
         }

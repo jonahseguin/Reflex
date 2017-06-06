@@ -62,9 +62,9 @@ public class MenuListener implements Listener {
      *
      * @param plugin The plugin used to register the events.
      */
-    public void register(JavaPlugin plugin) {
+    public void register(Reflex plugin) {
         if (!isRegistered(plugin)) {
-            plugin.getServer().getPluginManager().registerEvents(INSTANCE, plugin);
+            plugin.getReflexPluginManager().registerEvents(INSTANCE, plugin);
             this.plugin = plugin;
         }
     }

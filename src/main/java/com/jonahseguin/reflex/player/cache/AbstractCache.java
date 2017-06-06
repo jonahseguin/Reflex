@@ -4,6 +4,7 @@
 
 package com.jonahseguin.reflex.player.cache;
 
+import com.jonahseguin.reflex.Reflex;
 import com.jonahseguin.reflex.backend.database.mongo.AutoMongo;
 import com.jonahseguin.reflex.event.api.ReflexPlayerLoadEvent;
 import com.jonahseguin.reflex.event.api.ReflexPlayerSaveEvent;
@@ -36,10 +37,10 @@ public abstract class AbstractCache implements Listener {
     private final Plugin plugin;
     private final Class<? extends ReflexPlayer> aClass;
 
-    public AbstractCache(Plugin plugin) {
+    public AbstractCache(Reflex plugin) {
         this.plugin = plugin;
         this.aClass = ReflexPlayer.class;
-        this.plugin.getServer().getPluginManager().registerEvents(this, plugin);
+        plugin.getReflexPluginManager().registerEvents(this, plugin);
     }
 
     protected ConcurrentMap<String, ReflexPlayer> getPlayers() {

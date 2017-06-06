@@ -4,7 +4,7 @@
 
 package com.jonahseguin.reflex.backend.command;
 
-import org.bukkit.Bukkit;
+import com.jonahseguin.reflex.Reflex;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandMap;
 import org.bukkit.command.CommandSender;
@@ -61,7 +61,7 @@ public class RCommandHandler {
             if (method.isAnnotationPresent(RCmd.class)) {
                 RCmd data = method.getAnnotation(RCmd.class);
                 if (method.getParameterTypes().length != 1 || method.getParameterTypes()[0] != RCmdArgs.class) {
-                    Bukkit.getLogger().warning("Could not register command '" + data.name() + "'.  Invalid parameters");
+                    Reflex.getReflexLogger().error("Could not register command '" + data.name() + "'.  Invalid parameters");
                     continue;
                 }
                 if (commands == null || commands.length == 0) {

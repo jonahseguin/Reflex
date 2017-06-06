@@ -68,9 +68,9 @@ public class ReflexConfig extends Configuration {
 
     public ReflexConfig(Plugin plugin) {
         super(plugin);
+        saveDefaults();
         load();
         save();
-        saveDefaults();
     }
 
 }

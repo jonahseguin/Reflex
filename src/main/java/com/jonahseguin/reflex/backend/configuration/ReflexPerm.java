@@ -15,6 +15,7 @@ import org.bukkit.command.CommandSender;
 public enum ReflexPerm {
 
     NONE(""), //Signifies a non-permission, do not touch
+    STAFF("reflex.staff"), // Denotes a staff member, if a player has this permission
     ALERTS("reflex.alerts"),
     BYPASS("reflex.bypass"),
     USE("reflex.use"),

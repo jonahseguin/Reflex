@@ -7,13 +7,11 @@ package com.jonahseguin.reflex.logger;
 import com.jonahseguin.reflex.Reflex;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.logging.FileHandler;
-import java.util.logging.Formatter;
-import java.util.logging.LogRecord;
-import java.util.logging.Logger;
+import java.util.logging.*;
 
 /**
  * Created by Jonah Seguin on Sun 2017-05-28 at 19:17.
@@ -21,7 +19,7 @@ import java.util.logging.Logger;
  */
 public class ReflexLogger {
 
-    private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy_mm_dd");
+    private final SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy");
     private final Reflex reflex;
     private final File directory;
     private final Logger logger = Logger.getLogger(ReflexLogger.class
@@ -35,9 +33,9 @@ public class ReflexLogger {
         if (!directory.exists()) {
             directory.mkdirs();
         }
+        reflex.getLogger().addHandler(new ReflexLogHandler()); // Catch errors
         updateCurrentDate();
         updateFormatter();
-
         logger.addHandler(fh);
     }
 
@@ -50,10 +48,18 @@ public class ReflexLogger {
         logger.info(msg);
     }
 
-    public void exception(Throwable throwable) {
-        preLog();
-        logger.severe("[ERROR] " + throwable.getMessage());
+    public void info(String msg) {
+        log(msg);
+    }
 
+    public void error(Throwable throwable) {
+        preLog();
+        logger.log(Level.WARNING, "[ERROR]" + throwable.getMessage(), throwable);
+    }
+
+    public void error(String msg) {
+        preLog();
+        logger.warning("[ERROR]" + msg);
     }
 
     private void preLog() {
@@ -77,7 +83,7 @@ public class ReflexLogger {
         try {
             fh = new FileHandler(directory.getPath() + File.separator
                     + currentDate + ".log");
-        } catch (Exception e) {
+        } catch (IOException | SecurityException e) {
             e.printStackTrace();
         }
         fh.setFormatter(new Formatter() {

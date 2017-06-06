@@ -47,7 +47,7 @@ public class AlertManager implements RTimer {
                 p.msg(msg);
             }
         }
-        Bukkit.getLogger().info(ChatColor.stripColor(msg));
+        Reflex.getReflexLogger().info(ChatColor.stripColor(msg));
     }
 
     public static void staffMsg(FancyMessage msg) {

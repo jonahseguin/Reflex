@@ -87,7 +87,7 @@ public class Freeze implements Listener {
     }
 
     public void run() {
-        Bukkit.getServer().getPluginManager().registerEvents(this, Reflex.getInstance());
+        Reflex.getInstance().getReflexPluginManager().registerEvents(this, Reflex.getInstance());
         for (Location loc : getWallBlocks(freeze)) {
             sendWallBlock(p, loc);
         }

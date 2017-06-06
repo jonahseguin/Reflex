@@ -304,7 +304,7 @@ public abstract class AutoMongo {
         } catch (IllegalAccessException ex) {
             throw new AutoMongoException("Could not access field/type", ex);
         } catch (InvocationTargetException ex) {
-            throw new AutoMongoException("Invocation of target exception", ex);
+            throw new AutoMongoException("Invocation of target error", ex);
         }
     }
 }
