@@ -26,4 +26,19 @@ public class TimeUtil {
         return "" + month + "/" + day + " - " + hour + ":" + minute + " " + (am ? "AM" : "PM") + " (" + cal.getTimeZone().getDisplayName() + ")";
     }
 
+    public static String shortDateFormat(long time) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(time);
+
+        int d = cal.get(Calendar.DAY_OF_MONTH);
+        int mo = cal.get(Calendar.MONTH);
+        int ye = cal.get(Calendar.YEAR);
+
+        String day = "" + d;
+        String month = "" + mo;
+        String year = "" + ye;
+
+        return year + "/" + month + "/" + day; // 2017/05/20
+    }
+
 }

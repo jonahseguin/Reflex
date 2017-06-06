@@ -20,7 +20,7 @@ import java.util.List;
 
 /**
  * Superclass of all Checks, sorted into directories based on their RCheckType
- * Each individual oldchecks has it's own Config file
+ * Each individual check has it's own Config file
  * All fields annotated with @ConfigData will be automatically loaded to the fields from the respective configuration file upon #load being called.
  * And saved from the local fields to the config when #save is called.
  */
@@ -51,14 +51,14 @@ public class CheckConfig {
         if (!file.exists()) {
             try {
                 file.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
+            } catch (IOException ex) {
+                Reflex.getReflexLogger().error("CheckConfig: Could not createNewFile (createFile)", ex);
             }
         }
         try {
             config.load(file);
         } catch (IOException | InvalidConfigurationException ex) {
-            ex.printStackTrace();
+            Reflex.getReflexLogger().error("CheckConfig: Could not load config (createFile)", ex);
         }
     }
 
@@ -120,13 +120,11 @@ public class CheckConfig {
                     try {
                         config.addDefault(path, saveValue);
                         config.set(path, saveValue);
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                    } catch (Exception ex) {
+                        Reflex.getReflexLogger().error("CheckConfig: Could not set to config (save)", ex);
                     }
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                } catch (InstantiationException e) {
-                    e.printStackTrace();
+                } catch (IllegalAccessException | InstantiationException ex) {
+                    Reflex.getReflexLogger().error("CheckConfig: Could not get AbstractSerializer instance (save)", ex);
                 }
             }
         }
@@ -141,7 +139,7 @@ public class CheckConfig {
         try {
             config.save(file);
         } catch (IOException ex) {
-            ex.printStackTrace();
+            Reflex.getReflexLogger().error("CheckConfig: Could not save config (saveConfig)", ex);
         }
     }
 
@@ -193,19 +191,15 @@ public class CheckConfig {
                             } else {
                                 f.set(this, config.get(path));
                             }
-                        } catch (IllegalAccessException e) {
-                            e.printStackTrace();
+                        } catch (IllegalAccessException ex) {
+                            Reflex.getReflexLogger().error("CheckConfig: Could not set field (AbstractSerializer error)", ex);
                         }
                     } else {
                         try {
                             AbstractSerializer serializer = (AbstractSerializer) f.getAnnotation(ConfigSerializer.class).serializer().newInstance();
                             f.set(this, serializer.fromString(config.get(path)));
-                        } catch (InstantiationException ex) {
-                            // TODO: ReflexLogger
-                        } catch (IllegalAccessException ex) {
-                            // TODO: ReflexLogger
-                        } catch (AbstractSerializerException ex) {
-                            // TODO: ReflexLogger
+                        } catch (InstantiationException | IllegalAccessException | AbstractSerializerException ex) {
+                            Reflex.getReflexLogger().error("CheckConfig: Could not set field (AbstractSerializer error)", ex);
                         }
                     }
                 }
@@ -231,7 +225,7 @@ public class CheckConfig {
                 config.load(file);
                 save(file, config);
             } catch (IOException | InvalidConfigurationException ex) {
-                ex.printStackTrace();
+                Reflex.getReflexLogger().error("CheckConfig: Could not save defaults (saveDefaults)", ex);
             }
         }
     }

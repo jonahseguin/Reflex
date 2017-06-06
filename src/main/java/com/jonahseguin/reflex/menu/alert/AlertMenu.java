@@ -7,6 +7,7 @@ package com.jonahseguin.reflex.menu.alert;
 import com.jonahseguin.reflex.Reflex;
 import com.jonahseguin.reflex.backend.configuration.RLang;
 import com.jonahseguin.reflex.backend.configuration.ReflexLang;
+import com.jonahseguin.reflex.backend.database.mongo.AutoMongo;
 import com.jonahseguin.reflex.ban.Autoban;
 import com.jonahseguin.reflex.check.alert.AlertManager;
 import com.jonahseguin.reflex.check.alert.CheckAlert;
@@ -19,12 +20,17 @@ import com.jonahseguin.reflex.util.menu.items.BackItem;
 import com.jonahseguin.reflex.util.menu.items.CloseItem;
 import com.jonahseguin.reflex.util.menu.menus.ItemMenu;
 import com.jonahseguin.reflex.util.obj.ItemBuilder;
+import com.jonahseguin.reflex.util.obj.Note;
+import com.jonahseguin.reflex.util.obj.TimeUtil;
+import org.bson.Document;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
+
+import java.util.List;
 
 /**
  * Created by Jonah Seguin on Tue 2017-05-23 at 14:11.
@@ -91,7 +97,20 @@ public class AlertMenu extends ItemMenu {
                 ItemBuilder ib = new ItemBuilder(Material.PAPER);
                 ib.setName(ChatColor.GOLD + "Player Notes");
                 ib.addLoreLine(" ");
-                ib.addLoreLine(ChatColor.RED + "Coming soon"); // TODO: implement notes
+
+                List<AutoMongo> mongos = Note.select(new Document("player", alert.getReflexPlayer().getUniqueId()), Note.class);
+                for (AutoMongo mongo : mongos) {
+                    if (mongo instanceof Note) {
+                        Note note = (Note) mongo;
+                        ib.addLoreLine(ChatColor.DARK_GRAY + TimeUtil.shortDateFormat(note.getTime()) + " " +
+                                ChatColor.AQUA + note.getAuthor().getName() +
+                                ChatColor.GRAY + ": " + note.getNote());
+                    }
+                }
+
+                if (mongos.isEmpty()) {
+                    ib.addLoreLine(ChatColor.GRAY + "Nothing to display.");
+                }
 
                 return ib.toItemStack();
             }

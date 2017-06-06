@@ -41,8 +41,8 @@ public class RCommandHandler {
                 Field field = SimplePluginManager.class.getDeclaredField("commandMap");
                 field.setAccessible(true);
                 map = (CommandMap) field.get(manager);
-            } catch (IllegalArgumentException | SecurityException | IllegalAccessException | NoSuchFieldException e) {
-                e.printStackTrace();
+            } catch (IllegalArgumentException | SecurityException | IllegalAccessException | NoSuchFieldException ex) {
+                Reflex.getReflexLogger().error("RCommandHandler: Could not access Bukkit CommandMap", ex);
             }
         }
 

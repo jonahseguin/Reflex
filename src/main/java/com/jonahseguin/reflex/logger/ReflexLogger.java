@@ -46,15 +46,23 @@ public class ReflexLogger {
     public void log(String msg) {
         preLog();
         logger.info(msg);
+        reflex.getLogger().info(msg);
     }
 
     public void info(String msg) {
         log(msg);
     }
 
+    public void error(String msg, Throwable throwable) {
+        preLog();
+        logger.log(Level.WARNING, "[ERROR] " + msg + " (" + throwable.getMessage() + ")", throwable);
+        reflex.getLogger().info("[REFLEX ERROR] " + msg + " (" + throwable.getMessage() + ")");
+    }
+
     public void error(Throwable throwable) {
         preLog();
         logger.log(Level.WARNING, "[ERROR]" + throwable.getMessage(), throwable);
+        reflex.getLogger().info("[REFLEX ERROR] " + throwable.getMessage());
     }
 
     public void error(String msg) {
@@ -84,6 +92,7 @@ public class ReflexLogger {
             fh = new FileHandler(directory.getPath() + File.separator
                     + currentDate + ".log");
         } catch (IOException | SecurityException e) {
+            error("INTERNAL LOGGER ERROR", e);
             e.printStackTrace();
         }
         fh.setFormatter(new Formatter() {

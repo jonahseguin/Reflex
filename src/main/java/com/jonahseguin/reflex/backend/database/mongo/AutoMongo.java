@@ -5,6 +5,7 @@
 package com.jonahseguin.reflex.backend.database.mongo;
 
 import com.google.common.primitives.Primitives;
+import com.jonahseguin.reflex.Reflex;
 import com.jonahseguin.reflex.backend.configuration.AbstractSerializer;
 import com.jonahseguin.reflex.backend.database.DBManager;
 import com.jonahseguin.reflex.backend.database.mongo.annotations.CollectionName;
@@ -37,8 +38,7 @@ public abstract class AutoMongo {
                         try {
                             mongo.setValue(value, field.getType(), field, type);
                         } catch (AutoMongoException ex) {
-                            // TODO: ReflexLogger (use #getCause)
-                            ex.printStackTrace(); // todo delete
+                            Reflex.getReflexLogger().error("AutoMongo: Could not set value (fromDocument)", ex);
                             throw new AutoMongoError("Could not set value '" + value.toString() + "' for field '" + field.getName() + "'");
                         }
                     }
@@ -53,16 +53,15 @@ public abstract class AutoMongo {
                         try {
                             mongo.setValue(value, field.getType(), field, type);
                         } catch (AutoMongoException ex) {
-                            // TODO: ReflexLogger (use #getCause)
-                            ex.printStackTrace(); // todo delete
+                            Reflex.getReflexLogger().error("AutoMongo: Could not set value (fromDocument)", ex);
                             throw new AutoMongoError("Could not set value '" + value.toString() + "' for field '" + field.getName() + "'");
                         }
                     }
                 }
             }
             return mongo;
-        } catch (InstantiationException | IllegalAccessException e) {
-            e.printStackTrace();
+        } catch (InstantiationException | IllegalAccessException ex) {
+            Reflex.getReflexLogger().error("AutoMongo: Could not instantiate/access (fromDocument)", ex);
         }
         return null;
     }
@@ -81,8 +80,7 @@ public abstract class AutoMongo {
                 AutoMongo mongo = fromDocument(type, doc);
                 vals.add(mongo);
             } catch (AutoMongoError error) {
-                // TODO: ReflexLogger
-                error.printStackTrace(); // todo delete
+                Reflex.getReflexLogger().error("AutoMongo: Could not load AutoMongo from document (select)", error);
                 throw error;
             }
 
@@ -105,8 +103,7 @@ public abstract class AutoMongo {
             try {
                 return fromDocument(type, doc);
             } catch (AutoMongoError error) {
-                // TODO: ReflexLogger
-                error.printStackTrace(); // todo delete
+                Reflex.getReflexLogger().error("AutoMongo: Could not load AutoMongo from document (selectOne)", error);
                 throw error;
             }
         }
@@ -129,8 +126,7 @@ public abstract class AutoMongo {
                 try {
                     values.put(column.name(), getValue(field));
                 } catch (AutoMongoException ex) {
-                    // TODO: ReflexLogger
-                    ex.printStackTrace();
+                    Reflex.getReflexLogger().error("AutoMongo: Could not get value for field (putValues)", ex);
                     throw new AutoMongoError("Could not get value for field '" + field.getName() + "': " + ex.getMessage(), ex);
                 }
             }
@@ -158,16 +154,14 @@ public abstract class AutoMongo {
                     try {
                         identifierValue = getValue(field);
                     } catch (AutoMongoException ex) {
-                        // TODO: ReflexLogger
-                        ex.printStackTrace(); // todo delete
+                        Reflex.getReflexLogger().error("AutoMongo: Could not get identifier value for field (update)", ex);
                         throw new AutoMongoError("Could not get identifier value: " + ex.getMessage(), ex);
                     }
                 } else {
                     try {
                         values.put(column.name(), getValue(field));
                     } catch (AutoMongoException ex) {
-                        // TODO: ReflexLogger
-                        ex.printStackTrace();
+                        Reflex.getReflexLogger().error("AutoMongo: Could not get value for field (put values) (update)", ex);
                         throw new AutoMongoError("Could not get value for field '" + field.getName() + "': " + ex.getMessage(), ex);
                     }
                 }
@@ -184,16 +178,14 @@ public abstract class AutoMongo {
                     try {
                         identifierValue = getValue(field);
                     } catch (AutoMongoException ex) {
-                        // TODO: ReflexLogger
-                        ex.printStackTrace(); // todo delete
+                        Reflex.getReflexLogger().error("AutoMongo: Could not get identifier value for field (update)", ex);
                         throw new AutoMongoError("Could not get identifier value: " + ex.getMessage(), ex);
                     }
                 } else {
                     try {
                         values.put(column.name(), getValue(field));
                     } catch (AutoMongoException ex) {
-                        // TODO: ReflexLogger
-                        ex.printStackTrace();
+                        Reflex.getReflexLogger().error("AutoMongo: Could not get value for field (put values) (update)", ex);
                         throw new AutoMongoError("Could not get value for field '" + field.getName() + "': " + ex.getMessage(), ex);
                     }
                 }
@@ -201,6 +193,7 @@ public abstract class AutoMongo {
         }
 
         if (identifier == null) {
+            Reflex.getReflexLogger().error("AutoMongo: Identifier not found for class: " + this.getClass().getSimpleName() + " (update)");
             throw new AutoMongoError("Identifier not found for AutoMongo class: " + this.getClass().getSimpleName());
         }
         Document doc = new Document(identifier, identifierValue);
@@ -235,8 +228,7 @@ public abstract class AutoMongo {
                     try {
                         identifierValue = getValue(field);
                     } catch (AutoMongoException ex) {
-                        // TODO: ReflexLogger
-                        ex.printStackTrace(); // todo delete
+                        Reflex.getReflexLogger().error("AutoMongo: Could not get identifier value (delete)", ex);
                         throw new AutoMongoError("Could not get identifier value: " + ex.getMessage(), ex);
                     }
                 }

@@ -27,6 +27,7 @@ import com.jonahseguin.reflex.listener.PacketListener;
 import com.jonahseguin.reflex.logger.ReflexLogger;
 import com.jonahseguin.reflex.player.reflex.ReflexCache;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
+import com.jonahseguin.reflex.util.exception.ReflexRuntimeException;
 import com.jonahseguin.reflex.util.menu.MenuListener;
 import com.jonahseguin.reflex.util.obj.Lag;
 import com.jonahseguin.reflex.util.pluginManager.ReflexPluginManager;
@@ -178,6 +179,8 @@ public class Reflex extends JavaPlugin {
 
             Bukkit.getScheduler().runTaskTimer(instance, new Lag(), 1L, 1L);
             getReflexLogger().info("[Start] [Finish] Enabled Reflex v" + getDescription().getVersion() + " by Jonah Seguin (Shawckz).");
+        } catch (ReflexRuntimeException exception) {
+            reflexLogger.error("[REFLEX ERROR]", exception);
         } catch (Exception exception) {
             reflexLogger.error(exception);
         }

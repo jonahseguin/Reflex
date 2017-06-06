@@ -51,14 +51,14 @@ public class Configuration {
         if (!file.exists()) {
             try {
                 file.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
+            } catch (IOException ex) {
+                Reflex.getReflexLogger().error("Could not create file", ex);
             }
         }
         try {
             config.load(file);
-        } catch (IOException | InvalidConfigurationException e) {
-            e.printStackTrace();
+        } catch (IOException | InvalidConfigurationException ex) {
+            Reflex.getReflexLogger().error("Could not load Configuration (createFile)", ex);
         }
     }
 
@@ -80,7 +80,7 @@ public class Configuration {
                 config.load(file);
                 save(file, config);
             } catch (IOException | InvalidConfigurationException ex) {
-                ex.printStackTrace();
+                Reflex.getReflexLogger().error("Could not save Configuration defaults", ex);
             }
         }
     }
@@ -116,15 +116,15 @@ public class Configuration {
                     }
                     config.addDefault(configData.value(), saveValue);
                     config.set(configData.value(), saveValue);
-                } catch (IllegalAccessException | InstantiationException e) {
-                    e.printStackTrace();
+                } catch (IllegalAccessException | InstantiationException ex) {
+                    Reflex.getReflexLogger().error("Could not access AbstractSerializer for Configuration", ex);
                 }
             }
         }
         try {
             config.save(file);
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException ex) {
+            Reflex.getReflexLogger().error("Could not save Configuration file (save)", ex);
         }
     }
 
@@ -141,17 +141,16 @@ public class Configuration {
                         try {
                             f.set(this, val);
                         } catch (IllegalAccessException expected) {
+                            Reflex.getReflexLogger().error("Could not set Configuration field", expected);
                             return false;
                         }
                     } else {
                         try {
                             AbstractSerializer serializer = (AbstractSerializer) f.getAnnotation(ConfigSerializer.class).serializer().newInstance();
                             f.set(this, serializer.fromString(value));
-                        } catch (InstantiationException | IllegalAccessException expected) {
+                        } catch (InstantiationException | IllegalAccessException | AbstractSerializerException ex) {
+                            Reflex.getReflexLogger().error("Could not set Configuration field", ex);
                             return false;
-                        } catch (AbstractSerializerException ex) {
-                            // TODO: ReflexLogger
-                            ex.printStackTrace();
                         }
                     }
                 }
@@ -172,20 +171,15 @@ public class Configuration {
                     if (!f.isAnnotationPresent(ConfigSerializer.class)) {
                         try {
                             f.set(this, config.get(configData.value()));
-                        } catch (IllegalAccessException e) {
-                            e.printStackTrace();
+                        } catch (IllegalAccessException ex) {
+                            Reflex.getReflexLogger().error("Could not set Configuration field", ex);
                         }
                     } else {
                         try {
                             AbstractSerializer serializer = (AbstractSerializer) f.getAnnotation(ConfigSerializer.class).serializer().newInstance();
                             f.set(this, serializer.fromString(config.get(configData.value())));
-                        } catch (InstantiationException ex) {
-                            ex.printStackTrace();
-                        } catch (IllegalAccessException ex) {
-                            ex.printStackTrace();
-                        } catch (AbstractSerializerException ex) {
-                            ex.printStackTrace();
-                            // TODO: ReflexLogger
+                        } catch (InstantiationException | IllegalAccessException | AbstractSerializerException ex) {
+                            Reflex.getReflexLogger().error("Could not set Configuration field", ex);
                         }
                     }
                 }
