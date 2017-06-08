@@ -17,16 +17,17 @@ import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
 import com.jonahseguin.reflex.util.obj.Lag;
 import mkremins.fanciful.FancyMessage;
 import net.md_5.bungee.api.ChatColor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 import java.util.Arrays;
+
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 public class CmdReflex implements RCommand {
 
     public static void sendHeader(CommandSender sender) {
         msg(sender, "&7*** &cReflex &7v" + Reflex.getInstance().getDescription().getVersion() + " &7***");
-        msg(sender, "&8Developed by Jonah Seguin (Shawckz) - https://shawckz.com/product/reflex");
+        msg(sender, "&8Developed by Jonah Seguin (Shawckz) - https://shawckz.com & https://cheats.rip");
     }
 
     private static void msg(CommandSender sender, String msg) {
@@ -112,7 +113,15 @@ public class CmdReflex implements RCommand {
                         .tooltip(ChatColor.GRAY + "Click for command details")
                         .command("/reflex cmdhelp confirmban"));//Done
 
-                msg(sender, new FancyMessage(ChatColor.translateAlternateColorCodes('&', "&7- /reflex &9settings &e<toggle|on|off> &7<enabled|cancel|freeze|autoban> [oldchecks(blank for all)]"))
+                msg(sender, new FancyMessage(ChatColor.translateAlternateColorCodes('&', "&7- /reflex &9note &7<player> <note>"))
+                        .tooltip(ChatColor.GRAY + "Click for command details")
+                        .command("/reflex cmdhelp note"));//Done
+
+                msg(sender, new FancyMessage(ChatColor.translateAlternateColorCodes('&', "&7- /reflex &9notes &7<player>"))
+                        .tooltip(ChatColor.GRAY + "Click for command details")
+                        .command("/reflex cmdhelp notes"));//Done
+
+                msg(sender, new FancyMessage(ChatColor.translateAlternateColorCodes('&', "&7- /reflex &9settings &7<toggle|on|off> <enabled|cancel|freeze|autoban> [checks(blank for all)]"))
                         .tooltip(ChatColor.GRAY + "Click for command details")
                         .command("/reflex cmdhelp settings"));//Done
 
@@ -140,13 +149,8 @@ public class CmdReflex implements RCommand {
 
         msg(sender, " ");
         msg(sender, "&7TPS: &9" + Lag.getTPS() + " &8(" + Math.round(Lag.getLagPerecentage()) + "% lag)");
-        sendChecksEnabled(sender);
-        msg(sender, " ");
-        sendChecksCancel(sender);
-        msg(sender, " ");
-        sendChecksAutoban(sender);
-        msg(sender, " ");
-        sendChecksFreeze(sender);
+
+        // TODO: Status Menu
 
         RLang.send(sender, ReflexLang.HEADER_FOOTER);
     }

@@ -4,12 +4,11 @@
 
 package com.jonahseguin.reflex.data.ping;
 
+import net.minecraft.util.io.netty.util.internal.ConcurrentSet;
 import org.apache.commons.lang.Validate;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 
 /**
@@ -18,7 +17,7 @@ import java.util.Set;
  */
 public class PingTicks {
 
-    private Map<Integer, Integer> pingPerTick = new HashMap<>();
+    private ConcurrentMap<Integer, Integer> pingPerTick = new ConcurrentHashMap<>();
 
     public int getPing(int tick) {
         return pingPerTick.getOrDefault(tick, -1);
@@ -30,17 +29,21 @@ public class PingTicks {
 
     public int average(int... ticks) {
         Validate.notNull(ticks);
-        Set<Integer> pings;
+        ConcurrentSet<Integer> pings;
         if (ticks.length > 0) {
-            pings = new HashSet<>();
+            pings = new ConcurrentSet<>();
             for (int tick : ticks) {
                 pings.add(getPing(tick));
             }
         } else {
             //All ticks
-            pings = new HashSet<>(pingPerTick.values());
+            pings = new ConcurrentSet<>();
+            pings.addAll(pingPerTick.values());
         }
         int count = pings.size();
+        if (count == 0) {
+            return 0;
+        }
         int totalPing = 0;
         for (int ping : pings) {
             totalPing += ping;

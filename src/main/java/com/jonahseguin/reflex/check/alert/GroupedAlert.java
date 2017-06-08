@@ -11,9 +11,10 @@ import com.jonahseguin.reflex.check.Check;
 import com.jonahseguin.reflex.check.CheckType;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
 import mkremins.fanciful.FancyMessage;
-import org.bukkit.ChatColor;
 
 import java.util.UUID;
+
+import org.bukkit.ChatColor;
 
 /**
  * Created by Jonah Seguin on Fri 2017-04-28 at 01:27.
@@ -80,7 +81,7 @@ public class GroupedAlert implements Alert {
 
         msg
                 .then(ChatColor.GRAY + "(" + (averageHackChance >= checkk.getMinimumHackChanceAlert() ? ChatColor.GREEN : ChatColor.RED)
-                        + averageHackChance + "%" + ChatColor.GRAY + ")")
+                        + Reflex.DECIMAL_FORMAT.format(averageHackChance) + "%" + ChatColor.GRAY + ")")
                 .tooltip(
                         ChatColor.GRAY + "Check: " + ChatColor.RED + check,
                         ChatColor.GRAY + "Recent Detail: " + ChatColor.RED + getDetail(),
@@ -120,7 +121,7 @@ public class GroupedAlert implements Alert {
 
         getReflexPlayer().setLastAlertTime(System.currentTimeMillis());
 
-        Reflex.log("Alert [MULTIPLE]: " + getReflexPlayer().getName() + " (" + getCheckType().getName() + ") [" + id + "]");
+        Reflex.log("Alert [GROUPED]: " + getReflexPlayer().getName() + " (" + getCheckType().getName() + ") [" + id + "]");
     }
 
     private double getAverageHackChance(AlertSet alertSet) {

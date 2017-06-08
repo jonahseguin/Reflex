@@ -32,12 +32,14 @@ import com.jonahseguin.reflex.util.menu.MenuListener;
 import com.jonahseguin.reflex.util.obj.Lag;
 import com.jonahseguin.reflex.util.pluginManager.ReflexPluginManager;
 import com.jonahseguin.reflex.util.pluginManager.ReflexScheduler;
+
+import java.text.DecimalFormat;
+import java.util.Set;
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import java.util.Set;
 
 /**
  * Reflex - AntiCheat for Minecraft Servers
@@ -49,6 +51,8 @@ import java.util.Set;
  */
 public class Reflex extends JavaPlugin {
 
+    public static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("##.##");
+    public static boolean enableFinished = false;
     private static Reflex instance;
     private ReflexPluginManager reflexPluginManager;
     private ReflexScheduler reflexScheduler;
@@ -110,26 +114,13 @@ public class Reflex extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        reflexLogger = new ReflexLogger(this);
         try {
-            getReflexLogger().log("[Start] Starting Reflex v" + getDescription().getVersion() + " by Jonah Seguin (Shawckz).");
+            reflexLogger.log("[Start] Starting Reflex v" + getDescription().getVersion() + " by Jonah Seguin (Shawckz).");
+
             instance = this;
             reflexConfig = new ReflexConfig(instance);
             lang = new LanguageConfig(instance);
-            new DBManager(instance);
-            reflexLogger = new ReflexLogger(this);
-            cache = new ReflexCache(instance);
-
-            //Make reload-friendly, load all online players
-            for (Player pl : getOnlinePlayers()) {
-                ReflexPlayer cp = cache.loadReflexPlayer(pl.getName());
-                if (cp != null) {
-                    cache.put(cp);
-                } else {
-                    cp = cache.create(pl.getName(), pl.getUniqueId().toString());
-                    cache.put(cp);
-                    cp.update();
-                }
-            }
 
             this.reflexScheduler = new ReflexScheduler(this) {
                 @Override
@@ -145,6 +136,20 @@ public class Reflex extends JavaPlugin {
                 }
             };
 
+            new DBManager(instance);
+            cache = new ReflexCache(instance);
+
+            //Make reload-friendly, load all online players
+            for (Player pl : getOnlinePlayers()) {
+                ReflexPlayer cp = cache.loadReflexPlayer(pl.getName());
+                if (cp != null) {
+                    cache.put(cp);
+                } else {
+                    cp = cache.create(pl.getName(), pl.getUniqueId().toString());
+                    cache.put(cp);
+                    cp.update();
+                }
+            }
             reflexTimer = new ReflexTimer(instance);
             autobanManager = new AutobanManager();
             alertManager = new AlertManager(instance);
@@ -178,11 +183,13 @@ public class Reflex extends JavaPlugin {
             new PacketListener(instance);
 
             Bukkit.getScheduler().runTaskTimer(instance, new Lag(), 1L, 1L);
-            getReflexLogger().info("[Start] [Finish] Enabled Reflex v" + getDescription().getVersion() + " by Jonah Seguin (Shawckz).");
+            reflexLogger.info("[Start] [Finish] Enabled Reflex v" + getDescription().getVersion() + " by Jonah Seguin (Shawckz).");
         } catch (ReflexRuntimeException exception) {
             reflexLogger.error("[REFLEX ERROR]", exception);
         } catch (Exception exception) {
             reflexLogger.error(exception);
+        } finally {
+            enableFinished = true;
         }
     }
 

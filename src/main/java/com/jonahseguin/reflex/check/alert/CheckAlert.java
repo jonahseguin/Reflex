@@ -14,9 +14,10 @@ import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
 import lombok.Getter;
 import lombok.Setter;
 import mkremins.fanciful.FancyMessage;
-import org.bukkit.ChatColor;
 
 import java.util.UUID;
+
+import org.bukkit.ChatColor;
 
 /**
  * Created by Jonah Seguin on Mon 2017-04-24 at 20:52.
@@ -54,9 +55,8 @@ public class CheckAlert implements Alert {
         msg.then(ChatColor.BLUE + getReflexPlayer().getName()
                 + " " + ChatColor.GRAY + "failed"
                 + " " + ChatColor.RED + getCheckType().getName()
-                + " " + ChatColor.GRAY + "(" + getPing() + "ms)"
                 + " " + ChatColor.GRAY + "(" + (violation.getHackChance().getHackChance() >= check.getMinimumHackChanceAlert() ? ChatColor.GREEN : ChatColor.RED)
-                + violation.getHackChance() + "%" + ChatColor.GRAY + ")"
+                + Reflex.DECIMAL_FORMAT.format(violation.getHackChance().getHackChance()) + "%" + ChatColor.GRAY + ")"
         )
                 .tooltip(
                         ChatColor.GRAY + "Click to view alert",
@@ -67,7 +67,7 @@ public class CheckAlert implements Alert {
                 ).command("/reflex alert " + id);
 
         if (!detail.equals("") && !detail.equalsIgnoreCase("n/a")) {
-            msg.then(" " + ChatColor.GRAY + "(" + detail.trim() + ") ")
+            msg.then(" " + ChatColor.GRAY + "(" + detail.trim() + ")")
                     .tooltip(
                             ChatColor.GRAY + "Click to view alert",
                             ChatColor.GRAY + "Player: " + ChatColor.RED + getReflexPlayer().getName(),

@@ -6,7 +6,11 @@ package com.jonahseguin.reflex.data.ping;
 
 import com.jonahseguin.reflex.Reflex;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 /**
  * Created by Jonah Seguin on Sat 2017-05-27 at 12:49.
@@ -15,7 +19,7 @@ import java.util.*;
 public class PlayerPing {
 
     private final PingHandler pingHandler;
-    private Map<TickRange, PingTicks> pings = new HashMap<>();
+    private final ConcurrentMap<TickRange, PingTicks> pings = new ConcurrentHashMap<>();
 
     public PlayerPing() {
         this.pingHandler = Reflex.getInstance().getPingHandler();

@@ -9,7 +9,14 @@ import com.jonahseguin.reflex.backend.database.mongo.AutoMongo;
 import com.jonahseguin.reflex.event.api.ReflexPlayerLoadEvent;
 import com.jonahseguin.reflex.event.api.ReflexPlayerSaveEvent;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
+import net.minecraft.util.io.netty.util.internal.ConcurrentSet;
 import org.bson.Document;
+
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -20,12 +27,6 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
-
 /**
  * Created by Jonah on 6/11/2015.
  */
@@ -33,7 +34,7 @@ public abstract class AbstractCache implements Listener {
 
     private final ConcurrentMap<String, ReflexPlayer> players = new ConcurrentHashMap<>(); // Player username as key
     private final ConcurrentMap<String, ReflexPlayer> playersUUID = new ConcurrentHashMap<>(); // Player UniqueID as key
-    private final Set<Player> onlinePlayers = new HashSet<>();
+    private final ConcurrentSet<Player> onlinePlayers = new ConcurrentSet<>();
     private final Plugin plugin;
     private final Class<? extends ReflexPlayer> aClass;
 

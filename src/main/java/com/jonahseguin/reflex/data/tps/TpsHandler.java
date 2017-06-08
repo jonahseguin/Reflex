@@ -8,10 +8,11 @@ import com.jonahseguin.reflex.Reflex;
 import com.jonahseguin.reflex.data.ping.TickRange;
 import com.jonahseguin.reflex.util.obj.Lag;
 import lombok.Getter;
-import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+
+import org.bukkit.scheduler.BukkitRunnable;
 
 /**
  * Created by Jonah Seguin on Sun 2017-05-28 at 11:51.
@@ -25,7 +26,7 @@ public class TpsHandler {
     private int totalTick = 0;
     private int totalCycles = 0;
     private double totalTps = 0;
-    private Map<TickRange, Double> tpsRange = new HashMap<>();
+    private ConcurrentMap<TickRange, Double> tpsRange = new ConcurrentHashMap<>();
     private long startMillisecond = 0;
 
     public TpsHandler(Reflex reflex) {

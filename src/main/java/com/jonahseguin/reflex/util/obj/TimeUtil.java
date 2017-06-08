@@ -13,7 +13,7 @@ public class TimeUtil {
         cal.setTimeInMillis(time);
 
         int d = cal.get(Calendar.DAY_OF_MONTH);
-        int mo = cal.get(Calendar.MONTH);
+        int mo = cal.get(Calendar.MONTH) + 1;
         int h = cal.get(Calendar.HOUR);
         int m = cal.get(Calendar.MINUTE);
 
@@ -31,7 +31,7 @@ public class TimeUtil {
         cal.setTimeInMillis(time);
 
         int d = cal.get(Calendar.DAY_OF_MONTH);
-        int mo = cal.get(Calendar.MONTH);
+        int mo = cal.get(Calendar.MONTH) + 1;
         int ye = cal.get(Calendar.YEAR);
 
         String day = "" + d;

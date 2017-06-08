@@ -3,10 +3,12 @@
  */
 package com.jonahseguin.reflex.util.menu.menus;
 
+import com.jonahseguin.reflex.Reflex;
 import com.jonahseguin.reflex.util.menu.MenuListener;
 import com.jonahseguin.reflex.util.menu.events.ItemClickEvent;
 import com.jonahseguin.reflex.util.menu.items.MenuItem;
 import com.jonahseguin.reflex.util.menu.items.StaticMenuItem;
+
 import org.bukkit.Bukkit;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
@@ -26,7 +28,7 @@ public class ItemMenu {
      */
     @SuppressWarnings("deprecation")
     private static final MenuItem EMPTY_SLOT_ITEM = new StaticMenuItem(" ", new ItemStack(Material.STAINED_GLASS_PANE, 1, DyeColor.GRAY.getData()));
-    private JavaPlugin plugin;
+    private Reflex plugin;
     private String name;
     private Size size;
     private MenuItem[] items;
@@ -40,7 +42,7 @@ public class ItemMenu {
      * @param plugin The {@link JavaPlugin} instance.
      * @param parent The ItemMenu's parent.
      */
-    public ItemMenu(String name, Size size, JavaPlugin plugin, ItemMenu parent) {
+    public ItemMenu(String name, Size size, Reflex plugin, ItemMenu parent) {
         this.plugin = plugin;
         this.name = name;
         this.size = size;
@@ -55,7 +57,7 @@ public class ItemMenu {
      * @param size   The {@link com.jonahseguin.reflex.util.menu.menus.ItemMenu.Size} of the inventory.
      * @param plugin The Plugin instance.
      */
-    public ItemMenu(String name, Size size, JavaPlugin plugin) {
+    public ItemMenu(String name, Size size, Reflex plugin) {
         this(name, size, plugin, null);
     }
 
@@ -196,7 +198,8 @@ public class ItemMenu {
             Player player = (Player) event.getWhoClicked();
             ItemClickEvent itemClickEvent = new ItemClickEvent(player, event.getClick());
             items[slot].onItemClick(itemClickEvent);
-            if (event.isCancelled()) {
+            if (itemClickEvent.isCancel()) {
+                event.setCancelled(true);
                 event.setResult(Event.Result.DENY);
             }
             if (!itemClickEvent.getAcceptedClickTypes().contains(event.getClick())) return;

@@ -76,10 +76,8 @@ public class HackChance {
     }
 
     public double calculate() {
-        hackChance = 0.00;
-
-        int score = 0;
-        int total = 0;
+        double score = 0;
+        double total = 0;
 
         if (infractionsCheck != -1) {
             total++;
@@ -159,9 +157,14 @@ public class HackChance {
             }
         }
 
-        hackChance = (score / total) * 100;
+        if (total == 0) {
+            this.hackChance = 0;
+            return 0;
+        }
 
-        return hackChance;
+        this.hackChance = Math.round(((score / total) * 100));
+
+        return this.hackChance;
     }
 
     private double spike(double before, double after) {

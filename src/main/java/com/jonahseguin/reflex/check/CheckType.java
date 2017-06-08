@@ -13,42 +13,43 @@ import org.apache.commons.lang.WordUtils;
  */
 public enum CheckType {
 
-    VCLIP("VClip"), // DONE
+    BLINK("Blink"), //
+    ATTACK_SPEED("AttackSpeed"), //
     AUTO_CLICK("AutoClick"), //
+    WRONG_TARGET("WrongTarget"), //
+    XRAY("Xray"), //
+    AURA_TWITCH("AuraTwitch"), //
+    ACCURACY("Accuracy"), //
+    CRITICALS("Criticals"), //
+    SMOOTH_AIM("SmoothAim"), //
+    HEALTH_TAGS("HealthTags"), //
+    TRIGGER_BOT("TriggerBot"), //
+    AUTO_SOUP("AutoSoup"), //
+    HIGH_JUMP("HighJump"), //
+    NO_SLOW_DOWN("NoSlowDown"), //TODO
+    BAD_PACKETS("BadPackets"), //TODO
+    GLIDE("Glide"), //TODO
+    VCLIP("VClip"), // DONE
     REGEN("Regen"), // DONE
     HEAD_ROLL("HeadRoll"), // DONE
     TAB_COMPLETE("TabComplete"), // DONE
     FAST_BOW("FastBow"), // DONE
     SPEED("Speed"), // DONE
     REACH("Reach"), // DONE
-    WRONG_TARGET("WrongTarget"), //
-    XRAY("Xray"), //
-    FLY("Fly"), //
-    AURA_TWITCH("AuraTwitch"), //
-    ACCURACY("Accuracy"), //
+    FLY("Fly"), // DONE
     MORE_PACKETS("MorePackets"), // DONE
     PHASE("Phase"), // DONE
-    CRITICALS("Criticals"), //
-    SMOOTH_AIM("SmoothAim"), //
-    HEALTH_TAGS("HealthTags"), //
-    TRIGGER_BOT("TriggerBot"), //
     ANTI_KNOCKBACK("AntiKnockback"), // DONE
-    NO_SLOW_DOWN("NoSlowDown"), //TODO
-    BAD_PACKETS("BadPackets"), //TODO
     BED_FLY("BedFly"), // DONE
     NO_SWING("NoSwing"), // DONE
-    HIGH_JUMP("HighJump"), //
-    GLIDE("Glide"), //TODO
     FAST_EAT("FastEat"), // DONE
     SELF_HIT("SelfHit"), // DONE
-    AUTO_SOUP("AutoSoup"), //
-    BLINK("Blink"), //
-    ATTACK_SPEED("AttackSpeed"), //
     GOD_MODE("GodMode"), // DONE
     BLOCK_HIT("BlockHit"), // DONE
     NO_FALL("NoFall"), // DONE
     SNEAK("Sneak"), // DONE
-    JESUS("Jesus"); //
+    JESUS("Jesus"), // DONE
+    STEP("Step"); // DONE
 
     private final String name;
 

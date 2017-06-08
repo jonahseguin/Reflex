@@ -19,13 +19,14 @@ import com.jonahseguin.reflex.util.serial.InfractionSetSerializer;
 import com.jonahseguin.reflex.util.utility.ReflexCaller;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.ChatColor;
 
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import org.bukkit.ChatColor;
 
 /**
  * Created by Jonah Seguin on Sat 2017-05-13 at 10:14.
@@ -149,14 +150,16 @@ public class PlayerRecord extends AutoMongo {
 
         reflex.getReflexScheduler().asyncDelayedTask(() -> {
             String newDetail = detail;
-            hackChance.updatePingAndTps(); // Update ping and tps (2-3s) later to allow for calculation of after values
+            hackChance.updatePingAndTps(); // Update ping and tps 2s later to allow for calculation of after values
             hackChance.calculate(); // Calculate hack chance % using data
 
+
+            violation.setHackChance(hackChance);
             violation.setHackChancePassed(hackChance.getHackChance() >= check.getMinimumHackChanceAlert());
 
             int violationCount = getViolationCount(checkType);
 
-            if (violationCount >= check.getInfractionVL()) { // It is now an infraction
+            if (violationCount >= check.getInfractionVL() && violation.isHackChancePassed()) { // It is now an infraction
                 newDetail += ChatColor.RED + " [INF]";
                 // Infraction; permanent infraction
                 // Auto-ban if allowed
@@ -181,10 +184,12 @@ public class PlayerRecord extends AutoMongo {
                     // If not auto-banning, create an alert
                     getReflex().getAlertManager().alert(violation);
                 }
+            } else {
+                violation.setValid(false);
             }
 
             caller.call(violation);
-        }, 60L); // 3 second delay to allow for Lag calculations
+        }, 40L); // 2 second delay to allow for Lag calculations
 
     }
 
