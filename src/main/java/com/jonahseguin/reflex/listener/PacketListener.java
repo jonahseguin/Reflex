@@ -11,6 +11,7 @@ import com.comphenix.protocol.events.PacketEvent;
 import com.jonahseguin.reflex.Reflex;
 import com.jonahseguin.reflex.event.packet.*;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
+
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -151,6 +152,18 @@ public class PacketListener {
                 }
             }
         });
+        /*instance.getProtocolManager().addPacketListener(new PacketAdapter(instance, ListenerPriority.NORMAL, PacketType.Play.Server.ENTITY_VELOCITY) {
+            public void onPacketSending(PacketEvent event) {
+                if (event.getPacketType().equals(PacketType.Play.Server.ENTITY_VELOCITY)) {
+                    float x = event.getPacket().getFloat().getValues().get(1);
+                    float y = event.getPacket().getFloat().getValues().get(2);
+                    float z = event.getPacket().getFloat().getValues().get(3);
+
+                    ReflexPacketVelocityEvent velocityEvent = new ReflexPacketVelocityEvent(event, event.getPlayer(), x, y, z);
+                    instance.getServer().getPluginManager().callEvent(velocityEvent);
+                }
+            }
+        });*/
         //LookEvent
         instance.getProtocolManager().addPacketListener(new PacketAdapter(instance, ListenerPriority.NORMAL,
                 PacketType.Play.Client.LOOK) {

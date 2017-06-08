@@ -12,14 +12,16 @@ import com.jonahseguin.reflex.event.packet.ReflexPacketMoveEvent;
 import com.jonahseguin.reflex.event.packet.ReflexPacketVelocityEvent;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
 import com.jonahseguin.reflex.util.obj.Lag;
+
+import java.text.DecimalFormat;
+
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
+import org.bukkit.event.player.PlayerVelocityEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-
-import java.text.DecimalFormat;
 
 /**
  * Created by Jonah Seguin on Sat 2017-04-29 at 16:54.
@@ -114,8 +116,9 @@ public class CheckSpeed extends Check {
     }
 
     @EventHandler
-    public void onVelocity(ReflexPacketVelocityEvent e) {
+    public void onPacketVelocity(ReflexPacketVelocityEvent e) {
         Player p = e.getPlayer();
+        // Explosion
         ReflexPlayer rp = getPlayer(p);
         double x = Math.abs(e.getX()) * 5.0D;
         double z = Math.abs(e.getZ()) * 5.0D;
@@ -124,10 +127,26 @@ public class CheckSpeed extends Check {
         }
     }
 
+    @EventHandler
+    public void onVelocity(PlayerVelocityEvent e) {
+        Player p = e.getPlayer();
+        ReflexPlayer rp = getPlayer(p);
+        double x = Math.abs(e.getVelocity().getX()) * 5.0D;
+        double z = Math.abs(e.getVelocity().getZ()) * 5.0D;
+        if (x + z > rp.getData().getHFreedom()) {
+            rp.getData().setHFreedom(x + z);
+        }
+    }
+
+
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onMove(ReflexPacketMoveEvent e) {
-        Player p = e.getPlayer();
-        ReflexPlayer rp = e.getReflexPlayer();
+        final Player p = e.getPlayer();
+        final ReflexPlayer rp = e.getReflexPlayer();
+        rp.getData().updateMoveValues(e.getTo());
+
+        if (rp.getData().getLastVelocityTime() != 0) return;
+
         if (rp.getData().isOnGround(e.getTo())) {
             rp.getData().setBhopDelay(0);
         } else {

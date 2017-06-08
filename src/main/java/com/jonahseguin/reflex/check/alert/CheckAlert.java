@@ -55,7 +55,7 @@ public class CheckAlert implements Alert {
         msg.then(ChatColor.BLUE + getReflexPlayer().getName()
                 + " " + ChatColor.GRAY + "failed"
                 + " " + ChatColor.RED + getCheckType().getName()
-                + " " + ChatColor.GRAY + "(" + (violation.getHackChance().getHackChance() >= check.getMinimumHackChanceAlert() ? ChatColor.GREEN : ChatColor.RED)
+                + " " + ChatColor.GRAY + "(" + (violation.getHackChance().getHackChance() >= check.getMinimumHackChanceAlert() ? ChatColor.DARK_GRAY : ChatColor.RED)
                 + Reflex.DECIMAL_FORMAT.format(violation.getHackChance().getHackChance()) + "%" + ChatColor.GRAY + ")"
         )
                 .tooltip(

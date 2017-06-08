@@ -80,7 +80,7 @@ public class GroupedAlert implements Alert {
         msg.then(" "); // Space
 
         msg
-                .then(ChatColor.GRAY + "(" + (averageHackChance >= checkk.getMinimumHackChanceAlert() ? ChatColor.GREEN : ChatColor.RED)
+                .then(ChatColor.GRAY + "(" + (averageHackChance >= checkk.getMinimumHackChanceAlert() ? ChatColor.DARK_GRAY : ChatColor.RED)
                         + Reflex.DECIMAL_FORMAT.format(averageHackChance) + "%" + ChatColor.GRAY + ")")
                 .tooltip(
                         ChatColor.GRAY + "Check: " + ChatColor.RED + check,

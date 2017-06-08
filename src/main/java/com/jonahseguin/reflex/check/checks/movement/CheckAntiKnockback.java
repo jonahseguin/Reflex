@@ -9,8 +9,8 @@ import com.jonahseguin.reflex.backend.configuration.annotations.ConfigData;
 import com.jonahseguin.reflex.check.Check;
 import com.jonahseguin.reflex.check.CheckType;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
+
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerVelocityEvent;
@@ -43,9 +43,6 @@ public class CheckAntiKnockback extends Check {
         if (!rp.canCheck()) return;
         if (player.isInsideVehicle()) return;
         if (player.hasPotionEffect(PotionEffectType.WITHER) || player.hasPotionEffect(PotionEffectType.POISON)) return;
-        if (player.getLocation().getBlock().getLocation().add(0, 2, 0).getBlock().getType() == null) return;
-        if (!player.getLocation().getBlock().getLocation().add(0, 2, 0).getBlock().getType().equals(Material.AIR))
-            return;
         final Location damageLocation = player.getLocation();
 
         new BukkitRunnable() {
