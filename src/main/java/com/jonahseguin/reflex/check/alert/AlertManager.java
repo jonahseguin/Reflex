@@ -4,7 +4,6 @@
 
 package com.jonahseguin.reflex.check.alert;
 
-import com.google.common.collect.Sets;
 import com.jonahseguin.reflex.Reflex;
 import com.jonahseguin.reflex.backend.configuration.ReflexPerm;
 import com.jonahseguin.reflex.check.CheckType;
@@ -13,12 +12,13 @@ import com.jonahseguin.reflex.check.violation.CheckViolation;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
 import com.jonahseguin.reflex.util.obj.Lag;
 import mkremins.fanciful.FancyMessage;
+import net.minecraft.util.io.netty.util.internal.ConcurrentSet;
+
+import java.util.Iterator;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-
-import java.util.Iterator;
-import java.util.Set;
 
 /**
  * Created by Jonah Seguin on Mon 2017-04-24 at 20:54.
@@ -30,7 +30,7 @@ public class AlertManager implements RTimer {
     private final int MAX_ALERTS; // per-player per-second
     private final Reflex instance;
 
-    private final Set<Alert> cache = Sets.newHashSet();
+    private final ConcurrentSet<Alert> cache = new ConcurrentSet<>();
 
     public AlertManager(Reflex instance) {
         this.instance = instance;
@@ -41,16 +41,18 @@ public class AlertManager implements RTimer {
     }
 
     public static void staffMsg(String msg) {
+        if (!Reflex.enableFinished) return;
         for (Player pl : Reflex.getOnlinePlayers()) {
             ReflexPlayer p = Reflex.getInstance().getCache().getReflexPlayer(pl);
             if (p.isAlertsEnabled() && ReflexPerm.ALERTS.hasPerm(pl)) {
                 p.msg(msg);
             }
         }
-        Reflex.getReflexLogger().info(ChatColor.stripColor(msg));
+        Reflex.getReflexLogger().logNoStaffMsg(ChatColor.stripColor(msg));
     }
 
     public static void staffMsg(FancyMessage msg) {
+        if (!Reflex.enableFinished) return;
         for (Player pl : Reflex.getOnlinePlayers()) {
             ReflexPlayer p = Reflex.getInstance().getCache().getReflexPlayer(pl);
             if (p.isAlertsEnabled() && ReflexPerm.ALERTS.hasPerm(pl)) {

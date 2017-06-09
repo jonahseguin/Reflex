@@ -10,6 +10,7 @@ import com.jonahseguin.reflex.util.obj.AutobanMethod;
 import com.jonahseguin.reflex.util.serial.AutobanMethodSerializer;
 import lombok.Getter;
 import lombok.Setter;
+
 import org.bukkit.plugin.Plugin;
 
 @Getter
@@ -58,7 +59,7 @@ public class ReflexConfig extends Configuration {
     private int hackChanceFailureFrequencyMinimum = 3; // 3 per hour
 
     @ConfigData("hackchance.globalrecentfails.maximum")
-    private int hackChanceGlobalRecentFailsMaximum = 5;
+    private int hackChanceGlobalRecentFailsMaximum = 7;
 
     @ConfigData("hackchance.pingspike.maximum")
     private int hackChancePingSpikeMaximum = 35;

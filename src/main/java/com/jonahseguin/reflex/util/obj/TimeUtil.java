@@ -13,17 +13,19 @@ public class TimeUtil {
         cal.setTimeInMillis(time);
 
         int d = cal.get(Calendar.DAY_OF_MONTH);
-        int mo = cal.get(Calendar.MONTH);
+        int mo = cal.get(Calendar.MONTH) + 1;
         int h = cal.get(Calendar.HOUR);
         int m = cal.get(Calendar.MINUTE);
+        int s = cal.get(Calendar.SECOND);
 
         String day = "" + d;
         String month = "" + mo;
         String hour = "" + h;
         String minute = (m < 10 ? "0" : "") + "" + m;
+        String second = (s < 10 ? "0" : "") + "" + s;
         boolean am = cal.get(Calendar.AM_PM) == Calendar.AM;
 
-        return "" + month + "/" + day + " - " + hour + ":" + minute + " " + (am ? "AM" : "PM") + " (" + cal.getTimeZone().getDisplayName() + ")";
+        return "" + month + "/" + day + " - " + hour + ":" + minute + ":" + second + " " + (am ? "AM" : "PM") + " (" + cal.getTimeZone().getDisplayName() + ")";
     }
 
     public static String shortDateFormat(long time) {
@@ -31,7 +33,7 @@ public class TimeUtil {
         cal.setTimeInMillis(time);
 
         int d = cal.get(Calendar.DAY_OF_MONTH);
-        int mo = cal.get(Calendar.MONTH);
+        int mo = cal.get(Calendar.MONTH) + 1;
         int ye = cal.get(Calendar.YEAR);
 
         String day = "" + d;

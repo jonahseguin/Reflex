@@ -10,9 +10,14 @@ import com.jonahseguin.reflex.check.Check;
 import com.jonahseguin.reflex.check.CheckType;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
 import com.jonahseguin.reflex.util.obj.Lag;
+
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+import org.bukkit.util.Vector;
 
 /**
  * Created by Jonah Seguin on Sat 2017-04-29 at 16:55.
@@ -28,12 +33,39 @@ public class CheckFly extends Check {
 
     public CheckFly(Reflex reflex) {
         super(reflex, CheckType.FLY);
+
+        reflex.getReflexScheduler().asyncRepeatingTask(() -> {
+            for (ReflexPlayer reflexPlayer : Reflex.getReflexPlayers()) {
+                Player player = reflexPlayer.getBukkitPlayer();
+                if (player == null || !player.isOnline()) {
+                    reflexPlayer.getData().lastVelocity = null;
+                    reflexPlayer.getData().lastVelocityTime = 0;
+                    continue;
+                }
+                if (reflexPlayer.getData().getLastVelocity() != null && reflexPlayer.getData().getLastVelocityTime() != 0) {
+                    Vector velocity = reflexPlayer.getData().getLastVelocity();
+                    long time = reflexPlayer.getData().getLastVelocityTime();
+                    if (time + 500 > System.currentTimeMillis()) continue;
+                    double velocityY = velocity.getY() * velocity.getY();
+                    double y = player.getVelocity().getY() * player.getVelocity().getY();
+                    if (y < 0.02) {
+                        reflexPlayer.getData().lastVelocity = null;
+                        reflexPlayer.getData().lastVelocityTime = 0;
+                        continue;
+                    }
+                    if (y <= velocityY * 3.0) continue;
+                    reflexPlayer.getData().lastVelocity = null;
+                    reflexPlayer.getData().lastVelocityTime = 0;
+                }
+            }
+        }, 0L, 1L);
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onMoveFlyHover(final PlayerMoveEvent event) {
         final Player player = event.getPlayer();
         final ReflexPlayer reflexPlayer = getPlayer(player);
+
         if (player.getAllowFlight()) return;
         if (reflexPlayer.getData().isInWater()) return;
         if (reflexPlayer.getData().isInWeb()) return;
@@ -59,6 +91,58 @@ public class CheckFly extends Check {
         }
     }
 
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onMoveFlyAscend(final PlayerMoveEvent event) {
+        final Player player = event.getPlayer();
+        final ReflexPlayer reflexPlayer = getPlayer(player);
+
+        if (event.getTo().getY() > event.getFrom().getY()) {
+            if (canCheckAscend(reflexPlayer)) {
+                if (reflexPlayer.getData().lastVelocity == null && reflexPlayer.getData().lastVelocityTime == 0) {
+                    long time = System.currentTimeMillis();
+                    double blocks = 0.0;
+                    if (reflexPlayer.getData().flyAscendBlocks != 0 && reflexPlayer.getData().flyAscendTime != 0) {
+                        time = reflexPlayer.getData().flyAscendTime;
+                        blocks = reflexPlayer.getData().flyAscendBlocks;
+                    }
+                    long millisDiff = System.currentTimeMillis() - time;
+                    double offsetY = reflexPlayer.getData().offset(reflexPlayer.getData().getVerticalVector(event.getFrom().toVector()),
+                            reflexPlayer.getData().getVerticalVector(event.getTo().toVector()));
+                    if (offsetY > 0) {
+                        blocks += offsetY;
+                    }
+                    if (reflexPlayer.getData().blocksNear(player.getLocation()) || reflexPlayer.getData().blocksNear(player.getLocation().subtract(0, 1, 0))) {
+                        blocks = 0;
+                    }
+                    double limit = 0.5;
+                    if (player.hasPotionEffect(PotionEffectType.JUMP)) {
+                        for (PotionEffect effect : player.getActivePotionEffects()) {
+                            if (effect.getType().equals(PotionEffectType.JUMP)) {
+                                int level = effect.getAmplifier() + 1;
+                                limit += Math.pow(level + 4.2, 2.0) / 16.0;
+                                break;
+                            }
+                        }
+                    }
+                    if (blocks > limit) {
+                        if (millisDiff > 500) {
+                            fail(reflexPlayer, "Ascended " + Math.round(blocks) + " blocks").cancelIfAllowed(event);
+                            time = System.currentTimeMillis();
+                        }
+                    } else {
+                        time = System.currentTimeMillis();
+                    }
+                    reflexPlayer.getData().flyAscendTime = time;
+                    reflexPlayer.getData().flyAscendBlocks = blocks;
+                }
+            }
+        }
+    }
+
+    private boolean canCheckAscend(ReflexPlayer reflexPlayer) {
+        Player player = reflexPlayer.getBukkitPlayer();
+        return !player.getAllowFlight() && !player.isInsideVehicle() && player.getVehicle() == null;
+    }
 
 
 }

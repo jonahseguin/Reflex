@@ -17,12 +17,13 @@ import com.jonahseguin.reflex.menu.note.NotesMenu;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
 import com.jonahseguin.reflex.util.obj.Note;
 import org.bson.Document;
-import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
 
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 
 /**
  * Created by Jonah Seguin on Sun 2017-05-28 at 12:38.
@@ -35,7 +36,7 @@ public class CmdNote implements RCommand {
     public void onCmdNoteAdd(final RCmdArgs args) {
         final Player sender = args.getSender().getPlayer();
         final String targetName = args.getArg(0);
-        final String noteString = args.getBuiltArgs(1);
+        final String noteString = args.getBuiltArgs(2);
 
         Reflex.getScheduler().asyncTask(() -> {
             ReflexPlayer author = Reflex.getPlayer(sender);

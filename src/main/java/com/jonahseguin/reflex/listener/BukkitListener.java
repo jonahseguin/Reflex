@@ -5,7 +5,13 @@
 package com.jonahseguin.reflex.listener;
 
 import com.jonahseguin.reflex.Reflex;
+import com.jonahseguin.reflex.check.alert.AlertManager;
+
+import org.bukkit.ChatColor;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerKickEvent;
 
 public class BukkitListener implements Listener {
 
@@ -15,5 +21,12 @@ public class BukkitListener implements Listener {
         this.instance = instance;
     }
 
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onKick(PlayerKickEvent event) {
+        if (event.isCancelled()) return;
+        if (event.getReason().equalsIgnoreCase("Flying is not enabled on this server")) {
+            AlertManager.staffMsg(ChatColor.BLUE + event.getPlayer().getName() + ChatColor.GRAY + " was kicked for flying.");
+        }
+    }
 
 }

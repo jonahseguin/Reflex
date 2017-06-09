@@ -7,8 +7,9 @@ package com.jonahseguin.reflex.check.alert;
 import com.jonahseguin.reflex.check.CheckType;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 /**
  * Created by Jonah Seguin on Mon 2017-04-24 at 20:54.
@@ -17,7 +18,7 @@ import java.util.Map;
 public class PlayerAlerts {
 
     private final ReflexPlayer player;
-    private final Map<CheckType, AlertSet> alertGroups = new HashMap<>();
+    private final ConcurrentMap<CheckType, AlertSet> alertGroups = new ConcurrentHashMap<>();
 
     public PlayerAlerts(ReflexPlayer player) {
         this.player = player;

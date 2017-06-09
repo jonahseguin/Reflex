@@ -10,6 +10,10 @@ import com.jonahseguin.reflex.check.checks.combat.CheckReach;
 import com.jonahseguin.reflex.util.obj.TrigUtils;
 import lombok.Getter;
 import lombok.Setter;
+
+import javax.persistence.Transient;
+import java.util.*;
+
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -19,9 +23,6 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.NumberConversions;
 import org.bukkit.util.Vector;
-
-import javax.persistence.Transient;
-import java.util.*;
 
 /**
  * Created by Jonah Seguin on Sat 2017-04-29 at 17:10.
@@ -48,6 +49,10 @@ public class PlayerData {
 
     /* Fly */
     public long flyHoverTime = 0;
+    public long lastVelocityTime = 0;
+    public Vector lastVelocity = null;
+    public long flyAscendTime = 0;
+    public double flyAscendBlocks = 0.0;
 
     /* Jesus */
     public long jesusTime = 0;
@@ -416,6 +421,74 @@ public class PlayerData {
             ++n2;
         }
         return false;
+    }
+
+    public double offset2d(Entity a, Entity b) {
+        return offset2d(a.getLocation().toVector(), b.getLocation().toVector());
+    }
+
+    public double offset2d(Location a, Location b) {
+        return offset2d(a.toVector(), b.toVector());
+    }
+
+    public double offset2d(Vector a, Vector b) {
+        a.setY(0);
+        b.setY(0);
+        return a.subtract(b).length();
+    }
+
+    public double offset(Entity a, Entity b) {
+        return offset(a.getLocation().toVector(), b.getLocation().toVector());
+    }
+
+    public double offset(Location a, Location b) {
+        return offset(a.toVector(), b.toVector());
+    }
+
+    public double offset(Vector a, Vector b) {
+        return a.subtract(b).length();
+    }
+
+    public Vector getHorizontalVector(Vector v) {
+        v.setY(0);
+        return v;
+    }
+
+    public Vector getVerticalVector(Vector v) {
+        v.setX(0);
+        v.setZ(0);
+        return v;
+    }
+
+    public boolean isOnClimbable(Player player) {
+        for (Block block : getSurrounding(player.getLocation().getBlock(), false)) {
+            if (block.getType() != Material.LADDER && block.getType() != Material.VINE) continue;
+            return true;
+        }
+        if (player.getLocation().getBlock().getType() == Material.LADDER || player.getLocation().getBlock().getType() == Material.VINE) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean isSlabsNear(Location loc) {
+        boolean nearBlocks = false;
+        for (Block bl2 : getSurrounding(loc.getBlock(), true)) {
+            if (!bl2.getType().equals(Material.STEP) && !bl2.getType().equals(Material.DOUBLE_STEP) && !bl2.getType().equals(Material.WOOD_DOUBLE_STEP) && !bl2.getType().equals(Material.WOOD_STEP))
+                continue;
+            nearBlocks = true;
+            break;
+        }
+        for (Block bl2 : getSurrounding(loc.getBlock(), false)) {
+            if (!bl2.getType().equals(Material.STEP) && !bl2.getType().equals(Material.DOUBLE_STEP) && !bl2.getType().equals(Material.WOOD_DOUBLE_STEP) && !bl2.getType().equals(Material.WOOD_STEP))
+                continue;
+            nearBlocks = true;
+            break;
+        }
+        if (isBlock(loc.getBlock().getRelative(BlockFace.DOWN), new Material[]{Material.STEP, Material.DOUBLE_STEP, Material.WOOD_DOUBLE_STEP, Material.WOOD_STEP})) {
+            nearBlocks = true;
+        }
+        return nearBlocks;
     }
 
 }
