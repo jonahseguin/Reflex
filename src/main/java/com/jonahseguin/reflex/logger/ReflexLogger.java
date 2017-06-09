@@ -22,13 +22,15 @@ public class ReflexLogger {
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy");
     private final Reflex reflex;
     private final File directory;
+    private final String fileName;
     private final Logger logger = Logger.getLogger(ReflexLogger.class
             .getName());
     private String currentDate = "";
     private FileHandler fh = null;
 
-    public ReflexLogger(Reflex reflex) {
+    public ReflexLogger(Reflex reflex, String fileName) {
         this.reflex = reflex;
+        this.fileName = fileName;
         this.directory = new File(reflex.getDataFolder().getPath() + File.separator + "logs");
         if (!directory.exists()) {
             directory.mkdirs();
@@ -90,7 +92,7 @@ public class ReflexLogger {
     private void updateFormatter() {
         try {
             fh = new FileHandler(directory.getPath() + File.separator
-                    + currentDate + ".log");
+                    + currentDate + "-" + fileName + ".log");
         } catch (IOException | SecurityException e) {
             error("INTERNAL LOGGER ERROR", e);
             e.printStackTrace();

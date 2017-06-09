@@ -116,7 +116,7 @@ public class Reflex extends JavaPlugin {
             reflexConfig = new ReflexConfig(instance);
             lang = new LanguageConfig(instance);
             new DBManager(instance);
-            reflexLogger = new ReflexLogger(this);
+            reflexLogger = new ReflexLogger(this, "reflex");
             cache = new ReflexCache(instance);
 
             //Make reload-friendly, load all online players
