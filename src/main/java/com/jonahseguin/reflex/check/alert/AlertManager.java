@@ -49,6 +49,7 @@ public class AlertManager implements RTimer {
             }
         }
         Reflex.getReflexLogger().logNoStaffMsg(ChatColor.stripColor(msg));
+        Reflex.sendSlackMessage(ChatColor.stripColor(msg));
     }
 
     public static void staffMsg(FancyMessage msg) {
@@ -60,6 +61,7 @@ public class AlertManager implements RTimer {
             }
         }
         msg.send(Bukkit.getConsoleSender());
+        Reflex.sendSlackMessage(ChatColor.stripColor(msg.toOldMessageFormat()));
     }
 
     @Override

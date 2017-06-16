@@ -20,22 +20,34 @@ public class ReflexConfig extends Configuration {
     @ConfigData("ban.method")
     @ConfigSerializer(serializer = AutobanMethodSerializer.class)
     private AutobanMethod autobanMethod = AutobanMethod.REFLEX;
-    @ConfigData("ban.time")
-    private int autobanTime = 60;
+
+    @ConfigData("ban.time.staff-online")
+    private int autobanTimeStaffOnline = 300; // Seconds
+
+    @ConfigData("ban.time.no-staff")
+    private int autobanTimeNoStaff = 180;
+
     @ConfigData("ban.remind-interval")
-    private int autobanRemindInterval = 15;
+    private int autobanRemindInterval = 30;
+
     @ConfigData("ban.console.command")
     private String autobanConsoleCommand = "ban {0} [Reflex] Hacking ({1})";
-    @ConfigData("ban.tempban-time-minutes")
-    private int autobanTimeMinutes = 1440;//1 day
+
+    @ConfigData("ban.tempban-time-minutes-scaling")
+    private int[] scalingAutobanTimeMinutes = new int[]{180, 1440, 4320, 10080}; // 3 hours, 1 day, 3 days, 1 week
+
     @ConfigData("alerts.suppress-on-autoban")
     private boolean suppressAlertsOnAutoban = true;
+
     @ConfigData("alerts.grouping-interval-seconds")
     private int alertGroupingIntervalSeconds = 5;
+
     @ConfigData("alerts.max-alerts-per-player-per-second")
     private int maxAlertsPPPS = 2;
+
     @ConfigData("infraction.cache-expiry-minutes")
     private int violationCacheExpiryMinutes = 120; // 2 hours
+
     @ConfigData("player.join-timeout-seconds")
     private int joinTimeoutSeconds = 3;
 
@@ -66,6 +78,15 @@ public class ReflexConfig extends Configuration {
 
     @ConfigData("hackchance.tpsspike.maxiumum")
     private double hackChanceTpsSpikeMaximum = 2.5;
+
+    @ConfigData("slack.enable-hook")
+    private boolean slackHook = false;
+
+    @ConfigData("slack.uri")
+    private String slackHookURI = "https://hooks.slack.com/services/ID-1/ID-2/ID-3";
+
+    @ConfigData("slack.destination-channel")
+    private String slackDestinationChannel = "#reflex";
 
     public ReflexConfig(Plugin plugin) {
         super(plugin);

@@ -19,6 +19,7 @@ import com.jonahseguin.reflex.data.ping.PlayerPing;
 import com.jonahseguin.reflex.player.cache.CachePlayer;
 import com.jonahseguin.reflex.util.serial.PlayerRecordSerializer;
 import lombok.*;
+
 import org.bukkit.ChatColor;
 import org.bukkit.craftbukkit.v1_7_R4.entity.CraftPlayer;
 import org.bukkit.entity.Player;
@@ -53,6 +54,18 @@ public class ReflexPlayer extends CachePlayer {
 
     public ReflexPlayer() { //So that AutoMongo can instantiate without throwing an InstantiationException
 
+    }
+
+    public boolean hasPreviousBan() {
+        return !Reflex.getInstance().getBanManager().getBans(uniqueId).isEmpty();
+    }
+
+    public int getPreviousBans() {
+        return Reflex.getInstance().getBanManager().getBans(uniqueId).size();
+    }
+
+    public boolean isStaff() {
+        return hasPermission(ReflexPerm.STAFF);
     }
 
     public boolean isBanned() {

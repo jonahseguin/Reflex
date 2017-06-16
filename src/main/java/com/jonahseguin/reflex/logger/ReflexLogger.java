@@ -78,7 +78,7 @@ public class ReflexLogger {
 
     public void error(String msg) {
         preLog();
-        logger.warning("[ERROR]" + msg);
+        logger.info("[ERROR]" + msg);
         AlertManager.staffMsg(ChatColor.DARK_RED + "[ERROR] " + ChatColor.GRAY + msg);
     }
 

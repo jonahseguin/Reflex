@@ -10,10 +10,11 @@ import com.jonahseguin.reflex.backend.configuration.ReflexLang;
 import com.jonahseguin.reflex.backend.configuration.ReflexPerm;
 import com.jonahseguin.reflex.check.PlayerData;
 import com.jonahseguin.reflex.player.cache.AbstractCache;
-import org.bukkit.entity.Player;
 
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import org.bukkit.entity.Player;
 
 /**
  * Created by Jonah on 6/15/2015.
@@ -47,6 +48,10 @@ public class ReflexCache extends AbstractCache {
             return getReflexPlayer(p.getName());
         }
         return null;
+    }
+
+    public Set<ReflexPlayer> getOnlineStaff() {
+        return getOnlineReflexPlayers().stream().filter(ReflexPlayer::isStaff).collect(Collectors.toSet());
     }
 
     public Set<ReflexPlayer> getOnlineReflexPlayers() {

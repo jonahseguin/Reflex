@@ -30,9 +30,11 @@ import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
 import com.jonahseguin.reflex.util.exception.ReflexRuntimeException;
 import com.jonahseguin.reflex.util.menu.MenuListener;
 import com.jonahseguin.reflex.util.obj.Lag;
+import com.jonahseguin.reflex.util.obj.SlackNotifier;
 import com.jonahseguin.reflex.util.pluginManager.ReflexPluginManager;
 import com.jonahseguin.reflex.util.pluginManager.ReflexScheduler;
 
+import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.Set;
 
@@ -54,6 +56,7 @@ public class Reflex extends JavaPlugin {
     public static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("##.##");
     public static boolean enableFinished = false;
     private static Reflex instance;
+    private final SlackNotifier slackNotifier = new SlackNotifier();
     private ReflexPluginManager reflexPluginManager;
     private ReflexScheduler reflexScheduler;
     private ReflexLogger reflexLogger;
@@ -107,6 +110,15 @@ public class Reflex extends JavaPlugin {
         return getInstance().reflexLogger;
     }
 
+    public static void sendSlackMessage(String message) {
+        if (getInstance().getReflexConfig().isSlackHook()) {
+            getInstance().getSlackNotifier().setMessage(message);
+            if (!getInstance().getSlackNotifier().sendMessage()) {
+                Reflex.getReflexLogger().error("Failed to send Slack message");
+            }
+        }
+    }
+
     @Override
     public void onLoad() {
         protocolManager = ProtocolLibrary.getProtocolManager();
@@ -117,7 +129,6 @@ public class Reflex extends JavaPlugin {
         reflexLogger = new ReflexLogger(this);
         try {
             reflexLogger.log("[Start] Starting Reflex v" + getDescription().getVersion() + " by Jonah Seguin (Shawckz).");
-
             instance = this;
             reflexConfig = new ReflexConfig(instance);
             lang = new LanguageConfig(instance);
@@ -135,6 +146,13 @@ public class Reflex extends JavaPlugin {
                     reflexLogger.error(e);
                 }
             };
+
+            if (reflexConfig.isSlackHook()) {
+                this.slackNotifier.setDestination(reflexConfig.getSlackDestinationChannel());
+                this.slackNotifier.setEmojiicon(":alien:");
+                this.slackNotifier.setDisplayname("Reflex");
+                this.slackNotifier.setUrl(new URL(reflexConfig.getSlackHookURI()));
+            }
 
             new DBManager(instance);
             cache = new ReflexCache(instance);
@@ -284,5 +302,10 @@ public class Reflex extends JavaPlugin {
     public ReflexScheduler getReflexScheduler() {
         return reflexScheduler;
     }
+
+    public SlackNotifier getSlackNotifier() {
+        return slackNotifier;
+    }
+
 
 }

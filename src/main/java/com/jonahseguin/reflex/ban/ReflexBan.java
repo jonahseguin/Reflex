@@ -67,7 +67,7 @@ public class ReflexBan extends AutoMongo {
     }
 
     public boolean isActive() {
-        return isBanned() && ((isConfirmed() && isBannedCorrectly()) || (getExpiration() > System.currentTimeMillis()));
+        return isBanned() && ((isConfirmed() && isBannedCorrectly()) || (getExpiration() > System.currentTimeMillis() || getExpiration() <= 0));
     }
 
 }

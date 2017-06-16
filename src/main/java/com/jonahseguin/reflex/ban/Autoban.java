@@ -12,18 +12,18 @@ import com.jonahseguin.reflex.check.alert.AlertManager;
 import com.jonahseguin.reflex.check.violation.Infraction;
 import com.jonahseguin.reflex.event.api.ReflexBanEvent;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
-import com.jonahseguin.reflex.util.exception.ReflexRuntimeException;
 import com.jonahseguin.reflex.util.obj.AutobanMethod;
 import com.jonahseguin.reflex.util.obj.Freeze;
 import lombok.Getter;
 import lombok.Setter;
 import mkremins.fanciful.FancyMessage;
+
+import java.util.Calendar;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
-
-import java.util.Calendar;
 
 @Getter
 @Setter
@@ -41,12 +41,17 @@ public class Autoban {
     private CheckType check;
     private Infraction infraction;
 
-    public Autoban(ReflexPlayer player, int cd, CheckType check, Infraction infraction) {
+    public Autoban(ReflexPlayer player, CheckType check, Infraction infraction) {
         this.player = player;
-        this.cd = cd;
         this.check = check;
         this.cancelled = false;
         this.infraction = infraction;
+
+        if (isStaffOnline()) {
+            this.cd = Reflex.getInstance().getReflexConfig().getAutobanTimeStaffOnline();
+        } else {
+            this.cd = Reflex.getInstance().getReflexConfig().getAutobanTimeNoStaff();
+        }
     }
 
     /**
@@ -97,7 +102,7 @@ public class Autoban {
             }
 
 
-        }.runTaskTimer(Reflex.getInstance(), 20L, 20L);
+        }.runTaskTimerAsynchronously(Reflex.getInstance(), 20L, 20L);
     }
 
     /**
@@ -124,10 +129,24 @@ public class Autoban {
         } else if (Reflex.getInstance().getReflexConfig().getAutobanMethod() == AutobanMethod.REFLEX) {
             //Reflex ban internally
 
-            int seconds = Reflex.getInstance().getReflexConfig().getAutobanTimeMinutes() * 60;
-            long mills = seconds * 1000;
-
-            long expiry = System.currentTimeMillis() + mills;
+            int seconds = 0;
+            if (isStaffOnline()) {
+                if (player.hasPreviousBan()) {
+                    // Permanent
+                    seconds = -1;
+                } else {
+                    seconds = Reflex.getInstance().getReflexConfig().getScalingAutobanTimeMinutes()[Reflex.getInstance().getReflexConfig().getScalingAutobanTimeMinutes().length - 1] * 60;
+                }
+            } else {
+                int previousBans = player.getPreviousBans();
+                int[] scale = Reflex.getInstance().getReflexConfig().getScalingAutobanTimeMinutes();
+                if (scale.length >= previousBans - 1) {
+                    seconds = scale[previousBans - 1] * 60;
+                } else {
+                    seconds = -1;
+                }
+            }
+            long expiry = (seconds > 0 ? System.currentTimeMillis() + (seconds * 1000) : seconds);
 
             ReflexBan reflexBan = new ReflexBan(player.getUniqueId(), infraction, expiry);
 
@@ -158,7 +177,8 @@ public class Autoban {
                 }
             }
         } else {
-            throw new ReflexRuntimeException("Unsupported ban method " + Reflex.getInstance().getReflexConfig().getAutobanMethod().toString());
+            Reflex.getReflexLogger().error("Unsupported ban method " + Reflex.getInstance().getReflexConfig().getAutobanMethod().toString());
+            return;
         }
 
         FancyMessage fm = new FancyMessage(RLang.format(ReflexLang.ALERT_PREFIX));
@@ -187,6 +207,10 @@ public class Autoban {
                 }
             }
         }
+    }
+
+    private boolean isStaffOnline() {
+        return !Reflex.getInstance().getCache().getOnlineStaff().isEmpty();
     }
 
     public boolean isExecuted() {
