@@ -51,6 +51,6 @@ public class CheckHeadRoll extends Check {
 
     @Override
     public String description() {
-        return "Detects when a player's head moves to an impossible angle";
+        return "Detects when a player's head moves to an impossible angle.";
     }
 }

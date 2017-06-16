@@ -56,4 +56,8 @@ public class CheckGodMode extends Check implements RTimer {
         return Lag.getTPS() * 20 / maxKeepAlivePacketsPerSecond;
     }
 
+    @Override
+    public String description() {
+        return "Detects when a player sends too many keep alive packets.";
+    }
 }

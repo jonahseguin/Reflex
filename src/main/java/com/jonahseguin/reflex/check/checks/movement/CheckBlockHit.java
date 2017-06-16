@@ -41,4 +41,9 @@ public class CheckBlockHit extends Check {
         }
     }
 
+    @Override
+    public String description() {
+        return "Detects when a player is moving faster than possible while blocking.";
+    }
+
 }

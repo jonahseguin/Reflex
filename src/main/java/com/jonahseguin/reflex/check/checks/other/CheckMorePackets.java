@@ -63,4 +63,9 @@ public class CheckMorePackets extends Check implements RTimer {
         return maxPPS * 20 / Lag.getTPS();
     }
 
+    @Override
+    public String description() {
+        return "Detects when a player sends more packets than allowed.";
+    }
+
 }

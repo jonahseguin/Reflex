@@ -70,6 +70,6 @@ public class CheckNoFall extends Check {
 
     @Override
     public String description() {
-        return "Detects when a player does not take fall damage";
+        return "Detects when a player does not take fall damage.";
     }
 }

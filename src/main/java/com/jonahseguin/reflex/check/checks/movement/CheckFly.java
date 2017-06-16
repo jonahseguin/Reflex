@@ -144,5 +144,10 @@ public class CheckFly extends Check {
         return !player.getAllowFlight() && !player.isInsideVehicle() && player.getVehicle() == null;
     }
 
+    @Override
+    public String description() {
+        return "Detects when a player ascends or floats (flies) when they are not allowed to.";
+    }
+
 
 }

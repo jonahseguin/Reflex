@@ -186,5 +186,10 @@ public class CheckSpeed extends Check {
         }
     }
 
+    @Override
+    public String description() {
+        return "Detects when a player moves faster than possible under conditions.";
+    }
+
 
 }

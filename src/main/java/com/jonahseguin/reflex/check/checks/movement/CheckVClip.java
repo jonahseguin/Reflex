@@ -108,6 +108,6 @@ public class CheckVClip extends Check {
 
     @Override
     public String description() {
-        return "Detect when a player attempts to vertically pass through a block";
+        return "Detect when a player attempts to vertically pass through a block.";
     }
 }

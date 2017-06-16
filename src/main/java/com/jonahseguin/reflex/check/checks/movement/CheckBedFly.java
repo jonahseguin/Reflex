@@ -52,6 +52,6 @@ public class CheckBedFly extends Check {
 
     @Override
     public String description() {
-        return "Detects when a player 'leaves' a bed without a bed nearby";
+        return "Detects when a player 'leaves' a bed without a bed nearby.";
     }
 }

@@ -58,4 +58,9 @@ public class CheckJesus extends Check {
         }
     }
 
+    @Override
+    public String description() {
+        return "Detects when a player walks on water.";
+    }
+
 }

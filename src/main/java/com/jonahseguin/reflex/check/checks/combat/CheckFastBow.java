@@ -103,4 +103,9 @@ public class CheckFastBow extends Check {
         p.getData().setBowPower(0);
     }
 
+    @Override
+    public String description() {
+        return "Detects when a player shoots their bow faster than possible.";
+    }
+
 }

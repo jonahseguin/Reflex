@@ -40,4 +40,9 @@ public class CheckSneak extends Check {
         }
     }
 
+    @Override
+    public String description() {
+        return "Detects when a player sprints while sneaking.";
+    }
+
 }

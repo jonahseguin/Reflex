@@ -98,4 +98,9 @@ public class CheckFastEat extends Check {
         rp.getData().eatInteract = 0;
     }
 
+    @Override
+    public String description() {
+        return "Detects when a player eats faster than possible.";
+    }
+
 }

@@ -85,5 +85,10 @@ public class CheckStep extends Check {
         }
     }
 
+    @Override
+    public String description() {
+        return "Detects when a player 'steps' up a block without actually jumping.";
+    }
+
 
 }

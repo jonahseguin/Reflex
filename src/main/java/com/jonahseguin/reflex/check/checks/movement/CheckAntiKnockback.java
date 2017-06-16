@@ -63,5 +63,9 @@ public class CheckAntiKnockback extends Check {
 
     }
 
+    @Override
+    public String description() {
+        return "Detects when a player is attacked, but does not take knockback.";
+    }
 
 }

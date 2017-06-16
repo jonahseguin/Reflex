@@ -148,6 +148,11 @@ public class CheckReach extends Check {
         return reach;
     }
 
+    @Override
+    public String description() {
+        return "Detects when a player attacks or interacts from further than possible.";
+    }
+
     public class ReachLog {
 
         private final double distance;
@@ -166,6 +171,5 @@ public class CheckReach extends Check {
             return maxReach;
         }
     }
-
 
 }

@@ -84,4 +84,9 @@ public class CheckNoSwing extends Check {
         rp.getData().lastSwing = System.currentTimeMillis();
     }
 
+    @Override
+    public String description() {
+        return "Detects when a player attacks without swinging.";
+    }
+
 }

@@ -58,4 +58,9 @@ public class CheckRegen extends Check implements RTimer {
         });
     }
 
+    @Override
+    public String description() {
+        return "Detects when a player regenerates health faster than possible.";
+    }
+
 }

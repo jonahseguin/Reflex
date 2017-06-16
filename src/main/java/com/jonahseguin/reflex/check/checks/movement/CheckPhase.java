@@ -265,6 +265,6 @@ public class CheckPhase extends Check {
 
     @Override
     public String description() {
-        return "Detects when a player attempts to horizontally pass through a solid block";
+        return "Detects when a player attempts to horizontally pass through a solid block.";
     }
 }

@@ -53,4 +53,9 @@ public class CheckSelfHit extends Check {
     }
     */
 
+    @Override
+    public String description() {
+        return "Detects when a player attempts to hit themselves to gain velocity.";
+    }
+
 }
