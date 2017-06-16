@@ -4,6 +4,10 @@
 
 package com.jonahseguin.reflex.backend.configuration;
 
+import com.jonahseguin.reflex.check.alert.AlertManager;
+
+import org.bukkit.command.CommandSender;
+
 public enum ReflexLang {
 
     PLAYER_ONLY_COMMAND("&cThis is a player-only command."),
@@ -35,6 +39,8 @@ public enum ReflexLang {
     SETTINGS("&7Setting &e{0}&7 updated to &9{1}&7 for &a{2}&7 by &e{3}&7."),
     AUTOBAN_CHEATER("&7[Reflex] &4&lYou will be automatically banned for &r{0}&4&l shortly."),
     AUTOBAN_CHEATER_CANCEL("&7[Reflex] &a&lYou are no longer being automatically banned.  &fSorry for the inconvenience."),
+    DEBUG_TOGGLE("&7[&cDebug&7] &fDebug has been {0}&f."),
+    DEBUG("&7[&cDebug&7] &f{0}"),
     NOTE_ADD("&9{0} &7added a note to &e{1}&7: \"&6{2}&7\"");
 
     private final String defaultValue;
@@ -50,6 +56,18 @@ public enum ReflexLang {
             }
         }
         return null;
+    }
+
+    public String format(String... args) {
+        return RLang.format(this, args);
+    }
+
+    public void send(CommandSender player, String... args) {
+        RLang.send(player, this, args);
+    }
+
+    public void sendToStaff(String... args) {
+        AlertManager.staffMsg(format(args));
     }
 
     public String getDefaultValue() {

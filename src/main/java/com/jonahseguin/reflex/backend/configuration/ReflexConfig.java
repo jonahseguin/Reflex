@@ -17,6 +17,9 @@ import org.bukkit.plugin.Plugin;
 @Setter
 public class ReflexConfig extends Configuration {
 
+    @ConfigData("debug")
+    private boolean debug = false;
+
     @ConfigData("ban.method")
     @ConfigSerializer(serializer = AutobanMethodSerializer.class)
     private AutobanMethod autobanMethod = AutobanMethod.REFLEX;

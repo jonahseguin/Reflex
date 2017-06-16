@@ -33,6 +33,7 @@ public enum ReflexPerm {
     LOOKUP_ALERT("reflex.lookup.alert"),
     NOTE_ADD("reflex.note.add"),
     NOTE_VIEW("reflex.note.view"),
+    DEBUG("reflex.debug"),
     CHECK("reflex.check");
 
     private final String perm;

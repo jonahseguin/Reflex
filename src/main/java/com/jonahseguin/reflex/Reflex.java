@@ -74,6 +74,16 @@ public class Reflex extends JavaPlugin {
     private PingHandler pingHandler;
     private TpsHandler tpsHandler;
 
+    public static boolean isDebugEnabled() {
+        return getInstance().getReflexConfig().isDebug();
+    }
+
+    public static void debug(String msg) {
+        if (isDebugEnabled()) {
+            ReflexLang.DEBUG.sendToStaff(msg);
+        }
+    }
+
     public static void log(String msg) {
         getReflexLogger().log(msg);
     }
