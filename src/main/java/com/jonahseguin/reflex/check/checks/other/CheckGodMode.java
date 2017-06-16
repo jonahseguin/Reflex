@@ -12,9 +12,10 @@ import com.jonahseguin.reflex.check.RTimer;
 import com.jonahseguin.reflex.event.packet.ReflexPacketKeepAliveEvent;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
 import com.jonahseguin.reflex.util.obj.Lag;
-import org.bukkit.event.EventHandler;
 
 import java.text.DecimalFormat;
+
+import org.bukkit.event.EventHandler;
 
 /**
  * Created by Jonah Seguin on Mon 2017-05-08 at 20:21.

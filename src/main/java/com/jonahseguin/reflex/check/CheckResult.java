@@ -7,6 +7,7 @@ package com.jonahseguin.reflex.check;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
 import lombok.Data;
 import lombok.NonNull;
+
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.player.PlayerMoveEvent;
 

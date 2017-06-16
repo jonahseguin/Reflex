@@ -9,14 +9,15 @@ import com.jonahseguin.reflex.backend.configuration.AbstractSerializer;
 import com.jonahseguin.reflex.backend.configuration.annotations.ConfigData;
 import com.jonahseguin.reflex.backend.configuration.annotations.ConfigSerializer;
 import com.jonahseguin.reflex.util.exception.AbstractSerializerException;
-import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.configuration.file.YamlConfiguration;
 
 /**
  * Superclass of all Checks, sorted into directories based on their RCheckType

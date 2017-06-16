@@ -7,6 +7,7 @@ package com.jonahseguin.reflex.event.api;
 import com.jonahseguin.reflex.backend.command.RCmdArgs;
 import com.jonahseguin.reflex.ban.ReflexBan;
 import com.jonahseguin.reflex.commands.CmdBan;
+
 import org.bukkit.event.Cancellable;
 
 /**

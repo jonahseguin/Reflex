@@ -10,13 +10,14 @@ import com.jonahseguin.reflex.backend.configuration.annotations.ConfigData;
 import com.jonahseguin.reflex.ban.Autoban;
 import com.jonahseguin.reflex.player.reflex.ReflexCache;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
-import org.bukkit.entity.Player;
-import org.bukkit.event.HandlerList;
-import org.bukkit.event.Listener;
 
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+
+import org.bukkit.entity.Player;
+import org.bukkit.event.HandlerList;
+import org.bukkit.event.Listener;
 
 /**
  * Created by Jonah Seguin on Mon 2017-04-24 at 19:53.
@@ -63,6 +64,7 @@ public abstract class Check extends CheckConfig implements Listener {
 
     /**
      * Should be overridden by extending Check
+     *
      * @return String - the description for this check
      */
     public String description() {
@@ -124,7 +126,7 @@ public abstract class Check extends CheckConfig implements Listener {
         Reflex.getReflexLogger().log("FAIL INIT", player.getName() + ": " + this.getName() + " - " + detail);
 
         player.getRecord().addViolation(getCheckType(), detail, violation -> {
-            Reflex.getReflexLogger().log("FAIL FINAL", player.getName() + ": " + this.getName() + " - " + detail + " ["+violation.getVl()+"] " + "["+violation.getHackChance().getHackChance()+"%]");
+            Reflex.getReflexLogger().log("FAIL FINAL", player.getName() + ": " + this.getName() + " - " + detail + " [" + violation.getVl() + "] " + "[" + violation.getHackChance().getHackChance() + "%]");
         });
 
         return new CheckResult(checkType, player, false, this.cancel);

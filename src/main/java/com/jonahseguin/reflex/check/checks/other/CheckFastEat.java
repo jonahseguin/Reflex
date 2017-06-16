@@ -10,6 +10,9 @@ import com.jonahseguin.reflex.check.Check;
 import com.jonahseguin.reflex.check.CheckType;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
 import com.jonahseguin.reflex.util.obj.Lag;
+
+import java.text.DecimalFormat;
+
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.Action;
@@ -17,8 +20,6 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
-
-import java.text.DecimalFormat;
 
 /**
  * Created by Jonah Seguin on Sat 2017-04-29 at 17:02.

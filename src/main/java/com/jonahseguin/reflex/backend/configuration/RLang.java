@@ -5,6 +5,7 @@
 package com.jonahseguin.reflex.backend.configuration;
 
 import com.jonahseguin.reflex.Reflex;
+
 import org.bukkit.command.CommandSender;
 
 public class RLang {

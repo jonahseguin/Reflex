@@ -4,6 +4,7 @@
 package com.jonahseguin.reflex.util.menu.items;
 
 import com.jonahseguin.reflex.util.menu.events.ItemClickEvent;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;

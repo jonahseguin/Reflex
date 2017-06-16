@@ -11,13 +11,14 @@ import com.jonahseguin.reflex.backend.configuration.annotations.ConfigSerializer
 import com.jonahseguin.reflex.util.exception.AbstractSerializerException;
 import com.jonahseguin.reflex.util.obj.RReflecUtil;
 import lombok.Getter;
-import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.plugin.Plugin;
 
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
+
+import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.Plugin;
 
 
 @Getter

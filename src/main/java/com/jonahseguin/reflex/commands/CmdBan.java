@@ -16,6 +16,7 @@ import com.jonahseguin.reflex.check.alert.AlertManager;
 import com.jonahseguin.reflex.event.api.ReflexConfirmBanEvent;
 import com.jonahseguin.reflex.event.api.ReflexUnbanEvent;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;

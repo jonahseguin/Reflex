@@ -13,6 +13,7 @@ import com.jonahseguin.reflex.backend.configuration.ReflexPerm;
 import com.jonahseguin.reflex.check.CheckType;
 import com.jonahseguin.reflex.menu.check.CheckMenu;
 import com.jonahseguin.reflex.menu.check.ChecksMenu;
+
 import org.bukkit.entity.Player;
 
 /**

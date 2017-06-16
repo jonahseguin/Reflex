@@ -4,12 +4,13 @@
 package com.jonahseguin.reflex.util.menu.items;
 
 import com.jonahseguin.reflex.util.menu.events.ItemClickEvent;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Arrays;
 import java.util.List;
+
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 /**
  * An Item inside an {@link com.jonahseguin.reflex.util.menu.menus.ItemMenu}.

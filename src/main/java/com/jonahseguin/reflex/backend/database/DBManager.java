@@ -12,10 +12,11 @@ import com.mongodb.MongoCredential;
 import com.mongodb.MongoException;
 import com.mongodb.ServerAddress;
 import com.mongodb.client.MongoDatabase;
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.Plugin;
 
 import java.util.Arrays;
+
+import org.bukkit.Bukkit;
+import org.bukkit.plugin.Plugin;
 
 
 /**

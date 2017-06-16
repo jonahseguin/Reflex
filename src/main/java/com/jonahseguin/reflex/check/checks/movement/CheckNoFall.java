@@ -9,6 +9,7 @@ import com.jonahseguin.reflex.backend.configuration.annotations.ConfigData;
 import com.jonahseguin.reflex.check.Check;
 import com.jonahseguin.reflex.check.CheckType;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
+
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

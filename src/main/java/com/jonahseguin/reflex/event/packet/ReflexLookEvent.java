@@ -5,6 +5,7 @@
 package com.jonahseguin.reflex.event.packet;
 
 import com.comphenix.protocol.events.PacketEvent;
+
 import org.bukkit.entity.Player;
 
 public class ReflexLookEvent extends ReflexPacketEvent {

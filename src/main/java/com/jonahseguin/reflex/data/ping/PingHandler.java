@@ -7,6 +7,7 @@ package com.jonahseguin.reflex.data.ping;
 import com.jonahseguin.reflex.Reflex;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
 import lombok.Getter;
+
 import org.bukkit.scheduler.BukkitRunnable;
 
 /**

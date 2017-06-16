@@ -4,11 +4,12 @@
 package com.jonahseguin.reflex.util.menu.events;
 
 import com.google.common.collect.Sets;
-import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.ClickType;
 
 import java.util.HashSet;
 import java.util.Set;
+
+import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.ClickType;
 
 /**
  * An event called when an Item in the {@link com.jonahseguin.reflex.util.menu.menus.ItemMenu} is clicked.

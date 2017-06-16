@@ -5,13 +5,6 @@
 package com.jonahseguin.reflex.backend.command;
 
 import com.jonahseguin.reflex.Reflex;
-import org.bukkit.ChatColor;
-import org.bukkit.command.CommandMap;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.defaults.BukkitCommand;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.SimplePluginManager;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -20,6 +13,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.bukkit.ChatColor;
+import org.bukkit.command.CommandMap;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.defaults.BukkitCommand;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.SimplePluginManager;
 
 /**
  * Created by Jonah Seguin on 12/13/2015.

@@ -6,6 +6,7 @@ package com.jonahseguin.reflex.event.packet;
 
 import com.comphenix.protocol.events.PacketEvent;
 import lombok.Getter;
+
 import org.bukkit.entity.Player;
 
 @Getter

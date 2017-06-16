@@ -17,6 +17,7 @@ import com.jonahseguin.reflex.check.alert.CheckAlert;
 import com.jonahseguin.reflex.check.alert.GroupedAlert;
 import com.jonahseguin.reflex.menu.alert.AlertMenu;
 import com.jonahseguin.reflex.menu.alert.GroupedAlertMenu;
+
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 

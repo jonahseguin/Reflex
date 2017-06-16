@@ -11,6 +11,7 @@ import com.jonahseguin.reflex.check.CheckType;
 import com.jonahseguin.reflex.check.RTimer;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
 import com.jonahseguin.reflex.util.obj.Lag;
+
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -18,7 +19,7 @@ import org.bukkit.event.player.PlayerMoveEvent;
 /**
  * Created by Jonah Seguin on Sat 2017-04-29 at 16:56.
  * Project: Reflex
- *
+ * <p>
  * Movement packets --> max 1 per tick (20 per second)
  * Checks if too many are being sent (can catch certain speeds, auras, etc.)
  */
@@ -51,8 +52,7 @@ public class CheckMorePackets extends Check implements RTimer {
                     fail(rp, rp.getData().packets + " packets");
                     rp.setPreVL(getCheckType(), 0);
                 }
-            }
-            else{
+            } else {
                 rp.setPreVL(getCheckType(), 0); // Reset if they don't violate 3 in a row
             }
             rp.getData().packets = 0;

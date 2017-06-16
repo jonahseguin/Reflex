@@ -5,6 +5,7 @@
 package com.jonahseguin.reflex.event.packet;
 
 import com.comphenix.protocol.events.PacketEvent;
+
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 

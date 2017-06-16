@@ -16,15 +16,16 @@ import com.jonahseguin.reflex.menu.other.PlayerMenu;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
 import com.jonahseguin.reflex.util.obj.TimeUtil;
 import net.md_5.bungee.api.ChatColor;
-import org.bukkit.Bukkit;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.text.SimpleDateFormat;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+
+import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public class CmdLookup implements RCommand {
 
@@ -62,7 +63,6 @@ public class CmdLookup implements RCommand {
             }
         }.runTaskAsynchronously(Reflex.getInstance());
     }
-
 
 
     @RCmd(name = "reflex lookup ban", usage = "/reflex lookup ban <player>", minArgs = 1, permission = ReflexPerm.LOOKUP_BAN,

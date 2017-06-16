@@ -12,12 +12,13 @@ import com.jonahseguin.reflex.util.menu.menus.ItemMenu;
 import com.jonahseguin.reflex.util.obj.ItemBuilder;
 import com.jonahseguin.reflex.util.obj.Note;
 import com.jonahseguin.reflex.util.obj.TimeUtil;
+
+import java.util.Set;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-
-import java.util.Set;
 
 /**
  * Created by Jonah Seguin on Mon 2017-05-29 at 14:36.

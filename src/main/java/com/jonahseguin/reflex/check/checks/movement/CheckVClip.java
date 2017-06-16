@@ -9,6 +9,7 @@ import com.jonahseguin.reflex.check.Check;
 import com.jonahseguin.reflex.check.CheckType;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
 import com.jonahseguin.reflex.util.obj.Distance;
+
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;

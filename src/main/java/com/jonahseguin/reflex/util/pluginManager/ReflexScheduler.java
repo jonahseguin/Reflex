@@ -4,15 +4,15 @@
 
 package com.jonahseguin.reflex.util.pluginManager;
 
+import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.Future;
+
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.scheduler.BukkitWorker;
-
-import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.concurrent.Future;
 
 /**
  * Implements a delegating scheduler that automatically handles all exceptions.

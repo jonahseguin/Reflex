@@ -107,6 +107,7 @@ public class PlayerData {
     // General setBack --> Last safe location
     public Location setBack = null;
     public Location from = null;
+
     public PlayerData(Player player) {
         this.player = player;
     }
@@ -256,11 +257,11 @@ public class PlayerData {
 
     public List<Block> getBlocksAround(Location location, int radius) {
         List<Block> blocks = new ArrayList<>();
-        for (double x = -radius; x <= radius; x ++) {
+        for (double x = -radius; x <= radius; x++) {
             for (double y = -radius; y <= radius; y++)
-            for (double z = -radius; z <= radius; z++) {
-                blocks.add(location.clone().add(x, 0, z).getBlock());
-            }
+                for (double z = -radius; z <= radius; z++) {
+                    blocks.add(location.clone().add(x, 0, z).getBlock());
+                }
         }
         blocks.add(location.getBlock());
 

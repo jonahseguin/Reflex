@@ -7,9 +7,10 @@ package com.jonahseguin.reflex.ban;
 import com.jonahseguin.reflex.Reflex;
 import com.jonahseguin.reflex.backend.database.mongo.AutoMongo;
 import org.bson.Document;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
+
+import org.bukkit.scheduler.BukkitRunnable;
 
 /**
  * Handles the Reflex BanCache and provides utility methods for ReflexBans
@@ -41,6 +42,7 @@ public class ReflexBanManager {
         return ban != null && ban.isActive();
 
     }
+
     public ReflexBan getBan(String uniqueId) {
         if (cache.containsKey(uniqueId)) {
             if (cache.get(uniqueId).hasActiveBan()) {

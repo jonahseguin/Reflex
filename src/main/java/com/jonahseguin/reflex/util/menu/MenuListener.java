@@ -5,6 +5,7 @@ package com.jonahseguin.reflex.util.menu;
 
 import com.jonahseguin.reflex.Reflex;
 import com.jonahseguin.reflex.util.menu.menus.MenuHolder;
+
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;

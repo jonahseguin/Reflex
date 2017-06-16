@@ -52,7 +52,7 @@ public class CheckManager {
         checks.values().forEach(check -> check.setEnabled(check.isEnabled())); // Register check listeners if enabled
         checks.values().forEach(check -> { // Register check timers if applicable
             if (check instanceof RTimer) {
-                instance.getReflexTimer().registerTimer(((RTimer)check));
+                instance.getReflexTimer().registerTimer(((RTimer) check));
             }
         });
     }

@@ -5,10 +5,6 @@
 package com.jonahseguin.reflex.util.pluginManager;
 
 import com.google.common.collect.Lists;
-import org.bukkit.event.*;
-import org.bukkit.permissions.Permissible;
-import org.bukkit.permissions.Permission;
-import org.bukkit.plugin.*;
 
 import java.io.File;
 import java.lang.reflect.Method;
@@ -16,6 +12,11 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.Set;
+
+import org.bukkit.event.*;
+import org.bukkit.permissions.Permissible;
+import org.bukkit.permissions.Permission;
+import org.bukkit.plugin.*;
 
 public abstract class ReflexPluginManager implements PluginManager {
 

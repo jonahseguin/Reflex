@@ -29,7 +29,7 @@ public class ViolationCache implements RTimer {
         while (it.hasNext()) {
             String key = it.next();
             CheckViolation v = violations.get(key);
-            if(System.currentTimeMillis() >= v.getExpiryTime()) {
+            if (System.currentTimeMillis() >= v.getExpiryTime()) {
                 //Expired
                 uncacheViolation(v);
             }

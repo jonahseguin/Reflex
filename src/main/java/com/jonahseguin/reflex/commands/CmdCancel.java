@@ -13,11 +13,12 @@ import com.jonahseguin.reflex.backend.configuration.ReflexLang;
 import com.jonahseguin.reflex.backend.configuration.ReflexPerm;
 import com.jonahseguin.reflex.ban.AutobanManager;
 import com.jonahseguin.reflex.check.alert.AlertManager;
+
+import java.util.Iterator;
+
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import java.util.Iterator;
 
 public class CmdCancel implements RCommand {
 

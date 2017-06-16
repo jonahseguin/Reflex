@@ -5,6 +5,7 @@
 package com.jonahseguin.reflex.menu.backend;
 
 import com.jonahseguin.reflex.util.menu.events.ItemClickEvent;
+
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 

@@ -10,6 +10,9 @@ import com.jonahseguin.reflex.backend.configuration.annotations.ConfigData;
 import com.jonahseguin.reflex.check.Check;
 import com.jonahseguin.reflex.check.CheckType;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
+
+import java.util.Set;
+
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -20,8 +23,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.material.Gate;
-
-import java.util.Set;
 
 /**
  * Created by Jonah Seguin on Sat 2017-04-29 at 16:55.

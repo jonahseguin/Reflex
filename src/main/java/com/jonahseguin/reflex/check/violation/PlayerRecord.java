@@ -169,7 +169,7 @@ public class PlayerRecord extends AutoMongo {
 
                 if (check.isAutoban() && !getReflex().getAutobanManager().hasAutoban(reflexPlayer)) {
                     // Auto-ban the player (infraction --> auto-ban)
-                    Autoban autoban = new Autoban(reflexPlayer, getReflex().getReflexConfig().getAutobanTime(), checkType, infraction);
+                    Autoban autoban = new Autoban(reflexPlayer, checkType, infraction);
                     autoban.run();
                     getReflex().getAutobanManager().putAutoban(autoban);
                 }

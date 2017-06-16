@@ -14,6 +14,7 @@ import com.jonahseguin.reflex.backend.configuration.ReflexPerm;
 import com.jonahseguin.reflex.check.Check;
 import com.jonahseguin.reflex.check.CheckType;
 import com.jonahseguin.reflex.check.alert.AlertManager;
+
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 

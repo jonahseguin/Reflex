@@ -13,6 +13,7 @@ import com.jonahseguin.reflex.check.Check;
 import com.jonahseguin.reflex.check.CheckResult;
 import com.jonahseguin.reflex.check.CheckType;
 import com.jonahseguin.reflex.player.reflex.ReflexPlayer;
+
 import org.bukkit.entity.Player;
 
 /**

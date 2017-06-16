@@ -187,5 +187,4 @@ public class CheckSpeed extends Check {
     }
 
 
-
 }
