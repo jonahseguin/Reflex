@@ -126,7 +126,7 @@ public class Reflex extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        reflexLogger = new ReflexLogger(this);
+        reflexLogger = new ReflexLogger(this, "reflex");
         try {
             reflexLogger.log("[Start] Starting Reflex v" + getDescription().getVersion() + " by Jonah Seguin (Shawckz).");
             instance = this;

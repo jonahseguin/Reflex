@@ -121,7 +121,10 @@ public abstract class Check extends CheckConfig implements Listener {
 
         fails.add(new CheckFail(System.currentTimeMillis(), player));
 
+        Reflex.getReflexLogger().log("FAIL INIT", player.getName() + ": " + this.getName() + " - " + detail);
+
         player.getRecord().addViolation(getCheckType(), detail, violation -> {
+            Reflex.getReflexLogger().log("FAIL FINAL", player.getName() + ": " + this.getName() + " - " + detail + " ["+violation.getVl()+"] " + "["+violation.getHackChance().getHackChance()+"%]");
         });
 
         return new CheckResult(checkType, player, false, this.cancel);

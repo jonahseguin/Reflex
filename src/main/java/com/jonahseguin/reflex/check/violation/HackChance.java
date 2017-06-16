@@ -171,4 +171,7 @@ public class HackChance {
         return Math.abs(before - after);
     }
 
+    public double getHackChance() {
+        return Math.round(hackChance);
+    }
 }
