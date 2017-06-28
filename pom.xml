@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-  ~ Copyright (c) Jonah Seguin (Shawckz) 2017.  You may not copy, re-sell, distribute, modify, or use any code contained in this document or file, collection of documents or files, or project.  Thank you.
-  -->
-
-<project xmlns="http://maven.apache.org/POM/4.0.0">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.shawckz.reflex</groupId>
     <artifactId>Reflex</artifactId>
-    <version>2.0.1BETA1-${maven.build.timestamp}</version>
+    <version>1.0.2BETA-${maven.build.timestamp}</version>
 
     <properties>
         <maven.build.timestamp.format>MM-dd-yyyy</maven.build.timestamp.format>
@@ -68,6 +66,12 @@
 
 
         <!-- COMPILE -->
+        <dependency>
+            <groupId>ninja.amp</groupId>
+            <artifactId>ampmenus</artifactId>
+            <version>1.4-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
         <dependency>
             <groupId>io.socket</groupId>
             <artifactId>socket.io-client</artifactId>
@@ -184,10 +188,9 @@
                         <option>-keepattributes InnerClasses</option>
                         <option>-keepattributes InnerClasses,EnclosingMethod</option>
                         <option>-keepattributes EnclosingMethod</option>
-                        <option>-keep class com.jonahseguin.reflex.Reflex { public void onEnable(); public void
-                            onDisable(); public void onLoad(); }</option>
+                        <option>-keep class com.shawckz.reflex.Reflex { public void onEnable(); public void onDisable(); public void onLoad(); }</option>
                         <option>-keepclassmembers class * extends java.lang.Enum { *; }</option>
-                      <!--  <option>-keep class !com.shawckz.reflex.**</option> -->
+                        <!--  <option>-keep class !com.shawckz.reflex.**</option> -->
                         <option>-keep class com.shawckz.reflex.event.** { *; }</option>
                         <option>-keep class org.mongodb.** { *; }</option>
                         <option>-keep class com.mongodb.** { *; }</option>
