@@ -14,6 +14,7 @@ import org.bson.Document;
 
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -110,6 +111,10 @@ public abstract class AbstractCache implements Listener {
             }
         }
         return null;
+    }
+    
+    public ReflexPlayer loadReflexPlayerByUniqueId(UUID uuid) {
+        return loadReflexPlayerByUniqueId(uuid.toString());
     }
 
     public ReflexPlayer getBasePlayer(Player p) {

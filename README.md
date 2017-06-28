@@ -9,9 +9,12 @@ Reflex is still unfinished, and being developed.
 
 The lead developer on the project is Jonah Seguin (username Shawckz).
 
-# Checks
 
+<<<<<<< HEAD
 ## Finished
+=======
+# Finished/In-Progress Checks
+>>>>>>> master
 
 - HeadRoll
 - VClip
@@ -20,6 +23,7 @@ The lead developer on the project is Jonah Seguin (username Shawckz).
 - TabComplete
 - MorePackets
 
+<<<<<<< HEAD
 ## Unfinished and/or Planned
 
 - Reach
@@ -28,17 +32,13 @@ The lead developer on the project is Jonah Seguin (username Shawckz).
 - Speed
 - AutoClick
 - Sneak
+=======
+# Planned Checks
+
+- TriggerBot (compare CPS on target vs CPS off target)
+>>>>>>> master
 - AutoSoup
-- AttackSpeed
-- AuraTwitch
-- Knockback
-- Jesus
-- Criticals
-- Aura (simple)
-- TriggerBot
-- SmoothAim
-- Phase
-- NoFall
+- AutoPot
 - Glide
 
 
