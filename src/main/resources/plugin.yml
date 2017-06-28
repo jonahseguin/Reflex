@@ -1,13 +1,13 @@
 ###
-### Copyright (c) Jonah Seguin (Shawckz) 2016.  You may not copy, re-sell, distribute, modify, or use any code contained in this document or file, collection of documents or files, or project.  Thank you.
+### Copyright (c) Jonah Seguin (Shawckz) 2017.  You may not copy, re-sell, distribute, modify, or use any code contained in this document or file, collection of documents or files, or project.  Thank you.
 ###
 name: Reflex
-main: com.shawckz.reflex.Reflex
-version: ${project.version} (MC1.7.10)
-authors: [Shawckz]
-website: https://shawckz.com/product/Reflex
+main: com.jonahseguin.reflex.Reflex
+version: ${project.version} (Minecraft 1.7.10)
+author: Jonah Seguin (Shawckz)
+website: https://cheats.rip and https://shawckz.com
 depend: [ProtocolLib]
-description: Reflex Anti-Cheat by Shawckz | https://shawckz.com
+description: Reflex Anti-Cheat by Jonah Seguin (Shawckz) https://cheats.rip https://shawckz.com
 
 #Commands are defined automatically from within the plugin
 
@@ -19,15 +19,19 @@ permissions:
       reflex.alerts: true
       reflex.use: true
       reflex.lookup.player: true
-      reflex.lookup.inspection: true
-      reflex.lookup.violation: true
+      reflex.lookup.alert: true
       reflex.lookup.ban: true
       reflex.unban: true
       reflex.confirmban: true
       reflex.settings: true
       reflex.config.load: true
       reflex.config.set: true
-      reflex.inspect: true
+      reflex.check: true
+      reflex.note.add: true
+      reflex.note.view: true
+      reflex.cancel.all: true
+      reflex.staff: true
+      reflex.config.reset: true
   reflex.alerts:
     description: Toggle alerts
     default: op
@@ -37,11 +41,8 @@ permissions:
   reflex.lookup.player:
       description: Lookup a player
       default: op
-  reflex.lookup.inspection:
-      description: Lookup an inspection
-      default: op
-  reflex.lookup.violation:
-      description: Lookup a violation
+  reflex.lookup.alert:
+      description: Lookup an alert
       default: op
   reflex.lookup.ban:
       description: Lookup a ban
@@ -61,9 +62,24 @@ permissions:
   reflex.config.set:
       description: Set a value in the Reflex config
       default: op
+  reflex.config.reset:
+        description: Reset the Reflex config to default values
+        default: op
   reflex.cancel:
       description: Cancel an autoban
       default: op
-  reflex.inspect:
-      description: Manually inspect a player for a check
+  reflex.staff:
+      description: Players with this permission will be considered staff members by Reflex
+      default: op
+  reflex.check:
+      description: Manage check settings and details
+      default: op
+  reflex.note.add:
+      description: Add a note to a player
+      default: op
+  reflex.note.view:
+      description: View notes on a player
+      default: op
+  reflex.cancel.all:
+      description: Cancel all running auto-bans
       default: op
